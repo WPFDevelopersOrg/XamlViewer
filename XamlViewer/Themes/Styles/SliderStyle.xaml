@@ -1,0 +1,80 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"> 
+ 
+    <Style x:Key="SliderRepeatButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Rectangle Fill="Transparent"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="ColorPickerHorizontalSliderThumb" TargetType="{x:Type Thumb}">
+        <Grid SnapsToDevicePixels="true" Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="6"/>
+            </Grid.RowDefinitions>
+            <Path Data="M0,0 H10 L5,5 Z" Stretch="Fill" Fill="{TemplateBinding Background}"/>
+            <Path Grid.Row="2" Data="M0,0 H10 L5,-5 Z" Stretch="Fill" Fill="{TemplateBinding Background}"/>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ColorPickerVerticalSliderThumb" TargetType="{x:Type Thumb}">
+        <Grid SnapsToDevicePixels="true" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+            </Grid.ColumnDefinitions>
+            <Path Data="M0,0 V10 L5,5 Z" Stretch="Fill" Fill="{TemplateBinding Background}"/>
+            <Path Grid.Column="2" Data="M0,0 V10 L-5,5 Z" Stretch="Fill" Fill="{TemplateBinding Background}"/>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="ColorPickerSliderStyle" TargetType="{x:Type Slider}">
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="IsMoveToPointEnabled" Value="true"/>
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Slider">
+                    <Grid SnapsToDevicePixels="true" ClipToBounds="true">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"/>
+                        <Track x:Name="PART_Track" Margin="0,-7">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}"/>
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}"/>
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb x:Name="thumb" Focusable="false" Height="14" Background="Black"
+                                       Template="{StaticResource ColorPickerVerticalSliderThumb}"/>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter Property="Template" TargetName="thumb" Value="{StaticResource ColorPickerHorizontalSliderThumb}"/>
+                            <Setter Property="Height" TargetName="thumb" Value="auto"/>
+                            <Setter Property="Width" TargetName="thumb" Value="14"/>
+                            <Setter Property="Margin" TargetName="PART_Track" Value="-7,0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>
