@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using Prism.DryIoc;
 using Prism.Ioc;
+using Prism.Modularity;
+using Prism.Mvvm;
+using XamlViewer.ViewModels;
+using XamlViewer.Views;
 
 namespace XamlViewer
 {
@@ -15,6 +19,14 @@ namespace XamlViewer
     /// </summary>
     public partial class App : PrismApplication
     {
+        protected override void ConfigureViewModelLocator()
+        {
+            base.ConfigureViewModelLocator();
+
+            ViewModelLocationProvider.Register<MainWindow, MainViewModel>();
+            ViewModelLocationProvider.Register<SettingControl, SettingViewModel>();
+        }
+
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();
@@ -22,6 +34,11 @@ namespace XamlViewer
 
         protected override void RegisterTypes(Prism.Ioc.IContainerRegistry containerRegistry)
         {
+        }
+
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            return new DirectoryModuleCatalog() { ModulePath = @".\Modules" };
         }
     }
 }

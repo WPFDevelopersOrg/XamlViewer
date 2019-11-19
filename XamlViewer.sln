@@ -11,6 +11,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{159759
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlDesigner", "Modules\XamlDesigner\XamlDesigner.csproj", "{D422F239-CBBA-480E-960B-DACAE59A004B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlEditor", "Modules\XamlEditor\XamlEditor.csproj", "{152D2E38-DABA-4ED9-9ADD-5D7D04EEAF4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{7BEC7ABE-E7AC-43B7-8646-3009841FDB13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleService", "ModuleService\ModuleService.csproj", "{969AF170-1975-43DA-AF1B-C43E17777D17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +29,24 @@ Global
 		{6814770B-1F28-46E8-AE26-4D979732D6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6814770B-1F28-46E8-AE26-4D979732D6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6814770B-1F28-46E8-AE26-4D979732D6EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D422F239-CBBA-480E-960B-DACAE59A004B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D422F239-CBBA-480E-960B-DACAE59A004B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D422F239-CBBA-480E-960B-DACAE59A004B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D422F239-CBBA-480E-960B-DACAE59A004B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{152D2E38-DABA-4ED9-9ADD-5D7D04EEAF4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{152D2E38-DABA-4ED9-9ADD-5D7D04EEAF4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{152D2E38-DABA-4ED9-9ADD-5D7D04EEAF4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{152D2E38-DABA-4ED9-9ADD-5D7D04EEAF4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{969AF170-1975-43DA-AF1B-C43E17777D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{969AF170-1975-43DA-AF1B-C43E17777D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{969AF170-1975-43DA-AF1B-C43E17777D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{969AF170-1975-43DA-AF1B-C43E17777D17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D422F239-CBBA-480E-960B-DACAE59A004B} = {7BEC7ABE-E7AC-43B7-8646-3009841FDB13}
+		{152D2E38-DABA-4ED9-9ADD-5D7D04EEAF4B} = {7BEC7ABE-E7AC-43B7-8646-3009841FDB13}
 	EndGlobalSection
 EndGlobal
