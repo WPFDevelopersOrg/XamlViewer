@@ -368,7 +368,7 @@ namespace XamlViewer.Themes.Controls
             base.OnPreviewMouseWheel(e);
 
             if (e.Delta != 0 && (IsFocused || _valueTextBox.IsFocused))
-                ContinueChangeValue(e.Delta < 0 ? false : true, false);
+                ContinueChangeValue(e.Delta >= 0, false);
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
