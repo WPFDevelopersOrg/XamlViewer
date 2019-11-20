@@ -159,9 +159,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ModuleService\ModuleService.csproj">
+    <ProjectReference Include="..\XamlService\XamlService.csproj">
       <Project>{969af170-1975-43da-af1b-c43e17777d17}</Project>
-      <Name>ModuleService</Name>
+      <Name>XamlService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

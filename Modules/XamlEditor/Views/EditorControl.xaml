@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <avalonedit:TextEditor SyntaxHighlighting="C#" FontFamily="Consolas" FontSize="10pt" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+        <avalonedit:TextEditor SyntaxHighlighting="XML" ShowLineNumbers="True" FontFamily="Consolas" FontSize="10pt" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </UserControl>

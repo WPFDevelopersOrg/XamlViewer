@@ -7,8 +7,8 @@
     <ProjectGuid>{969AF170-1975-43DA-AF1B-C43E17777D17}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ModuleService</RootNamespace>
-    <AssemblyName>ModuleService</AssemblyName>
+    <RootNamespace>XamlService</RootNamespace>
+    <AssemblyName>XamlService</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -1,13 +1,18 @@
 ﻿<Window x:Class="XamlViewer.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        Title="Xaml Viewer" Height="600" Width="800">
+        xmlns:ms="clr-namespace:XamlService;assembly=XamlService"
+        xmlns:views="clr-namespace:XamlViewer.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="{Binding Title}" Height="600" Width="900">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" MinWidth="50" MaxWidth="450"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <views:SettingControl/>
         <GridSplitter Grid.Column="1" Width="3" Background="LightGray" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -15,7 +20,9 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*" MinHeight="50"/>
             </Grid.RowDefinitions>
-            <GridSplitter Grid.Row="1" Height="3" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Center"/> 
+            <ContentControl prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}"/>
+            <GridSplitter Grid.Row="1" Height="3" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <ContentControl Grid.Row="2" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}"/>
         </Grid>
     </Grid>
 </Window>

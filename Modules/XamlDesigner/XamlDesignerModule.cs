@@ -1,6 +1,8 @@
-﻿using Prism.Ioc;
+﻿using XamlService;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using XamlDesigner.Views;
 
 namespace XamlDesigner
 {
@@ -13,6 +15,7 @@ namespace XamlDesigner
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager = containerProvider.Resolve<IRegionManager>();
+            _regionManager.RegisterViewWithRegion(RegionNames.DesignerName, typeof(DesignerControl));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

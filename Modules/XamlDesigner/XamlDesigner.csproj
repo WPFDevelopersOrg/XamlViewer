@@ -55,7 +55,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\DesignerViewModel.cs" />
+    <Compile Include="ViewModels\DesignerControlViewModel.cs" />
     <Compile Include="Views\DesignerControl.xaml.cs">
       <DependentUpon>DesignerControl.xaml</DependentUpon>
     </Compile>
@@ -74,9 +74,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ModuleService\ModuleService.csproj">
+    <ProjectReference Include="..\..\XamlService\XamlService.csproj">
       <Project>{969af170-1975-43da-af1b-c43e17777d17}</Project>
-      <Name>ModuleService</Name>
+      <Name>XamlService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XamlViewer.ViewModels
+namespace XamlDesigner.ViewModels
 {
-    public class SettingViewModel : BindableBase
+    public class DesignerControlViewModel : BindableBase
     {
-        private string _show = "Setting";
+        private string _show = "Designer";
         public string Show
         {
             get { return _show; }

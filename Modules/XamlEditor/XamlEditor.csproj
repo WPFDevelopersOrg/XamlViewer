@@ -64,7 +64,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\EditorViewModel.cs" />
+    <Compile Include="ViewModels\EditorControlViewModel.cs" />
     <Compile Include="Views\EditorControl.xaml.cs">
       <DependentUpon>EditorControl.xaml</DependentUpon>
     </Compile>
@@ -72,6 +72,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Xaml2006.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Assets\Xaml2006.xsx">
+      <DependentUpon>Xaml2006.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -81,11 +87,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ModuleService\ModuleService.csproj">
+    <ProjectReference Include="..\..\XamlService\XamlService.csproj">
       <Project>{969af170-1975-43da-af1b-c43e17777d17}</Project>
-      <Name>ModuleService</Name>
+      <Name>XamlService</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

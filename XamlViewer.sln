@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlViewer", "XamlViewer\XamlViewer.csproj", "{6814770B-1F28-46E8-AE26-4D979732D6EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{15975996-42D6-47E9-B17A-D2D694AA01CA}"
@@ -15,9 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlDesigner", "Modules\Xam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlEditor", "Modules\XamlEditor\XamlEditor.csproj", "{152D2E38-DABA-4ED9-9ADD-5D7D04EEAF4B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{7BEC7ABE-E7AC-43B7-8646-3009841FDB13}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleService", "ModuleService\ModuleService.csproj", "{969AF170-1975-43DA-AF1B-C43E17777D17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlService", "XamlService\XamlService.csproj", "{969AF170-1975-43DA-AF1B-C43E17777D17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,8 +45,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{D422F239-CBBA-480E-960B-DACAE59A004B} = {7BEC7ABE-E7AC-43B7-8646-3009841FDB13}
-		{152D2E38-DABA-4ED9-9ADD-5D7D04EEAF4B} = {7BEC7ABE-E7AC-43B7-8646-3009841FDB13}
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {204D6FEE-77D7-43D6-8797-34126BF7014A}
 	EndGlobalSection
 EndGlobal
