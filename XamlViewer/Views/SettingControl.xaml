@@ -7,7 +7,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid Background="#F1F1F4">
         <TextBlock Text="{Binding Show}" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>

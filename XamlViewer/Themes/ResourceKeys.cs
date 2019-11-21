@@ -115,5 +115,15 @@ namespace XamlViewer.Themes
         }
 
         #endregion
+
+        #region UserWindow
+
+        public const string NormalUserWindowStyle = "NormalUserWindowStyle";
+        public static ComponentResourceKey NormalUserWindowStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalUserWindowStyle); }
+        } 
+
+        #endregion
     }
 }

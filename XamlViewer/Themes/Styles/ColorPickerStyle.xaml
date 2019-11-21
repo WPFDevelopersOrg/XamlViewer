@@ -5,7 +5,7 @@
                     xmlns:markup="clr-namespace:XamlViewer.Markup">
 
     <ResourceDictionary.MergedDictionaries>
-        <markup:SharedResourceDictionary Source="/UIResources;component/Themes/Styles/SliderStyle.xaml"/>
+        <markup:SharedResourceDictionary Source="SliderStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <utils:ColorToBrushConverter x:Key="colorToBrushConverter"/>

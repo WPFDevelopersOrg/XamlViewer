@@ -3,6 +3,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Globalization;
 using System.Windows;
+using XamlUtil.Common;
 
 namespace XamlViewer.Utils
 {

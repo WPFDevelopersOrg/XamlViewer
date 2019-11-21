@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices; 
 
-namespace XamlViewer.Utils
+namespace XamlUtil.Common
 {
     public static class DoubleUtil
     {

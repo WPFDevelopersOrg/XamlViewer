@@ -1,11 +1,15 @@
-﻿<Window x:Class="XamlViewer.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        xmlns:ms="clr-namespace:XamlService;assembly=XamlService"
-        xmlns:views="clr-namespace:XamlViewer.Views"
-        xmlns:prism="http://prismlibrary.com/"
-        prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="600" Width="900">
+﻿<controls:UserWindow x:Class="XamlViewer.Views.MainWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                     xmlns:ms="clr-namespace:XamlService;assembly=XamlService"
+                     xmlns:views="clr-namespace:XamlViewer.Views"
+                     xmlns:controls="clr-namespace:XamlViewer.Themes.Controls"
+                     xmlns:prism="http://prismlibrary.com/"
+                     xmlns:themes="clr-namespace:XamlViewer.Themes"
+                     prism:ViewModelLocator.AutoWireViewModel="True"
+                     Style="{DynamicResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
+                     WindowStartupLocation="CenterScreen"
+                     Title="{Binding Title}" Height="600" Width="900">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" MinWidth="50" MaxWidth="450"/>
@@ -13,7 +17,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <views:SettingControl/>
-        <GridSplitter Grid.Column="1" Width="3" Background="LightGray" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+        <GridSplitter Grid.Column="1" Width="3" Background="#F1F1F4" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" MinHeight="50"/>
@@ -21,8 +25,8 @@
                 <RowDefinition Height="*" MinHeight="50"/>
             </Grid.RowDefinitions>
             <ContentControl prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}"/>
-            <GridSplitter Grid.Row="1" Height="3" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <GridSplitter Grid.Row="1" Height="2" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
             <ContentControl Grid.Row="2" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}"/>
         </Grid>
     </Grid>
-</Window>
+</controls:UserWindow>
