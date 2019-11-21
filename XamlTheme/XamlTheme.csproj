@@ -47,10 +47,54 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Themes\Controls\Ruler.cs" />
-    <Compile Include="Themes\Controls\ZoomBox.cs" />
+    <Compile Include="Markup\SharedResourceDictionary.cs" />
+    <Compile Include="Controls\ColorPicker.cs" />
+    <Compile Include="Controls\NumericBox.cs" />
+    <Compile Include="Controls\Ruler.cs" />
+    <Compile Include="Controls\UserWindow.cs" />
+    <Compile Include="Controls\ZoomBox.cs" />
+    <Compile Include="Datas\NumericBoxValueChangedEventArgs.cs" />
+    <Compile Include="ResourceKeys.cs" />
+    <Compile Include="Utils\ColorUtil.cs" />
+    <Compile Include="Utils\Converters.cs" />
     <Compile Include="Utils\DpiUtil.cs" />
+    <Page Include="Styles\ZoomBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\BaseStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ColorPickerStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\NumericBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\RepeatButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ScrollViewerStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\SliderStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\UserWindowStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -79,10 +123,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Themes\Datas\" />
-    <Folder Include="Themes\Styles\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\XamlUtil\XamlUtil.csproj">
       <Project>{05898467-e08e-40a9-8e9c-88d27f3f61b9}</Project>

@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:themes="clr-namespace:XamlViewer.Themes"
-                    xmlns:markup="clr-namespace:XamlViewer.Markup">
+                    xmlns:themes="clr-namespace:XamlTheme"
+                    xmlns:markup="clr-namespace:XamlTheme.Markup">
 
     <ResourceDictionary.MergedDictionaries>
-        <markup:SharedResourceDictionary Source="BaseStyle.xaml"/>
+        <markup:SharedResourceDictionary Source="/XamlTheme;component/Styles/BaseStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!--NormalButton-->

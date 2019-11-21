@@ -6,11 +6,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using XamlUtil.Common;
-using XamlViewer.Themes.Controls.Datas;
-using XamlViewer.Utils;
+using XamlTheme.Datas;
+using XamlUtil.Common; 
 
-namespace XamlViewer.Themes.Controls
+namespace XamlTheme.Controls
 {
     [DefaultEvent("ValueChanged"), DefaultProperty("Value")]
     [TemplatePart(Name = TextBoxTemplateName, Type = typeof(TextBox))]

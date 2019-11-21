@@ -5,9 +5,9 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using XamlUtil.Common;
 using XamlUtil.Functions;
-using XamlViewer.Utils;
+using XamlTheme.Utils;
 
-namespace XamlTheme.Themes.Controls
+namespace XamlTheme.Controls
 {
     public enum RulerUnit
     {

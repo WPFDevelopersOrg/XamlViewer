@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
 
-namespace XamlViewer.Themes.Controls
+namespace XamlTheme.Controls
 { 
     public class UserWindow : Window
     {

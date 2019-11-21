@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace XamlViewer.Themes.Controls.Datas
+namespace XamlTheme.Datas
 {
     public class NumericBoxValueChangedEventArgs<T> : RoutedPropertyChangedEventArgs<T>
     {

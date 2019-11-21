@@ -5,9 +5,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
-using XamlViewer.Utils;
+using XamlTheme.Utils;
 
-namespace XamlViewer.Themes.Controls
+namespace XamlTheme.Controls
 {
     [TemplatePart(Name = SelectPathTemplateName, Type = typeof(Path))]
     [TemplatePart(Name = HueSliderTemplateName, Type = typeof(Slider))]

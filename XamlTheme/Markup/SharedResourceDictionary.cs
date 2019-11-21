@@ -7,7 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 
-namespace XamlViewer.Markup
+namespace XamlTheme.Markup
 {
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]

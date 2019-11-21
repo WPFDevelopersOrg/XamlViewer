@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using XamlTheme.Themes.Controls;
+using XamlTheme.Controls;
 using XamlUtil.Common;
 
-namespace XamlViewer.Utils
+namespace XamlTheme.Utils
 {
     /// <summary>
     /// DIP (Device Independent Pixel)

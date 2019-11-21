@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using XamlUtil.Common;
 
-namespace XamlViewer.Utils
+namespace XamlTheme.Utils
 {
     public static class ColorUtil
     { 

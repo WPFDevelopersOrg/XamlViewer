@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using XamlUtil.Common; 
 
-namespace XamlTheme.Themes.Controls
+namespace XamlTheme.Controls
 {
     [TemplatePart(Name = HorizontalRulerTemplateName, Type = typeof(Ruler))]
     [TemplatePart(Name = VerticalRulerTemplateName, Type = typeof(Ruler))]

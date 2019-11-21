@@ -1,4 +1,4 @@
-﻿using XamlViewer.Themes.Controls;
+﻿using XamlTheme.Controls;
 
 namespace XamlViewer.Views
 {

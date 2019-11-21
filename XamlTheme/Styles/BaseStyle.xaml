@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:themes="clr-namespace:XamlViewer.Themes">
+                    xmlns:themes="clr-namespace:XamlTheme">
 
     <Style x:Key="{x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}" 
            TargetType="{x:Type ButtonBase}">
