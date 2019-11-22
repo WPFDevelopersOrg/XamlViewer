@@ -15,11 +15,11 @@
         <Setter Property="MinHeight" Value="100" />
         <Setter Property="BorderBrush" Value="#3498db"/>
         <Setter Property="Foreground" Value="#424242"/>
-        <Setter Property="Background" Value="White"/>
+        <Setter Property="Background" Value="#EFEFF2"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontFamily" Value="Arial,SimSun"/>
-        <Setter Property="TitleBarForeground" Value="White"/>
-        <Setter Property="TitleBarBackground" Value="#3498db"/>
+        <Setter Property="TitleBarForeground" Value="#424242"/>
+        <Setter Property="TitleBarBackground" Value="#EFEFF2"/>
         <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -41,20 +41,24 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.Column="0" Source="{TemplateBinding Icon}" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True"/>
-                                    <TextBlock Grid.Column="1" Margin="5,0,0,0" Text="{TemplateBinding Title}" FontSize="14" VerticalAlignment="Center" Foreground="{TemplateBinding TitleBarForeground}" TextTrimming="CharacterEllipsis" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                    <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Margin="5,0,0,0" Text="{TemplateBinding Title}" FontSize="14" FontWeight="Medium"  VerticalAlignment="Center" Foreground="{TemplateBinding TitleBarForeground}" TextTrimming="CharacterEllipsis" WindowChrome.IsHitTestVisibleInChrome="True"/>
                                     <ContentPresenter Grid.Column="2" ContentSource="TitleBarContent" WindowChrome.IsHitTestVisibleInChrome="True"/>
                                     <StackPanel Grid.Column="3" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
                                         <Button x:Name="MiniBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" VerticalContentAlignment="Center" Padding="0,5,0,0" >
-                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Stretch="Fill" Height="1" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" Data="M0,5 C0,2.2385763 2.2385763,0 5,0 L95,0 C97.761424,0 100,2.2385763 100,5 C100,7.7614237 97.761424,10 95,10 L5,10 C2.2385763,10 0,7.7614237 0,5 z"/>
+                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                  RenderOptions.EdgeMode="Aliased" Margin="0,0,0,5" Data="F1M0,6L0,9 9,9 9,6 0,6z"/>
                                         </Button>
                                         <Button x:Name="MaxBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}" >
-                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Stretch="Fill" Height="13" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" Data="M7.0000005,14L7.0000005,92.580002 92.580002,92.580002 92.580002,14z M0,0L99.580002,0 99.580002,99.580002 0,99.580002z"/>
+                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                  RenderOptions.EdgeMode="Aliased" Data="F1M0,0L0,9 9,9 9,0 0,0 0,3 8,3 8,8 1,8 1,3z"/>
                                         </Button>
                                         <Button x:Name="RestoreBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.RestoreWindowCommand}}" Visibility="Collapsed" >
-                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Stretch="Fill" Height="13" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" Data="M6.0811005,24.07227L6.0811005,93.06699 78.755674,93.06699 78.755674,24.07227z M0,17.146168L84.832818,17.146168 84.832818,100 0,100z M15.171883,0L100.00001,0 100.00001,82.855618 89.618004,82.855618 89.618004,75.927162 93.920941,75.927162 93.920941,6.9333534 21.246994,6.9333534 21.246994,12.126642 15.171883,12.126642z"/>
+                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                  RenderOptions.EdgeMode="Aliased" Data="F1M0,10L0,3 3,3 3,0 10,0 10,2 4,2 4,3 7,3 7,6 6,6 6,5 1,5 1,10z M1,10L7,10 7,7 10,7 10,2 9,2 9,6 6,6 6,9 1,9z"/>
                                         </Button>
                                         <Button x:Name="CloseBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.FgRedCloseBtnStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}" IsEnabled="{TemplateBinding IsCloseEnabled}" IsDefault="False" IsCancel="{TemplateBinding IsCloseCanceled}">
-                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Stretch="Fill" Height="13" Width="13" VerticalAlignment="Center" HorizontalAlignment="Center" Data="M5.0000038,0C6.2796135,0,7.559227,0.48815536,8.5355377,1.4644661L49.790267,42.719195 91.044998,1.4644661C92.997612,-0.48815155 96.163445,-0.48815536 98.116066,1.4644661 100.06869,3.4170837 100.06868,6.5829163 98.116066,8.5355301L56.861335,49.790263 98.116066,91.044994C100.06869,92.997612 100.06869,96.163441 98.116066,98.116062 96.163441,100.06869 92.997616,100.06868 91.044994,98.116066L49.790265,56.861333 8.5355377,98.116062C6.5829163,100.06868 3.4170914,100.06868 1.4644699,98.116062 -0.48815155,96.163441 -0.48815155,92.997616 1.4644699,91.044994L42.719197,49.790266 1.4644699,8.5355377C-0.48815536,6.5829163 -0.48815536,3.4170914 1.4644699,1.4644661 2.4407806,0.48815918 3.7203941,0 5.0000038,0z" />
+                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                  RenderOptions.EdgeMode="Aliased" Data="F1M0,0L2,0 5,3 8,0 10,0 6,4 10,8 8,8 5,5 2,8 0,8 4,4 0,0z" />
                                         </Button>
                                     </StackPanel>
                                 </Grid>
@@ -71,6 +75,14 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsCloseVisible" Value="False">
                             <Setter TargetName="CloseBtn" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+
+                        <Trigger Property="Text" SourceName="TitleTextBlock" Value="{x:Null}">
+                            <Setter TargetName="TitleTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+
+                        <Trigger Property="Text" SourceName="TitleTextBlock" Value="">
+                            <Setter TargetName="TitleTextBlock" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
 
                         <MultiTrigger>

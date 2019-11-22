@@ -79,12 +79,12 @@ namespace XamlTheme.Controls
             set { SetValue(ContentProperty, value); }
         } 
 
-        public static readonly DependencyProperty ShowRulerProperty =
-            DependencyProperty.Register("ShowRuler", typeof(bool), _typeofSelf, new PropertyMetadata(true));
-        public bool ShowRuler
+        public static readonly DependencyProperty IsShowRulerProperty =
+            DependencyProperty.Register("IsShowRuler", typeof(bool), _typeofSelf, new PropertyMetadata(true));
+        public bool IsShowRuler
         {
-            get { return (bool)GetValue(ShowRulerProperty); }
-            set { SetValue(ShowRulerProperty, value); }
+            get { return (bool)GetValue(IsShowRulerProperty); }
+            set { SetValue(IsShowRulerProperty, value); }
         } 
 
         public static readonly DependencyProperty ScaleProperty =
@@ -140,15 +140,7 @@ namespace XamlTheme.Controls
         {
             var zoomBox = (ZoomBox)d;
             zoomBox.OnContentChanged(e.OldValue, e.NewValue);
-        }
-
-        public static readonly DependencyProperty IsShowRibbonProperty =
-            DependencyProperty.Register("IsShowRibbon", typeof(bool), _typeofSelf, new PropertyMetadata(true));
-        public bool IsShowRibbon
-        {
-            get { return (bool)GetValue(IsShowRibbonProperty); }
-            set { SetValue(IsShowRibbonProperty, value); }
-        }
+        } 
 
         #endregion
 

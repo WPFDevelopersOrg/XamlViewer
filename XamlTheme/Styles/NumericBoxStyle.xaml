@@ -16,7 +16,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="25" />
-        <Setter Property="MinWidth" Value="62" />
+        <Setter Property="MinWidth" Value="40" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
         <Setter Property="SnapsToDevicePixels" Value="true" />

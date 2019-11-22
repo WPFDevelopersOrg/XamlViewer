@@ -28,27 +28,42 @@
         </Style.Triggers>
     </Style>
 
+    <!--Toolbar Button-->
+    <Style x:Key="{x:Static themes:ResourceKeys.ToolbarButtonStyleKey}" 
+           BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}" 
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="#404040"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"  Value="True">
+                <Setter Property="Background" Value="#FDFDFD"/>
+                <Setter Property="Foreground" Value="#007ACC"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#FDFDFD"/>
+                <Setter Property="Foreground" Value="#424242"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <!--Titlebar Button-->
     <Style x:Key="{x:Static themes:ResourceKeys.TitlebarButtonStyleKey}" 
            BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}" 
-           TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="White"/>
+           TargetType="{x:Type Button}"> 
         <Style.Triggers>
             <Trigger Property="IsMouseOver"  Value="True">
-                <Setter Property="Background" Value="#B3B3B3"/>
-                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Background" Value="#FDFDFD"/>
+                <Setter Property="Foreground" Value="#007ACC"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#9F9F9F"/>
-                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Background" Value="#007ACC"/>
+                <Setter Property="Foreground" Value="#FDFDFD"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <Style x:Key="{x:Static themes:ResourceKeys.FgRedCloseBtnStyleKey}" 
            BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"  
-           TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="White"/>
+           TargetType="{x:Type Button}"> 
         <Style.Triggers>
             <Trigger Property="IsMouseOver"  Value="True">
                 <Setter Property="Background" Value="#FFDC0505"/>

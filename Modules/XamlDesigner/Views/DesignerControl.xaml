@@ -3,11 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <TextBlock Text="{Binding Show}" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    </Grid>
+    <controls:ZoomBox x:Name="zoomBox" IsShowRuler="{Binding IsChecked,ElementName=RulerSwitch}" Background="#E8E8EC" VerticalScrollBarVisibility="Auto">
+        <controls:ZoomBox.Ribbon>
+            <StackPanel Orientation="Horizontal">
+                <controls:NumericBox Width="50" Maximum="48"  Minimum="0.01" Precision="2" UpDownButtonsWidth="0" MinHeight="0" Background="White"
+                                     TextAlignment="Center" BorderThickness="1" BorderBrush="LightGray" ToolTip="Zoom"
+                                     Value="{Binding Scale,ElementName=zoomBox, Mode=TwoWay}"/>
+                <ToggleButton x:Name="RulerSwitch" Width="25" Margin="3,0" Foreground="#444444" ToolTip="Ruler">
+                    <Path Stretch="Fill" Height="11" Width="15" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}"
+                          Data="M8.5128298,4.9916291 L6.4646669,5.0083804 6.4566909,8.7262738 8.5040216,8.7081234 z M1.8885698,2.5579458 L1.8752785,8.7534988 3.8549008,8.7353485 3.8628774,2.5695392 z M13.12206,2.486735 L11.134622,2.5124063 11.127483,8.6976411 13.107938,8.6808889 z M15,0 L14.977069,9.9106491 0,9.9999998 0.021261692,0.089360237 14.999163,0.0014076233 z"/>
+                </ToggleButton>
+            </StackPanel>
+        </controls:ZoomBox.Ribbon>
+        <Grid Background="White">
+            <TextBlock Text="{Binding Show}" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+    </controls:ZoomBox>
 </UserControl>

@@ -36,6 +36,12 @@ namespace XamlTheme
             get { return new ComponentResourceKey(typeof(ResourceKeys), TitlebarButtonStyle); }
         }
 
+        public const string ToolbarButtonStyle = "ToolbarButtonStyle";
+        public static ComponentResourceKey ToolbarButtonStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), ToolbarButtonStyle); }
+        }
+
         public const string FgWhiteCloseBtnStyle = "FgWhiteCloseBtnStyle";
         public static ComponentResourceKey FgWhiteCloseBtnStyleKey
         {
@@ -78,10 +84,16 @@ namespace XamlTheme
             get { return new ComponentResourceKey(typeof(ResourceKeys), MenuItemStyle); }
         }
 
-        public const string SeparatorStyle = "SeparatorStyle";
-        public static ComponentResourceKey SeparatorStyleKey
+        public const string HorSeparatorStyle = "HorSeparatorStyle";
+        public static ComponentResourceKey HorSeparatorStyleKey
         {
-            get { return new ComponentResourceKey(typeof(ResourceKeys), SeparatorStyle); }
+            get { return new ComponentResourceKey(typeof(ResourceKeys), HorSeparatorStyle); }
+        }
+
+        public const string VerSeparatorStyle = "VerSeparatorStyle";
+        public static ComponentResourceKey VerSeparatorStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), VerSeparatorStyle); }
         }
 
         public const string MenuItemSubmenuContent = "MenuItemSubmenuContent";

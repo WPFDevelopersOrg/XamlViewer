@@ -47,6 +47,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\StatusToggle.cs" />
     <Compile Include="Markup\SharedResourceDictionary.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Controls\NumericBox.cs" />
@@ -58,6 +59,22 @@
     <Compile Include="Utils\ColorUtil.cs" />
     <Compile Include="Utils\Converters.cs" />
     <Compile Include="Utils\DpiUtil.cs" />
+    <Page Include="Styles\SeparatorStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\StatusToggleStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TabControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ToggleButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\ZoomBoxStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

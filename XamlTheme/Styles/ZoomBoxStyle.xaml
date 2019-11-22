@@ -3,8 +3,7 @@
                     xmlns:controls="clr-namespace:XamlTheme.Controls"
                     xmlns:utils="clr-namespace:XamlTheme.Utils">
 
-    <utils:ZoomBoxRulerShiftMultiConverter x:Key="zoomBoxRulerShiftMultiConverter"/>
-    <utils:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <utils:ZoomBoxRulerShiftMultiConverter x:Key="zoomBoxRulerShiftMultiConverter"/> 
 
     <Style TargetType="{x:Type controls:ZoomBox}">
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
@@ -20,12 +19,12 @@
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition x:Name="RulerColumn" Width="20"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="20"/>
+                                <RowDefinition x:Name="RulerRow" Height="20"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
@@ -68,28 +67,24 @@
                             <!-- Horizontal ScrollBar -->
                             <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="{TemplateBinding Background}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/> 
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <ContentPresenter ContentSource="Ribbon"
+                                <ContentPresenter x:Name="RibbonContent" 
+                                                  ContentSource="Ribbon"
                                                   Margin="{TemplateBinding Padding}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  Visibility="{TemplateBinding IsShowRibbon,Converter={StaticResource boolToVisibilityConverter}}"/>
-                                
-                                <GridSplitter Grid.Column="1" Width="3" Background="DarkGray" HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                                              Visibility="{TemplateBinding IsShowRibbon,Converter={StaticResource boolToVisibilityConverter}}"/>
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/> 
                                 
                                 <ScrollBar Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" 
-                                       Grid.Column="2"
-                                       x:Name="PART_HorizontalScrollBar"  
-                                       Orientation="Horizontal" 
-                                       Value="{Binding Path=HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
-                                       ViewportSize="{TemplateBinding ViewportWidth}" 
-                                       Minimum="0" 
-                                       Maximum="{TemplateBinding ScrollableWidth}" />
+                                           Grid.Column="1"
+                                           x:Name="PART_HorizontalScrollBar"  
+                                           Orientation="Horizontal" 
+                                           Value="{Binding Path=HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                           ViewportSize="{TemplateBinding ViewportWidth}" 
+                                           Minimum="0" 
+                                           Maximum="{TemplateBinding ScrollableWidth}" />
                             </Grid>
 
                             <!-- Vertical ScrollBar -->
@@ -97,12 +92,21 @@
                                        Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" 
                                        x:Name="PART_VerticalScrollBar"  
                                        Orientation="Vertical" 
+                                       Background="{TemplateBinding Background}"
                                        Value="{Binding Path=VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                        ViewportSize="{TemplateBinding ViewportHeight}" 
                                        Minimum="0" 
                                        Maximum="{TemplateBinding ScrollableHeight}" />
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsShowRuler" Value="False">
+                            <Setter TargetName="RulerColumn" Property="Width" Value="0"/>
+                            <Setter TargetName="RulerRow" Property="Height" Value="0"/>
+                            <Setter TargetName="PART_HorizontalRuler" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_VerticalRuler" Property="Visibility" Value="Collapsed"/>
+                        </Trigger> 
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

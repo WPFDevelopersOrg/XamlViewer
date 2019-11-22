@@ -4,10 +4,15 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ButtonStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/RepeatButtonStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ToggleButtonStyle.xaml"/>
 
+        <ResourceDictionary Source="/XamlTheme;component/Styles/SeparatorStyle.xaml"/>
+        
         <ResourceDictionary Source="/XamlTheme;component/Styles/SliderStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/TabControlStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ScrollViewerStyle.xaml"/>
 
+        <ResourceDictionary Source="/XamlTheme;component/Styles/StatusToggleStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ColorPickerStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/NumericBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/UserWindowStyle.xaml"/>
