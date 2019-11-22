@@ -7,7 +7,8 @@
         <ResourceDictionary Source="/XamlTheme;component/Styles/ToggleButtonStyle.xaml"/>
 
         <ResourceDictionary Source="/XamlTheme;component/Styles/SeparatorStyle.xaml"/>
-        
+
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ListBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/SliderStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/TabControlStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ScrollViewerStyle.xaml"/>

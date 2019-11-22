@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Globalization;
 using System.Windows;
 using XamlUtil.Common;
+using System.Linq;
 
 namespace XamlViewer.Utils
 {
@@ -25,6 +26,22 @@ namespace XamlViewer.Utils
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class AnyBoolToVisibilityMultiConverter : IMultiValueConverter
+    {   
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Contains(null) || values.Contains(DependencyProperty.UnsetValue))
+                return Visibility.Hidden;
+
+            return values.Any(v => (bool)v) ? Visibility.Visible : Visibility.Hidden;
+        } 
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

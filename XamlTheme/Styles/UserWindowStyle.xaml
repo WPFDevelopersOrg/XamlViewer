@@ -56,7 +56,7 @@
                                             <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                                   RenderOptions.EdgeMode="Aliased" Data="F1M0,10L0,3 3,3 3,0 10,0 10,2 4,2 4,3 7,3 7,6 6,6 6,5 1,5 1,10z M1,10L7,10 7,7 10,7 10,2 9,2 9,6 6,6 6,9 1,9z"/>
                                         </Button>
-                                        <Button x:Name="CloseBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.FgRedCloseBtnStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}" IsEnabled="{TemplateBinding IsCloseEnabled}" IsDefault="False" IsCancel="{TemplateBinding IsCloseCanceled}">
+                                        <Button x:Name="CloseBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.TitlebarCloseBtnStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}" IsEnabled="{TemplateBinding IsCloseEnabled}" IsDefault="False" IsCancel="{TemplateBinding IsCloseCanceled}">
                                             <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                                   RenderOptions.EdgeMode="Aliased" Data="F1M0,0L2,0 5,3 8,0 10,0 6,4 10,8 8,8 5,5 2,8 0,8 4,4 0,0z" />
                                         </Button>

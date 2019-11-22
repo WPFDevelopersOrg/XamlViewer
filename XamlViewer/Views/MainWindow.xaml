@@ -7,6 +7,7 @@
                      xmlns:prism="http://prismlibrary.com/"
                      xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
                      xmlns:utils="clr-namespace:XamlViewer.Utils"
+                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                      prism:ViewModelLocator.AutoWireViewModel="True"
                      Style="{DynamicResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
                      WindowStartupLocation="CenterScreen" Height="600" Width="900">
@@ -34,11 +35,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*" MinHeight="50"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*" MinHeight="50"/>
         </Grid.RowDefinitions>
-        <views:SettingControl Height="100" Margin="5,0,5,30">
+        <views:SettingControl Height="100" Margin="6,0">
             <views:SettingControl.Visibility>
                 <Binding Path="IsChecked" ElementName="SettingStatusToggle">
                     <Binding.Converter>
@@ -47,8 +49,27 @@
                 </Binding>
             </views:SettingControl.Visibility>
         </views:SettingControl>
-        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}"/>
-        <GridSplitter Grid.Row="2" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+
+        <ListBox Grid.Row="1" Margin="0,6,0,0" BorderThickness="0,0,0,2" BorderBrush="#007ACC"
+                 ItemTemplate="{StaticResource XamlSelectionTemplate}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemsSource>
+                <x:Array Type="sys:Int32">
+                    <sys:Int32>1</sys:Int32>
+                    <sys:Int32>2</sys:Int32>
+                    <sys:Int32>3</sys:Int32>
+                    <sys:Int32>4</sys:Int32>
+                </x:Array>
+            </ListBox.ItemsSource>
+        </ListBox>
+
+
+        <ContentControl Grid.Row="2" prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}"/>
+        <GridSplitter Grid.Row="3" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <GridSplitter.Background>
                 <LinearGradientBrush EndPoint="1,0">
                     <GradientStop Offset="0" Color="Transparent"/>
@@ -58,6 +79,6 @@
                 </LinearGradientBrush>
             </GridSplitter.Background>
         </GridSplitter>
-        <ContentControl Grid.Row="3" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}"/>
+        <ContentControl Grid.Row="4" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}"/>
     </Grid>
 </controls:UserWindow>

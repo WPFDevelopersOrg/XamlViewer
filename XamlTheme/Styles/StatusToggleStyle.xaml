@@ -6,7 +6,7 @@
     <Style x:Key="{x:Static themes:ResourceKeys.NoBgToggleStatusStyleKey}"  
            TargetType="{x:Type controls:StatusToggle}">
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Foreground" Value="#404040"/>
+        <Setter Property="Foreground" Value="#424242"/>
         <Setter Property="Background" Value="{x:Null}"/>
         <Setter Property="BorderBrush" Value="{x:Null}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -55,7 +55,7 @@
 
     <Style BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgToggleStatusStyleKey}}"  
            TargetType="{x:Type controls:StatusToggle}">
-        <Setter Property="Foreground" Value="#404040"/>
+        <Setter Property="Foreground" Value="#424242"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver"  Value="True">
                 <Setter Property="Background" Value="#FDFDFD"/>
@@ -66,8 +66,7 @@
                 <Setter Property="Foreground" Value="#424242"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="#FDFDFD"/>
-                <Setter Property="Foreground" Value="#007ACC"/>
+                <Setter Property="Background" Value="#FDFDFD"/> 
             </Trigger>
         </Style.Triggers>
     </Style>

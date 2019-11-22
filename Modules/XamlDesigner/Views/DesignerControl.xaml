@@ -8,7 +8,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <controls:ZoomBox x:Name="zoomBox" IsShowRuler="{Binding IsChecked,ElementName=RulerSwitch}" Background="#E8E8EC" VerticalScrollBarVisibility="Auto">
+    <controls:ZoomBox x:Name="zoomBox" IsShowRuler="{Binding IsChecked,ElementName=RulerSwitch}" Background="#F5F5F5" VerticalScrollBarVisibility="Auto">
         <controls:ZoomBox.Ribbon>
             <StackPanel Orientation="Horizontal">
                 <controls:NumericBox Width="50" Maximum="48"  Minimum="0.01" Precision="2" UpDownButtonsWidth="0" MinHeight="0" Background="White"

@@ -61,7 +61,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="{x:Static themes:ResourceKeys.FgRedCloseBtnStyleKey}" 
+    <Style x:Key="{x:Static themes:ResourceKeys.TitlebarCloseBtnStyleKey}" 
            BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"  
            TargetType="{x:Type Button}"> 
         <Style.Triggers>
@@ -74,6 +74,22 @@
                 <Setter Property="Foreground" Value="White"/>
             </Trigger>
         </Style.Triggers>
-    </Style> 
+    </Style>
+
+    <Style x:Key="{x:Static themes:ResourceKeys.SelectionCloseBtnStyleKey}" 
+           BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"  
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="#D0E6F5"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"  Value="True">
+                <Setter Property="Background" Value="#52B0EF"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#0E6198"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>

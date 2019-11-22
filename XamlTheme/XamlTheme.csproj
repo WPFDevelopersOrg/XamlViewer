@@ -59,6 +59,10 @@
     <Compile Include="Utils\ColorUtil.cs" />
     <Compile Include="Utils\Converters.cs" />
     <Compile Include="Utils\DpiUtil.cs" />
+    <Page Include="Styles\ListBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\SeparatorStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

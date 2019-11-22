@@ -42,16 +42,16 @@ namespace XamlTheme
             get { return new ComponentResourceKey(typeof(ResourceKeys), ToolbarButtonStyle); }
         }
 
-        public const string FgWhiteCloseBtnStyle = "FgWhiteCloseBtnStyle";
-        public static ComponentResourceKey FgWhiteCloseBtnStyleKey
+        public const string TitlebarCloseBtnStyle = "TitlebarCloseBtnStyle";
+        public static ComponentResourceKey TitlebarCloseBtnStyleKey
         {
-            get { return new ComponentResourceKey(typeof(ResourceKeys), FgWhiteCloseBtnStyle); }
+            get { return new ComponentResourceKey(typeof(ResourceKeys), TitlebarCloseBtnStyle); }
         }
 
-        public const string FgRedCloseBtnStyle = "FgRedCloseBtnStyle";
-        public static ComponentResourceKey FgRedCloseBtnStyleKey
+        public const string SelectionCloseBtnStyle = "SelectionCloseBtnStyle";
+        public static ComponentResourceKey SelectionCloseBtnStyleKey
         {
-            get { return new ComponentResourceKey(typeof(ResourceKeys), FgRedCloseBtnStyle); }
+            get { return new ComponentResourceKey(typeof(ResourceKeys), SelectionCloseBtnStyle); }
         }
 
         #endregion
@@ -124,6 +124,16 @@ namespace XamlTheme
         public static ComponentResourceKey MenuItemSubmenuItemTemplateKey
         {
             get { return new ComponentResourceKey(typeof(ResourceKeys), MenuItemSubmenuItemTemplate); }
+        }
+
+        #endregion
+
+        #region ListBox
+
+        public const string NormalListBoxItemStyle = "NormalListBoxItemStyle";
+        public static ComponentResourceKey NormalListBoxItemStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalListBoxItemStyle); }
         }
 
         #endregion
