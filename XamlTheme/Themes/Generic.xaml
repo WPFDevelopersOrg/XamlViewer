@@ -6,6 +6,9 @@
         <ResourceDictionary Source="/XamlTheme;component/Styles/RepeatButtonStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ToggleButtonStyle.xaml"/>
 
+        <ResourceDictionary Source="/XamlTheme;component/Styles/CheckBoxStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ComboBoxStyle.xaml"/>
+        
         <ResourceDictionary Source="/XamlTheme;component/Styles/SeparatorStyle.xaml"/>
 
         <ResourceDictionary Source="/XamlTheme;component/Styles/ListBoxStyle.xaml"/>

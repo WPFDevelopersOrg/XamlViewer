@@ -144,7 +144,17 @@ namespace XamlTheme
         public static ComponentResourceKey NormalUserWindowStyleKey
         {
             get { return new ComponentResourceKey(typeof(ResourceKeys), NormalUserWindowStyle); }
-        } 
+        }
+
+        #endregion
+
+        #region Brush
+
+        public const string AlphaVisualBrush = "AlphaVisualBrush";
+        public static ComponentResourceKey AlphaVisualBrushKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), AlphaVisualBrush); }
+        }
 
         #endregion
     }

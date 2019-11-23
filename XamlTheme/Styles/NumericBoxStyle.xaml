@@ -2,18 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:utils="clr-namespace:XamlTheme.Utils"
                     xmlns:controls="clr-namespace:XamlTheme.Controls"
-                    xmlns:themes="clr-namespace:XamlTheme">
-
-    <utils:DoubleToVisibilityConverter x:Key="doubleToVisibilityConverter"/>
+                    xmlns:themes="clr-namespace:XamlTheme"> 
 
     <Style TargetType="{x:Type controls:NumericBox}">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderBrush" Value="#424242" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="Black" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="#424242" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="25" />
         <Setter Property="MinWidth" Value="40" />
@@ -56,9 +54,7 @@
                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                          TabIndex="{TemplateBinding TabIndex}"
                                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
-                                <Grid Grid.Column="1" 
-                                      Width="{TemplateBinding UpDownButtonsWidth}" 
-                                      Visibility="{Binding Width,RelativeSource={RelativeSource Self},Converter={StaticResource doubleToVisibilityConverter}}">
+                                <Grid Grid.Column="1" Width="{TemplateBinding UpDownButtonsWidth}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition Height="1"/>
@@ -93,6 +89,10 @@
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="UpDownButtonsWidth" Value="0"> 
+                            <Setter TargetName="PART_NumericDown" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_NumericUp" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
                         <Trigger Property="IsReadOnly" Value="True">
                             <Setter Property="Focusable" Value="False"/>
                             <Setter TargetName="PART_NumericDown" Property="IsEnabled" Value="False" />

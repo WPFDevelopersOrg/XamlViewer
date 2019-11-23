@@ -2,15 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:utils="clr-namespace:XamlTheme.Utils"
                     xmlns:controls="clr-namespace:XamlTheme.Controls"
-                    xmlns:markup="clr-namespace:XamlTheme.Markup">
+                    xmlns:markup="clr-namespace:XamlTheme.Markup"
+                    xmlns:themes="clr-namespace:XamlTheme">
 
     <ResourceDictionary.MergedDictionaries>
         <markup:SharedResourceDictionary Source="/XamlTheme;component/Styles/SliderStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <utils:ColorToBrushConverter x:Key="colorToBrushConverter"/>
-    
-    <VisualBrush x:Key="AlphaVisualBrush" Stretch="None" TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,12,12">
+
+    <VisualBrush x:Key="{x:Static themes:ResourceKeys.AlphaVisualBrushKey}"  Stretch="None" TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,12,12">
         <VisualBrush.Visual>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -40,17 +41,15 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="1"/>
-                                <RowDefinition Height="24"/>
+                                <RowDefinition Height="20"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/> 
                                 <ColumnDefinition Width="1"/>
-                                <ColumnDefinition Width="24"/>
-                                <ColumnDefinition Width="1"/>
-                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <!--Color Selection-->
-                            <Canvas x:Name="PART_ColorCanvas" ClipToBounds="True" Grid.ColumnSpan="3">
+                            <Canvas x:Name="PART_ColorCanvas" ClipToBounds="True">
                                 <Canvas.Background>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
@@ -97,7 +96,7 @@
                             </Canvas>
 
                             <!--Hue Color Selection-->
-                            <Slider x:Name="PART_HueSlider" Grid.Row="0" Grid.Column="4"
+                            <Slider x:Name="PART_HueSlider" Grid.Row="0" Grid.Column="2"
                                     DockPanel.Dock="Right" Maximum="1"
                                     Style="{StaticResource ColorPickerSliderStyle}">
                                 <Slider.Background>
@@ -114,11 +113,11 @@
                             </Slider>
 
                             <!--Show Selected Color-->
-                            <Rectangle Grid.Row="2" Grid.Column="0" Fill="{StaticResource AlphaVisualBrush}"/>
+                            <Rectangle Grid.Row="2" Grid.Column="0" Fill="{StaticResource {x:Static themes:ResourceKeys.AlphaVisualBrushKey}}"/>
                             <Rectangle Grid.Row="2" Grid.Column="0" Fill="{TemplateBinding SelectedColor,Converter={StaticResource colorToBrushConverter}}"/>
 
                             <!--Show Last Color-->
-                            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{StaticResource AlphaVisualBrush}"/>
+                            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{StaticResource {x:Static themes:ResourceKeys.AlphaVisualBrushKey}}"/>
                             <Rectangle Grid.Row="2" Grid.Column="2" Fill="{TemplateBinding LastColor,Converter={StaticResource colorToBrushConverter}}"/>
 
                         </Grid>

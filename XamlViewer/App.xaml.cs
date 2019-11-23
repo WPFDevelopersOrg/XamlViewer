@@ -25,7 +25,8 @@ namespace XamlViewer
 
             ViewModelLocationProvider.Register<MainWindow, MainViewModel>();
             ViewModelLocationProvider.Register<SettingControl, SettingViewModel>();
-            ViewModelLocationProvider.Register<ToolbarControl, ToolBarViewModel>();
+            ViewModelLocationProvider.Register<ToolbarControl, ToolbarViewModel>();
+            ViewModelLocationProvider.Register<StatusControl, StatusViewModel>();
         }
 
         protected override Window CreateShell()

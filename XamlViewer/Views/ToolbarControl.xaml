@@ -8,33 +8,33 @@
              prism:ViewModelLocator.AutoWireViewModel="True">
 
     <StackPanel Orientation="Horizontal">
-        <Button Width="30" ToolTip="New" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+        <Button Width="30" ToolTip="New(Ctrl+N)" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
             <Path Width="14" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   Data="M893.59872 288.79872l-192-205.59872c-12.00128-12.00128-28.00128-19.2-44.8-19.2H138.39872c-13.59872 0-24.80128 11.20256-24.80128 24.80128v328.80128c0 4.80256 3.99872 8.00256 8.00256 8.00256h32.79872c4.80256 0 8.00256-3.99872 8.00256-8.00256V120.00256c0-3.2 2.40128-6.4 6.4-6.4h459.20256c2.40128 0 5.60128 2.40128 5.60128 4.80256v211.2c0 13.59872 11.20256 24.80128 24.80128 24.80128h195.99872c2.40128 0 5.60128 2.40128 5.60128 5.60128v544c0 3.2-2.40128 6.4-6.4 6.4H122.39872c-4.80256 0-8.00256 3.99872-8.00256 8.80128v32c0 4.80256 3.99872 8.80128 8.00256 8.80128h763.20256c13.59872 0 24.80128-11.20256 24.80128-24.80128V330.39872c-0.80384-15.19616-6.4-30.39744-16.80384-41.6z M543.25248 783.11424l-80.34816-80.32768-80.34816 80.32768v80.35328H221.85984v-80.35328h80.34816l121.97888-124.928-121.97888-116.12672c-3.82976-4.93056-80.34816 0-80.34816 0V461.7216h160.69632v80.33792l80.34816 76.2624 80.33792-76.2624s10.94144 0 0 0V461.7216h160.70144v80.33792h-80.36864L504.32 659.60448l119.24992 123.50976h80.36864v80.35328h-160.6912v-80.35328z"/>
         </Button>
-        <Button Width="30" ToolTip="Open" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+        <Button Width="30" ToolTip="Open(Ctrl+O)" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
             <Path Width="16" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   Data="M180.544 196.992l389.44 0c0 0 63.488 1.984 64.64 57.728 1.152 56.384-64.64 56.512-64.64 56.512L360.576 311.232c0 0-49.6-7.552-69.44 44.48C283.456 375.872 217.664 559.488 192.064 640c-7.232 22.72 10.048 28.864 24.128 29.248 14.72 0.512 27.968 0.256 40.192 0 16.384-0.128 30.272-6.4 37.888-29.248 16.384-49.728 69.696-182.4 76.608-199.872C388.736 395.008 412.16 399.616 438.016 399.616c47.168 0 491.712 0 491.712 0 61.12 0 84.032 33.024 66.304 83.968L921.6 849.344C902.592 908.032 845.44 960 784.32 960L182.656 960C118.912 960 64 905.6 64 844.48l0-534.4C64 249.024 119.488 196.992 180.544 196.992zM763.648 267.648c-29.184-2.304-34.752-3.904-8.64-29.952 18.24-19.968 41.536-38.592 41.536-38.592 0.704-1.792-18.176-47.872-95.168-81.472S512.512 116.928 482.368 132.48c-14.272 12.224-57.6 19.136-18.24-20.8 66.624-62.528 161.024-101.696 263.232-72.576 95.104 27.328 139.392 82.368 142.72 89.92-0.448 0.576-0.576 0.96 0.064 0.96 0 0 0.192-0.384-0.064-0.96 2.048-2.816 16.256-13.248 40.64-35.712 20.864-21.248 26.944-16 29.376 9.856 3.008 48.64 1.344 187.456 1.344 187.456S811.392 274.496 763.648 267.648z"/>
         </Button>
-        <Button Width="30" ToolTip="Save" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+        <Button Width="30" ToolTip="Save(Ctrl+S)" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
             <Path Width="16" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   Data="M725.333333 170.666667H256c-51.584 0-85.333333 29.866667-85.333333 85.333333v512c0 55.466667 33.749333 85.333333 85.333333 85.333333h512c51.2 0 85.333333-29.866667 85.333333-85.333333V307.498667a21.333333 21.333333 0 0 0-6.229333-15.061334L725.333333 170.666667z m0 298.666666H298.666667V170.666667h426.666666v298.666666z M512 170.666667m21.333333 0l85.333334 0q21.333333 0 21.333333 21.333333l0 170.666667q0 21.333333-21.333333 21.333333l-85.333334 0q-21.333333 0-21.333333-21.333333l0-170.666667q0-21.333333 21.333333-21.333333Z"/>
         </Button>
 
         <Separator Style="{DynamicResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3"/>
 
-        <Button Width="30" ToolTip="Undo" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+        <Button Width="30" ToolTip="Undo(Ctrl+Z)" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
             <Path Width="15" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   Data="M5.3228061,0.00021910667 C5.4403496,0.00461483 5.525836,0.074941635 5.5258362,0.19550169 L5.5258362,1.7386731 10.121581,1.7386731 C14.49848,1.7386731 18,3.8605336 18,6.4324856 18,9.0044379 14.49848,11.061999 10.121581,11.061999 L5.963526,11.061999 C5.3069909,11.061999 4.869301,10.804805 4.8693011,10.419012 4.869301,10.033219 5.3069909,9.7760239 5.963526,9.7760239 L10.121581,9.7760239 C13.185411,9.7760239 15.81155,8.2971511 15.81155,6.4324856 15.81155,4.5678205 13.185411,3.0246491 10.012158,3.0246491 L5.4164135,3.0246491 5.4164135,4.9536133 C5.4164135,5.1465096 5.1975684,5.2108085 4.9787234,5.082211 L0.16413379,2.767454 C-0.054711342,2.7031551 -0.054711342,2.5102587 0.16413379,2.3816611 L5.088146,0.066904068 C5.1702127,0.018680096 5.2522798,-0.0024180412 5.3228061,0.00021910667 z"/>
         </Button>
-        <Button Width="30" ToolTip="Redo" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+        <Button Width="30" ToolTip="Redo(Ctrl+Y)" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
             <Path Width="15" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   Data="M661.333333 341.333333h-179.2C358.4 341.333333 256 443.733333 256 567.466667s102.4 221.866667 221.866667 221.866666H640c25.6 0 42.666667 17.066667 42.666667 42.666667s-17.066667 42.666667-42.666667 42.666667h-162.133333c-170.666667 0-307.2-136.533333-307.2-307.2S307.2 256 477.866667 256h179.2V153.6c0-12.8 8.533333-17.066667 17.066666-8.533333L866.133333 298.666667c8.533333 8.533333 8.533333 21.333333 0 25.6l-187.733333 153.6c-8.533333 8.533333-17.066667 4.266667-17.066667-8.533334V341.333333z"/>
         </Button>
 
         <Separator Style="{DynamicResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3"/>
 
-        <Button Width="30" ToolTip="Parse" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+        <Button Width="30" ToolTip="Compile(F5)" Style="{DynamicResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
             <Path Width="12" Height="15" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   Data="M731.42857,512 L0,1024 0,0 z"/>
         </Button>
