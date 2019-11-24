@@ -4,13 +4,18 @@
                      xmlns:ms="clr-namespace:XamlService;assembly=XamlService"
                      xmlns:views="clr-namespace:XamlViewer.Views"
                      xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
+                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                      xmlns:prism="http://prismlibrary.com/"
-                     xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
-                     xmlns:utils="clr-namespace:XamlViewer.Utils"
+                     xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme" 
                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
                      prism:ViewModelLocator.AutoWireViewModel="True"
                      Style="{DynamicResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
                      WindowStartupLocation="CenterScreen" Height="600" Width="900">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <prism:InvokeCommandAction Command="{Binding ClosingCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <controls:UserWindow.TitleBarContent>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -20,7 +25,9 @@
             </Grid.ColumnDefinitions>
             <views:ToolbarControl Grid.Row="0"/>
             <TextBlock Grid.Column="1" Margin="5,0" Text="{Binding Title}" FontSize="14" FontWeight="Medium"  VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="False"/>
-            <controls:StatusToggle x:Name="SettingStatusToggle" Grid.Column="2" Width="37" CheckedToolTip="Back" UnCheckedToolTip="Setting">
+            <controls:StatusToggle x:Name="SettingStatusToggle" Grid.Column="2" Width="37" CheckedToolTip="Back" UnCheckedToolTip="Setting"
+                                   IsChecked="{Binding IsExpandSetting, Mode=TwoWay}"
+                                   Command="{Binding ExpandOrCollapseCommand}">
                 <controls:StatusToggle.CheckedContent>
                     <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}" Stretch="Fill" Margin="0,1,0,0" Height="8" Width="12" VerticalAlignment="Center" HorizontalAlignment="Center" 
                       Data="M312.916 658.584l-62.058-62.052 262.174-262.174 260.112 260.174-62.058 62.052-198.054-198.114z"/>
@@ -34,22 +41,14 @@
     </controls:UserWindow.TitleBarContent> 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="{Binding SettingRowHeight}"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*" MinHeight="50"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*" MinHeight="50"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <views:SettingControl MinHeight="100" Margin="6,0">
-            <views:SettingControl.Visibility>
-                <Binding Path="IsChecked" ElementName="SettingStatusToggle">
-                    <Binding.Converter>
-                        <utils:BoolToVisibilityConverter/>
-                    </Binding.Converter>
-                </Binding>
-            </views:SettingControl.Visibility>
-        </views:SettingControl>
+        <views:SettingControl MinHeight="100" Margin="6,0"/>
 
         <ListBox Grid.Row="1" Margin="0,6,0,0" BorderThickness="0,0,0,2" BorderBrush="#007ACC"
                  ItemTemplate="{StaticResource XamlSelectionTemplate}">

@@ -9,6 +9,8 @@ using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
+using Utils.IO;
+using XamlViewer.Models;
 using XamlViewer.ViewModels;
 using XamlViewer.Views;
 
@@ -36,11 +38,29 @@ namespace XamlViewer
 
         protected override void RegisterTypes(Prism.Ioc.IContainerRegistry containerRegistry)
         {
+            var localConfig = FileHelper.LoadFromJsonFile<XamlConfig>(ResourcesMap.LocationDic[Location.GlobalConfigFile]);
+
+            if (localConfig != null)
+                containerRegistry.RegisterInstance(localConfig);
+            else
+                containerRegistry.RegisterSingleton<XamlConfig>();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()
         {
             return new DirectoryModuleCatalog() { ModulePath = @".\Modules" };
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            var config = Container.Resolve<XamlConfig>();
+            if (config == null)
+                return;
+
+
+             
         }
     }
 }

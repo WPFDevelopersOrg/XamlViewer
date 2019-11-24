@@ -98,6 +98,9 @@
                             <Setter TargetName="PART_NumericDown" Property="IsEnabled" Value="False" />
                             <Setter TargetName="PART_NumericUp" Property="IsEnabled" Value="False" />
                         </Trigger>
+                        <Trigger Property="IsKeyboardFocused" SourceName="PART_TextBox" Value="true">
+                            <Setter Property="BorderBrush" Value="#007ACC"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

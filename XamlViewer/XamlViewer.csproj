@@ -77,7 +77,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\XamlConfig.cs" />
     <Compile Include="Utils\Converters.cs" />
+    <Compile Include="Models\ResourcesMap.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
@@ -156,9 +159,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\XamlService\XamlService.csproj">
       <Project>{969af170-1975-43da-af1b-c43e17777d17}</Project>

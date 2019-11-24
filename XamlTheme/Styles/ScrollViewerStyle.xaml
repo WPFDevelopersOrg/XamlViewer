@@ -145,7 +145,12 @@
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ScrollContentPresenter Margin="{TemplateBinding Padding}"/>
+                        <ScrollContentPresenter CanHorizontallyScroll="False" 
+                                                CanVerticallyScroll="False" 
+                                                CanContentScroll="{TemplateBinding CanContentScroll}" 
+                                                ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                Content="{TemplateBinding Content}" 
+                                                Margin="{TemplateBinding Padding}"/>
                         <ScrollBar x:Name="PART_VerticalScrollBar"
                                    Grid.Row="0" Grid.Column="1"
                                    Value="{TemplateBinding VerticalOffset}"

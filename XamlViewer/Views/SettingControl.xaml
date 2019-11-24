@@ -10,7 +10,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="120" d:DesignWidth="800" Background="#FDFDFD">
-    <StackPanel Orientation="Horizontal" Margin="5" Background="{x:Null}">
+    <StackPanel Orientation="Horizontal" Margin="5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
@@ -26,8 +26,11 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox Width="120"/>
-                <ComboBox Grid.Column="1" Width="60" Margin="5,0,0,0">
+                <ComboBox Width="120" 
+                          ItemsSource="{Binding FontFamilies}"
+                          SelectedValue="{Binding FontFamily,Mode=TwoWay}"/>
+                <ComboBox Grid.Column="1" Width="60" Margin="5,0,0,0" 
+                          SelectedValue="{Binding FontSize,Mode=TwoWay}">
                     <ComboBox.ItemsSource>
                         <x:Array Type="sys:Double">
                             <sys:Double>8</sys:Double>
@@ -51,8 +54,10 @@
                     </ComboBox.ItemsSource>
                 </ComboBox>
             </Grid>
-            <CheckBox Grid.Row="2" Content="Code Collapsing"/>
-            <CheckBox Grid.Row="4" Content="Line Number"/>
+            <CheckBox Grid.Row="2" Content="Code Collapsing" 
+                      IsChecked="{Binding IsCodeCollapsing,Mode=TwoWay}"/>
+            <CheckBox Grid.Row="4" Content="Line Number" 
+                      IsChecked="{Binding ShowLineNumber,Mode=TwoWay}"/>
             <TextBlock Grid.Row="6" Text="Editor" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
 
@@ -67,13 +72,15 @@
                 <RowDefinition Height="*" MinHeight="10"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <CheckBox x:Name="CompileCheckBox" Content="Automitic Compile"/>
+            <CheckBox x:Name="CompileCheckBox" Content="Automitic Compile"
+                      IsChecked="{Binding AutoCompile,Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="2" VerticalAlignment="Center" Text="Auto-Compile Delay"
                        Opacity="{Binding Opacity,ElementName=DelaySlider}"/>
             <StackPanel Grid.Row="3" Orientation="Horizontal"  
                         IsEnabled="{Binding IsChecked,ElementName=CompileCheckBox}">
-                <Slider x:Name="DelaySlider" Width="150" Minimum="1" Maximum="5" Value="1" 
+                <Slider x:Name="DelaySlider" Width="150" Minimum="1" Maximum="5" 
+                        Value="{Binding AutoCompileDelay,Mode=TwoWay}" 
                         VerticalAlignment="Center"
                         IsSelectionRangeEnabled="True" 
                         SelectionEnd="{Binding Value,RelativeSource={RelativeSource Self}}" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" TickFrequency="0.1"/>
@@ -127,7 +134,7 @@
             <controls:NumericBox Grid.Row="4" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0"/>
 
             <TextBlock Grid.Row="6" Grid.Column="0" Text="Color" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="6" Grid.Column="2" Height="22" Text="#FF000000" FontSize="12"/>
+            <TextBox Grid.Row="6" Grid.Column="2" Height="22" Text="#FF000000" FontSize="12" VerticalContentAlignment="Center"/>
         </Grid>
 
         <Separator Style="{DynamicResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
