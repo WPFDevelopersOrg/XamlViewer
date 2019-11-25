@@ -104,7 +104,7 @@ namespace XamlTheme.Controls
         }
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), _typeofSelf,
-            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged));
+            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged, CoerceText));
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
@@ -113,13 +113,21 @@ namespace XamlTheme.Controls
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = (RestrictTextBox)d;
-            var newText = (string)e.NewValue;
+            var ctrl = (RestrictTextBox)d;
+            var text = (string)e.NewValue; 
 
-            if (textBox._valueTextBox.Text != newText)
-                textBox.DealInputText(newText);
+            ctrl.OnTextChanged((string)e.OldValue, text);
+        }
 
-            textBox.OnTextChanged((string)e.OldValue, newText);
+        private static object CoerceText(DependencyObject d, object value)
+        {
+            var ctrl = (RestrictTextBox)d;
+            var text = (string)value;
+
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(ctrl.Pattern) || !Regex.IsMatch(text, ctrl.Pattern))
+                return ctrl._lastValidValue;
+
+            return value;
         }
 
         #endregion

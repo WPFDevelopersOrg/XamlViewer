@@ -47,6 +47,8 @@
                                 <ColumnDefinition Width="*"/> 
                                 <ColumnDefinition Width="2"/>
                                 <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="2"/>
+                                <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <!--Color Selection-->
                             <Canvas x:Name="PART_ColorCanvas" ClipToBounds="True">
@@ -96,8 +98,7 @@
                             </Canvas>
 
                             <!--Hue Color Selection-->
-                            <Slider x:Name="PART_HueSlider" Grid.Row="0" Grid.Column="2"
-                                    DockPanel.Dock="Right" Maximum="1"
+                            <Slider x:Name="PART_HueSlider" Grid.Row="0" Grid.Column="2" Maximum="1"
                                     Style="{StaticResource ColorPickerSliderStyle}">
                                 <Slider.Background>
                                     <LinearGradientBrush StartPoint="1,0">
@@ -111,6 +112,18 @@
                                     </LinearGradientBrush>
                                 </Slider.Background>
                             </Slider>
+
+                            <Grid Grid.Row="0" Grid.Column="4" Width="20">
+                                <Rectangle Fill="{StaticResource {x:Static themes:ResourceKeys.AlphaVisualBrushKey}}"/>
+                                <Slider x:Name="PART_AlphaSlider" Maximum="255" Style="{StaticResource ColorPickerSliderStyle}">
+                                    <Slider.Background>
+                                        <LinearGradientBrush EndPoint="0,1">
+                                            <GradientStop Color="Black" Offset="0"/>
+                                            <GradientStop Color="Transparent" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Slider.Background>
+                                </Slider>
+                            </Grid>
 
                             <!--Show Selected Color-->
                             <Rectangle Grid.Row="2" Grid.Column="0" Fill="{StaticResource {x:Static themes:ResourceKeys.AlphaVisualBrushKey}}"/>

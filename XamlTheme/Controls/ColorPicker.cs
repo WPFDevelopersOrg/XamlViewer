@@ -6,20 +6,24 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using XamlTheme.Utils;
+using XamlUtil.Common;
 
 namespace XamlTheme.Controls
 {
     [TemplatePart(Name = SelectPathTemplateName, Type = typeof(Path))]
+    [TemplatePart(Name = AlphaSliderTemplateName, Type = typeof(Slider))]
     [TemplatePart(Name = HueSliderTemplateName, Type = typeof(Slider))]
     [TemplatePart(Name = ColorCanvasTemplateName, Type = typeof(Canvas))]
     public class ColorPicker : Control
     {
         private static readonly Type _typeofSelf = typeof(ColorPicker);
 
+        private const string AlphaSliderTemplateName = "PART_AlphaSlider";
         private const string HueSliderTemplateName = "PART_HueSlider";
         private const string SelectPathTemplateName = "PART_SelectPath";
         private const string ColorCanvasTemplateName = "PART_ColorCanvas";
 
+        private Slider _alphaSlider = null;
         private Slider _hueSlider = null;
         private Path _selectPath = null;
         private Canvas _colorCanvas = null;
@@ -105,6 +109,7 @@ namespace XamlTheme.Controls
             ctrl.UpdateHueColor();
             ctrl.UpdateSelectedPathPosition();
             ctrl.UpdateHueSliderPosition();
+            ctrl.UpdateAlphaSliderPosition();
         }
 
         #endregion
@@ -113,11 +118,18 @@ namespace XamlTheme.Controls
 
         public override void OnApplyTemplate()
         {
+            if (_alphaSlider != null)
+            {
+                _alphaSlider.ValueChanged -= OnAlphaSliderValueChanged;
+                _alphaSlider.MouseMove -= OnAlphaSliderMouseMove;
+                _alphaSlider.RemoveHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(OnHueSliderMouseLeftButtonUp));
+            }
+
             if (_hueSlider != null)
             {
                 _hueSlider.ValueChanged -= OnHueSliderValueChanged;
                 _hueSlider.MouseMove -= OnHueSliderMouseMove;
-                _hueSlider.RemoveHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(OnHueSliderMouseLeftButtonUp));
+                _hueSlider.RemoveHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(OnAlphaSliderMouseLeftButtonUp));
             }
 
             if (_colorCanvas != null)
@@ -125,10 +137,17 @@ namespace XamlTheme.Controls
 
             base.OnApplyTemplate();
 
+            _alphaSlider = base.GetTemplateChild(AlphaSliderTemplateName) as Slider;
             _hueSlider = base.GetTemplateChild(HueSliderTemplateName) as Slider;
             _selectPath = base.GetTemplateChild(SelectPathTemplateName) as Path;
             _colorCanvas = base.GetTemplateChild(ColorCanvasTemplateName) as Canvas;
 
+            if (_alphaSlider != null)
+            {
+                _alphaSlider.ValueChanged += OnAlphaSliderValueChanged;
+                _alphaSlider.MouseMove += OnAlphaSliderMouseMove;
+                _alphaSlider.AddHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(OnAlphaSliderMouseLeftButtonUp), true);
+            }
 
             if (_hueSlider != null)
             {
@@ -147,6 +166,7 @@ namespace XamlTheme.Controls
 
             UpdateSelectedPathPosition();
             UpdateHueSliderPosition();
+            UpdateAlphaSliderPosition();
 
             return size;
         }
@@ -154,6 +174,33 @@ namespace XamlTheme.Controls
         #endregion
 
         #region Event
+
+        private void OnAlphaSliderMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && !(e.OriginalSource is Thumb))
+            {
+                _alphaSlider.CaptureMouse();
+                _alphaSlider.Value = _alphaSlider.Maximum - e.GetPosition(_alphaSlider).Y / _alphaSlider.ActualHeight * (_alphaSlider.Maximum - _alphaSlider.Minimum);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnAlphaSliderMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SetValue(LastColorPropertyKey, SelectedColor);
+
+            _alphaSlider.ReleaseMouseCapture();
+            e.Handled = true;
+        }
+
+        private void OnAlphaSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (DoubleUtil.AreClose(SelectedColor.A, e.NewValue))
+                return;
+
+            UpdateSelectedColor((byte)e.NewValue);
+        }
 
         private void OnHueSliderMouseMove(object sender, MouseEventArgs e)
         {
@@ -176,10 +223,13 @@ namespace XamlTheme.Controls
 
         private void OnHueSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            if (DoubleUtil.AreClose(H, e.NewValue))
+                return;
+
             SetValue(HPropertyKey, e.NewValue);
 
             UpdateHueColor();
-            UpdateSelectedColor();
+            UpdateSelectedColor(SelectedColor.A);
         }
 
         private void OnColorCanvasMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -238,6 +288,14 @@ namespace XamlTheme.Controls
 
         #region Func
 
+        private void UpdateAlphaSliderPosition()
+        {
+            if (_alphaSlider == null)
+                return;
+
+            _alphaSlider.Value = SelectedColor.A;
+        }
+
         private void UpdateHueSliderPosition()
         {
             if (_hueSlider == null)
@@ -260,7 +318,7 @@ namespace XamlTheme.Controls
             SetValue(SPropertyKey, (Canvas.GetLeft(_selectPath) + _selectPath.ActualWidth / 2) / _colorCanvas.ActualWidth);
             SetValue(BPropertyKey, 1 - (Canvas.GetTop(_selectPath) + _selectPath.ActualHeight / 2) / _colorCanvas.ActualHeight);
 
-            UpdateSelectedColor();
+            UpdateSelectedColor(SelectedColor.A);
         }
 
         private void UpdateHueColor()
@@ -268,10 +326,14 @@ namespace XamlTheme.Controls
             SetValue(HueColorPropertyKey, ColorUtil.ColorFromHsb(H, 1, 1));
         }
 
-        private void UpdateSelectedColor()
+        private void UpdateSelectedColor(byte a)
         {
-            _isInnerUpdateSelectedColor = true;
-            SelectedColor = ColorUtil.ColorFromAhsb(SelectedColor.A / 255d, H, S, B);
+            var currentColor= ColorUtil.ColorFromAhsb(a / 255d, H, S, B);
+            if(SelectedColor!=currentColor)
+            {
+                _isInnerUpdateSelectedColor = true;
+                SelectedColor = currentColor;
+            }
         }
 
         #endregion

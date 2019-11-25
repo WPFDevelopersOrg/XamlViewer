@@ -144,7 +144,7 @@ namespace XamlViewer.Utils
         {
             var colorStr = (string)value;
 
-            if (!string.IsNullOrWhiteSpace(colorStr) && Regex.IsMatch(colorStr, @"^[\da-fA-F]{6,8}$"))
+            if (!string.IsNullOrWhiteSpace(colorStr) && Regex.IsMatch(colorStr, @"^#[\da-fA-F]{6,8}$"))
                 return ColorConverter.ConvertFromString(colorStr);
 
             return _curColor.Value;
