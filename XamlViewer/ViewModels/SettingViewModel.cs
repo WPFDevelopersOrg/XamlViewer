@@ -27,19 +27,19 @@ namespace XamlViewer.ViewModels
             LoadFonts();
         }
 
-        private List<FontFamily> _fontFamilies = new List<FontFamily> { new FontFamily("Calibri") };
-        public List<FontFamily> FontFamilies
+        private List<string> _fontFamilies = null;
+        public List<string> FontFamilies
         {
-            get { return _fontFamilies; }
+            get { return _fontFamilies ?? new List<string> { _xamlConfig.FontFamily }; }
             set { SetProperty(ref _fontFamilies, value); }
         }
 
-        public FontFamily FontFamily
+        public string FontFamily
         {
-            get { return new FontFamily(_xamlConfig.FontFamily); }
+            get { return _xamlConfig.FontFamily; }
             set
             {
-                _xamlConfig.FontFamily = value.Source;
+                _xamlConfig.FontFamily = value;
                 RaisePropertyChanged();
             }
         }
@@ -94,23 +94,24 @@ namespace XamlViewer.ViewModels
             }
         }
 
+
+        private Color _selectedColor = Colors.Black;
+        public Color SelectedColor
+        {
+            get { return _selectedColor; }
+            set { SetProperty(ref _selectedColor, value); }
+        }
+
         private void LoadFonts()
         {
-            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.StartFonts);
+            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.LoadFonts);
 
-            Task.Run(()=> 
+            Task.Run(() =>
             {
-                var fontFamilies = new List<FontFamily>();
-                foreach (FontFamily font in Fonts.SystemFontFamilies.OrderBy(f => f.Source))
-                {
-                    fontFamilies.Add(font);
-                }
-
-                FontFamilies = fontFamilies;
-
-                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.EndFonts);
+                FontFamilies = Fonts.SystemFontFamilies.Select(f => f.Source).OrderBy(f => f).ToList();
+                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.FinishLoadFonts);
             });
-            
+
         }
     }
 }

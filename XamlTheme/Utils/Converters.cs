@@ -36,7 +36,7 @@ namespace XamlTheme.Utils
         {
             throw new NotImplementedException();
         }
-    } 
+    }
 
     public class ZoomBoxRulerShiftMultiConverter : IMultiValueConverter
     {
@@ -56,5 +56,5 @@ namespace XamlTheme.Utils
         {
             throw new NotImplementedException();
         }
-    }
+    } 
 }

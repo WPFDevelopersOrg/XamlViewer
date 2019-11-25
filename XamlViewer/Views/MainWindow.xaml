@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <views:ToolbarControl Grid.Row="0"/>
-            <TextBlock Grid.Column="1" Margin="5,0" Text="{Binding Title}" FontSize="14" FontWeight="Medium"  VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="False"/>
+            <TextBlock Grid.Column="1" Margin="5,0" Text="{Binding Title}" Foreground="#717171" FontSize="13" FontWeight="Medium"  VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="False"/>
             <controls:StatusToggle x:Name="SettingStatusToggle" Grid.Column="2" Width="37" CheckedToolTip="Back" UnCheckedToolTip="Setting"
                                    IsChecked="{Binding IsExpandSetting, Mode=TwoWay}"
                                    Command="{Binding ExpandOrCollapseCommand}">
@@ -80,6 +80,6 @@
         </GridSplitter>
         <ContentControl Grid.Row="4" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}"/>
 
-        <views:StatusControl Grid.Row="5"/>
+        <views:StatusControl Grid.Row="5" Height="25" Background="#007ACC"/>
     </Grid>
 </controls:UserWindow>

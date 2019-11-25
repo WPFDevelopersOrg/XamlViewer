@@ -8,13 +8,13 @@ namespace XamlService
 {
     public enum ProcessStatus
     {
-        StartCompile,
-        EndCompile,
+        Compile,
+        FinishCompile,
 
-        StartSave,
-        EndSave,
+        Save,
+        FinishSave,
 
-        StartFonts,
-        EndFonts
+        LoadFonts,
+        FinishLoadFonts,
     }
 }

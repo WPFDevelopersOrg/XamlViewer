@@ -20,6 +20,7 @@
         <ResourceDictionary Source="/XamlTheme;component/Styles/StatusToggleStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ColorPickerStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/NumericBoxStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/RestrictTextBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/UserWindowStyle.xaml"/>
 
         <ResourceDictionary Source="/XamlTheme;component/Styles/ZoomBoxStyle.xaml"/>

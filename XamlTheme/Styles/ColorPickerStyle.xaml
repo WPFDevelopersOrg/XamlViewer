@@ -40,12 +40,12 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="1"/>
+                                <RowDefinition Height="2"/>
                                 <RowDefinition Height="20"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/> 
-                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="2"/>
                                 <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <!--Color Selection-->

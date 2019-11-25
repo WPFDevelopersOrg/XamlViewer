@@ -8,6 +8,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="25" d:DesignWidth="300">
     <Grid>
-         
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="{Binding CurrentStatus}" Margin="5,0,0,0" FontSize="12" Foreground="White" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
     </Grid>
 </UserControl>

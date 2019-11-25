@@ -12,6 +12,7 @@
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border x:Name="bd" 
 					        BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
 					        Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
                         <Grid HorizontalAlignment="Right" 
 						      Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
@@ -20,14 +21,15 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter Property="Background" TargetName="bd" Value="#FFDDDDDD"/>
+                            <Setter Property="Fill" TargetName="Arrow" Value="#007ACC"/>
+                            <Setter Property="BorderBrush" TargetName="bd" Value="#007ACC"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsChecked" Value="false"/>
                                 <Condition Property="IsMouseOver" Value="true"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="bd" Value="#FFC1C1C1"/>
+                            <Setter Property="Fill" TargetName="Arrow" Value="#007ACC"/>
                         </MultiTrigger>
 
                         <Trigger Property="IsEnabled" Value="false">
@@ -109,8 +111,8 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="#424242"/>
-        <Setter Property="Background" Value="#EFEFF2"/>
-        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="#424242"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
@@ -132,7 +134,7 @@
 							                               MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
                                 <Border x:Name="DropDownBorder" BorderThickness="1"
 								        BorderBrush="{TemplateBinding BorderBrush}"
-								        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+								        Background="{TemplateBinding Background}">
                                     <ScrollViewer CanContentScroll="true">
                                         <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                                     </ScrollViewer>
@@ -142,6 +144,7 @@
                         <ToggleButton Grid.ColumnSpan="2" 
 						              BorderBrush="{TemplateBinding BorderBrush}"
 						              Background="{TemplateBinding Background}" 
+                                      BorderThickness="{TemplateBinding BorderThickness}"
 						              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
 						              Style="{StaticResource ComboBoxToggleButton}"/>
                         <ContentPresenter IsHitTestVisible="false"
@@ -175,8 +178,7 @@
                 <Setter Property="Background" Value="#FFDDDDDD"/>
                 <Setter Property="BorderBrush" Value="#FFDDDDDD"/>
             </Trigger>
-            <Trigger Property="IsEditable" Value="true">
-                <Setter Property="Background" Value="Transparent"/>
+            <Trigger Property="IsEditable" Value="true"> 
                 <Setter Property="IsTabStop" Value="false"/>
                 <Setter Property="Padding" Value="3"/>
                 <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}"/>
@@ -208,7 +210,8 @@
                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#FFC1C1C1"/>
+                <Setter Property="Background" Value="#1C97EA"/>
+                <Setter Property="Foreground" Value="White"/>
             </Trigger>
         </Style.Triggers>
     </Style>

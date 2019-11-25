@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme" 
+             xmlns:utils="clr-namespace:XamlViewer.Utils" 
              xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -49,7 +50,7 @@
                             <sys:Double>24</sys:Double>
                             <sys:Double>28</sys:Double>
                             <sys:Double>32</sys:Double>
-                            <sys:Double>36</sys:Double> 
+                            <sys:Double>36</sys:Double>
                         </x:Array>
                     </ComboBox.ItemsSource>
                 </ComboBox>
@@ -67,7 +68,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="10"/>
-                <RowDefinition Height="20"/> 
+                <RowDefinition Height="20"/>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="*" MinHeight="10"/>
                 <RowDefinition Height="auto"/>
@@ -88,25 +89,31 @@
                            Opacity="{Binding Opacity,ElementName=DelaySlider}"
                            Text="{Binding Value,ElementName=DelaySlider,StringFormat={}{0:N1}s}"/>
             </StackPanel>
- 
+
             <TextBlock Grid.Row="5" Text="Compile" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
 
         <Separator Style="{DynamicResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
+         
+        <controls:ColorPicker Width="120" SelectedColor="{Binding SelectedColor}"/>
 
-        <controls:ColorPicker Width="120"/>
-
-        <Grid Margin="2,0,0,21" Width="20"> 
+        <Grid Margin="2,0,0,22" Width="20">
             <Rectangle Fill="{StaticResource {x:Static themes:ResourceKeys.AlphaVisualBrushKey}}"/>
-            <Slider Maximum="255"
-                    Style="{StaticResource ColorPickerSliderStyle}">
+            <Slider Maximum="255" Style="{StaticResource ColorPickerSliderStyle}">
                 <Slider.Background>
                     <LinearGradientBrush EndPoint="0,1">
                         <GradientStop Color="Black" Offset="0"/>
                         <GradientStop Color="Transparent" Offset="1"/>
                     </LinearGradientBrush>
                 </Slider.Background>
-            </Slider> 
+                <Slider.Value>
+                    <Binding Path="SelectedColor" Mode="TwoWay">
+                        <Binding.Converter>
+                            <utils:ColorToAConverter/>
+                        </Binding.Converter>
+                    </Binding>
+                </Slider.Value>
+            </Slider>
         </Grid>
 
         <Grid Margin="15,0,0,0">
@@ -125,16 +132,48 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="R" VerticalAlignment="Center"/>
-            <controls:NumericBox Grid.Row="0" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0"/>
+            <controls:NumericBox Grid.Row="0" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0">
+                <controls:NumericBox.Value>
+                    <Binding Path="SelectedColor" Mode="TwoWay">
+                        <Binding.Converter>
+                            <utils:ColorToRedConverter/>
+                        </Binding.Converter>
+                    </Binding>
+                </controls:NumericBox.Value>
+            </controls:NumericBox>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Text="G" VerticalAlignment="Center"/>
-            <controls:NumericBox Grid.Row="2" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0"/>
-
+            <controls:NumericBox Grid.Row="2" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0">
+                <controls:NumericBox.Value>
+                    <Binding Path="SelectedColor" Mode="TwoWay">
+                        <Binding.Converter>
+                            <utils:ColorToGreenConverter/>
+                        </Binding.Converter>
+                    </Binding>
+                </controls:NumericBox.Value>
+            </controls:NumericBox>
+            
             <TextBlock Grid.Row="4" Grid.Column="0" Text="B" VerticalAlignment="Center"/>
-            <controls:NumericBox Grid.Row="4" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0"/>
+            <controls:NumericBox Grid.Row="4" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0">
+                <controls:NumericBox.Value>
+                    <Binding Path="SelectedColor" Mode="TwoWay">
+                        <Binding.Converter>
+                            <utils:ColorToBlueConverter/>
+                        </Binding.Converter>
+                    </Binding>
+                </controls:NumericBox.Value>
+            </controls:NumericBox>
 
             <TextBlock Grid.Row="6" Grid.Column="0" Text="Color" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="6" Grid.Column="2" Height="22" Text="#FF000000" FontSize="12" VerticalContentAlignment="Center"/>
+            <controls:RestrictTextBox Grid.Row="6" Grid.Column="2" MinHeight="22" Height="22" Pattern="^#[\da-fA-F]{6,8}$" TextCase="Upper">
+                <controls:RestrictTextBox.Text>
+                    <Binding Path="SelectedColor" Mode="TwoWay">
+                        <Binding.Converter>
+                            <utils:ColorToStringConverter/>
+                        </Binding.Converter>
+                    </Binding>
+                </controls:RestrictTextBox.Text>
+            </controls:RestrictTextBox>
         </Grid>
 
         <Separator Style="{DynamicResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>

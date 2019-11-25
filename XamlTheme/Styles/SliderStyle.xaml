@@ -98,7 +98,7 @@
                         <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}"/>
                     </Track.IncreaseRepeatButton>
                     <Track.Thumb>
-                        <Thumb x:Name="Thumb" Width="18" Height="11"
+                        <Thumb x:Name="Thumb" Width="18" Height="6"
                                Focusable="False" OverridesDefaultStyle="True" VerticalAlignment="Top"
                                Background="{TemplateBinding Foreground}"
                                Template="{StaticResource SliderThumbTemplate}"/>
@@ -141,8 +141,12 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="6"/>
             </Grid.RowDefinitions>
-            <Path Data="M0,0 H10 L5,5 Z" Stretch="Fill" Fill="{TemplateBinding Background}"/>
-            <Path Grid.Row="2" Data="M0,0 H10 L5,-5 Z" Stretch="Fill" Fill="{TemplateBinding Background}"/>
+            <Path Data="M0,0 H10 L5,5 Z" Stretch="Fill" StrokeThickness="1"
+                  Fill="{TemplateBinding Background}"
+                  Stroke="{TemplateBinding BorderBrush}"/>
+            <Path Grid.Row="2" Data="M0,0 H10 L5,-5 Z" Stretch="Fill" StrokeThickness="1"
+                  Fill="{TemplateBinding Background}"
+                  Stroke="{TemplateBinding BorderBrush}"/>
         </Grid>
     </ControlTemplate>
 
@@ -153,8 +157,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="6"/>
             </Grid.ColumnDefinitions>
-            <Path Data="M0,0 V10 L5,5 Z" Stretch="Fill" Fill="{TemplateBinding Background}"/>
-            <Path Grid.Column="2" Data="M0,0 V10 L-5,5 Z" Stretch="Fill" Fill="{TemplateBinding Background}"/>
+            <Path Data="M0,0 V10 L5,5 Z" Stretch="Fill" StrokeThickness="1"
+                  Fill="{TemplateBinding Background}"
+                  Stroke="{TemplateBinding BorderBrush}"/>
+            <Path Grid.Column="2" Data="M0,0 V10 L-5,5 Z" Stretch="Fill" StrokeThickness="1"
+                  Fill="{TemplateBinding Background}"
+                  Stroke="{TemplateBinding BorderBrush}"/>
         </Grid>
     </ControlTemplate>
 
@@ -171,7 +179,7 @@
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}"/>
-                        <Track x:Name="PART_Track" Margin="0,-7">
+                        <Track x:Name="PART_Track" Margin="0,-5">
                             <Track.DecreaseRepeatButton>
                                 <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}"/>
                             </Track.DecreaseRepeatButton>
@@ -179,7 +187,7 @@
                                 <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}"/>
                             </Track.IncreaseRepeatButton>
                             <Track.Thumb>
-                                <Thumb x:Name="thumb" Focusable="false" Height="14" Background="Black"
+                                <Thumb x:Name="thumb" Focusable="false" Height="10" Background="Black" BorderBrush="White"
                                        Template="{StaticResource ColorPickerVerticalSliderThumb}"/>
                             </Track.Thumb>
                         </Track>
@@ -188,8 +196,8 @@
                         <Trigger Property="Orientation" Value="Horizontal">
                             <Setter Property="Template" TargetName="thumb" Value="{StaticResource ColorPickerHorizontalSliderThumb}"/>
                             <Setter Property="Height" TargetName="thumb" Value="auto"/>
-                            <Setter Property="Width" TargetName="thumb" Value="14"/>
-                            <Setter Property="Margin" TargetName="PART_Track" Value="-7,0"/>
+                            <Setter Property="Width" TargetName="thumb" Value="10"/>
+                            <Setter Property="Margin" TargetName="PART_Track" Value="-5,0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

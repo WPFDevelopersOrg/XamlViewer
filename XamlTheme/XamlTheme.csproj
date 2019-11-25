@@ -48,14 +48,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\RestrictTextBox.cs" />
     <Compile Include="Controls\StatusToggle.cs" />
+    <Compile Include="Datas\Enums.cs" />
     <Compile Include="Markup\SharedResourceDictionary.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Controls\NumericBox.cs" />
     <Compile Include="Controls\Ruler.cs" />
     <Compile Include="Controls\UserWindow.cs" />
     <Compile Include="Controls\ZoomBox.cs" />
-    <Compile Include="Datas\NumericBoxValueChangedEventArgs.cs" />
+    <Compile Include="Datas\TextBoxValueChangedEventArgs.cs" />
     <Compile Include="ResourceKeys.cs" />
     <Compile Include="Utils\ColorUtil.cs" />
     <Compile Include="Utils\Converters.cs" />
@@ -71,6 +73,10 @@
     <Page Include="Styles\ListBoxStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\RestrictTextBoxStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\SeparatorStyle.xaml">
       <Generator>MSBuild:Compile</Generator>

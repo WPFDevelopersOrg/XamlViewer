@@ -35,7 +35,7 @@ namespace XamlTheme.Controls
         #region Properties
 
         private static readonly DependencyPropertyKey HueColorPropertyKey =
-           DependencyProperty.RegisterReadOnly("HueColor", typeof(Color), _typeofSelf, new PropertyMetadata(Colors.Black));
+           DependencyProperty.RegisterReadOnly("HueColor", typeof(Color), _typeofSelf, new PropertyMetadata(Colors.Red));
         public static readonly DependencyProperty HueColorProperty = HueColorPropertyKey.DependencyProperty;
         public Color HueColor
         {
@@ -51,7 +51,7 @@ namespace XamlTheme.Controls
         }
 
         private static readonly DependencyPropertyKey SPropertyKey =
-           DependencyProperty.RegisterReadOnly("S", typeof(double), _typeofSelf, new PropertyMetadata(1d));
+           DependencyProperty.RegisterReadOnly("S", typeof(double), _typeofSelf, new PropertyMetadata(0d));
         public static readonly DependencyProperty SProperty = SPropertyKey.DependencyProperty;
         public double S
         {
@@ -59,7 +59,7 @@ namespace XamlTheme.Controls
         }
 
         private static readonly DependencyPropertyKey BPropertyKey =
-           DependencyProperty.RegisterReadOnly("B", typeof(double), _typeofSelf, new PropertyMetadata(1d));
+           DependencyProperty.RegisterReadOnly("B", typeof(double), _typeofSelf, new PropertyMetadata(0d));
         public static readonly DependencyProperty BProperty = BPropertyKey.DependencyProperty;
         public double B
         {
@@ -102,6 +102,7 @@ namespace XamlTheme.Controls
 
             ctrl.SetValue(LastColorPropertyKey, color);
 
+            ctrl.UpdateHueColor();
             ctrl.UpdateSelectedPathPosition();
             ctrl.UpdateHueSliderPosition();
         }
