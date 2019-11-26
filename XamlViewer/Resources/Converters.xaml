@@ -3,5 +3,6 @@
                     xmlns:utils="clr-namespace:XamlViewer.Utils">
 
     <utils:AnyBoolToVisibilityMultiConverter x:Key="anyBoolToVisibilityMultiConverter"/>
+    <utils:FlagEnumToVisibilityConverter x:Key="flagEnumToVisibilityConverter"/>
 
 </ResourceDictionary>

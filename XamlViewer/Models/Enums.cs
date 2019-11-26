@@ -10,4 +10,12 @@ namespace XamlViewer.Models
     {
         GlobalConfigFile
     }
+
+    public enum TabStatus
+    {
+        None = 0,
+        NoSave = 1,
+        Pinned = 2,
+        Locked = 4
+    }
 }

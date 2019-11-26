@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
-                    xmlns:markup="clr-namespace:XamlTheme.Markup;assembly=XamlTheme"
-                    xmlns:utils="clr-namespace:XamlViewer.Utils">
+                    xmlns:markup="clr-namespace:XamlTheme.Markup;assembly=XamlTheme" 
+                    xmlns:models="clr-namespace:XamlViewer.Models">
 
     <ResourceDictionary.MergedDictionaries>
         <markup:SharedResourceDictionary Source="../Converters.xaml"/>
@@ -26,8 +26,15 @@
     
     <DataTemplate x:Key="XamlSelectionTemplate">
         <StackPanel Orientation="Horizontal" Margin="6,3,3,3">
-            <TextBlock VerticalAlignment="Center" Text="{Binding Title}" FontSize="13"/>
-            <Button Width="18" Height="18" Margin="10,0,0,0"
+            <TextBlock VerticalAlignment="Center" FontSize="13"
+                       Text="{Binding Title}"
+                       ToolTip="{Binding FileName}"/>
+            <TextBlock Margin="2,0,0,0"
+                       Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.NoSave}}">
+                <Run FontSize="13" Text="*" BaselineAlignment="Superscript"/>
+            </TextBlock>
+            <Button Width="18" Height="18" Margin="10,0,0,0" ToolTip="Close"
+                    Command="{Binding CloseCommand}"
                     Style="{DynamicResource {x:Static themes:ResourceKeys.SelectionCloseBtnStyleKey}}">
                 <Button.Visibility>
                     <MultiBinding Converter="{StaticResource anyBoolToVisibilityMultiConverter}">

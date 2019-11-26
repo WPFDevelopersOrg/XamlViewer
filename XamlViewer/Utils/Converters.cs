@@ -48,6 +48,25 @@ namespace XamlViewer.Utils
         }
     }
 
+    public class FlagEnumToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null || parameter == null)
+                return Visibility.Collapsed;
+
+            var originalValue = (int)value;
+            var compareValue = (int)System.Convert.ChangeType(parameter, typeof(int));
+
+            return (originalValue & compareValue) == compareValue ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class DoubleToGridLengthConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
