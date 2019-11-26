@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Prism.Commands;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit;
+using Prism.Events;
+using XamlService.Events;
+using XamlService;
 
 namespace XamlEditor.ViewModels
 {
@@ -17,12 +20,19 @@ namespace XamlEditor.ViewModels
         private FoldingManager _foldingManager = null;
         private XmlFoldingStrategy _foldingStrategy = null;
 
+        private IEventAggregator _eventAggregator = null;
+
         public DelegateCommand<TextEditor> TextChangedCommand { get; private set; }
 
-        public EditorControlViewModel()
+        public EditorControlViewModel(IEventAggregator eventAggregator)
         {
-            _foldingStrategy = new XmlFoldingStrategy();
+            _eventAggregator = eventAggregator;
+            _foldingStrategy = new XmlFoldingStrategy() { ShowAttributesWhenFolded = true };
 
+            //event
+            _eventAggregator.GetEvent<EditorConfigEvent>().Subscribe(OnEditorConfigEvent);
+
+            //command
             TextChangedCommand = new DelegateCommand<TextEditor>(OnTextChanged);
         }
 
@@ -31,23 +41,43 @@ namespace XamlEditor.ViewModels
             if (_foldingManager == null)
                 _foldingManager = FoldingManager.Install(textEditor.TextArea);
 
-            _foldingStrategy.UpdateFoldings(_foldingManager, textEditor.Document);
+            _foldingStrategy.UpdateFoldings(_foldingManager, textEditor.Document); 
+        } 
+
+        private string _fontFamily = "Calibri";
+        public string FontFamily
+        {
+            get { return _fontFamily; }
+            set { SetProperty(ref _fontFamily, value); }
         }
 
-        private double _fontSize = 12d;
+        private double _fontSize = 10d;
         public double FontSize
         {
             get { return _fontSize; }
             set { SetProperty(ref _fontSize, value); }
         }
 
-        private FontFamily _fontFamily = new FontFamily("Microsoft YaHei");
-        public FontFamily FontFamily
+        private bool _wordWrap = false;
+        public bool WordWrap
         {
-            get { return _fontFamily; }
-            set { SetProperty(ref _fontFamily, value); }
+            get { return _wordWrap; }
+            set { SetProperty(ref _wordWrap, value); }
         }
 
+        private bool _showLineNumber = true;
+        public bool ShowLineNumber
+        {
+            get { return _showLineNumber; }
+            set { SetProperty(ref _showLineNumber, value); }
+        } 
 
+        private void OnEditorConfigEvent(EditorConfig config)
+        {
+            FontFamily = config.FontFamily;
+            FontSize = config.FontSize;
+            ShowLineNumber = config.ShowLineNumber;
+            WordWrap = config.WordWrap;
+        }
     }
 }

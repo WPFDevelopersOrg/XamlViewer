@@ -8,9 +8,25 @@
         <markup:SharedResourceDictionary Source="../Converters.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    <Style BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalListBoxItemStyleKey}}"
+           TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"  Value="True">
+                <Setter Property="Background" Value="#1C97EA"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="true">
+                <Setter Property="Background" Value="#007ACC"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <DataTemplate x:Key="XamlSelectionTemplate">
         <StackPanel Orientation="Horizontal" Margin="6,3,3,3">
-            <TextBlock VerticalAlignment="Center" Text="XamlDoc1.xaml" FontSize="13"/>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Title}" FontSize="13"/>
             <Button Width="18" Height="18" Margin="10,0,0,0"
                     Style="{DynamicResource {x:Static themes:ResourceKeys.SelectionCloseBtnStyleKey}}">
                 <Button.Visibility>

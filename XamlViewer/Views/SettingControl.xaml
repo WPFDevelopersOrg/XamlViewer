@@ -56,8 +56,8 @@
                     </ComboBox.ItemsSource>
                 </ComboBox>
             </Grid>
-            <CheckBox Grid.Row="2" Content="Code Collapsing" 
-                      IsChecked="{Binding IsCodeCollapsing,Mode=TwoWay}"/>
+            <CheckBox Grid.Row="2" Content="Word Wrap" 
+                      IsChecked="{Binding WordWrap,Mode=TwoWay}"/>
             <CheckBox Grid.Row="4" Content="Line Number" 
                       IsChecked="{Binding ShowLineNumber,Mode=TwoWay}"/>
             <TextBlock Grid.Row="6" Text="Editor" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>

@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ApplicationCommands.cs" />
+    <Compile Include="EditorConfig.cs" />
+    <Compile Include="Events\EditorConfigEvent.cs" />
     <Compile Include="Events\ProcessStatusEvent.cs" />
     <Compile Include="ProcessStatus.cs" />
     <Compile Include="RegionNames.cs" />

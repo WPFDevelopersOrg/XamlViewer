@@ -2,7 +2,8 @@
     "files.exclude": {  
         "**/*.suo": true,  
         "**/*.user": true,
-        "**/*.code-workspace": true,		
+        "**/*.code-workspace": true,
+        "**/*.DotSettings": true,
         "**/.git": true,  
 		"**/.nuget":true,
         "**/bin": true,  

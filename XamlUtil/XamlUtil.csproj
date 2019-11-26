@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Common.cs" />
     <Compile Include="Common\DoubleUtil.cs" />
     <Compile Include="Functions\DeferRefresh.cs" />
     <Compile Include="IO\FileHelper.cs" />

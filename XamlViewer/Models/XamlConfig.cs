@@ -1,27 +1,23 @@
-﻿namespace XamlViewer.Models
+﻿using System.Collections.Generic;
+using XamlService;
+namespace XamlViewer.Models
 {
-    public class XamlConfig
+    public class XamlConfig : EditorConfig
     {
         public XamlConfig()
         {
             FontFamily = "Calibri";
-            FontSize = 10d;
+            FontSize = 13d;
 
-            IsCodeCollapsing = true;
+            WordWrap = false;
             ShowLineNumber = true;
 
             AutoCompile = true;
             AutoCompileDelay = 2d;
+
+            Files = new List<string>();
         }
 
-        public string FontFamily { get; set; }
-        public double FontSize { get; set; }
-
-        public bool IsCodeCollapsing { get; set; }
-        public bool ShowLineNumber { get; set; }
-        public bool ShowRuler { get; set; }
-
-        public bool AutoCompile { get; set; }
-        public double AutoCompileDelay { get; set; }
+        public List<string> Files { get; set; }
     }
 }

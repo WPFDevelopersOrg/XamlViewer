@@ -115,6 +115,7 @@
     </ControlTemplate>
 
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+        <Setter Property="Background" Value="#E8E8EC"/>
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Style.Triggers>

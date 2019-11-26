@@ -9,9 +9,11 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <avalonedit:TextEditor x:Name="textEditor" SyntaxHighlighting="XML" ShowLineNumbers="True" Background="White"
+    <Grid Background="White">
+        <avalonedit:TextEditor x:Name="textEditor" Margin="6,0,0,0" SyntaxHighlighting="XML" Background="Transparent" LineNumbersForeground="#2B91AF"
                                HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                               WordWrap="{Binding WordWrap}"
+                               ShowLineNumbers="{Binding ShowLineNumber}"
                                FontFamily="{Binding FontFamily}"
                                FontSize="{Binding FontSize}">
             <i:Interaction.Triggers>

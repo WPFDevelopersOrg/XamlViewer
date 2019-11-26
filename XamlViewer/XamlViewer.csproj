@@ -79,12 +79,17 @@
     </ApplicationDefinition>
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\XamlConfig.cs" />
+    <Compile Include="ViewModels\TabsViewModel.cs" />
+    <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="Utils\Converters.cs" />
     <Compile Include="Models\ResourcesMap.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Compile Include="ViewModels\ToolbarViewModel.cs" />
+    <Compile Include="Views\TabsControl.xaml.cs">
+      <DependentUpon>TabsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingControl.xaml.cs">
       <DependentUpon>SettingControl.xaml</DependentUpon>
     </Compile>
@@ -99,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\DataTemplates\XamlSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

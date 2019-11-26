@@ -59,23 +59,6 @@
                 <Setter Property="Opacity" Value="0.3"/>
             </Trigger>
         </Style.Triggers>
-    </Style>
-
-  
-
-    <Style BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalListBoxItemStyleKey}}"
-           TargetType="{x:Type ListBoxItem}">
-        <Setter Property="Padding" Value="0"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver"  Value="True">
-                <Setter Property="Background" Value="#1C97EA"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Trigger>
-            <Trigger Property="IsSelected" Value="true">
-                <Setter Property="Background" Value="#007ACC"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Trigger>
-        </Style.Triggers>
     </Style> 
 
 </ResourceDictionary>

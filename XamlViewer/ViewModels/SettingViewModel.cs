@@ -15,8 +15,7 @@ namespace XamlViewer.ViewModels
 {
     public class SettingViewModel : BindableBase
     {
-        private XamlConfig _xamlConfig = null;
-
+        private XamlConfig _xamlConfig = null; 
         private IEventAggregator _eventAggregator = null;
 
         public SettingViewModel(IContainerExtension container, IEventAggregator eventAggregator)
@@ -25,6 +24,7 @@ namespace XamlViewer.ViewModels
             _eventAggregator = eventAggregator;
 
             LoadFonts();
+            ApplyEditorConfig();
         }
 
         private List<string> _fontFamilies = null;
@@ -40,7 +40,9 @@ namespace XamlViewer.ViewModels
             set
             {
                 _xamlConfig.FontFamily = value;
+
                 RaisePropertyChanged();
+                ApplyEditorConfig(); 
             }
         }
 
@@ -50,17 +52,21 @@ namespace XamlViewer.ViewModels
             set
             {
                 _xamlConfig.FontSize = value;
+
                 RaisePropertyChanged();
+                ApplyEditorConfig(); 
             }
         }
 
-        public bool IsCodeCollapsing
+        public bool WordWrap
         {
-            get { return _xamlConfig.IsCodeCollapsing; }
+            get { return _xamlConfig.WordWrap; }
             set
             {
-                _xamlConfig.IsCodeCollapsing = value;
+                _xamlConfig.WordWrap = value;
+
                 RaisePropertyChanged();
+                ApplyEditorConfig(); 
             }
         }
 
@@ -70,7 +76,9 @@ namespace XamlViewer.ViewModels
             set
             {
                 _xamlConfig.ShowLineNumber = value;
+
                 RaisePropertyChanged();
+                ApplyEditorConfig(); 
             }
         }
 
@@ -80,7 +88,9 @@ namespace XamlViewer.ViewModels
             set
             {
                 _xamlConfig.AutoCompile = value;
+
                 RaisePropertyChanged();
+                ApplyEditorConfig(); 
             }
         }
 
@@ -90,10 +100,11 @@ namespace XamlViewer.ViewModels
             set
             {
                 _xamlConfig.AutoCompileDelay = value;
+
                 RaisePropertyChanged();
+                ApplyEditorConfig(); 
             }
         }
-
 
         private Color _selectedColor = Colors.Black;
         public Color SelectedColor
@@ -111,7 +122,21 @@ namespace XamlViewer.ViewModels
                 FontFamilies = Fonts.SystemFontFamilies.Select(f => f.Source).OrderBy(f => f).ToList();
                 _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.FinishLoadFonts);
             });
+        }
 
+        private void ApplyEditorConfig()
+        {
+            _eventAggregator.GetEvent<EditorConfigEvent>().Publish(new EditorConfig
+            {
+                FontFamily = FontFamily,
+                FontSize = FontSize,
+
+                WordWrap = WordWrap,
+                ShowLineNumber = ShowLineNumber,
+
+                AutoCompile = AutoCompile,
+                AutoCompileDelay = AutoCompileDelay
+            });
         }
     }
 }
