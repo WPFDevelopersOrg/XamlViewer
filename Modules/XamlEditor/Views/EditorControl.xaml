@@ -6,12 +6,14 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:utils="clr-namespace:XamlEditor.Utils"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="White">
         <avalonedit:TextEditor x:Name="textEditor" Margin="6,0,0,0" SyntaxHighlighting="XML" Background="Transparent" LineNumbersForeground="#2B91AF"
                                HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                               utils:TextEditorUtil.Text="{Binding Text}"
                                WordWrap="{Binding WordWrap}"
                                ShowLineNumbers="{Binding ShowLineNumber}"
                                FontFamily="{Binding FontFamily}"

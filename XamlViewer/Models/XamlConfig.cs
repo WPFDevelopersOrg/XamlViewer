@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using XamlService;
+﻿using System.Collections.Generic; 
+using XamlService.Payloads;
+
 namespace XamlViewer.Models
 {
     public class XamlConfig : EditorConfig

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XamlService;
+using XamlService.Payloads;
 using XamlViewer.Models;
 
 namespace XamlViewer.Models

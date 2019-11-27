@@ -11,6 +11,9 @@
                      Style="{DynamicResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
                      WindowStartupLocation="CenterScreen" Height="600" Width="900">
     <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Activated">
+            <prism:InvokeCommandAction Command="{Binding ActivatedCommand}"/>
+        </i:EventTrigger>
         <i:EventTrigger EventName="Closing">
             <prism:InvokeCommandAction Command="{Binding ClosingCommand}"/>
         </i:EventTrigger>

@@ -9,6 +9,7 @@ namespace XamlService.Commands
 {
     public interface IApplicationCommands
     {
+        //Toolbar
         CompositeCommand NewCommand { get; }
         CompositeCommand OpenCommand { get; }
         CompositeCommand SaveCommand { get; }
@@ -17,6 +18,9 @@ namespace XamlService.Commands
         CompositeCommand RedoCommand { get; }
 
         CompositeCommand CompileCommand { get; }
+
+        //
+        CompositeCommand RefreshCommand { get; }
     }
 
     public class ApplicationCommands : IApplicationCommands
@@ -55,6 +59,12 @@ namespace XamlService.Commands
         public CompositeCommand CompileCommand
         {
             get { return _compileCommand; }
+        }
+
+        private CompositeCommand _refreshCommand = new CompositeCommand();
+        public CompositeCommand RefreshCommand
+        {
+            get { return _refreshCommand; }
         } 
     }
 }

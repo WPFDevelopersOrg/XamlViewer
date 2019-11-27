@@ -8,7 +8,13 @@ using XamlService.Payloads;
 
 namespace XamlService.Events
 {
-    public class EditorConfigEvent : PubSubEvent<EditorConfig>
+    public class TextChangedEvent : PubSubEvent<EditorInfo>
     {
-    }
+    }  
+
+    public class SaveTextEvent : PubSubEvent<string>
+    {}
+
+    public class ReloadTextEvent : PubSubEvent<string>
+    { }
 }

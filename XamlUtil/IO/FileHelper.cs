@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -11,7 +13,7 @@ namespace Utils.IO
         private static bool SaveToFile(string filePath, Action<TextWriter> serialize)
         {
             try
-            { 
+            {
                 var directory = Path.GetDirectoryName(filePath);
 
                 if (!Directory.Exists(directory))
@@ -33,7 +35,7 @@ namespace Utils.IO
             }
         }
 
-        public static T LoadFromFile<T>(string filePath, Func<TextReader, T> deserialize)
+        private static T LoadFromFile<T>(string filePath, Func<TextReader, T> deserialize)
         {
             try
             {
@@ -48,9 +50,21 @@ namespace Utils.IO
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return default(T);
+            }
+        }
+
+        public static string ComputeMD5(string fileName)
+        {
+            if (!File.Exists(fileName))
+                return null;
+
+            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var md5Provider = new MD5CryptoServiceProvider();
+                return string.Join("", md5Provider.ComputeHash(fs).Select(b => b.ToString("x2")).ToArray());
             }
         }
 
@@ -61,7 +75,7 @@ namespace Utils.IO
             return SaveToFile(filePath, sw =>
             {
                 new XmlSerializer(typeof(T)).Serialize(sw, instance);
-            }); 
+            });
         }
 
         public static T LoadFromXmlFile<T>(string filePath)
@@ -81,7 +95,7 @@ namespace Utils.IO
             return SaveToFile(filePath, sw =>
             {
                 sw.Write(JsonConvert.SerializeObject(instance));
-            }); 
+            });
         }
 
         public static T LoadFromJsonFile<T>(string filePath)
@@ -92,10 +106,9 @@ namespace Utils.IO
                 {
                     ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
                 });
-            }); 
+            });
         }
 
         #endregion
-
     }
 }

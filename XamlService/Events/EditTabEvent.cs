@@ -9,5 +9,6 @@ namespace XamlService.Events
 {
     public class CloseTabEvent : PubSubEvent<string>
     {
-    }
+    }  
+
 }

@@ -17,6 +17,7 @@ using Utils.IO;
 using XamlService;
 using XamlService.Commands;
 using XamlService.Events;
+using XamlService.Payloads;
 using XamlViewer.Models;
 using XamlViewer.ViewModels;
 using XamlViewer.Views;
