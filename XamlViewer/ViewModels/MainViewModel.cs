@@ -65,7 +65,7 @@ namespace XamlViewer.ViewModels
             if (_appCommands == null)
                 return;
 
-            _appCommands.NewCommand.Execute(null);
+            _appCommands.RefreshCommand.Execute(null);
         }
 
         private void Closing(CancelEventArgs e)

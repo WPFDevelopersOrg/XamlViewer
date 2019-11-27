@@ -8,8 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <ListBox BorderThickness="0,0,0,2" BorderBrush="#007ACC"
-                 ItemsSource="{Binding Tabs}"
+        <ListBox ItemsSource="{Binding XamlTabs}"
                  ItemTemplate="{StaticResource XamlSelectionTemplate}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -17,5 +16,6 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>  
         </ListBox>
+        <Path Stretch="Fill" Height="2" Stroke="#007ACC" StrokeThickness="2" Data="M0,0 1,0" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

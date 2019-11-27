@@ -46,7 +46,7 @@ namespace XamlEditor.ViewModels
 
         private void OnTextChanged(TextEditor textEditor)
         {
-            Text = textEditor.Text;
+            _text = textEditor.Text;
 
             if (_foldingManager == null)
                 _foldingManager = FoldingManager.Install(textEditor.TextArea);

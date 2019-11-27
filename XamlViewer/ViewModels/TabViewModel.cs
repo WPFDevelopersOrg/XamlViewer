@@ -15,6 +15,7 @@ namespace XamlViewer.ViewModels
 {
     public class TabViewModel : BindableBase
     {
+        private XamlConfig _xamlConfig = null;
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
 
@@ -23,6 +24,7 @@ namespace XamlViewer.ViewModels
 
         public TabViewModel(string fileName)
         {
+            _xamlConfig = ServiceLocator.Current.GetInstance<XamlConfig>();
             _eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _appCommands = ServiceLocator.Current.GetInstance<IApplicationCommands>();
 
@@ -34,19 +36,9 @@ namespace XamlViewer.ViewModels
 
             FileName = fileName;
         }
-
-        private string _fileContent = "";
-        public string FileContent
-        {
-            get { return _fileContent; }
-            set
-            {
-                _fileContent = value;
-
-                ReloadToEditor();
-            }
-        }
-
+         
+        public string FileContent { get; set; }
+        
         private string _fileName = null;
         public string FileName
         {
@@ -64,6 +56,7 @@ namespace XamlViewer.ViewModels
                         using (var sr = new StreamReader(fs, Encoding.UTF8))
                         {
                             FileContent = sr.ReadToEnd();
+                            ReloadToEditor();
                         }
                     }
                 }
@@ -110,6 +103,14 @@ namespace XamlViewer.ViewModels
             _eventAggregator.GetEvent<ReloadTextEvent>().Publish(FileContent);
         }
 
+        private void UpdateFileName(string fileName)
+        {
+            Title = File.Exists(fileName) ? Path.GetFileName(fileName) : fileName;
+
+            _fileName = fileName;
+            RaisePropertyChanged(nameof(FileName));
+        }  
+
         #region Command
 
         private bool CanClose()
@@ -128,7 +129,7 @@ namespace XamlViewer.ViewModels
                     if (sfd.ShowDialog() != SWF.DialogResult.OK)
                         return;
 
-                    FileName = sfd.FileName;
+                    UpdateFileName(sfd.FileName); 
 
                     //this--->Editor(text)--->this(Save)
                     _appCommands.SaveCommand.Execute(null);
@@ -166,7 +167,7 @@ namespace XamlViewer.ViewModels
                 if (sfd.ShowDialog() != SWF.DialogResult.OK)
                     return;
 
-                FileName = sfd.FileName;
+                UpdateFileName(sfd.FileName);
             }
 
             //this--->Editor(text)--->this(Save)
@@ -189,6 +190,15 @@ namespace XamlViewer.ViewModels
         {
             if (!IsSelected)
                 return; ;
+
+            if (!File.Exists(FileName))
+            {
+                var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml" };
+                if (sfd.ShowDialog() != SWF.DialogResult.OK)
+                    return;
+
+                UpdateFileName(sfd.FileName);
+            }
 
             using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
             {

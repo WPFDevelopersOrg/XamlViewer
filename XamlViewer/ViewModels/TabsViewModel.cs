@@ -137,7 +137,7 @@ namespace XamlViewer.ViewModels
 
         private void Remove(TabViewModel tab)
         {
-            if(tab==null)
+            if(tab == null)
                 return;
 
             XamlTabs.Remove(tab);
