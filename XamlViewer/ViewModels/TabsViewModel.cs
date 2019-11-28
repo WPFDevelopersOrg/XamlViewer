@@ -66,12 +66,18 @@ namespace XamlViewer.ViewModels
         private void Open()
         { 
             var ofd = new SWF.OpenFileDialog { Filter = "XAML|*.xaml" };
-            if (ofd.ShowDialog() != SWF.DialogResult.OK)
+            if (ofd.ShowDialog() == SWF.DialogResult.OK)
             {
-                XamlTabs.Add(new TabViewModel(ofd.FileName)
+                var tab = XamlTabs.FirstOrDefault(t=>t.FileName== ofd.FileName);
+                if (tab != null)
+                    tab.IsSelected = true;
+                else
                 {
-                    IsSelected = true
-                });
+                    XamlTabs.Add(new TabViewModel(ofd.FileName)
+                    {
+                        IsSelected = true
+                    });
+                }
             }
         }
 
