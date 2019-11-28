@@ -106,9 +106,7 @@ namespace XamlViewer.ViewModels
         private void UpdateFileName(string fileName)
         {
             Title = File.Exists(fileName) ? Path.GetFileName(fileName) : fileName;
-
-            _fileName = fileName;
-            RaisePropertyChanged(nameof(FileName));
+            SetProperty(ref _fileName, fileName, "FileName");
         }  
 
         #region Command
