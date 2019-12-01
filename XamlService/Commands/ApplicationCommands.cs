@@ -11,7 +11,7 @@ namespace XamlService.Commands
     {
         //Toolbar
         CompositeCommand NewCommand { get; }
-        CompositeCommand OpenCommand { get; }
+        CompositeCommand OpenCommand { get; } 
         CompositeCommand SaveCommand { get; }
 
         CompositeCommand UndoCommand { get; }
@@ -35,7 +35,7 @@ namespace XamlService.Commands
         public CompositeCommand OpenCommand
         {
             get { return _openCommand; }
-        }
+        } 
 
         private CompositeCommand _saveCommand = new CompositeCommand();
         public CompositeCommand SaveCommand

@@ -25,6 +25,6 @@ namespace XamlEditor.Utils
             var text = (string)e.NewValue;
 
             ctrl.Text = text;
-        }
+        } 
     }
 }

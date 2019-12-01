@@ -22,9 +22,10 @@ namespace XamlViewer.ViewModels
     {
         private XamlConfig _xamlConfig = null;
         private IEventAggregator _eventAggregator = null;
+        private IApplicationCommands _appCommands = null;
 
         public DelegateCommand NewCommand { get; private set; }
-        public DelegateCommand OpenCommand { get; private set; }
+        public DelegateCommand OpenCommand { get; private set; } 
         public DelegateCommand RefreshCommand { get; private set; }
 
         public ObservableCollection<TabViewModel> XamlTabs { get; set; }
@@ -32,25 +33,44 @@ namespace XamlViewer.ViewModels
         public TabsViewModel(IContainerExtension container, IEventAggregator eventAggregator, IApplicationCommands appCommands)
         {
             _xamlConfig = container.Resolve<XamlConfig>();
-
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<CloseTabEvent>().Subscribe(OnCloseTab);
+            _appCommands = appCommands;
 
+            InitEvent();
+            InitCommand();
+
+            InitData();
+        }
+
+        #region Init
+
+        private void InitEvent()
+        {
+            
+        }
+
+        private void InitCommand()
+        {
             NewCommand = new DelegateCommand(New);
-            appCommands.NewCommand.RegisterCommand(NewCommand);
+            _appCommands.NewCommand.RegisterCommand(NewCommand);
 
             OpenCommand = new DelegateCommand(Open);
-            appCommands.OpenCommand.RegisterCommand(OpenCommand);
+            _appCommands.OpenCommand.RegisterCommand(OpenCommand);
 
             RefreshCommand = new DelegateCommand(Refresh);
-            appCommands.RefreshCommand.RegisterCommand(RefreshCommand);
+            _appCommands.RefreshCommand.RegisterCommand(RefreshCommand);
+        }
 
-            XamlTabs = new ObservableCollection<TabViewModel>(_xamlConfig.Files.Select(f => new TabViewModel(f)));
+        private void InitData()
+        {
+            XamlTabs = new ObservableCollection<TabViewModel>(_xamlConfig.Files.Select(f => new TabViewModel(f) { CloseAction= CloseXamlTab }));
             if (XamlTabs.Count == 0)
                 XamlTabs.Add(new TabViewModel("NewFile.xaml") { Status = TabStatus.NoSave });
 
             XamlTabs[0].IsSelected = true;
         }
+
+        #endregion
 
         #region Command
 
@@ -59,7 +79,8 @@ namespace XamlViewer.ViewModels
             XamlTabs.Add(new TabViewModel(Common.GetCopyName("NewFile", " ", n => XamlTabs.Any(tab => Path.GetFileNameWithoutExtension(tab.Title).ToLower() == n.ToLower())) + ".xaml")
             {
                 IsSelected = true,
-                Status = TabStatus.NoSave
+                Status = TabStatus.NoSave,
+                CloseAction = CloseXamlTab
             });
         }
 
@@ -79,7 +100,7 @@ namespace XamlViewer.ViewModels
                     });
                 }
             }
-        }
+        } 
 
         private void Refresh()
         { 
@@ -96,6 +117,7 @@ namespace XamlViewer.ViewModels
                         }
                     }
 
+                    //????? 内容不一致 不代表被外部修改
                     if (curTab.FileContent != fileContent)
                     {
                         var msg = string.Format("{0}\n\nthis file has been modified outside of the source editor.\nDo you want to reload it?", curTab.FileName);
@@ -133,13 +155,44 @@ namespace XamlViewer.ViewModels
         #endregion
 
         #region Event
-
-        private void OnCloseTab(string fileName)
-        {
-            Remove(XamlTabs.FirstOrDefault(t => t.FileName == fileName));
-        }
+         
 
         #endregion
+
+        #region Func
+
+        private void CloseXamlTab(TabViewModel tab, bool ignoreSaving = false)
+        {
+            if(!ignoreSaving)
+            {
+                if (!File.Exists(tab.FileName))
+                {
+                    var r = MessageBox.Show("Save to file?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (r == MessageBoxResult.Yes)
+                    {
+                        var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml" };
+                        if (sfd.ShowDialog() != SWF.DialogResult.OK)
+                            return;
+
+                        tab.UpdateFileName(sfd.FileName);
+                        tab.SaveToFile();
+                    }
+                }
+                else
+                {
+                    if ((tab.Status & TabStatus.NoSave) == TabStatus.NoSave)
+                    {
+                        var r = MessageBox.Show("Save?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (r == MessageBoxResult.Yes)
+                        {
+                            tab.SaveToFile();
+                        }
+                    }
+                }
+            }  
+
+            Remove(tab);
+        }
 
         private void Remove(TabViewModel tab)
         {
@@ -156,5 +209,7 @@ namespace XamlViewer.ViewModels
 
             _xamlConfig.Files.RemoveAll(f => f == tab.FileName);
         }
+
+        #endregion
     }
 }

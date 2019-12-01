@@ -1,8 +1,7 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
+using System.ComponentModel; 
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,16 +13,22 @@ using XamlService.Events;
 using XamlService;
 using XamlService.Commands;
 using XamlService.Payloads;
+using System.Windows;
+using System.Windows.Media;
 
 namespace XamlEditor.ViewModels
 {
     public class EditorControlViewModel : BindableBase
     {
+        private string _fileName = null;
+
+        private TextEditor _textEditor = null;
         private FoldingManager _foldingManager = null;
         private XmlFoldingStrategy _foldingStrategy = null; 
 
         private IEventAggregator _eventAggregator = null;
 
+        public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
         public DelegateCommand<TextEditor> TextChangedCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
 
@@ -34,9 +39,10 @@ namespace XamlEditor.ViewModels
 
             //event
             _eventAggregator.GetEvent<EditorConfigEvent>().Subscribe(OnEditorConfig);
-            _eventAggregator.GetEvent<ReloadTextEvent>().Subscribe(OnReloadText);
+            _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnReloadText);
 
-            //command
+            //Command
+            LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
             TextChangedCommand = new DelegateCommand<TextEditor>(OnTextChanged);
 
             SaveCommand = new DelegateCommand(Save);
@@ -44,20 +50,24 @@ namespace XamlEditor.ViewModels
 
         }
 
-        private void OnTextChanged(TextEditor textEditor)
+        private void OnLoaded(RoutedEventArgs e)
         {
-            _text = textEditor.Text;
+            _textEditor = e.OriginalSource as TextEditor;
+            if(_textEditor!=null)
+            {
+                _textEditor.TextArea.SelectionCornerRadius = 0;
+                _textEditor.TextArea.SelectionBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFADD6FF"));
+                _textEditor.TextArea.SelectionBorder = null;
+                _textEditor.TextArea.SelectionForeground = null;
+            }
+        }
 
+        private void OnTextChanged(TextEditor textEditor)
+        { 
             if (_foldingManager == null)
                 _foldingManager = FoldingManager.Install(textEditor.TextArea);
 
-            _foldingStrategy.UpdateFoldings(_foldingManager, textEditor.Document);
-
-            _eventAggregator.GetEvent<TextChangedEvent>().Publish(new EditorInfo
-            {
-                CanRedo = textEditor.CanRedo,
-                CanUndo = textEditor.CanUndo,
-            });
+            _foldingStrategy.UpdateFoldings(_foldingManager, textEditor.Document); 
         }
 
         private string _text = "";
@@ -65,6 +75,23 @@ namespace XamlEditor.ViewModels
         {
             get { return _text; }
             set { SetProperty(ref _text, value); }
+        }
+
+        private bool _isModified;
+        public bool IsModified
+        {
+            get { return _isModified; }
+            set
+            {
+                SetProperty(ref _isModified, value);
+
+                _eventAggregator.GetEvent<TextChangedEvent>().Publish(new EditorInfo
+                {
+                    IsModified = _isModified,
+                    CanRedo = _textEditor.CanRedo,
+                    CanUndo = _textEditor.CanUndo,
+                });
+            }
         }
 
         private string _fontFamily = "Calibri";
@@ -99,8 +126,10 @@ namespace XamlEditor.ViewModels
 
         private void Save()
         {
+            Reset();
+
             if (_eventAggregator != null)
-                _eventAggregator.GetEvent<SaveTextEvent>().Publish(Text);
+                _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text });
         }
 
         #endregion
@@ -115,11 +144,25 @@ namespace XamlEditor.ViewModels
             WordWrap = config.WordWrap;
         }
 
-        private void OnReloadText(string text)
+        private void OnReloadText(TabInfo tabInfo)
         {
-            Text = text;
+            if(!string.IsNullOrEmpty(_fileName))
+            {
+                if (_eventAggregator != null)
+                    _eventAggregator.GetEvent<CacheTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text});
+            }
+
+            _fileName = tabInfo.FileName;
+            _textEditor.Text = tabInfo.FileContent;
+
+            Reset();
         }
 
         #endregion
+
+        private void Reset()
+        {
+            SetProperty(ref _isModified, false);
+        }
     }
 }

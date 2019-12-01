@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Windows;
 using CommonServiceLocator;
@@ -19,8 +20,12 @@ namespace XamlViewer.ViewModels
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
 
+        private bool _closeAfterSaving = false;
+
         public DelegateCommand CloseCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
+
+        public Action<TabViewModel,bool> CloseAction { get; set; }
 
         public TabViewModel(string fileName)
         {
@@ -30,11 +35,13 @@ namespace XamlViewer.ViewModels
 
             _eventAggregator.GetEvent<TextChangedEvent>().Subscribe(OnTextChanged);
             _eventAggregator.GetEvent<SaveTextEvent>().Subscribe(OnSaveText);
+            _eventAggregator.GetEvent<CacheTextEvent>().Subscribe(OnCacheText);
 
             CloseCommand = new DelegateCommand(Close, CanClose);
             SaveCommand = new DelegateCommand(Save, CanSave);
 
             FileName = fileName;
+            InitInfo();
         }
          
         public string FileContent { get; set; }
@@ -43,28 +50,7 @@ namespace XamlViewer.ViewModels
         public string FileName
         {
             get { return _fileName; }
-            set
-            {
-                _fileName = value;
-
-                if (File.Exists(_fileName))
-                {
-                    Title = Path.GetFileName(_fileName);
-
-                    using (var fs = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        using (var sr = new StreamReader(fs, Encoding.UTF8))
-                        {
-                            FileContent = sr.ReadToEnd();
-                            ReloadToEditor();
-                        }
-                    }
-                }
-                else
-                    Title = _fileName;
-
-                RaisePropertyChanged();
-            }
+            private set { SetProperty(ref _fileName, value); }
         }
 
         private string _title = null;
@@ -100,10 +86,28 @@ namespace XamlViewer.ViewModels
             if (!IsSelected || _eventAggregator == null)
                 return;
 
-            _eventAggregator.GetEvent<ReloadTextEvent>().Publish(FileContent);
+            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent});
         }
 
-        private void UpdateFileName(string fileName)
+        private void InitInfo()
+        {
+            if (File.Exists(FileName))
+            {
+                Title = Path.GetFileName(FileName);
+
+                using (var fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    using (var sr = new StreamReader(fs, Encoding.UTF8))
+                    {
+                        FileContent = sr.ReadToEnd();
+                    }
+                }
+            }
+            else
+                Title = FileName;
+        }
+
+        public void UpdateFileName(string fileName)
         {
             Title = File.Exists(fileName) ? Path.GetFileName(fileName) : fileName;
             SetProperty(ref _fileName, fileName, "FileName");
@@ -118,38 +122,35 @@ namespace XamlViewer.ViewModels
 
         private void Close()
         {
-            if (!File.Exists(FileName))
+            if(IsSelected && (Status & TabStatus.NoSave) == TabStatus.NoSave)
             {
-                var r = MessageBox.Show("Save to file?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (r == MessageBoxResult.Yes)
+                if (!File.Exists(FileName))
                 {
+                    var r = MessageBox.Show("Save to file?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (r == MessageBoxResult.No)
+                    {
+                        if (CloseAction != null)
+                            CloseAction(this, true);
+
+                        return;
+                    }
+                       
                     var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml" };
                     if (sfd.ShowDialog() != SWF.DialogResult.OK)
                         return;
 
-                    UpdateFileName(sfd.FileName); 
+                    UpdateFileName(sfd.FileName);
 
-                    //this--->Editor(text)--->this(Save)
+                    ////this--->Editor(text)--->this(Save)
+                    _closeAfterSaving = true;
                     _appCommands.SaveCommand.Execute(null);
                 }
             }
             else
             {
-                if ((Status & TabStatus.NoSave) == TabStatus.NoSave)
-                {
-                    var r = MessageBox.Show("Save?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (r == MessageBoxResult.Yes)
-                    {
-                        //this--->Editor(text)--->this(Save)
-                        _appCommands.SaveCommand.Execute(null);
-                    }
-                }
-            }
-
-            //TBD???????????????????????????????????
-            //1.Close after saving...
-            //2.Close the unselected tab...
-            _eventAggregator.GetEvent<CloseTabEvent>().Publish(FileName);
+                if (CloseAction != null)
+                    CloseAction(this, false);
+            } 
         }
 
         private bool CanSave()
@@ -181,12 +182,15 @@ namespace XamlViewer.ViewModels
             if (!IsSelected)
                 return; ;
 
-            Status |= TabStatus.NoSave;
+            if(info.IsModified)
+                Status |= TabStatus.NoSave;
+            else
+                Status &= ~(TabStatus.NoSave);
         }
 
-        private void OnSaveText(string text)
+        private void OnSaveText(TabInfo tabInfo)
         {
-            if (!IsSelected)
+            if (tabInfo.FileName != FileName)
                 return; ;
 
             if (!File.Exists(FileName))
@@ -198,18 +202,39 @@ namespace XamlViewer.ViewModels
                 UpdateFileName(sfd.FileName);
             }
 
+            FileContent = tabInfo.FileContent;
+            SaveToFile();
+
+            if(_closeAfterSaving)
+            {
+                _closeAfterSaving = false;
+
+                if (CloseAction != null)
+                    CloseAction(this, true);
+            }
+        }
+
+        private void OnCacheText(TabInfo tabInfo)
+        {
+            if (tabInfo == null || tabInfo.FileName != FileName)
+                return;
+
+            FileContent = tabInfo.FileContent;
+        }
+
+        #endregion
+
+        public void SaveToFile()
+        {
             using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
             {
                 using (var sw = new StreamWriter(fs, Encoding.UTF8))
                 {
-                    sw.Write(text);
+                    sw.Write(FileContent);
                 }
             }
 
-            FileContent = text;
             Status &= ~(TabStatus.NoSave);
         }
-
-        #endregion
     }
 }

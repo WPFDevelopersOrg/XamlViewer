@@ -52,6 +52,7 @@
     <Compile Include="Events\EditTabEvent.cs" />
     <Compile Include="Events\ProcessStatusEvent.cs" />
     <Compile Include="Payloads\ProcessStatus.cs" />
+    <Compile Include="Payloads\TabInfo.cs" />
     <Compile Include="Payloads\TextInfo.cs" />
     <Compile Include="RegionNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

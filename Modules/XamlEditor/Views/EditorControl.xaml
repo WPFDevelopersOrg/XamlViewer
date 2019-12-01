@@ -14,6 +14,7 @@
         <avalonedit:TextEditor x:Name="textEditor" Margin="6,0,0,0" SyntaxHighlighting="XML" Background="Transparent" LineNumbersForeground="#2B91AF"
                                HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                                utils:TextEditorUtil.Text="{Binding Text}"
+                               IsModified="{Binding IsModified}"
                                WordWrap="{Binding WordWrap}"
                                ShowLineNumbers="{Binding ShowLineNumber}"
                                FontFamily="{Binding FontFamily}"
@@ -21,6 +22,9 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="TextChanged">
                     <prism:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding ElementName=textEditor}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Loaded">
+                    <prism:InvokeCommandAction Command="{Binding LoadedCommand}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </avalonedit:TextEditor> 

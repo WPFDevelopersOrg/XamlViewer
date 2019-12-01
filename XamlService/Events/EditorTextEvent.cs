@@ -12,9 +12,12 @@ namespace XamlService.Events
     {
     }  
 
-    public class SaveTextEvent : PubSubEvent<string>
+    public class SaveTextEvent : PubSubEvent<TabInfo>
     {}
 
-    public class ReloadTextEvent : PubSubEvent<string>
+    public class LoadTextEvent : PubSubEvent<TabInfo>
+    { }
+
+    public class CacheTextEvent : PubSubEvent<TabInfo>
     { }
 }
