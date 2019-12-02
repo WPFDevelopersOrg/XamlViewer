@@ -6,6 +6,7 @@ using CommonServiceLocator;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Utils.IO;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Payloads;
@@ -25,7 +26,7 @@ namespace XamlViewer.ViewModels
         public DelegateCommand CloseCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
 
-        public Action<TabViewModel,bool> CloseAction { get; set; }
+        public Action<TabViewModel, bool> CloseAction { get; set; }
 
         public TabViewModel(string fileName)
         {
@@ -43,9 +44,10 @@ namespace XamlViewer.ViewModels
             FileName = fileName;
             InitInfo();
         }
-         
+
+        public string MD5Code { get; set; }
         public string FileContent { get; set; }
-        
+
         private string _fileName = null;
         public string FileName
         {
@@ -86,7 +88,7 @@ namespace XamlViewer.ViewModels
             if (!IsSelected || _eventAggregator == null)
                 return;
 
-            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent});
+            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent });
         }
 
         private void InitInfo()
@@ -101,6 +103,9 @@ namespace XamlViewer.ViewModels
                     {
                         FileContent = sr.ReadToEnd();
                     }
+
+                    fs.Seek(0, SeekOrigin.Begin);
+                    MD5Code = FileHelper.ComputeMD5(fs);
                 }
             }
             else
@@ -109,9 +114,9 @@ namespace XamlViewer.ViewModels
 
         public void UpdateFileName(string fileName)
         {
-            Title = File.Exists(fileName) ? Path.GetFileName(fileName) : fileName;
+            Title = Path.GetFileName(fileName);
             SetProperty(ref _fileName, fileName, "FileName");
-        }  
+        }
 
         #region Command
 
@@ -122,7 +127,7 @@ namespace XamlViewer.ViewModels
 
         private void Close()
         {
-            if(IsSelected && (Status & TabStatus.NoSave) == TabStatus.NoSave)
+            if (IsSelected && (Status & TabStatus.NoSave) == TabStatus.NoSave)
             {
                 if (!File.Exists(FileName))
                 {
@@ -134,7 +139,7 @@ namespace XamlViewer.ViewModels
 
                         return;
                     }
-                       
+
                     var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml" };
                     if (sfd.ShowDialog() != SWF.DialogResult.OK)
                         return;
@@ -150,7 +155,7 @@ namespace XamlViewer.ViewModels
             {
                 if (CloseAction != null)
                     CloseAction(this, false);
-            } 
+            }
         }
 
         private bool CanSave()
@@ -182,7 +187,7 @@ namespace XamlViewer.ViewModels
             if (!IsSelected)
                 return; ;
 
-            if(info.IsModified)
+            if (info.IsModified)
                 Status |= TabStatus.NoSave;
             else
                 Status &= ~(TabStatus.NoSave);
@@ -205,7 +210,7 @@ namespace XamlViewer.ViewModels
             FileContent = tabInfo.FileContent;
             SaveToFile();
 
-            if(_closeAfterSaving)
+            if (_closeAfterSaving)
             {
                 _closeAfterSaving = false;
 

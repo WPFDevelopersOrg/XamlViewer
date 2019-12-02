@@ -13,9 +13,9 @@
             </Ellipse>
             <Path Data="M15,2.9999998 C8.3725834,3 3,8.3725834 2.9999998,15 3,21.627417 8.3725834,27 15,27 21.627417,27 27,21.627417 27,15 27,8.3725834 21.627417,3 15,2.9999998 z M15,0 C23.284271,0 30,6.7157288 30,15 L30,30 15,30 C6.7157288,30 0,23.284271 0,15 0,6.7157288 6.7157288,0 15,0 z" Margin="0" Stretch="Fill" Stroke="White" StrokeThickness="0">
                 <Path.Fill>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF00B8F0" Offset="0"/>
-                        <GradientStop Color="#FF007CD6" Offset="0.8"/>
+                    <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                        <GradientStop Color="#FF35C4F0" Offset="0"/>
+                        <GradientStop Color="#FF3F549F" Offset="0.7"/>
                     </LinearGradientBrush>
                 </Path.Fill>
             </Path>

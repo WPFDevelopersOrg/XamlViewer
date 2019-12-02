@@ -63,9 +63,17 @@ namespace Utils.IO
 
             using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                var md5Provider = new MD5CryptoServiceProvider();
-                return string.Join("", md5Provider.ComputeHash(fs).Select(b => b.ToString("x2")).ToArray());
+                return ComputeMD5(fs);
             }
+        }
+
+        public static string ComputeMD5(FileStream fs)
+        {
+            if (fs == null)
+                return null;
+
+            var md5Provider = new MD5CryptoServiceProvider();
+            return string.Join("", md5Provider.ComputeHash(fs).Select(b => b.ToString("X2")).ToArray());
         }
 
         #region XML

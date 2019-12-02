@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text; 
 using System.Windows;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
+using Utils.IO;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlUtil.Common;
@@ -25,7 +23,7 @@ namespace XamlViewer.ViewModels
         private IApplicationCommands _appCommands = null;
 
         public DelegateCommand NewCommand { get; private set; }
-        public DelegateCommand OpenCommand { get; private set; } 
+        public DelegateCommand OpenCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
 
         public ObservableCollection<TabViewModel> XamlTabs { get; set; }
@@ -46,7 +44,7 @@ namespace XamlViewer.ViewModels
 
         private void InitEvent()
         {
-            
+
         }
 
         private void InitCommand()
@@ -63,7 +61,7 @@ namespace XamlViewer.ViewModels
 
         private void InitData()
         {
-            XamlTabs = new ObservableCollection<TabViewModel>(_xamlConfig.Files.Select(f => new TabViewModel(f) { CloseAction= CloseXamlTab }));
+            XamlTabs = new ObservableCollection<TabViewModel>(_xamlConfig.Files.Select(f => new TabViewModel(f) { CloseAction = CloseXamlTab }));
             if (XamlTabs.Count == 0)
                 XamlTabs.Add(new TabViewModel("NewFile.xaml") { Status = TabStatus.NoSave });
 
@@ -85,11 +83,11 @@ namespace XamlViewer.ViewModels
         }
 
         private void Open()
-        { 
+        {
             var ofd = new SWF.OpenFileDialog { Filter = "XAML|*.xaml" };
             if (ofd.ShowDialog() == SWF.DialogResult.OK)
             {
-                var tab = XamlTabs.FirstOrDefault(t=>t.FileName== ofd.FileName);
+                var tab = XamlTabs.FirstOrDefault(t => t.FileName == ofd.FileName);
                 if (tab != null)
                     tab.IsSelected = true;
                 else
@@ -100,31 +98,36 @@ namespace XamlViewer.ViewModels
                     });
                 }
             }
-        } 
+        }
 
         private void Refresh()
-        { 
+        {
             foreach (var curTab in XamlTabs)
             {
                 if (File.Exists(curTab.FileName))
                 {
                     var fileContent = string.Empty;
+                    var md5Code = string.Empty;
                     using (var fs = new FileStream(curTab.FileName, FileMode.Open, FileAccess.Read))
                     {
                         using (var sr = new StreamReader(fs, Encoding.UTF8))
                         {
                             fileContent = sr.ReadToEnd();
                         }
+
+                        fs.Seek(0, SeekOrigin.Begin);
+                        md5Code = FileHelper.ComputeMD5(fs);
                     }
 
-                    //????? 内容不一致 不代表被外部修改
-                    if (curTab.FileContent != fileContent)
+                    if (curTab.MD5Code != md5Code)
                     {
+                        //reset
+                        curTab.MD5Code = md5Code;
+
                         var msg = string.Format("{0}\n\nthis file has been modified outside of the source editor.\nDo you want to reload it?", curTab.FileName);
                         var r = MessageBox.Show(msg, "", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (r == MessageBoxResult.Yes)
-                        {
-                            //Reload file...
+                        { 
                             curTab.FileContent = fileContent;
                             curTab.Status &= ~(TabStatus.NoSave);
                         }
@@ -145,17 +148,19 @@ namespace XamlViewer.ViewModels
                         }
                         else
                         {
+
+                            curTab.UpdateFileName(Path.GetFileName(curTab.FileName));
                             curTab.Status |= TabStatus.NoSave;
                         }
                     }
                 }
-            } 
+            }
         }
 
         #endregion
 
         #region Event
-         
+
 
         #endregion
 
@@ -163,7 +168,7 @@ namespace XamlViewer.ViewModels
 
         private void CloseXamlTab(TabViewModel tab, bool ignoreSaving = false)
         {
-            if(!ignoreSaving)
+            if (!ignoreSaving)
             {
                 if (!File.Exists(tab.FileName))
                 {
@@ -189,14 +194,14 @@ namespace XamlViewer.ViewModels
                         }
                     }
                 }
-            }  
+            }
 
             Remove(tab);
         }
 
         private void Remove(TabViewModel tab)
         {
-            if(tab == null)
+            if (tab == null)
                 return;
 
             XamlTabs.Remove(tab);

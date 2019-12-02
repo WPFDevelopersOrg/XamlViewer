@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\Logos\Logo2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
@@ -177,9 +177,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\XamlService\XamlService.csproj">
       <Project>{969af170-1975-43da-af1b-c43e17777d17}</Project>
       <Name>XamlService</Name>
@@ -194,7 +191,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Logo.ico" />
+    <Resource Include="Assets\Logos\Logo3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Logos\Logo.ico" />
+    <Resource Include="Assets\Logos\Logo1.ico" />
+    <Resource Include="Assets\Logos\Logo2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Logos\Logo4.ico" />
+    <Resource Include="Assets\Logos\Logo5.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
