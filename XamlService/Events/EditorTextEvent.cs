@@ -15,6 +15,9 @@ namespace XamlService.Events
     public class SaveTextEvent : PubSubEvent<TabInfo>
     {}
 
+    public class RequestTextEvent : PubSubEvent<TabInfo>
+    { }
+
     public class LoadTextEvent : PubSubEvent<TabInfo>
     { }
 

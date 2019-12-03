@@ -1,7 +1,7 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel; 
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +21,11 @@ namespace XamlEditor.ViewModels
     public class EditorControlViewModel : BindableBase
     {
         private string _fileName = null;
+        private bool _isReseting = false;
 
         private TextEditor _textEditor = null;
         private FoldingManager _foldingManager = null;
-        private XmlFoldingStrategy _foldingStrategy = null; 
+        private XmlFoldingStrategy _foldingStrategy = null;
 
         private IEventAggregator _eventAggregator = null;
 
@@ -39,7 +40,7 @@ namespace XamlEditor.ViewModels
 
             //event
             _eventAggregator.GetEvent<EditorConfigEvent>().Subscribe(OnEditorConfig);
-            _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnReloadText);
+            _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnLoadText);
 
             //Command
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
@@ -53,21 +54,24 @@ namespace XamlEditor.ViewModels
         private void OnLoaded(RoutedEventArgs e)
         {
             _textEditor = e.OriginalSource as TextEditor;
-            if(_textEditor!=null)
+            if (_textEditor != null)
             {
                 _textEditor.TextArea.SelectionCornerRadius = 0;
                 _textEditor.TextArea.SelectionBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFADD6FF"));
                 _textEditor.TextArea.SelectionBorder = null;
                 _textEditor.TextArea.SelectionForeground = null;
             }
+
+            if (_eventAggregator != null)
+                _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo());
         }
 
         private void OnTextChanged(TextEditor textEditor)
-        { 
+        {
             if (_foldingManager == null)
                 _foldingManager = FoldingManager.Install(textEditor.TextArea);
 
-            _foldingStrategy.UpdateFoldings(_foldingManager, textEditor.Document); 
+            _foldingStrategy.UpdateFoldings(_foldingManager, textEditor.Document);
         }
 
         private string _text = "";
@@ -85,12 +89,15 @@ namespace XamlEditor.ViewModels
             {
                 SetProperty(ref _isModified, value);
 
-                _eventAggregator.GetEvent<TextChangedEvent>().Publish(new EditorInfo
+                if (!_isReseting)
                 {
-                    IsModified = _isModified,
-                    CanRedo = _textEditor.CanRedo,
-                    CanUndo = _textEditor.CanUndo,
-                });
+                    _eventAggregator.GetEvent<TextChangedEvent>().Publish(new EditorInfo
+                    {
+                        IsModified = _isModified,
+                        CanRedo = _textEditor.CanRedo,
+                        CanUndo = _textEditor.CanUndo,
+                    });    
+                }
             }
         }
 
@@ -144,25 +151,33 @@ namespace XamlEditor.ViewModels
             WordWrap = config.WordWrap;
         }
 
-        private void OnReloadText(TabInfo tabInfo)
+        private void OnLoadText(TabInfo tabInfo)
         {
-            if(!string.IsNullOrEmpty(_fileName))
+            if (!string.IsNullOrEmpty(_fileName))
             {
                 if (_eventAggregator != null)
-                    _eventAggregator.GetEvent<CacheTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text});
+                    _eventAggregator.GetEvent<CacheTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text });
             }
 
-            _fileName = tabInfo.FileName;
-            _textEditor.Text = tabInfo.FileContent;
-
-            Reset();
+            Reset(() =>
+            {
+                _fileName = tabInfo.FileName;
+                _textEditor.Text = tabInfo.FileContent;    
+            });
         }
 
         #endregion
 
-        private void Reset()
+        private void Reset(Action reset = null)
         {
-            SetProperty(ref _isModified, false);
+            _isReseting = true;
+
+            if (reset != null)
+                reset();
+
+            IsModified = false;
+
+            _isReseting = false;
         }
     }
 }

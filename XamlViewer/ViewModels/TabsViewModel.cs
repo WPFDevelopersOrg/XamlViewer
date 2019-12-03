@@ -61,9 +61,9 @@ namespace XamlViewer.ViewModels
 
         private void InitData()
         {
-            XamlTabs = new ObservableCollection<TabViewModel>(_xamlConfig.Files.Select(f => new TabViewModel(f) { CloseAction = CloseXamlTab }));
+            XamlTabs = new ObservableCollection<TabViewModel>(_xamlConfig.Files.Select(f => new TabViewModel(f, CloseXamlTab)));
             if (XamlTabs.Count == 0)
-                XamlTabs.Add(new TabViewModel("NewFile.xaml") { Status = TabStatus.NoSave });
+                XamlTabs.Add(new TabViewModel("NewFile.xaml", CloseXamlTab) { Status = TabStatus.NoSave });
 
             XamlTabs[0].IsSelected = true;
         }
@@ -74,11 +74,10 @@ namespace XamlViewer.ViewModels
 
         private void New()
         {
-            XamlTabs.Add(new TabViewModel(Common.GetCopyName("NewFile", " ", n => XamlTabs.Any(tab => Path.GetFileNameWithoutExtension(tab.Title).ToLower() == n.ToLower())) + ".xaml")
+            XamlTabs.Add(new TabViewModel(Common.GetCopyName("NewFile", " ", n => XamlTabs.Any(tab => Path.GetFileNameWithoutExtension(tab.Title).ToLower() == n.ToLower())) + ".xaml", CloseXamlTab)
             {
                 IsSelected = true,
                 Status = TabStatus.NoSave,
-                CloseAction = CloseXamlTab
             });
         }
 
@@ -92,9 +91,9 @@ namespace XamlViewer.ViewModels
                     tab.IsSelected = true;
                 else
                 {
-                    XamlTabs.Add(new TabViewModel(ofd.FileName)
+                    XamlTabs.Add(new TabViewModel(ofd.FileName, CloseXamlTab)
                     {
-                        IsSelected = true
+                        IsSelected = true,
                     });
                 }
             }
@@ -110,13 +109,13 @@ namespace XamlViewer.ViewModels
                     var md5Code = string.Empty;
                     using (var fs = new FileStream(curTab.FileName, FileMode.Open, FileAccess.Read))
                     {
+                        md5Code = FileHelper.ComputeMD5(fs);
+
+                        fs.Position = 0;
                         using (var sr = new StreamReader(fs, Encoding.UTF8))
                         {
                             fileContent = sr.ReadToEnd();
                         }
-
-                        fs.Seek(0, SeekOrigin.Begin);
-                        md5Code = FileHelper.ComputeMD5(fs);
                     }
 
                     if (curTab.MD5Code != md5Code)
@@ -124,12 +123,14 @@ namespace XamlViewer.ViewModels
                         //reset
                         curTab.MD5Code = md5Code;
 
-                        var msg = string.Format("{0}\n\nthis file has been modified outside of the source editor.\nDo you want to reload it?", curTab.FileName);
+                        var msg = string.Format("{0}\n\nThis file has been modified outside of the source editor.\nDo you want to reload it?", curTab.FileName);
                         var r = MessageBox.Show(msg, "", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (r == MessageBoxResult.Yes)
                         { 
                             curTab.FileContent = fileContent;
                             curTab.Status &= ~(TabStatus.NoSave);
+
+                            curTab.UpdateToEditor();
                         }
                         else
                         {
@@ -141,14 +142,15 @@ namespace XamlViewer.ViewModels
                 {
                     if (Path.IsPathRooted(curTab.FileName))
                     {
-                        var r = MessageBox.Show("this file has been deleted.\nDo you want to remove?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        var msg = string.Format("{0}\n\nThis file has been deleted.\nDo you want to remove it?", curTab.FileName);
+                        var r = MessageBox.Show(msg, "", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (r == MessageBoxResult.Yes)
                         {
                             Remove(curTab);
                         }
                         else
                         {
-
+                            curTab.MD5Code = null;
                             curTab.UpdateFileName(Path.GetFileName(curTab.FileName));
                             curTab.Status |= TabStatus.NoSave;
                         }

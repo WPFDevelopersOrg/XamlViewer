@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Navigation;
 using CommonServiceLocator;
 using Prism.Commands;
 using Prism.Events;
@@ -22,28 +23,47 @@ namespace XamlViewer.ViewModels
         private IApplicationCommands _appCommands = null;
 
         private bool _closeAfterSaving = false;
+        private Action<TabViewModel, bool> _closeAction = null;
 
         public DelegateCommand CloseCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
 
-        public Action<TabViewModel, bool> CloseAction { get; set; }
-
-        public TabViewModel(string fileName)
+        public TabViewModel(string fileName, Action<TabViewModel, bool> closeAction)
         {
+            FileName = fileName;
+            _closeAction = closeAction;
+
             _xamlConfig = ServiceLocator.Current.GetInstance<XamlConfig>();
             _eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _appCommands = ServiceLocator.Current.GetInstance<IApplicationCommands>();
 
-            _eventAggregator.GetEvent<TextChangedEvent>().Subscribe(OnTextChanged);
-            _eventAggregator.GetEvent<SaveTextEvent>().Subscribe(OnSaveText);
-            _eventAggregator.GetEvent<CacheTextEvent>().Subscribe(OnCacheText);
+            InitEvent();
+            InitCommand();
 
-            CloseCommand = new DelegateCommand(Close, CanClose);
-            SaveCommand = new DelegateCommand(Save, CanSave);
-
-            FileName = fileName;
+            
             InitInfo();
         }
+
+        #region Init
+
+        private void InitEvent()
+        {
+            if (_eventAggregator == null)
+                return;
+
+            _eventAggregator.GetEvent<TextChangedEvent>().Subscribe(OnTextChanged);
+            _eventAggregator.GetEvent<RequestTextEvent>().Subscribe(OnRequestText);
+            _eventAggregator.GetEvent<SaveTextEvent>().Subscribe(OnSaveText);
+            _eventAggregator.GetEvent<CacheTextEvent>().Subscribe(OnCacheText);
+        }
+
+        private void InitCommand()
+        {
+            CloseCommand = new DelegateCommand(Close, CanClose);
+            SaveCommand = new DelegateCommand(Save, CanSave);
+        }
+
+        #endregion
 
         public string MD5Code { get; set; }
         public string FileContent { get; set; }
@@ -72,7 +92,7 @@ namespace XamlViewer.ViewModels
 
                 //Update Designer and Editor
 
-                ReloadToEditor();
+                UpdateToEditor();
             }
         }
 
@@ -83,7 +103,7 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _status, value); }
         }
 
-        private void ReloadToEditor()
+        public void UpdateToEditor()
         {
             if (!IsSelected || _eventAggregator == null)
                 return;
@@ -99,13 +119,15 @@ namespace XamlViewer.ViewModels
 
                 using (var fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
+                    MD5Code = FileHelper.ComputeMD5(fs);
+
+                    fs.Position = 0;
                     using (var sr = new StreamReader(fs, Encoding.UTF8))
                     {
                         FileContent = sr.ReadToEnd();
                     }
 
-                    fs.Seek(0, SeekOrigin.Begin);
-                    MD5Code = FileHelper.ComputeMD5(fs);
+
                 }
             }
             else
@@ -134,8 +156,8 @@ namespace XamlViewer.ViewModels
                     var r = MessageBox.Show("Save to file?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (r == MessageBoxResult.No)
                     {
-                        if (CloseAction != null)
-                            CloseAction(this, true);
+                        if (_closeAction != null)
+                            _closeAction(this, true);
 
                         return;
                     }
@@ -153,8 +175,8 @@ namespace XamlViewer.ViewModels
             }
             else
             {
-                if (CloseAction != null)
-                    CloseAction(this, false);
+                if (_closeAction != null)
+                    _closeAction(this, false);
             }
         }
 
@@ -193,6 +215,15 @@ namespace XamlViewer.ViewModels
                 Status &= ~(TabStatus.NoSave);
         }
 
+        private void OnRequestText(TabInfo tabInfo)
+        {
+            if (tabInfo == null)
+                return;
+
+            if (string.IsNullOrEmpty(tabInfo.FileName) && tabInfo.FileName == FileName || IsSelected)
+                _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent });
+        }
+
         private void OnSaveText(TabInfo tabInfo)
         {
             if (tabInfo.FileName != FileName)
@@ -214,8 +245,8 @@ namespace XamlViewer.ViewModels
             {
                 _closeAfterSaving = false;
 
-                if (CloseAction != null)
-                    CloseAction(this, true);
+                if (_closeAction != null)
+                    _closeAction(this, true);
             }
         }
 
@@ -239,6 +270,7 @@ namespace XamlViewer.ViewModels
                 }
             }
 
+            MD5Code = FileHelper.ComputeMD5(FileName);
             Status &= ~(TabStatus.NoSave);
         }
     }

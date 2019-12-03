@@ -14,7 +14,7 @@
         <avalonedit:TextEditor x:Name="textEditor" Margin="6,0,0,0" SyntaxHighlighting="XML" Background="Transparent" LineNumbersForeground="#2B91AF"
                                HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                                utils:TextEditorUtil.Text="{Binding Text}"
-                               IsModified="{Binding IsModified}"
+                               IsModified="{Binding IsModified, Mode=TwoWay}"
                                WordWrap="{Binding WordWrap}"
                                ShowLineNumbers="{Binding ShowLineNumber}"
                                FontFamily="{Binding FontFamily}"
