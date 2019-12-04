@@ -126,18 +126,19 @@ namespace XamlViewer.ViewModels
                     {
                         FileContent = sr.ReadToEnd();
                     }
-
-
                 }
             }
             else
+            {
                 Title = FileName;
+                FileContent = Application.Current.Resources["FileContentTemplate"] as string;
+            }
         }
 
         public void UpdateFileName(string fileName)
         {
             Title = Path.GetFileName(fileName);
-            SetProperty(ref _fileName, fileName, "FileName");
+            FileName = fileName;
         }
 
         #region Command
@@ -162,7 +163,7 @@ namespace XamlViewer.ViewModels
                         return;
                     }
 
-                    var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml" };
+                    var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
                     if (sfd.ShowDialog() != SWF.DialogResult.OK)
                         return;
 
@@ -189,7 +190,7 @@ namespace XamlViewer.ViewModels
         {
             if (!File.Exists(FileName))
             {
-                var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml" };
+                var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
                 if (sfd.ShowDialog() != SWF.DialogResult.OK)
                     return;
 
@@ -231,7 +232,7 @@ namespace XamlViewer.ViewModels
 
             if (!File.Exists(FileName))
             {
-                var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml" };
+                var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
                 if (sfd.ShowDialog() != SWF.DialogResult.OK)
                     return;
 

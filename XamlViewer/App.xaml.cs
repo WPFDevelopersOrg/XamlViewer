@@ -82,7 +82,7 @@ namespace XamlViewer
             var ea = ServiceLocator.Current.GetInstance<IEventAggregator>();
             if (ea != null)
             {
-                ea.GetEvent<EditorConfigEvent>().Publish(new EditorConfig
+                ea.GetEvent<ConfigEvents>().Publish(new EditorConfig
                 {
                     FontFamily = config.FontFamily,
                     FontSize = config.FontSize,

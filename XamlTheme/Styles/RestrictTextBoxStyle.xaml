@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:controls="clr-namespace:XamlTheme.Controls">
+                    xmlns:controls="clr-namespace:XamlTheme.Controls"
+                    xmlns:themes="clr-namespace:XamlTheme">
 
     <Style TargetType="{x:Type controls:RestrictTextBox}">
         <Setter Property="Background" Value="Transparent" />
@@ -45,7 +46,8 @@
                                      IsTabStop="{TemplateBinding IsTabStop}"
                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                      TabIndex="{TemplateBinding TabIndex}"
-                                     VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
+                                     VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" 
+                                     Style="{DynamicResource {x:Static themes:ResourceKeys.NormalTextBoxStyleKey}}"/>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>

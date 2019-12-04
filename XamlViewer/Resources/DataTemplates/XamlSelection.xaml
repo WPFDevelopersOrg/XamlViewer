@@ -8,7 +8,8 @@
         <markup:SharedResourceDictionary Source="../Converters.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalListBoxItemStyleKey}}"
+    <Style x:Key="XamlSelectionItemStyle" 
+           BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalListBoxItemStyleKey}}"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}"/>
@@ -35,7 +36,7 @@
             </TextBlock>
             <Button Width="18" Height="18" Margin="10,0,0,0" ToolTip="Close"
                     Command="{Binding CloseCommand}"
-                    Style="{DynamicResource {x:Static themes:ResourceKeys.SelectionCloseBtnStyleKey}}">
+                    Style="{StaticResource {x:Static themes:ResourceKeys.SelectionCloseBtnStyleKey}}">
                 <Button.Visibility>
                     <MultiBinding Converter="{StaticResource anyBoolToVisibilityMultiConverter}">
                         <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListBoxItem}"/>

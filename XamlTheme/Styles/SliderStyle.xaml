@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"> 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:themes="clr-namespace:XamlTheme"> 
  
     <Style x:Key="SliderRepeatButtonStyle" TargetType="{x:Type RepeatButton}">
         <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -116,7 +117,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type Slider}">
+    <Style x:Key="{x:Static themes:ResourceKeys.NormalSliderStyleKey}" TargetType="{x:Type Slider}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
         <Setter Property="Background" Value="#C2C3C9"/>
         <Setter Property="Foreground" Value="#007ACC"/>

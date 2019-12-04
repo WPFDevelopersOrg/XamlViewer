@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:XamlTheme.Controls"
-                    xmlns:utils="clr-namespace:XamlTheme.Utils">
+                    xmlns:utils="clr-namespace:XamlTheme.Utils"
+                    xmlns:themes="clr-namespace:XamlTheme">
 
     <utils:ZoomBoxRulerShiftMultiConverter x:Key="zoomBoxRulerShiftMultiConverter"/> 
 
@@ -84,7 +85,8 @@
                                            Value="{Binding Path=HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                            ViewportSize="{TemplateBinding ViewportWidth}" 
                                            Minimum="0" 
-                                           Maximum="{TemplateBinding ScrollableWidth}" />
+                                           Maximum="{TemplateBinding ScrollableWidth}" 
+                                           Style="{DynamicResource {x:Static themes:ResourceKeys.NormalScrollBarStyleKey}}"/>
                             </Grid>
 
                             <!-- Vertical ScrollBar -->
@@ -96,7 +98,8 @@
                                        Value="{Binding Path=VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                        ViewportSize="{TemplateBinding ViewportHeight}" 
                                        Minimum="0" 
-                                       Maximum="{TemplateBinding ScrollableHeight}" />
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Style="{DynamicResource {x:Static themes:ResourceKeys.NormalScrollBarStyleKey}}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>

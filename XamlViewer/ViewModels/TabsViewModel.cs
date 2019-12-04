@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text; 
+using System.Text;
 using System.Windows;
 using Prism.Commands;
 using Prism.Events;
@@ -101,8 +102,9 @@ namespace XamlViewer.ViewModels
 
         private void Refresh()
         {
-            foreach (var curTab in XamlTabs)
+            for (int i = 0; i < XamlTabs.Count; i++)
             {
+                var curTab = XamlTabs[i];
                 if (File.Exists(curTab.FileName))
                 {
                     var fileContent = string.Empty;
@@ -126,7 +128,7 @@ namespace XamlViewer.ViewModels
                         var msg = string.Format("{0}\n\nThis file has been modified outside of the source editor.\nDo you want to reload it?", curTab.FileName);
                         var r = MessageBox.Show(msg, "", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (r == MessageBoxResult.Yes)
-                        { 
+                        {
                             curTab.FileContent = fileContent;
                             curTab.Status &= ~(TabStatus.NoSave);
 
@@ -140,17 +142,19 @@ namespace XamlViewer.ViewModels
                 }
                 else
                 {
-                    if (Path.IsPathRooted(curTab.FileName))
+                    if (Path.IsPathRooted(curTab.FileName) && !string.IsNullOrEmpty(curTab.MD5Code))
                     {
+                        curTab.MD5Code = null;
+
                         var msg = string.Format("{0}\n\nThis file has been deleted.\nDo you want to remove it?", curTab.FileName);
                         var r = MessageBox.Show(msg, "", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (r == MessageBoxResult.Yes)
                         {
                             Remove(curTab);
+                            i--;
                         }
                         else
                         {
-                            curTab.MD5Code = null;
                             curTab.UpdateFileName(Path.GetFileName(curTab.FileName));
                             curTab.Status |= TabStatus.NoSave;
                         }
@@ -177,7 +181,7 @@ namespace XamlViewer.ViewModels
                     var r = MessageBox.Show("Save to file?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (r == MessageBoxResult.Yes)
                     {
-                        var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml" };
+                        var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(tab.FileName) };
                         if (sfd.ShowDialog() != SWF.DialogResult.OK)
                             return;
 
@@ -206,13 +210,19 @@ namespace XamlViewer.ViewModels
             if (tab == null)
                 return;
 
-            XamlTabs.Remove(tab);
+            var index = XamlTabs.IndexOf(tab);
+            if (index > -1)
+            {
+                XamlTabs.RemoveAt(index);
+            }
 
             if (XamlTabs.Count == 0)
                 New();
 
             if (tab.IsSelected)
-                XamlTabs[0].IsSelected = true;
+            {
+                XamlTabs[Math.Max(0, index - 1)].IsSelected = true;
+            }
 
             _xamlConfig.Files.RemoveAll(f => f == tab.FileName);
         }

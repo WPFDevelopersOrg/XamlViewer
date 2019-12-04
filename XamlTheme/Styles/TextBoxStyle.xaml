@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:themes="clr-namespace:XamlTheme">
 
-    <Style TargetType="{x:Type TextBox}">
+    <Style x:Key="{x:Static themes:ResourceKeys.NormalTextBoxStyleKey}" TargetType="{x:Type TextBox}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="#424242"/>
         <Setter Property="Foreground" Value="#424242"/>
@@ -20,7 +21,8 @@
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             Background="{TemplateBinding Background}" 
                             SnapsToDevicePixels="True">
-                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                      Style="{DynamicResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="false">

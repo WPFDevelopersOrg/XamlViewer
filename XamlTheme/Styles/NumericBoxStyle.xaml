@@ -52,7 +52,8 @@
                                          IsTabStop="{TemplateBinding IsTabStop}"
                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                          TabIndex="{TemplateBinding TabIndex}"
-                                         VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
+                                         VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" 
+                                         Style="{DynamicResource {x:Static themes:ResourceKeys.NormalTextBoxStyleKey}}"/>
                                 <Grid Grid.Column="1" Width="{TemplateBinding UpDownButtonsWidth}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>

@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:themes="clr-namespace:XamlTheme">
 
-    <Style TargetType="{x:Type TabControl}">
+    <Style x:Key="{x:Static themes:ResourceKeys.NormalTabControlStyleKey}" TargetType="{x:Type TabControl}">
         <Setter Property="Foreground" Value="#424242"/>
         <Setter Property="Padding" Value="4,4,4,4"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -73,7 +74,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type TabItem}">
+    <Style x:Key="{x:Static themes:ResourceKeys.NormalTabItemStyleKey}" TargetType="{x:Type TabItem}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Foreground" Value="#586069"/>
         <Setter Property="FontSize" Value="13"/>

@@ -46,10 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ApplicationCommands.cs" />
+    <Compile Include="Events\DesignerEvents.cs" />
     <Compile Include="Payloads\EditorConfig.cs" />
-    <Compile Include="Events\EditorConfigEvent.cs" />
-    <Compile Include="Events\EditorTextEvent.cs" />
-    <Compile Include="Events\EditTabEvent.cs" />
+    <Compile Include="Events\ConfigEvents.cs" />
+    <Compile Include="Events\EditorEvents.cs" />
+    <Compile Include="Events\TabEvents.cs" />
     <Compile Include="Events\ProcessStatusEvent.cs" />
     <Compile Include="Payloads\ProcessStatus.cs" />
     <Compile Include="Payloads\TabInfo.cs" />

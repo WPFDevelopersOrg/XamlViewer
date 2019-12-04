@@ -8,7 +8,7 @@
                      xmlns:prism="http://prismlibrary.com/"
                      xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"  
                      prism:ViewModelLocator.AutoWireViewModel="True"
-                     Style="{DynamicResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
+                     Style="{StaticResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
                      WindowStartupLocation="CenterScreen" Height="600" Width="900">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Activated">
@@ -67,7 +67,12 @@
             </GridSplitter.Background>
         </GridSplitter>
         <!--Editor-->
-        <ContentControl Grid.Row="4" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}"/>
+        <ContentControl Grid.Row="4" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}">
+            <ContentControl.Resources>
+                <Style TargetType="ScrollViewer"
+                       BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/>
+            </ContentControl.Resources>
+        </ContentControl>
         <!--Status-->
         <views:StatusControl Grid.Row="5" Height="25" Background="#007ACC"/>
     </Grid>

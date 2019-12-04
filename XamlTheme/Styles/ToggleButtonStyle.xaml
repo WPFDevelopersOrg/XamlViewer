@@ -8,7 +8,8 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!--ToggleButton-->
-    <Style BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"
+    <Style x:Key="{x:Static themes:ResourceKeys.NormalToggleButtonStyleKey}" 
+           BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"
            TargetType="{x:Type ToggleButton}">
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Transparent"/>

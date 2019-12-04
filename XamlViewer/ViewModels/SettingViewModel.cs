@@ -127,7 +127,7 @@ namespace XamlViewer.ViewModels
 
         private void ApplyEditorConfig()
         {
-            _eventAggregator.GetEvent<EditorConfigEvent>().Publish(new EditorConfig
+            _eventAggregator.GetEvent<ConfigEvents>().Publish(new EditorConfig
             {
                 FontFamily = FontFamily,
                 FontSize = FontSize,

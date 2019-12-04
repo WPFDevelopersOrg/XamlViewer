@@ -39,7 +39,7 @@ namespace XamlEditor.ViewModels
             _foldingStrategy = new XmlFoldingStrategy() { ShowAttributesWhenFolded = true };
 
             //event
-            _eventAggregator.GetEvent<EditorConfigEvent>().Subscribe(OnEditorConfig);
+            _eventAggregator.GetEvent<ConfigEvents>().Subscribe(OnEditorConfig);
             _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnLoadText);
 
             //Command
@@ -68,10 +68,7 @@ namespace XamlEditor.ViewModels
 
         private void OnTextChanged(TextEditor textEditor)
         {
-            if (_foldingManager == null)
-                _foldingManager = FoldingManager.Install(textEditor.TextArea);
-
-            _foldingStrategy.UpdateFoldings(_foldingManager, textEditor.Document);
+            UpdateFoldings();
         }
 
         private string _text = "";
@@ -96,7 +93,7 @@ namespace XamlEditor.ViewModels
                         IsModified = _isModified,
                         CanRedo = _textEditor.CanRedo,
                         CanUndo = _textEditor.CanUndo,
-                    });    
+                    });
                 }
             }
         }
@@ -162,11 +159,27 @@ namespace XamlEditor.ViewModels
             Reset(() =>
             {
                 _fileName = tabInfo.FileName;
-                _textEditor.Text = tabInfo.FileContent;    
+                _textEditor.Text = tabInfo.FileContent;
+
+                if (_eventAggregator != null)
+                    _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(tabInfo.FileContent);
+
+                UpdateFoldings();
             });
         }
 
         #endregion
+
+        private void UpdateFoldings()
+        {
+            if (_textEditor == null)
+                return;
+
+            if (_foldingManager == null)
+                _foldingManager = FoldingManager.Install(_textEditor.TextArea);
+
+            _foldingStrategy.UpdateFoldings(_foldingManager, _textEditor.Document);
+        }
 
         private void Reset(Action reset = null)
         {

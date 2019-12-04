@@ -66,12 +66,32 @@ namespace XamlTheme
 
         #endregion
 
+        #region ToggleButton
+
+        public const string NormalToggleButtonStyle = "NormalToggleButtonStyle";
+        public static ComponentResourceKey NormalToggleButtonStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalToggleButtonStyle); }
+        }
+
+        #endregion
+
         #region ToggleStatus
 
         public const string NoBgToggleStatusStyle = "NoBgToggleStatusStyle";
         public static ComponentResourceKey NoBgToggleStatusStyleKey
         {
             get { return new ComponentResourceKey(typeof(ResourceKeys), NoBgToggleStatusStyle); }
+        }
+
+        #endregion
+
+        #region CheckBox
+
+        public const string NormalCheckBoxStyle = "NormalCheckBoxStyle";
+        public static ComponentResourceKey NormalCheckBoxStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalCheckBoxStyle); }
         }
 
         #endregion
@@ -130,10 +150,48 @@ namespace XamlTheme
 
         #region ListBox
 
+        public const string NormalListBoxStyle = "NormalListBoxStyle";
+        public static ComponentResourceKey NormalListBoxStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalListBoxStyle); }
+        }
+
         public const string NormalListBoxItemStyle = "NormalListBoxItemStyle";
         public static ComponentResourceKey NormalListBoxItemStyleKey
         {
             get { return new ComponentResourceKey(typeof(ResourceKeys), NormalListBoxItemStyle); }
+        }
+
+        #endregion
+
+        #region ComboBox
+
+        public const string NormalComboBoxStyle = "NormalComboBoxStyle";
+        public static ComponentResourceKey NormalComboBoxStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalComboBoxStyle); }
+        }
+
+        public const string NormalComboBoxItemStyle = "NormalComboBoxItemStyle";
+        public static ComponentResourceKey NormalComboBoxItemStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalComboBoxItemStyle); }
+        }
+
+        #endregion
+
+        #region TabControl
+
+        public const string NormalTabControlStyle = "NormalTabControlStyle";
+        public static ComponentResourceKey NormalTabControlStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalTabControlStyle); }
+        }
+
+        public const string NormalTabItemStyle = "NormalTabItemStyle";
+        public static ComponentResourceKey NormalTabItemStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalTabItemStyle); }
         }
 
         #endregion
@@ -144,6 +202,42 @@ namespace XamlTheme
         public static ComponentResourceKey NormalUserWindowStyleKey
         {
             get { return new ComponentResourceKey(typeof(ResourceKeys), NormalUserWindowStyle); }
+        }
+
+        #endregion
+
+        #region ScrollViewer
+
+        public const string NormalScrollBarStyle = "NormalScrollBarStyle";
+        public static ComponentResourceKey NormalScrollBarStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalScrollBarStyle); }
+        }
+
+        public const string NormalScrollViewerStyle = "NormalScrollViewerStyle";
+        public static ComponentResourceKey NormalScrollViewerStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalScrollViewerStyle); }
+        }
+
+        #endregion
+
+        #region Slider
+
+        public const string NormalSliderStyle = "NormalSliderStyle";
+        public static ComponentResourceKey NormalSliderStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalSliderStyle); }
+        }
+
+        #endregion
+
+        #region TextBox
+
+        public const string NormalTextBoxStyle = "NormalTextBoxStyle";
+        public static ComponentResourceKey NormalTextBoxStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalTextBoxStyle); }
         }
 
         #endregion

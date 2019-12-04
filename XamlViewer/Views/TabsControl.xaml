@@ -4,12 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <ListBox ItemsSource="{Binding XamlTabs}"
-                 ItemTemplate="{StaticResource XamlSelectionTemplate}">
+                 ItemTemplate="{StaticResource XamlSelectionTemplate}"
+                 ItemContainerStyle="{StaticResource XamlSelectionItemStyle}"
+                 Style="{StaticResource {x:Static themes:ResourceKeys.NormalListBoxStyleKey}}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>

@@ -8,7 +8,5 @@ using XamlService.Payloads;
 
 namespace XamlService.Events
 {
-    public class EditorConfigEvent : PubSubEvent<EditorConfig>
-    {
-    }
+    public class ConfigEvents : PubSubEvent<EditorConfig> {}
 }

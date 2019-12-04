@@ -8,7 +8,8 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!--NormalButton-->
-    <Style BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"
+    <Style x:Key="{x:Static themes:ResourceKeys.NormalButtonStyleKey}" 
+           BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"
            TargetType="{x:Type Button}">
         <Setter Property="Background" Value="#FFB1B1B1"/>
         <Style.Triggers>
