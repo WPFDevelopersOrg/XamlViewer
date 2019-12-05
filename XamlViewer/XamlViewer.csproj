@@ -206,6 +206,10 @@
     <Resource Include="Assets\Logos\Logo4.ico" />
     <Resource Include="Assets\Logos\Logo5.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Cursors\Splitter_lr.cur" />
+    <Resource Include="Assets\Cursors\Splitter_ud.cur" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
