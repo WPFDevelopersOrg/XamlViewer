@@ -34,7 +34,14 @@ namespace XamlDesigner.ViewModels
 
         private void OnRefreshDesigner(string content)
         {
-            Element = XamlReader.Parse(content) as FrameworkElement;
+            try
+            {
+                Element = XamlReader.Parse(content) as FrameworkElement;
+            }
+            catch (Exception ex)
+            {
+                Element = new TextBlock { Text = string.Format("Error: {0}\n\n{1}", ex.Message, ex.StackTrace), Margin = new Thickness(5) };
+            }
         }
     }
 }
