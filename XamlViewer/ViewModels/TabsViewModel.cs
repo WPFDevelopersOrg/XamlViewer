@@ -75,11 +75,17 @@ namespace XamlViewer.ViewModels
 
         private void New()
         {
-            XamlTabs.Add(new TabViewModel(Common.GetCopyName("NewFile", " ", n => XamlTabs.Any(tab => Path.GetFileNameWithoutExtension(tab.Title).ToLower() == n.ToLower())) + ".xaml", CloseXamlTab)
-            {
-                IsSelected = true,
-                Status = TabStatus.NoSave,
-            });
+            var newTab =
+                new TabViewModel(
+                    Common.GetCopyName("NewFile", " ",
+                        n => XamlTabs.Any(tab => Path.GetFileNameWithoutExtension(tab.Title).ToLower() == n.ToLower())) +
+                    ".xaml", CloseXamlTab)
+                {
+                    Status = TabStatus.NoSave,
+                };
+
+            XamlTabs.Add(newTab);
+            newTab.IsSelected = true;
         }
 
         private void Open()
@@ -92,10 +98,9 @@ namespace XamlViewer.ViewModels
                     tab.IsSelected = true;
                 else
                 {
-                    XamlTabs.Add(new TabViewModel(ofd.FileName, CloseXamlTab)
-                    {
-                        IsSelected = true,
-                    });
+                    var newTab = new TabViewModel(ofd.FileName, CloseXamlTab);
+                    XamlTabs.Add(newTab);
+                    newTab.IsSelected = true;
                 }
             }
         }
@@ -218,10 +223,12 @@ namespace XamlViewer.ViewModels
 
             if (XamlTabs.Count == 0)
                 New();
-
-            if (tab.IsSelected)
+            else
             {
-                XamlTabs[Math.Max(0, index - 1)].IsSelected = true;
+                if (tab.IsSelected)
+                {
+                    XamlTabs[Math.Max(0, index - 1)].IsSelected = true;
+                }    
             }
 
             _xamlConfig.Files.RemoveAll(f => f == tab.FileName);

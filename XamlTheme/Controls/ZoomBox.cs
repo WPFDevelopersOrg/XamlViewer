@@ -140,7 +140,15 @@ namespace XamlTheme.Controls
         {
             var zoomBox = (ZoomBox)d;
             zoomBox.OnContentChanged(e.OldValue, e.NewValue);
-        } 
+        }
+
+        public static readonly DependencyProperty ScrollBarBackgroundProperty =
+            DependencyProperty.Register("ScrollBarBackground", typeof(Brush), typeof(ZoomBox), new PropertyMetadata(Brushes.Transparent));
+        public Brush ScrollBarBackground
+        {
+            get { return (Brush)GetValue(ScrollBarBackgroundProperty); }
+            set { SetValue(ScrollBarBackgroundProperty, value); }
+        }
 
         #endregion
 

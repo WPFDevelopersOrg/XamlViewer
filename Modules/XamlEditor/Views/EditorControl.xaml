@@ -7,9 +7,14 @@
              xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:utils="clr-namespace:XamlEditor.Utils"
+             xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="ScrollViewer"
+               BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/>
+    </UserControl.Resources>
     <Grid Background="White">
         <avalonedit:TextEditor x:Name="textEditor" Margin="6,0,0,0" SyntaxHighlighting="XML" Background="Transparent" LineNumbersForeground="#2B91AF"
                                HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"

@@ -98,6 +98,10 @@
       <Project>{969af170-1975-43da-af1b-c43e17777d17}</Project>
       <Name>XamlService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\XamlTheme\XamlTheme.csproj">
+      <Project>{148f150e-fbf2-4b14-97eb-4f5a463d526c}</Project>
+      <Name>XamlTheme</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

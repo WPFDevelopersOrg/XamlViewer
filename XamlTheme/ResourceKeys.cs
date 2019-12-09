@@ -76,6 +76,16 @@ namespace XamlTheme
 
         #endregion
 
+        #region RadioButton
+
+        public const string NormalRadioButtonStyle = "NormalRadioButtonStyle";
+        public static ComponentResourceKey NormalRadioButtonStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalRadioButtonStyle); }
+        }
+
+        #endregion
+
         #region ToggleStatus
 
         public const string NoBgToggleStatusStyle = "NoBgToggleStatusStyle";
@@ -228,6 +238,16 @@ namespace XamlTheme
         public static ComponentResourceKey NormalSliderStyleKey
         {
             get { return new ComponentResourceKey(typeof(ResourceKeys), NormalSliderStyle); }
+        }
+
+        #endregion
+
+        #region GridSplitter
+
+        public const string NormalGridSplitterStyle = "NormalGridSplitterStyle";
+        public static ComponentResourceKey NormalGridSplitterStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), NormalGridSplitterStyle); }
         }
 
         #endregion

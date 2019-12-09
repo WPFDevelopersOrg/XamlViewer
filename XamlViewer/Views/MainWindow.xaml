@@ -6,7 +6,8 @@
                      xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                      xmlns:prism="http://prismlibrary.com/"
-                     xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"  
+                     xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+                     xmlns:utils="clr-namespace:XamlViewer.Utils"
                      prism:ViewModelLocator.AutoWireViewModel="True"
                      Style="{StaticResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
                      WindowStartupLocation="CenterScreen" Height="600" Width="900">
@@ -32,48 +33,84 @@
                                    Command="{Binding ExpandOrCollapseCommand}">
                 <controls:StatusToggle.CheckedContent>
                     <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}" Stretch="Fill" Margin="0,1,0,0" Height="8" Width="12" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                      Data="M312.916 658.584l-62.058-62.052 262.174-262.174 260.112 260.174-62.058 62.052-198.054-198.114z"/>
+                          Data="M312.916 658.584l-62.058-62.052 262.174-262.174 260.112 260.174-62.058 62.052-198.054-198.114z"/>
                 </controls:StatusToggle.CheckedContent>
                 <controls:StatusToggle.UnCheckedContent>
                     <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}" Stretch="Fill" Height="13" Width="13" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                      Data="M967.111111 568.888889h-118.689185a338.394074 338.394074 0 0 1-58.500741 140.515555l84.119704 84.195556a56.888889 56.888889 0 0 1-80.459852 80.402963l-84.15763-84.195556A339.607704 339.607704 0 0 1 568.888889 848.213333V967.111111a56.888889 56.888889 0 0 1-113.777778 0v-118.897778a339.607704 339.607704 0 0 1-140.534518-58.405926l-84.15763 84.195556a56.888889 56.888889 0 0 1-80.459852-80.402963l84.100741-84.195556A338.375111 338.375111 0 0 1 175.578074 568.888889H56.888889a56.888889 56.888889 0 1 1 0-113.777778h118.689185a338.375111 338.375111 0 0 1 58.481778-140.515555l-84.100741-84.195556a56.888889 56.888889 0 0 1 80.459852-80.402963l84.15763 84.195556A339.607704 339.607704 0 0 1 455.111111 175.786667V56.888889a56.888889 56.888889 0 0 1 113.777778 0v118.897778a339.607704 339.607704 0 0 1 140.534518 58.405926l84.15763-84.195556a56.888889 56.888889 0 0 1 80.459852 80.402963l-84.119704 84.195556A338.394074 338.394074 0 0 1 848.421926 455.111111H967.111111a56.888889 56.888889 0 0 1 0 113.777778zM512 284.444444a227.555556 227.555556 0 1 0 227.555556 227.555556 227.555556 227.555556 0 0 0-227.555556-227.555556z" />
+                          Data="M967.111111 568.888889h-118.689185a338.394074 338.394074 0 0 1-58.500741 140.515555l84.119704 84.195556a56.888889 56.888889 0 0 1-80.459852 80.402963l-84.15763-84.195556A339.607704 339.607704 0 0 1 568.888889 848.213333V967.111111a56.888889 56.888889 0 0 1-113.777778 0v-118.897778a339.607704 339.607704 0 0 1-140.534518-58.405926l-84.15763 84.195556a56.888889 56.888889 0 0 1-80.459852-80.402963l84.100741-84.195556A338.375111 338.375111 0 0 1 175.578074 568.888889H56.888889a56.888889 56.888889 0 1 1 0-113.777778h118.689185a338.375111 338.375111 0 0 1 58.481778-140.515555l-84.100741-84.195556a56.888889 56.888889 0 0 1 80.459852-80.402963l84.15763 84.195556A339.607704 339.607704 0 0 1 455.111111 175.786667V56.888889a56.888889 56.888889 0 0 1 113.777778 0v118.897778a339.607704 339.607704 0 0 1 140.534518 58.405926l84.15763-84.195556a56.888889 56.888889 0 0 1 80.459852 80.402963l-84.119704 84.195556A338.394074 338.394074 0 0 1 848.421926 455.111111H967.111111a56.888889 56.888889 0 0 1 0 113.777778zM512 284.444444a227.555556 227.555556 0 1 0 227.555556 227.555556 227.555556 227.555556 0 0 0-227.555556-227.555556z" />
                 </controls:StatusToggle.UnCheckedContent>
             </controls:StatusToggle>
         </Grid>
-    </controls:UserWindow.TitleBarContent> 
+    </controls:UserWindow.TitleBarContent>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="{Binding SettingRowHeight}"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="*" MinHeight="50"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*" MinHeight="50"/>
+            <RowDefinition Height="*"/> 
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <!--Config-->
         <views:SettingControl MinHeight="100" Margin="6,0"/>
         <!--Document-->
         <views:TabsControl Grid.Row="1" Margin="0,6,0,0" />
-        <!--Designer-->
-        <ContentControl Grid.Row="2" prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}"/>
-        <GridSplitter Grid.Row="3" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-            <GridSplitter.Background>
-                <LinearGradientBrush EndPoint="1,0">
-                    <GradientStop Offset="0" Color="Transparent"/>
-                    <GradientStop Offset="0.15" Color="#CED0DC"/>
-                    <GradientStop Offset="0.85" Color="#CED0DC"/>
-                    <GradientStop Offset="1" Color="Transparent"/>
-                </LinearGradientBrush>
-            </GridSplitter.Background>
-        </GridSplitter>
-        <!--Editor-->
-        <ContentControl Grid.Row="4" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}">
-            <ContentControl.Resources>
-                <Style TargetType="ScrollViewer"
-                       BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/>
-            </ContentControl.Resources>
-        </ContentControl>
+        <Grid Grid.Row="2">
+            <Grid.LayoutTransform>
+                <RotateTransform Angle="{Binding GridAngle}"/>
+            </Grid.LayoutTransform>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="50"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*" MinHeight="50"/>
+            </Grid.RowDefinitions> 
+
+            <!--Designer-->
+            <ContentControl Grid.Row="{Binding DesignerRow}" prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}">
+                <ContentControl.LayoutTransform>
+                    <RotateTransform Angle="{Binding PaneAngle}"/>
+                </ContentControl.LayoutTransform>
+            </ContentControl>
+            <GridSplitter Grid.Row="1" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                          Style="{StaticResource {x:Static themes:ResourceKeys.NormalGridSplitterStyleKey}}"
+                          utils:CursorUtil.Source="{Binding CursorSource}"/>
+            <Grid Grid.Row="1" Margin="2,1"> 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Width="35" ToolTip="Swap Panes"
+                        Command="{Binding SwapCommand}"
+                        Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+                    <Path Stretch="Fill" Height="12" Width="11" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
+                          Data="M682.666667 725.333333v-298.666666h-85.333334v298.666666h-128l170.666667 170.666667 170.666667-170.666667h-128zM384 128L213.333333 298.666667h128v298.666666h85.333334V298.666667h128L384 128z"/>
+                </Button>
+
+                <RadioButton Grid.Column="2" Width="35" ToolTip="Vertical Split" Foreground="Black"
+                             Command="{Binding VerSplitCommand}"
+                             Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
+                    <Path Stretch="Fill" Height="13" Width="12" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                          Data="M92.98842129 82.89847542c279.58155273-0.96200134 559.16310547-0.48100022 838.7446582-0.18037519v839.28578378c-279.52142737 0.36075039-559.16310547 0.72150078-838.7446582-0.24050055-1.26262637-61.08706585-0.12024983-122.11400723-0.48100022-183.3213238C92.80804609 520.00769813 91.84604475 301.45308678 92.98842129 82.89847542z m41.90717067 42.62867057c-0.60125095 21.16402321-0.72150078 42.32804554-0.60125094 63.49206875 0.54112559 230.03849939-0.78162614 460.07699788 0.60125094 690.11549726 250.78164685 0.60125095 501.50316833 1.20250101 752.22468893-0.36075039-0.24050056-250.96202204-0.24050056-501.98416855 0-752.94618971-49.42280352-1.62337676-98.84560703-0.42087575-148.20828519-0.78162614-201.23859261 0.30062503-402.6575613-0.60125095-604.01640374 0.48100023z M787.6734238 499.92592698c0 12.62626367-13.52813965 23.02789964-30.06253315 23.02789964H262.54110488c-16.53439261 0-30.06253225-10.40163597-30.06253225-23.02789964s13.52813965-23.02789964 30.06253225-23.02790053h495.06978577c16.53439261 0 30.06253225 10.34151149 30.06253315 23.02790053z">
+                        <Path.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </Path.LayoutTransform>
+                    </Path>
+                </RadioButton>
+                <RadioButton Grid.Column="3" Width="35" ToolTip="Horizontal Split" Foreground="Black" IsChecked="True"
+                             Command="{Binding HorSplitCommand}"
+                             Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
+                    <Path Stretch="Fill" Height="12" Width="13" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                          Data="M92.98842129 82.89847542c279.58155273-0.96200134 559.16310547-0.48100022 838.7446582-0.18037519v839.28578378c-279.52142737 0.36075039-559.16310547 0.72150078-838.7446582-0.24050055-1.26262637-61.08706585-0.12024983-122.11400723-0.48100022-183.3213238C92.80804609 520.00769813 91.84604475 301.45308678 92.98842129 82.89847542z m41.90717067 42.62867057c-0.60125095 21.16402321-0.72150078 42.32804554-0.60125094 63.49206875 0.54112559 230.03849939-0.78162614 460.07699788 0.60125094 690.11549726 250.78164685 0.60125095 501.50316833 1.20250101 752.22468893-0.36075039-0.24050056-250.96202204-0.24050056-501.98416855 0-752.94618971-49.42280352-1.62337676-98.84560703-0.42087575-148.20828519-0.78162614-201.23859261 0.30062503-402.6575613-0.60125095-604.01640374 0.48100023z M787.6734238 499.92592698c0 12.62626367-13.52813965 23.02789964-30.06253315 23.02789964H262.54110488c-16.53439261 0-30.06253225-10.40163597-30.06253225-23.02789964s13.52813965-23.02789964 30.06253225-23.02790053h495.06978577c16.53439261 0 30.06253225 10.34151149 30.06253315 23.02790053z"/>
+                </RadioButton>
+            </Grid>
+            <!--Editor-->
+            <ContentControl Grid.Row="{Binding EditorRow}" prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}">
+                <ContentControl.LayoutTransform>
+                    <RotateTransform Angle="{Binding PaneAngle}"/>
+                </ContentControl.LayoutTransform>
+            </ContentControl>
+        </Grid>
         <!--Status-->
-        <views:StatusControl Grid.Row="5" Height="25" Background="#007ACC"/>
+        <views:StatusControl Grid.Row="3" Height="25" Background="#007ACC"/>
     </Grid>
 </controls:UserWindow>

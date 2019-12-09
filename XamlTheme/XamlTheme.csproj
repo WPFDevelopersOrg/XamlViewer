@@ -62,11 +62,20 @@
     <Compile Include="Utils\ColorUtil.cs" />
     <Compile Include="Utils\Converters.cs" />
     <Compile Include="Utils\DpiUtil.cs" />
+    <Compile Include="Utils\GridSplitterUtil.cs" />
     <Page Include="Styles\CheckBoxStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\ComboBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\RadioButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\GridSplitterStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -66,7 +66,8 @@
                             </controls:Ruler>
 
                             <!-- Horizontal ScrollBar -->
-                            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="{TemplateBinding Background}">
+                            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" 
+                                  Background="{TemplateBinding ScrollBarBackground}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/> 
                                     <ColumnDefinition Width="*"/>
@@ -94,12 +95,14 @@
                                        Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" 
                                        x:Name="PART_VerticalScrollBar"  
                                        Orientation="Vertical" 
-                                       Background="{TemplateBinding Background}"
+                                       Background="{TemplateBinding ScrollBarBackground}"
                                        Value="{Binding Path=VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                        ViewportSize="{TemplateBinding ViewportHeight}" 
                                        Minimum="0" 
                                        Maximum="{TemplateBinding ScrollableHeight}"
                                        Style="{DynamicResource {x:Static themes:ResourceKeys.NormalScrollBarStyleKey}}"/>
+
+                            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{TemplateBinding ScrollBarBackground}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>

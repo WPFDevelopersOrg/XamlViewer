@@ -5,6 +5,7 @@
         <ResourceDictionary Source="/XamlTheme;component/Styles/ButtonStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/RepeatButtonStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ToggleButtonStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/RadioButtonStyle.xaml"/>
 
         <ResourceDictionary Source="/XamlTheme;component/Styles/CheckBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ComboBoxStyle.xaml"/>
@@ -13,6 +14,7 @@
 
         <ResourceDictionary Source="/XamlTheme;component/Styles/ListBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/SliderStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/GridSplitterStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/TabControlStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ScrollViewerStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/TextBoxStyle.xaml"/>

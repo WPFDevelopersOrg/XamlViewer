@@ -116,7 +116,7 @@
     </ControlTemplate>
 
     <Style x:Key="{x:Static themes:ResourceKeys.NormalScrollBarStyleKey}"  TargetType="{x:Type ScrollBar}">
-        <Setter Property="Background" Value="#E8E8EC"/>
+        <Setter Property="Background" Value="#EFEFF2"/>
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Style.Triggers>
@@ -168,6 +168,7 @@
                                    ViewportSize="{TemplateBinding ViewportWidth}"
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                                    Style="{StaticResource {x:Static themes:ResourceKeys.NormalScrollBarStyleKey}}"/>
+                        <Rectangle Grid.Row="1" Grid.Column="1" Fill="#EFEFF2"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

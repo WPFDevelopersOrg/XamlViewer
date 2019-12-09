@@ -83,6 +83,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\XamlConfig.cs" />
+    <Compile Include="Utils\CursorUtil.cs" />
     <Compile Include="ViewModels\TabsViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="Utils\Converters.cs" />

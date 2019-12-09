@@ -9,7 +9,9 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <controls:ZoomBox x:Name="zoomBox" IsShowRuler="{Binding IsChecked,ElementName=RulerSwitch}" Background="#F5F5F5" VerticalScrollBarVisibility="Auto">
+    <controls:ZoomBox x:Name="zoomBox" ScrollBarBackground="#EFEFF2" Background="#F6F6F6" VerticalScrollBarVisibility="Auto"
+                      IsShowRuler="{Binding IsChecked,ElementName=RulerSwitch}" 
+                      Content="{Binding Element}"> 
         <controls:ZoomBox.Ribbon>
             <StackPanel Orientation="Horizontal">
                 <controls:NumericBox Width="50" Maximum="48"  Minimum="0.01" Precision="2" UpDownButtonsWidth="0" MinHeight="0" Background="White"
@@ -22,6 +24,5 @@
                 </ToggleButton>
             </StackPanel>
         </controls:ZoomBox.Ribbon>
-        <Frame Background="White" Content="{Binding Element}" JournalOwnership="UsesParentJournal"/>
     </controls:ZoomBox>
 </UserControl>

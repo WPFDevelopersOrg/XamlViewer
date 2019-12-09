@@ -13,20 +13,12 @@
 
     <VisualBrush x:Key="{x:Static themes:ResourceKeys.AlphaVisualBrushKey}"  Stretch="None" TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,12,12">
         <VisualBrush.Visual>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="6" />
-                    <ColumnDefinition Width="6" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="6" />
-                    <RowDefinition Height="6" />
-                </Grid.RowDefinitions>
-                <Rectangle Fill="#FFF" Grid.Row="0" Grid.Column="0" />
-                <Rectangle Fill="#AAA" Grid.Row="0" Grid.Column="1" />
-                <Rectangle Fill="#AAA" Grid.Row="1" Grid.Column="0" />
-                <Rectangle Fill="#FFF" Grid.Row="1" Grid.Column="1" />
-            </Grid>
+            <UniformGrid Rows="2" Columns="2" Width="12" Height="12">
+                <Rectangle Fill="#F6F6F6"/>
+                <Rectangle Fill="#CCCEDB"/>
+                <Rectangle Fill="#CCCEDB"/>
+                <Rectangle Fill="#F6F6F6"/>
+            </UniformGrid>
         </VisualBrush.Visual>
     </VisualBrush>
 
