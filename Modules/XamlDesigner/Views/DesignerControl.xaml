@@ -19,8 +19,8 @@
                                      Value="{Binding Scale,ElementName=zoomBox, Mode=TwoWay}"/>
                 <ToggleButton x:Name="RulerSwitch" Width="25" Margin="3,0" Foreground="#444444" ToolTip="Ruler"
                               Style="{StaticResource {x:Static themes:ResourceKeys.NormalToggleButtonStyleKey}}">
-                    <Path Stretch="Fill" Height="11" Width="15" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}"
-                          Data="M8.5128298,4.9916291 L6.4646669,5.0083804 6.4566909,8.7262738 8.5040216,8.7081234 z M1.8885698,2.5579458 L1.8752785,8.7534988 3.8549008,8.7353485 3.8628774,2.5695392 z M13.12206,2.486735 L11.134622,2.5124063 11.127483,8.6976411 13.107938,8.6808889 z M15,0 L14.977069,9.9106491 0,9.9999998 0.021261692,0.089360237 14.999163,0.0014076233 z"/>
+                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}"
+                          Data="M0,0 H17 V12 H0 M1,1 V11 H2V6 H3V11 H4V3 H5V11 H6V6 H7V11 H8V3 H9V11 H10V6 H11V11 H12V3 H13V11 H14V6 H15V11 H16V1"/>
                 </ToggleButton>
             </StackPanel>
         </controls:ZoomBox.Ribbon>
