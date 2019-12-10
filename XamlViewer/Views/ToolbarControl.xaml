@@ -27,14 +27,14 @@
         <Button Width="30" ToolTip="Save (Ctrl+S)"
                 Command="{Binding ApplicationCommands.SaveCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Width="16" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                  Data="M725.333333 170.666667H256c-51.584 0-85.333333 29.866667-85.333333 85.333333v512c0 55.466667 33.749333 85.333333 85.333333 85.333333h512c51.2 0 85.333333-29.866667 85.333333-85.333333V307.498667a21.333333 21.333333 0 0 0-6.229333-15.061334L725.333333 170.666667z m0 298.666666H298.666667V170.666667h426.666666v298.666666z M512 170.666667m21.333333 0l85.333334 0q21.333333 0 21.333333 21.333333l0 170.666667q0 21.333333-21.333333 21.333333l-85.333334 0q-21.333333 0-21.333333-21.333333l0-170.666667q0-21.333333 21.333333-21.333333Z"/>
+            <Path RenderOptions.EdgeMode="Aliased" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                  Data="M0,7 V-1 H3 V7 H13 V2 H16 V15 H0 M13,2 H15 V1 H13 M13,1 H14 V0 H13 M8,-1 H11 V5 H8"/>
         </Button>
         <Button Width="30" ToolTip="Save All (Ctrl+Shift+S)"
                 Command="{Binding ApplicationCommands.SaveCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Width="16" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                  Data="M2.875,2.9999998 L3.0000006,2.9999998 3.0000006,20.125002 C3.0000004,21.993753 4.1370632,23.000002 5.8750007,23.000002 L23,23.000002 23,23.125002 C23,24.993752 21.850002,26 20.125002,26 L2.875,26 C1.1370625,26 0,24.993752 0,23.125002 L0,5.875 C0,4.0062499 1.1370625,3 2.875,2.9999998 z M16.15625,0 L18.781251,0 C19.218752,0 19.437501,0.21874964 19.437501,0.65624976 L19.437501,5.90625 C19.437501,6.34375 19.218752,6.5625 18.781251,6.5625 L16.15625,6.5625 C15.71875,6.5625 15.5,6.34375 15.5,5.90625 L15.5,0.65624976 C15.5,0.21874964 15.71875,0 16.15625,0 z M7.625,0 L8.9374995,0 8.9374995,9.187501 22.0625,9.187501 22.0625,0 25.808376,3.7458758 C25.931053,3.8688643 25.999964,4.0354757 26,4.2091875 L26,18.375 C26,20.081251 24.950001,21 23.375,21 L7.625,21 C6.0381874,21 5,20.081251 5.0000001,18.375 L5.0000001,2.625 C5,0.91875011 6.0381874,0 7.625,0 z"/>
+            <Path RenderOptions.EdgeMode="Aliased" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                  Data="M0,15 V0 H2 V13 H15 V15 M3,12 V-1 H5 V5 H14 V1 H16 V12 M14,0 H15 V1 H14 M10,-1 H12 V3 H10"/>
         </Button>
 
         <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3"/>
@@ -57,8 +57,8 @@
         <Button Width="30" ToolTip="Compile (F5)"
                 Command="{Binding ApplicationCommands.CompileCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Width="12" Height="15" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                  Data="M731.42857,512 L0,1024 0,0 z"/>
+            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                  Data="M0,0 L12,8 0,16 z"/>
         </Button>
     </StackPanel>
 </UserControl>

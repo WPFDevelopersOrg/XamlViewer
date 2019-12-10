@@ -14,6 +14,7 @@
         <Setter Property="Foreground" Value="#424242"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#FDFDFD"/>

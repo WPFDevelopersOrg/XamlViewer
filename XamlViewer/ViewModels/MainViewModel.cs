@@ -94,6 +94,20 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _paneAngle, value); }
         }
 
+        private double _horSplitAngle = 0d;
+        public double HorSplitAngle
+        {
+            get { return _horSplitAngle; }
+            set { SetProperty(ref _horSplitAngle, value); }
+        }
+
+        private double _verSplitAngle = 90d;
+        public double VerSplitAngle
+        {
+            get { return _verSplitAngle; }
+            set { SetProperty(ref _verSplitAngle, value); }
+        }
+
         private void ExpandOrCollapse()
         {
             ExpandOrCollapse(_isExpandSetting);
@@ -135,6 +149,8 @@ namespace XamlViewer.ViewModels
         {
             GridAngle = 0d;
             PaneAngle = 0d;
+            HorSplitAngle = 0d;
+            VerSplitAngle = 90d;
             CursorSource = @"./Assets/Cursors/Splitter_ud.cur";
         }
 
@@ -142,7 +158,8 @@ namespace XamlViewer.ViewModels
         {
             GridAngle = -90d;
             PaneAngle = 90d;
-
+            HorSplitAngle = 90d;
+            VerSplitAngle = 0d;
             CursorSource = @"./Assets/Cursors/Splitter_lr.cur";
         }
     }
