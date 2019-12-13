@@ -1,20 +1,12 @@
 ﻿using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Prism.Commands;
-using ICSharpCode.AvalonEdit.Folding;
-using ICSharpCode.AvalonEdit;
 using Prism.Events;
 using XamlService.Events;
-using XamlService;
 using XamlService.Commands;
 using XamlService.Payloads;
 using System.Windows;
-using System.Windows.Media;
+using XamlTheme.Controls;
 
 namespace XamlEditor.ViewModels
 {
@@ -23,20 +15,18 @@ namespace XamlEditor.ViewModels
         private string _fileName = null;
         private bool _isReseting = false;
 
-        private TextEditor _textEditor = null;
-        private FoldingManager _foldingManager = null;
-        private XmlFoldingStrategy _foldingStrategy = null;
-
+        private TextEditorEx _textEditor = null;
         private IEventAggregator _eventAggregator = null;
 
         public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
-        public DelegateCommand<TextEditor> TextChangedCommand { get; private set; }
+        public DelegateCommand DelayArrivedCommand { get; private set; }
+
+        public DelegateCommand CompileCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
 
         public EditorControlViewModel(IEventAggregator eventAggregator, IApplicationCommands appCommands)
         {
             _eventAggregator = eventAggregator;
-            _foldingStrategy = new XmlFoldingStrategy() { ShowAttributesWhenFolded = true };
 
             //event
             _eventAggregator.GetEvent<ConfigEvents>().Subscribe(OnEditorConfig);
@@ -44,38 +34,27 @@ namespace XamlEditor.ViewModels
 
             //Command
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
-            TextChangedCommand = new DelegateCommand<TextEditor>(OnTextChanged);
+            DelayArrivedCommand = new DelegateCommand(OnDelayArrived);
+
+            CompileCommand = new DelegateCommand(Compile);
+            appCommands.CompileCommand.RegisterCommand(CompileCommand);
 
             SaveCommand = new DelegateCommand(Save);
             appCommands.SaveCommand.RegisterCommand(SaveCommand);
-
         }
 
         private void OnLoaded(RoutedEventArgs e)
         {
-            _textEditor = e.OriginalSource as TextEditor;
-            if (_textEditor != null)
-            {
-                _textEditor.TextArea.SelectionCornerRadius = 0;
-                _textEditor.TextArea.SelectionBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFADD6FF"));
-                _textEditor.TextArea.SelectionBorder = null;
-                _textEditor.TextArea.SelectionForeground = null;
-            }
+            _textEditor = e.OriginalSource as TextEditorEx;
 
             if (_eventAggregator != null)
                 _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo());
         }
 
-        private void OnTextChanged(TextEditor textEditor)
+        private void OnDelayArrived()
         {
-            UpdateFoldings();
-        }
-
-        private string _text = "";
-        public string Text
-        {
-            get { return _text; }
-            set { SetProperty(ref _text, value); }
+            if (AutoCompile)
+                Compile();
         }
 
         private bool _isModified;
@@ -91,8 +70,6 @@ namespace XamlEditor.ViewModels
                     _eventAggregator.GetEvent<TextChangedEvent>().Publish(new EditorInfo
                     {
                         IsModified = _isModified,
-                        CanRedo = _textEditor.CanRedo,
-                        CanUndo = _textEditor.CanUndo,
                     });
                 }
             }
@@ -126,6 +103,26 @@ namespace XamlEditor.ViewModels
             set { SetProperty(ref _showLineNumber, value); }
         }
 
+        private bool _autoCompile = true;
+        public bool AutoCompile
+        {
+            get { return _autoCompile; }
+            set
+            {
+                SetProperty(ref _autoCompile, value);
+
+                if (AutoCompile)
+                    Compile();
+            }
+        }
+
+        private double _autoCompileDelay = 1d;
+        public double AutoCompileDelay
+        {
+            get { return _autoCompileDelay; }
+            set { SetProperty(ref _autoCompileDelay, value); }
+        }
+
         #region Command
 
         private void Save()
@@ -146,6 +143,9 @@ namespace XamlEditor.ViewModels
             FontSize = config.FontSize;
             ShowLineNumber = config.ShowLineNumber;
             WordWrap = config.WordWrap;
+
+            AutoCompile = config.AutoCompile;
+            AutoCompileDelay = config.AutoCompileDelay;
         }
 
         private void OnLoadText(TabInfo tabInfo)
@@ -161,25 +161,11 @@ namespace XamlEditor.ViewModels
                 _fileName = tabInfo.FileName;
                 _textEditor.Text = tabInfo.FileContent;
 
-                if (_eventAggregator != null)
-                    _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(tabInfo.FileContent);
-
-                UpdateFoldings();
+                Compile(tabInfo.FileContent);
             });
         }
 
         #endregion
-
-        private void UpdateFoldings()
-        {
-            if (_textEditor == null)
-                return;
-
-            if (_foldingManager == null)
-                _foldingManager = FoldingManager.Install(_textEditor.TextArea);
-
-            _foldingStrategy.UpdateFoldings(_foldingManager, _textEditor.Document);
-        }
 
         private void Reset(Action reset = null)
         {
@@ -191,6 +177,17 @@ namespace XamlEditor.ViewModels
             IsModified = false;
 
             _isReseting = false;
+        }
+
+        private void Compile()
+        {
+            Compile(null);
+        }
+
+        private void Compile(string fileContent)
+        {
+            if (_eventAggregator != null && _textEditor != null)
+                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(fileContent ?? _textEditor.Text);
         }
     }
 }

@@ -53,10 +53,7 @@ namespace XamlViewer
             //Config
             var localConfig = FileHelper.LoadFromJsonFile<XamlConfig>(ResourcesMap.LocationDic[Location.GlobalConfigFile]);
 
-            if (localConfig != null)
-                containerRegistry.RegisterInstance(localConfig);
-            else
-                containerRegistry.RegisterSingleton<XamlConfig>();
+            containerRegistry.RegisterInstance(new AppData { Config = localConfig ?? new XamlConfig() });
         }
 
         protected override IModuleCatalog CreateModuleCatalog()
@@ -68,15 +65,15 @@ namespace XamlViewer
         {
             base.OnInitialized();
 
-            var config = Container.Resolve<XamlConfig>();
-            if (config == null)
+            var appData = Container.Resolve<AppData>();
+            if (appData == null)
                 return;
 
             //check history file
-            if (config.Files == null)
-                config.Files = new List<string>();
+            if (appData.Config.Files == null)
+                appData.Config.Files = new List<string>();
 
-            config.Files.RemoveAll(f => !File.Exists(f) || Path.GetExtension(f).ToLower() != ".xaml");
+            appData.Config.Files.RemoveAll(f => !File.Exists(f) || Path.GetExtension(f).ToLower() != ".xaml");
 
             //restore config
             var ea = ServiceLocator.Current.GetInstance<IEventAggregator>();
@@ -84,14 +81,14 @@ namespace XamlViewer
             {
                 ea.GetEvent<ConfigEvents>().Publish(new EditorConfig
                 {
-                    FontFamily = config.FontFamily,
-                    FontSize = config.FontSize,
+                    FontFamily = appData.Config.FontFamily,
+                    FontSize = appData.Config.FontSize,
 
-                    WordWrap = config.WordWrap,
-                    ShowLineNumber = config.ShowLineNumber,
+                    WordWrap = appData.Config.WordWrap,
+                    ShowLineNumber = appData.Config.ShowLineNumber,
 
-                    AutoCompile = config.AutoCompile,
-                    AutoCompileDelay = config.AutoCompileDelay
+                    AutoCompile = appData.Config.AutoCompile,
+                    AutoCompileDelay = appData.Config.AutoCompileDelay
                 });
             }
         }

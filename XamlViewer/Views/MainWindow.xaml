@@ -19,6 +19,15 @@
             <prism:InvokeCommandAction Command="{Binding ClosingCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <controls:UserWindow.InputBindings>
+        <KeyBinding Command="{Binding AppCommands.NewCommand}" Gesture="Ctrl+N"/>
+        <KeyBinding Command="{Binding AppCommands.OpenCommand}" Gesture="Ctrl+O"/>
+        <KeyBinding Command="{Binding AppCommands.SaveCommand}" Gesture="Ctrl+S"/>
+        <KeyBinding Command="{Binding AppCommands.SaveAllCommand}" Gesture="Ctrl+Shift+S"/>
+        <KeyBinding Command="{Binding AppCommands.UndoCommand}" Gesture="Ctrl+Z"/>
+        <KeyBinding Command="{Binding AppCommands.RedoCommand}" Gesture="Ctrl+Y"/>
+        <KeyBinding Command="{Binding AppCommands.CompileCommand}" Gesture="F5"/>
+    </controls:UserWindow.InputBindings>
     <controls:UserWindow.TitleBarContent>
         <Grid>
             <Grid.ColumnDefinitions>

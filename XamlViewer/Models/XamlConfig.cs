@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic; 
+﻿using System;
+using System.Collections.Generic;
 using XamlService.Payloads;
 
 namespace XamlViewer.Models
@@ -19,6 +20,6 @@ namespace XamlViewer.Models
             Files = new List<string>();
         }
 
-        public List<string> Files { get; set; }
+        public List<string> Files { get; set; } 
     }
 }

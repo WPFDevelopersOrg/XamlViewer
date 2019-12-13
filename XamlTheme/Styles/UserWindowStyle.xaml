@@ -20,7 +20,7 @@
         <Setter Property="FontFamily" Value="Arial,SimSun"/>
         <Setter Property="TitleBarForeground" Value="#424242"/>
         <Setter Property="TitleBarBackground" Value="#EFEFF2"/>
-        <Setter Property="ResizeMode" Value="CanResize"/>
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:UserWindow}">
@@ -67,7 +67,7 @@
                                 </Border>
 
                                 <!-- resize grip -->
-                                <ResizeGrip Grid.Row="1" x:Name="ResizeGrip" Width="5" Height="5" Background="Transparent" Opacity="0.3"
+                                <ResizeGrip Grid.Row="1" x:Name="ResizeGrip" Width="3" Height="3" Background="Transparent" Opacity="0.3" Foreground="White"
                                             Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Bottom" WindowChrome.ResizeGripDirection="BottomRight"/>
                             </Grid>
                         </Border>

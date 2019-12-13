@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\AppData.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\XamlConfig.cs" />
     <Compile Include="Utils\CursorUtil.cs" />

@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
              xmlns:prism="http://prismlibrary.com/"
              xmlns:utils="clr-namespace:XamlEditor.Utils"
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+             xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -16,22 +16,21 @@
                BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/>
     </UserControl.Resources>
     <Grid Background="White">
-        <avalonedit:TextEditor x:Name="textEditor" Margin="6,0,0,0" SyntaxHighlighting="XML" Background="Transparent" LineNumbersForeground="#2B91AF"
-                               HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                               utils:TextEditorUtil.Text="{Binding Text}"
+        <controls:TextEditorEx Margin="6,0,0,0"
                                IsModified="{Binding IsModified, Mode=TwoWay}"
                                WordWrap="{Binding WordWrap}"
                                ShowLineNumbers="{Binding ShowLineNumber}"
                                FontFamily="{Binding FontFamily}"
-                               FontSize="{Binding FontSize}">
+                               FontSize="{Binding FontSize}"
+                               Delay="{Binding AutoCompileDelay}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="TextChanged">
-                    <prism:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding ElementName=textEditor}"/>
-                </i:EventTrigger>
                 <i:EventTrigger EventName="Loaded">
                     <prism:InvokeCommandAction Command="{Binding LoadedCommand}"/>
                 </i:EventTrigger>
+                <i:EventTrigger EventName="DelayArrived">
+                    <prism:InvokeCommandAction Command="{Binding DelayArrivedCommand}"/>
+                </i:EventTrigger>
             </i:Interaction.Triggers>
-        </avalonedit:TextEditor> 
+        </controls:TextEditorEx>
     </Grid>
 </UserControl>

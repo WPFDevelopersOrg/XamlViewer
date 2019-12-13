@@ -13,6 +13,7 @@ namespace XamlService.Commands
         CompositeCommand NewCommand { get; }
         CompositeCommand OpenCommand { get; } 
         CompositeCommand SaveCommand { get; }
+        CompositeCommand SaveAllCommand { get; }
 
         CompositeCommand UndoCommand { get; }
         CompositeCommand RedoCommand { get; }
@@ -41,6 +42,12 @@ namespace XamlService.Commands
         public CompositeCommand SaveCommand
         {
             get { return _saveCommand; }
+        }
+
+        private CompositeCommand _saveAllCommand = new CompositeCommand();
+        public CompositeCommand SaveAllCommand
+        {
+            get { return _saveAllCommand; }
         }
 
         private CompositeCommand _undoCommand = new CompositeCommand();

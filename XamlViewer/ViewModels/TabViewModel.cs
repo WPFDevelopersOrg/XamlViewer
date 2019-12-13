@@ -17,8 +17,7 @@ using SWF = System.Windows.Forms;
 namespace XamlViewer.ViewModels
 {
     public class TabViewModel : BindableBase
-    {
-        private XamlConfig _xamlConfig = null;
+    { 
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
 
@@ -28,19 +27,22 @@ namespace XamlViewer.ViewModels
         public DelegateCommand CloseCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
 
+        private TextChangedEvent _textChangedEvent = null;
+        private RequestTextEvent _requestTextEvent = null;
+        private SaveTextEvent _saveTextEvent = null;
+        private CacheTextEvent _cacheTextEvent = null;
+
         public TabViewModel(string fileName, Action<TabViewModel, bool> closeAction)
         {
             FileName = fileName;
             _closeAction = closeAction;
-
-            _xamlConfig = ServiceLocator.Current.GetInstance<XamlConfig>();
+             
             _eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _appCommands = ServiceLocator.Current.GetInstance<IApplicationCommands>();
 
             InitEvent();
             InitCommand();
 
-            
             InitInfo();
         }
 
@@ -51,10 +53,17 @@ namespace XamlViewer.ViewModels
             if (_eventAggregator == null)
                 return;
 
-            _eventAggregator.GetEvent<TextChangedEvent>().Subscribe(OnTextChanged);
-            _eventAggregator.GetEvent<RequestTextEvent>().Subscribe(OnRequestText);
-            _eventAggregator.GetEvent<SaveTextEvent>().Subscribe(OnSaveText);
-            _eventAggregator.GetEvent<CacheTextEvent>().Subscribe(OnCacheText);
+            _textChangedEvent = _eventAggregator.GetEvent<TextChangedEvent>();
+            _textChangedEvent.Subscribe(OnTextChanged);
+
+            _requestTextEvent = _eventAggregator.GetEvent<RequestTextEvent>();
+            _requestTextEvent.Subscribe(OnRequestText);
+
+            _saveTextEvent = _eventAggregator.GetEvent<SaveTextEvent>();
+            _saveTextEvent.Subscribe(OnSaveText);
+
+            _cacheTextEvent = _eventAggregator.GetEvent<CacheTextEvent>();
+            _cacheTextEvent.Subscribe(OnCacheText);
         }
 
         private void InitCommand()
@@ -178,6 +187,8 @@ namespace XamlViewer.ViewModels
             {
                 if (_closeAction != null)
                     _closeAction(this, false);
+
+                UnsubscribeEvents();
             }
         }
 
@@ -186,7 +197,7 @@ namespace XamlViewer.ViewModels
             return (Status & TabStatus.NoSave) == TabStatus.NoSave;
         }
 
-        private void Save()
+        public void Save()
         {
             if (!File.Exists(FileName))
             {
@@ -221,7 +232,7 @@ namespace XamlViewer.ViewModels
             if (tabInfo == null)
                 return;
 
-            if (string.IsNullOrEmpty(tabInfo.FileName) && tabInfo.FileName == FileName || IsSelected)
+            if (!string.IsNullOrEmpty(tabInfo.FileName) && tabInfo.FileName == FileName || IsSelected)
                 _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent });
         }
 
@@ -248,6 +259,8 @@ namespace XamlViewer.ViewModels
 
                 if (_closeAction != null)
                     _closeAction(this, true);
+
+                UnsubscribeEvents();
             }
         }
 
@@ -273,6 +286,14 @@ namespace XamlViewer.ViewModels
 
             MD5Code = FileHelper.ComputeMD5(FileName);
             Status &= ~(TabStatus.NoSave);
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _textChangedEvent.Unsubscribe(OnTextChanged);
+            _requestTextEvent.Unsubscribe(OnRequestText);
+            _saveTextEvent.Unsubscribe(OnSaveText);
+            _cacheTextEvent.Unsubscribe(OnCacheText);
         }
     }
 }

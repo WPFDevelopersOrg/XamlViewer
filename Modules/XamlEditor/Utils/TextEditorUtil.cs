@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using ICSharpCode.AvalonEdit;
+using System.Windows; 
 
 namespace XamlEditor.Utils
 {
@@ -21,10 +20,7 @@ namespace XamlEditor.Utils
         }
         static void OnTextPropertyChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
         {
-            var ctrl = target as TextEditor;
-            var text = (string)e.NewValue;
-
-            ctrl.Text = text;
+             
         } 
     }
 }

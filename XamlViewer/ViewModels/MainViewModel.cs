@@ -13,8 +13,7 @@ namespace XamlViewer.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        private XamlConfig _xamlConfig = null;
-        private IApplicationCommands _appCommands = null;
+        private AppData _appData = null; 
 
         public DelegateCommand ExpandOrCollapseCommand { get; private set; }
         public DelegateCommand ActivatedCommand { get; private set; }
@@ -26,8 +25,8 @@ namespace XamlViewer.ViewModels
 
         public MainViewModel(IContainerExtension container, IApplicationCommands appCommands)
         {
-            _xamlConfig = container.Resolve<XamlConfig>();
-            _appCommands = appCommands;
+            _appData = container.Resolve<AppData>();
+            AppCommands = appCommands;
 
             ExpandOrCollapseCommand = new DelegateCommand(ExpandOrCollapse);
             ActivatedCommand = new DelegateCommand(Activated);
@@ -36,6 +35,13 @@ namespace XamlViewer.ViewModels
             SwapCommand = new DelegateCommand(Swap);
             HorSplitCommand = new DelegateCommand(HorSplit);
             VerSplitCommand = new DelegateCommand(VerSplit);
+        }
+
+        private IApplicationCommands _appCommands;
+        public IApplicationCommands AppCommands
+        {
+            get { return _appCommands; }
+            set { SetProperty(ref _appCommands, value); }
         }
 
         private string _title = "Xaml Viewer";
@@ -128,7 +134,10 @@ namespace XamlViewer.ViewModels
 
         private void Closing(CancelEventArgs e)
         {
-            FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _xamlConfig);
+            if (_appData.CollectExistedFileAction != null)
+                _appData.CollectExistedFileAction();
+
+            FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _appData.Config);
         }
 
         private void Swap()

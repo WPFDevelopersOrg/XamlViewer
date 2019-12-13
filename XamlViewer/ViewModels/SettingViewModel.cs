@@ -16,12 +16,12 @@ namespace XamlViewer.ViewModels
 {
     public class SettingViewModel : BindableBase
     {
-        private XamlConfig _xamlConfig = null; 
+        private AppData _appData = null; 
         private IEventAggregator _eventAggregator = null;
 
         public SettingViewModel(IContainerExtension container, IEventAggregator eventAggregator)
         {
-            _xamlConfig = container.Resolve<XamlConfig>();
+            _appData = container.Resolve<AppData>();
             _eventAggregator = eventAggregator;
 
             LoadFonts();
@@ -31,16 +31,16 @@ namespace XamlViewer.ViewModels
         private List<string> _fontFamilies = null;
         public List<string> FontFamilies
         {
-            get { return _fontFamilies ?? new List<string> { _xamlConfig.FontFamily }; }
+            get { return _fontFamilies ?? new List<string> { _appData.Config.FontFamily }; }
             set { SetProperty(ref _fontFamilies, value); }
         }
 
         public string FontFamily
         {
-            get { return _xamlConfig.FontFamily; }
+            get { return _appData.Config.FontFamily; }
             set
             {
-                _xamlConfig.FontFamily = value;
+                _appData.Config.FontFamily = value;
 
                 RaisePropertyChanged();
                 ApplyEditorConfig(); 
@@ -49,10 +49,10 @@ namespace XamlViewer.ViewModels
 
         public double FontSize
         {
-            get { return _xamlConfig.FontSize; }
+            get { return _appData.Config.FontSize; }
             set
             {
-                _xamlConfig.FontSize = value;
+                _appData.Config.FontSize = value;
 
                 RaisePropertyChanged();
                 ApplyEditorConfig(); 
@@ -61,10 +61,10 @@ namespace XamlViewer.ViewModels
 
         public bool WordWrap
         {
-            get { return _xamlConfig.WordWrap; }
+            get { return _appData.Config.WordWrap; }
             set
             {
-                _xamlConfig.WordWrap = value;
+                _appData.Config.WordWrap = value;
 
                 RaisePropertyChanged();
                 ApplyEditorConfig(); 
@@ -73,10 +73,10 @@ namespace XamlViewer.ViewModels
 
         public bool ShowLineNumber
         {
-            get { return _xamlConfig.ShowLineNumber; }
+            get { return _appData.Config.ShowLineNumber; }
             set
             {
-                _xamlConfig.ShowLineNumber = value;
+                _appData.Config.ShowLineNumber = value;
 
                 RaisePropertyChanged();
                 ApplyEditorConfig(); 
@@ -85,10 +85,10 @@ namespace XamlViewer.ViewModels
 
         public bool AutoCompile
         {
-            get { return _xamlConfig.AutoCompile; }
+            get { return _appData.Config.AutoCompile; }
             set
             {
-                _xamlConfig.AutoCompile = value;
+                _appData.Config.AutoCompile = value;
 
                 RaisePropertyChanged();
                 ApplyEditorConfig(); 
@@ -97,10 +97,10 @@ namespace XamlViewer.ViewModels
 
         public double AutoCompileDelay
         {
-            get { return _xamlConfig.AutoCompileDelay; }
+            get { return _appData.Config.AutoCompileDelay; }
             set
             {
-                _xamlConfig.AutoCompileDelay = value;
+                _appData.Config.AutoCompileDelay = value;
 
                 RaisePropertyChanged();
                 ApplyEditorConfig(); 

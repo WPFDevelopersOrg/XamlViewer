@@ -10,6 +10,7 @@ using System.Windows.Markup;
 using Prism.Events;
 using XamlService.Events;
 using System.Windows;
+using System.Windows.Media;
 using XamlService.Payloads;
 
 namespace XamlDesigner.ViewModels
@@ -34,13 +35,27 @@ namespace XamlDesigner.ViewModels
 
         private void OnRefreshDesigner(string content)
         {
+            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.Compile);
+
             try
             {
                 Element = XamlReader.Parse(content) as FrameworkElement;
             }
             catch (Exception ex)
             {
-                Element = new TextBlock { Text = string.Format("Error: {0}\n\n{1}", ex.Message, ex.StackTrace), Margin = new Thickness(5) };
+                Element = new TextBlock
+                {
+                    Text = "Error: " + ex.Message,
+                    Margin = new Thickness(5),
+                    FontSize = 14, 
+                    FontWeight = FontWeights.Medium,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                };
+            }
+            finally
+            {
+                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.FinishCompile);
             }
         }
     }

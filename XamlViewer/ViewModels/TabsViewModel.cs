@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using Prism.Commands;
 using Prism.Events;
@@ -19,19 +20,20 @@ namespace XamlViewer.ViewModels
 {
     public class TabsViewModel : BindableBase
     {
-        private XamlConfig _xamlConfig = null;
+        private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
 
         public DelegateCommand NewCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
+        public DelegateCommand SaveAllCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
 
         public ObservableCollection<TabViewModel> XamlTabs { get; set; }
 
         public TabsViewModel(IContainerExtension container, IEventAggregator eventAggregator, IApplicationCommands appCommands)
         {
-            _xamlConfig = container.Resolve<XamlConfig>();
+            _appData = container.Resolve<AppData>();
             _eventAggregator = eventAggregator;
             _appCommands = appCommands;
 
@@ -56,13 +58,18 @@ namespace XamlViewer.ViewModels
             OpenCommand = new DelegateCommand(Open);
             _appCommands.OpenCommand.RegisterCommand(OpenCommand);
 
+            SaveAllCommand = new DelegateCommand(SaveAll);
+            _appCommands.SaveAllCommand.RegisterCommand(SaveAllCommand);
+
             RefreshCommand = new DelegateCommand(Refresh);
             _appCommands.RefreshCommand.RegisterCommand(RefreshCommand);
         }
 
         private void InitData()
         {
-            XamlTabs = new ObservableCollection<TabViewModel>(_xamlConfig.Files.Select(f => new TabViewModel(f, CloseXamlTab)));
+            _appData.CollectExistedFileAction = CollectExistedFile;
+
+            XamlTabs = new ObservableCollection<TabViewModel>(_appData.Config.Files.Select(f => new TabViewModel(f, CloseXamlTab)));
             if (XamlTabs.Count == 0)
                 XamlTabs.Add(new TabViewModel("NewFile.xaml", CloseXamlTab) { Status = TabStatus.NoSave });
 
@@ -102,6 +109,30 @@ namespace XamlViewer.ViewModels
                     XamlTabs.Add(newTab);
                     newTab.IsSelected = true;
                 }
+            }
+        }
+
+        private void SaveAll()
+        {
+            foreach (var curTab in XamlTabs)
+            {
+                if ((curTab.Status & TabStatus.NoSave) != TabStatus.NoSave)
+                    continue;
+
+                if (!File.Exists(curTab.FileName))
+                {
+                    var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(curTab.FileName) };
+                    if (sfd.ShowDialog() != SWF.DialogResult.OK)
+                        continue;
+                }
+
+                if (!curTab.IsSelected)
+                {
+                    curTab.SaveToFile();
+                    continue;
+                }
+
+                curTab.Save();
             }
         }
 
@@ -177,6 +208,11 @@ namespace XamlViewer.ViewModels
 
         #region Func
 
+        private void CollectExistedFile()
+        {
+            _appData.Config.Files = XamlTabs.Where(tab => File.Exists(tab.FileName)).Select(tab => tab.FileName).ToList();
+        }
+
         private void CloseXamlTab(TabViewModel tab, bool ignoreSaving = false)
         {
             if (!ignoreSaving)
@@ -228,10 +264,10 @@ namespace XamlViewer.ViewModels
                 if (tab.IsSelected)
                 {
                     XamlTabs[Math.Max(0, index - 1)].IsSelected = true;
-                }    
+                }
             }
 
-            _xamlConfig.Files.RemoveAll(f => f == tab.FileName);
+            _appData.Config.Files.RemoveAll(f => f == tab.FileName);
         }
 
         #endregion
