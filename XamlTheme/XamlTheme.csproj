@@ -183,7 +183,10 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\Cursors\Hand_Capture.cur" />
+    <Resource Include="Assets\Cursors\Hand_Release.cur" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XamlUtil\XamlUtil.csproj">
       <Project>{05898467-e08e-40a9-8e9c-88d27f3f61b9}</Project>
