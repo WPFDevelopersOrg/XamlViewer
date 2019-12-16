@@ -85,6 +85,7 @@
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\XamlConfig.cs" />
     <Compile Include="Utils\CursorUtil.cs" />
+    <Compile Include="ViewModels\ReferenceViewModel.cs" />
     <Compile Include="ViewModels\TabsViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="Utils\Converters.cs" />
@@ -108,6 +109,10 @@
     <Page Include="Resources\Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\DataTemplates\ReferenceSelection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\DataTemplates\XamlSelection.xaml">
       <SubType>Designer</SubType>

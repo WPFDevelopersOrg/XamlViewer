@@ -169,4 +169,28 @@ namespace XamlViewer.Utils
             return _curColor.Value;
         }
     }
+
+    public class ScrollOffsetToVisibilityMultiConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Contains(null) || values.Contains(DependencyProperty.UnsetValue))
+                return Visibility.Collapsed;
+
+            var offset = (double)values[0];
+            var Length = (double)values[1];
+
+            var isLeftOrTop = parameter == null;
+
+            if (isLeftOrTop)
+                return DoubleUtil.IsZero(offset) ? Visibility.Collapsed : Visibility.Visible;
+            
+            return DoubleUtil.AreClose(offset, Length) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

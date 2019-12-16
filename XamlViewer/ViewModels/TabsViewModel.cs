@@ -29,7 +29,7 @@ namespace XamlViewer.ViewModels
         public DelegateCommand SaveAllCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
 
-        public ObservableCollection<TabViewModel> XamlTabs { get; set; }
+        public ObservableCollection<TabViewModel> XamlTabs { get; private set; }
 
         public TabsViewModel(IContainerExtension container, IEventAggregator eventAggregator, IApplicationCommands appCommands)
         {

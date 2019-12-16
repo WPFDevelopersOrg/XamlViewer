@@ -4,5 +4,6 @@
 
     <utils:AnyBoolToVisibilityMultiConverter x:Key="anyBoolToVisibilityMultiConverter"/>
     <utils:FlagEnumToVisibilityConverter x:Key="flagEnumToVisibilityConverter"/>
+    <utils:ScrollOffsetToVisibilityMultiConverter x:Key="scrollOffsetToVisibilityMultiConverter"/>
 
 </ResourceDictionary>

@@ -18,8 +18,10 @@ namespace XamlViewer.Models
             AutoCompileDelay = 2d;
 
             Files = new List<string>();
+            References = new List<string>();
         }
 
         public List<string> Files { get; set; } 
+        public List<string> References { get; set; }
     }
 }

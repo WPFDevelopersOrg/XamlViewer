@@ -72,10 +72,16 @@ namespace XamlViewer
             //check history file
             if (appData.Config.Files == null)
                 appData.Config.Files = new List<string>();
+            else
+                appData.Config.Files.RemoveAll(f => !File.Exists(f) || Path.GetExtension(f).ToLower() != ".xaml");
 
-            appData.Config.Files.RemoveAll(f => !File.Exists(f) || Path.GetExtension(f).ToLower() != ".xaml");
+            //check reference file
+            if (appData.Config.References == null)
+                appData.Config.References = new List<string>();
+            else
+                appData.Config.References.RemoveAll(f => !File.Exists(AppDomain.CurrentDomain.BaseDirectory + f) || Path.GetExtension(f).ToLower() != ".dll");
 
-            //restore config
+            //apply config
             var ea = ServiceLocator.Current.GetInstance<IEventAggregator>();
             if (ea != null)
             {

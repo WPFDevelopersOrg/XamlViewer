@@ -64,6 +64,12 @@ namespace XamlTheme
             get { return new ComponentResourceKey(typeof(ResourceKeys), NormalRepeatButtonStyle); }
         }
 
+        public const string ScrollRepeatButtonStyle = "ScrollRepeatButtonStyle";
+        public static ComponentResourceKey ScrollRepeatButtonStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), ScrollRepeatButtonStyle); }
+        }
+
         #endregion
 
         #region ToggleButton

@@ -59,7 +59,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <!--Config-->
-        <views:SettingControl MinHeight="100" Margin="6,0"/>
+        <views:SettingControl Height="120" Margin="6,0"/>
         <!--Document-->
         <views:TabsControl Grid.Row="1" Margin="0,6,0,0" />
         <Grid Grid.Row="2">
