@@ -34,6 +34,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <views:ToolbarControl Grid.Row="0"/>
             <TextBlock Grid.Column="1" Margin="5,0" Text="{Binding Title}" Foreground="#717171" FontSize="13" FontWeight="Medium"  VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="False"/>
@@ -49,6 +50,11 @@
                           Data="M967 568.888889h-118.689185a338.394074 338.394074 0 0 1-58.500741 140.515555l84.119704 84.195556a56.888889 56.888889 0 0 1-80.459852 80.402963l-84.15763-84.195556A339.607704 339.607704 0 0 1 568.888889 848.213333V967.111111a56.888889 56.888889 0 0 1-113.777778 0v-118.897778a339.607704 339.607704 0 0 1-140.534518-58.405926l-84.15763 84.195556a56.888889 56.888889 0 0 1-80.459852-80.402963l84.100741-84.195556A338.375111 338.375111 0 0 1 175.578074 568.888889H56.888889a56.888889 56.888889 0 1 1 0-113.777778h118.689185a338.375111 338.375111 0 0 1 58.481778-140.515555l-84.100741-84.195556a56.888889 56.888889 0 0 1 80.459852-80.402963l84.15763 84.195556A339.607704 339.607704 0 0 1 455.111111 175.786667V56.888889a56.888889 56.888889 0 0 1 113.777778 0v118.897778a339.607704 339.607704 0 0 1 140.534518 58.405926l84.15763-84.195556a56.888889 56.888889 0 0 1 80.459852 80.402963l-84.119704 84.195556A338.394074 338.394074 0 0 1 848.421926 455.111111H967.111111a56.888889 56.888889 0 0 1 0 113.777778zM512 284.444444a227.555556 227.555556 0 1 0 227.555556 227.555556 227.555556 227.555556 0 0 0-227.555556-227.555556z" />
                 </controls:StatusToggle.UnCheckedContent>
             </controls:StatusToggle>
+			<Button Grid.Column="3" Style="{StaticResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}" Width="37">
+				<Path VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Help"
+				      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" 
+					  RenderOptions.EdgeMode="Aliased" Data="M1,0 H5V1 H6V5 H5V6 H4V7 H2V5 H3V4 H4V2 H2V4 H0V1 H1 M2,8 H4V10 H2z"/>
+			</Button>
         </Grid>
     </controls:UserWindow.TitleBarContent>
     <Grid>

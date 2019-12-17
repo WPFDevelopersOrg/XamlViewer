@@ -31,6 +31,7 @@ namespace XamlEditor.ViewModels
             //event
             _eventAggregator.GetEvent<ConfigEvents>().Subscribe(OnEditorConfig);
             _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnLoadText);
+            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Subscribe(OnUpdateTabStatus);
 
             //Command
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
@@ -55,6 +56,13 @@ namespace XamlEditor.ViewModels
         {
             if (AutoCompile)
                 Compile();
+        }
+
+        private bool _isReadOnly = false;
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set { SetProperty(ref _isReadOnly, value); }
         }
 
         private bool _isModified;
@@ -138,7 +146,7 @@ namespace XamlEditor.ViewModels
         #region Event
 
         private void OnEditorConfig(EditorConfig config)
-        {
+        { 
             FontFamily = config.FontFamily;
             FontSize = config.FontSize;
             ShowLineNumber = config.ShowLineNumber;
@@ -160,9 +168,15 @@ namespace XamlEditor.ViewModels
             {
                 _fileName = tabInfo.FileName;
                 _textEditor.Text = tabInfo.FileContent;
+                IsReadOnly = tabInfo.IsReadOnly;
 
                 Compile(tabInfo.FileContent);
             });
+        }
+        
+        private void OnUpdateTabStatus(TabFlag tabFlag)
+        {
+            IsReadOnly = tabFlag.IsReadOnly;
         }
 
         #endregion

@@ -87,6 +87,13 @@ namespace XamlTheme.Controls
             get { return (bool)GetValue(ShowLineNumbersProperty); }
             set { SetValue(ShowLineNumbersProperty, value); }
         }
+		
+		public static readonly DependencyProperty IsReadOnlyProperty = TextEditor.IsReadOnlyProperty.AddOwner(_typeofSelf);
+        public bool IsReadOnly
+        {
+            get { return (bool)GetValue(IsReadOnlyProperty); }
+            set { SetValue(IsReadOnlyProperty, value); }
+        }
 
         public static readonly DependencyProperty DelayProperty = DependencyProperty.Register("Delay", typeof(double), _typeofSelf, new PropertyMetadata(1d, OnDelayPropertyChanged));
         public double Delay

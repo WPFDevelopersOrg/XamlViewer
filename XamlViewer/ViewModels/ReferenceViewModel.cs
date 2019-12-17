@@ -11,9 +11,8 @@ namespace XamlViewer.ViewModels
     public class ReferenceViewModel : BindableBase
     {
         public ReferenceViewModel(string fileName)
-        {
-            FileName = fileName;
-            Name = Path.GetFileName(fileName);
+        { 
+            FileName = Path.GetFileName(fileName);
         }
 
         private bool _isSelected;
@@ -28,13 +27,6 @@ namespace XamlViewer.ViewModels
         {
             get { return _fileName; }
             set { SetProperty(ref _fileName, value); }
-        }
-
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
         } 
     }
 }

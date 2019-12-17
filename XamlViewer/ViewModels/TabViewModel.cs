@@ -68,7 +68,7 @@ namespace XamlViewer.ViewModels
 
         private void InitCommand()
         {
-            CloseCommand = new DelegateCommand(Close, CanClose);
+            CloseCommand = new DelegateCommand(Close);
             SaveCommand = new DelegateCommand(Save, CanSave);
         }
 
@@ -97,11 +97,9 @@ namespace XamlViewer.ViewModels
             get { return _isSelected; }
             set
             {
-                SetProperty(ref _isSelected, value);
+                SetProperty(ref _isSelected, value); 
 
-                //Update Designer and Editor
-
-                UpdateToEditor();
+                UpdateTextToEditor();
             }
         }
 
@@ -109,15 +107,28 @@ namespace XamlViewer.ViewModels
         public TabStatus Status
         {
             get { return _status; }
-            set { SetProperty(ref _status, value); }
+            set 
+			{ 
+			    SetProperty(ref _status, value); 
+				
+				UpdateStatusToEditor();
+		    }
         }
 
-        public void UpdateToEditor()
+		public void UpdateStatusToEditor()
+		{
+			if (!IsSelected || _eventAggregator == null)
+                return;
+			
+			_eventAggregator.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
+		}
+
+        public void UpdateTextToEditor()
         {
             if (!IsSelected || _eventAggregator == null)
                 return;
 
-            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent });
+            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
         }
 
         private void InitInfo()
@@ -150,12 +161,7 @@ namespace XamlViewer.ViewModels
             FileName = fileName;
         }
 
-        #region Command
-
-        private bool CanClose()
-        {
-            return (Status & TabStatus.Locked) != TabStatus.Locked;
-        }
+        #region Command 
 
         private void Close()
         {
@@ -233,7 +239,7 @@ namespace XamlViewer.ViewModels
                 return;
 
             if (!string.IsNullOrEmpty(tabInfo.FileName) && tabInfo.FileName == FileName || IsSelected)
-                _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent });
+                _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
         }
 
         private void OnSaveText(TabInfo tabInfo)

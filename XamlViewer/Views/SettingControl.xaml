@@ -14,6 +14,11 @@
              d:DesignHeight="120" d:DesignWidth="800" Background="#FDFDFD">
     <Grid >
         <ScrollViewer x:Name="RootScrollViewer" Margin="5" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+		    <i:Interaction.Triggers>
+				<i:EventTrigger EventName="PreviewMouseWheel">
+					<prism:InvokeCommandAction Command="{Binding MouseWheelCommand}"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
             <StackPanel Orientation="Horizontal">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -119,16 +124,16 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Margin="-7,0,4,0">
                             <Button Width="30" ToolTip="Add"
-                                Command="{Binding AddRefCommand}"
-						        Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+									Command="{Binding AddRefCommand}"
+									Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
                                 <Path RenderOptions.EdgeMode="Aliased" 
 					              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
 						          Data="M0,0 H7V7 H0 M0,9 H7V16 H0 M9,9 H16V16 H9 M12,0 H13V7 H12 M9,3 H12V4 H9 M13,3 H16V4 H13"/>
                             </Button>
 
                             <Button Width="30" ToolTip="Remove" Margin="0,5,0,0"
-                                Command="{Binding RemoveRefCommand}"
-						        Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+									Command="{Binding RemoveRefCommand}"
+									Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
                                 <Path RenderOptions.EdgeMode="Aliased" 
 					              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
 						          Data="M0,2 H6V0 H8V2 H14V4 H13V16 H1V4 H0 M2,4 H12V14 H2 M3,5 H4V13 H3 M6,5 H8V13 H6 M10,5 H11V13 H10"/>
@@ -218,7 +223,8 @@
                 <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
             </StackPanel>  
         </ScrollViewer>
-        <RepeatButton Height="30" Width="30" HorizontalAlignment="Left"
+        <RepeatButton Width="20" HorizontalAlignment="Left"
+		              Command="{Binding ScrollToLeftCommand}"
                       Style="{StaticResource {x:Static themes:ResourceKeys.ScrollRepeatButtonStyleKey}}">
             <RepeatButton.Visibility>
                 <MultiBinding Converter="{StaticResource scrollOffsetToVisibilityMultiConverter}">
@@ -228,10 +234,11 @@
             </RepeatButton.Visibility>
             <Path RenderOptions.EdgeMode="Aliased" 
                   Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RepeatButton}}"
-                  Data="M0,0 H10V1 H11V2 H12V3 H13V4 H14V16 H0V0 M1,1 H9V5 H13V15 H1 M6,6 H7V13 H6 M3,9 H6V10 H3 M7,9 H10V10 H7"/>
+                  Data="M8,0 L0,8 8,16 V14 L2,8 8,2 Z"/>
         </RepeatButton>
 
-        <RepeatButton Height="30" Width="30" HorizontalAlignment="Right"
+        <RepeatButton Width="20" HorizontalAlignment="Right"
+		              Command="{Binding ScrollToRightCommand}"
                       Style="{StaticResource {x:Static themes:ResourceKeys.ScrollRepeatButtonStyleKey}}">
             <RepeatButton.Visibility>
                 <MultiBinding Converter="{StaticResource scrollOffsetToVisibilityMultiConverter}" ConverterParameter="1">
@@ -241,7 +248,7 @@
             </RepeatButton.Visibility>
             <Path RenderOptions.EdgeMode="Aliased" 
                   Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RepeatButton}}"
-                  Data="M0,0 H10V1 H11V2 H12V3 H13V4 H14V16 H0V0 M1,1 H9V5 H13V15 H1 M6,6 H7V13 H6 M3,9 H6V10 H3 M7,9 H10V10 H7"/>
+                  Data="M0,0 L8,8 0,16 V14 L6,8 0,2 Z"/>
         </RepeatButton>
     </Grid>
 </UserControl>

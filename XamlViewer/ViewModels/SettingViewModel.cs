@@ -27,6 +27,10 @@ namespace XamlViewer.ViewModels
         public DelegateCommand AddRefCommand { get; private set; }
         public DelegateCommand RemoveRefCommand { get; private set; }
         public DelegateCommand RefSelectionChangedCommand { get; private set; }
+		
+		public DelegateCommand<ScrollViewer> ScrollToLeftCommand { get; private set; }
+		public DelegateCommand<ScrollViewer> ScrollToRightCommand { get; private set; }
+		public DelegateCommand<object, MouseWheelEventArgs> MouseWheelCommand { get; private set; }
 
         public SettingViewModel(IContainerExtension container, IEventAggregator eventAggregator)
         {
@@ -36,6 +40,10 @@ namespace XamlViewer.ViewModels
             AddRefCommand = new DelegateCommand(AddReference);
             RemoveRefCommand = new DelegateCommand(RemoveReference, CanRemoveReference);
             RefSelectionChangedCommand = new DelegateCommand(RefSelectionChanged);
+			
+			ScrollToLeftCommand = new DelegateCommand<ScrollViewer>(ScrollToLeft);
+			ScrollToRightCommand = new DelegateCommand<ScrollViewer>(ScrollToRight);
+			MouseWheelCommand = new  DelegateCommand<MouseWheelEventArgs>(MouseWheel);
 
             References = new ObservableCollection<ReferenceViewModel>(_appData.Config.References.Select(r => new ReferenceViewModel(r)));
 
@@ -146,9 +154,11 @@ namespace XamlViewer.ViewModels
             var ofd = new SWF.OpenFileDialog { Filter = "DLL|*.dll", Multiselect = true };
             if (ofd.ShowDialog() == SWF.DialogResult.OK)
             {
-                foreach(var fileName in ofd.FileNames)
+                foreach(var selectedName in ofd.FileNames)
                 {
-                    var reference = References.FirstOrDefault(r => string.Equals(r.Name, Path.GetFileNameWithoutExtension(fileName), StringComparison.OrdinalIgnoreCase));
+					var fileName = Path.GetFileName(selectedName);
+					
+                    var reference = References.FirstOrDefault(r => string.Equals(r.FileName, fileName, StringComparison.OrdinalIgnoreCase));
                     if (reference != null)
                     {
                         var r = MessageBox.Show("Same File, Replace?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -156,18 +166,12 @@ namespace XamlViewer.ViewModels
                             return;
 
                         References.Remove(reference);
-                    }
+                    } 
 
-                    //Check Runtime Version and ...
-                    //.......
+                    File.Copy(ofd.FileName, AppDomain.CurrentDomain.BaseDirectory + fileName);
 
-                    var newFileName = AppDomain.CurrentDomain.BaseDirectory + Path.GetFileName(fileName);
-
-                    //File.Copy(ofd.FileName, newFileName);
-                    var refVm = new ReferenceViewModel(newFileName);
-
-                    References.Add(refVm);
-                    _appData.Config.References.Add(refVm.Name);
+                    References.Add(new ReferenceViewModel(fileName));
+                    _appData.Config.References.Add(fileName);
                 }
                 
                 RemoveRefCommand.RaiseCanExecuteChanged();
@@ -187,10 +191,11 @@ namespace XamlViewer.ViewModels
                 if (r.IsSelected)
                 {
                     References.RemoveAt(i);
-                    _appData.Config.References.RemoveAll(rf => rf == r.Name);
+                    _appData.Config.References.RemoveAll(rf => rf == r.FileName);
 
-                    if (File.Exists(r.FileName))
-                        File.Delete(r.FileName);
+                    var filePath = AppDomain.CurrentDomain.BaseDirectory + r.FileName;
+                    if (File.Exists(filePath))
+                        File.Delete(filePath);
 
                     i--;
                 }
@@ -205,6 +210,34 @@ namespace XamlViewer.ViewModels
         }
 
         #endregion
+
+        #region Scroll
+		
+		private void ScrollToLeft(ScrollViewer sv)
+		{
+			sv.ScrollToHorizontalOffset(Math.Min(sv.ScrollableWidth, sv.HorizontalOffset + 15));
+		}
+		
+		private void ScrollToRight(ScrollViewer sv)
+		{
+			sv.ScrollToHorizontalOffset(Math.Max(0, sv.HorizontalOffset - 15));
+		}
+		
+		private void MouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			var sv = sender as ScrollViewer;
+			if(sv == null)
+				return;
+			
+			if (e.Delta > 0)
+                sv.ScrollToHorizontalOffset(Math.Max(0, sv.HorizontalOffset - e.Delta));
+            else
+                sv.ScrollToHorizontalOffset(Math.Min(sv.ScrollableWidth, sv.HorizontalOffset - e.Delta));
+
+            e.Handled = true;
+		}
+		
+		#endregion
 
         private void LoadFonts()
         {

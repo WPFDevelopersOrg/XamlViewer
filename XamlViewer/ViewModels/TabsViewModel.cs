@@ -168,7 +168,7 @@ namespace XamlViewer.ViewModels
                             curTab.FileContent = fileContent;
                             curTab.Status &= ~(TabStatus.NoSave);
 
-                            curTab.UpdateToEditor();
+                            curTab.UpdateTextToEditor();
                         }
                         else
                         {
@@ -215,7 +215,7 @@ namespace XamlViewer.ViewModels
 
         private void CloseXamlTab(TabViewModel tab, bool ignoreSaving = false)
         {
-            if (!ignoreSaving)
+            if (!ignoreSaving && (tab.Status & TabStatus.Inner) != TabStatus.Inner)
             {
                 if (!File.Exists(tab.FileName))
                 {

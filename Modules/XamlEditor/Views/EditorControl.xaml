@@ -17,6 +17,7 @@
     </UserControl.Resources>
     <Grid Background="White">
         <controls:TextEditorEx Margin="6,0,0,0"
+		                       IsReadOnly="{Binding IsReadOnly}"
                                IsModified="{Binding IsModified, Mode=TwoWay}"
                                WordWrap="{Binding WordWrap}"
                                ShowLineNumbers="{Binding ShowLineNumber}"

@@ -18,9 +18,7 @@
     </Style>
     
     <DataTemplate x:Key="RefSelectionTemplate">
-        <StackPanel Orientation="Horizontal">
-            <TextBlock VerticalAlignment="Center" FontSize="12" Text="{Binding Name}"/>  
-        </StackPanel>
+        <TextBlock VerticalAlignment="Center" FontSize="12" Text="{Binding FileName}"/>
     </DataTemplate>
     
 </ResourceDictionary>

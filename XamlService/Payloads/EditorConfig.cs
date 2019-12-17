@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace XamlService.Payloads
 {
     public class EditorConfig
-    {
+    { 
         public string FontFamily { get; set; }
         public double FontSize { get; set; }
 

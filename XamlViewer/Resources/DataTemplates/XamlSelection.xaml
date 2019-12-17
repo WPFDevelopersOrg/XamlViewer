@@ -34,18 +34,24 @@
                        Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.NoSave}}">
                 <Run FontSize="13" Text="*" BaselineAlignment="Superscript"/>
             </TextBlock>
-            <Button Width="18" Height="18" Margin="10,0,0,0" ToolTip="Close"
-                    Command="{Binding CloseCommand}"
-                    Style="{StaticResource {x:Static themes:ResourceKeys.SelectionCloseBtnStyleKey}}">
-                <Button.Visibility>
-                    <MultiBinding Converter="{StaticResource anyBoolToVisibilityMultiConverter}">
-                        <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListBoxItem}"/>
-                        <Binding Path="IsSelected" RelativeSource="{RelativeSource AncestorType=ListBoxItem}"/>
-                    </MultiBinding>
-                </Button.Visibility>
-                <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                      RenderOptions.EdgeMode="Aliased" Data="F1M0,0L2,0 5,3 8,0 10,0 6,4 10,8 8,8 5,5 2,8 0,8 4,4 0,0z" />
-            </Button>
+			<StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+				<Path Margin="0,0,3,0" ToolTip="Locked" Fill="#D0E6F5" 
+					  VerticalAlignment="Center" HorizontalAlignment="Center" 
+					  RenderOptions.EdgeMode="Aliased" Data="M2,0 H6V1 H2 M1,1 H2V3 H1 M6,1 H7V3 H6 M0,3 H8V8 H0z" 
+					  Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.Locked}}"/>
+				<Button Width="18" Height="18" ToolTip="Close"
+						Command="{Binding CloseCommand}"
+						Style="{StaticResource {x:Static themes:ResourceKeys.SelectionCloseBtnStyleKey}}">
+					<Button.Visibility>
+						<MultiBinding Converter="{StaticResource anyBoolToVisibilityMultiConverter}">
+							<Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListBoxItem}"/>
+							<Binding Path="IsSelected" RelativeSource="{RelativeSource AncestorType=ListBoxItem}"/>
+						</MultiBinding>
+					</Button.Visibility>
+					<Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+						  RenderOptions.EdgeMode="Aliased" Data="F1M0,0L2,0 5,3 8,0 10,0 6,4 10,8 8,8 5,5 2,8 0,8 4,4 0,0z" />
+				</Button>
+			</StackPanel>
         </StackPanel>
     </DataTemplate>
     

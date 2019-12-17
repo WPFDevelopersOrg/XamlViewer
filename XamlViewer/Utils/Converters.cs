@@ -176,9 +176,12 @@ namespace XamlViewer.Utils
         {
             if (values.Contains(null) || values.Contains(DependencyProperty.UnsetValue))
                 return Visibility.Collapsed;
-
+ 
             var offset = (double)values[0];
             var Length = (double)values[1];
+
+            if (DoubleUtil.IsNaN(Length) || DoubleUtil.IsZero(Length))
+                return Visibility.Collapsed;
 
             var isLeftOrTop = parameter == null;
 

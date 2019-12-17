@@ -33,12 +33,16 @@
     <Style x:Key="{x:Static themes:ResourceKeys.ScrollRepeatButtonStyleKey}" 
            BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"
            TargetType="{x:Type RepeatButton}">
-        <Setter Property="Background" Value="#88868686"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="#88808080"/>
+        <Setter Property="Opacity" Value="0.3"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver"  Value="True">
-                <Setter Property="Foreground" Value="#007ACC"/>
+                <Setter Property="Foreground" Value="Black"/>
+				<Setter Property="Opacity" Value="1"/>
             </Trigger>   
+			<Trigger Property="IsPressed"  Value="True"> 
+				 <Setter Property="Opacity" Value="0.8"/>
+            </Trigger>  
         </Style.Triggers>
     </Style>
 

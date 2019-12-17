@@ -15,7 +15,7 @@ namespace XamlViewer.Models
     {
         None = 0,
         NoSave = 1,
-        Pinned = 2,
-        Locked = 4
+        Locked = 2,
+        Inner = 6, //contains Locked
     }
 }
