@@ -35,11 +35,19 @@
                 <Run FontSize="13" Text="*" BaselineAlignment="Superscript"/>
             </TextBlock>
 			<StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-				<Path Margin="0,0,3,0" ToolTip="Locked" Fill="#D0E6F5" 
-					  VerticalAlignment="Center" HorizontalAlignment="Center" 
-					  RenderOptions.EdgeMode="Aliased" Data="M2,0 H6V1 H2 M1,1 H2V3 H1 M6,1 H7V3 H6 M0,3 H8V8 H0z" 
-					  Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.Locked}}"/>
-				<Button Width="18" Height="18" ToolTip="Close"
+                <Border Background="Transparent" ToolTip="Read-only">
+                    <Border.Visibility>
+                        <MultiBinding Converter="{StaticResource anyBoolToVisibilityMultiConverter}">
+                            <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListBoxItem}"/>
+                            <Binding Path="IsSelected" RelativeSource="{RelativeSource AncestorType=ListBoxItem}"/>
+                        </MultiBinding>
+                    </Border.Visibility>
+                    <Path Margin="5,0" Fill="#D0E6F5" 
+					      VerticalAlignment="Center" HorizontalAlignment="Center" 
+					      RenderOptions.EdgeMode="Aliased" Data="M2,0 H6V1 H2 M1,1 H2V4 H1 M6,1 H7V4 H6 M0,4 H8V8 H0z" 
+					      Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.Locked}}"/>
+                </Border>
+                <Button Width="18" Height="18" ToolTip="Close"
 						Command="{Binding CloseCommand}"
 						Style="{StaticResource {x:Static themes:ResourceKeys.SelectionCloseBtnStyleKey}}">
 					<Button.Visibility>

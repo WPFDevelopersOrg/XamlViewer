@@ -23,6 +23,8 @@ namespace XamlEditor.ViewModels
 
         public DelegateCommand CompileCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
+        public DelegateCommand RedoCommand { get; private set; }
+        public DelegateCommand UndoCommand { get; private set; }
 
         public EditorControlViewModel(IEventAggregator eventAggregator, IApplicationCommands appCommands)
         {
@@ -42,6 +44,12 @@ namespace XamlEditor.ViewModels
 
             SaveCommand = new DelegateCommand(Save);
             appCommands.SaveCommand.RegisterCommand(SaveCommand);
+
+            RedoCommand = new DelegateCommand(Redo, CanRedo);
+            appCommands.RedoCommand.RegisterCommand(RedoCommand);
+
+            UndoCommand = new DelegateCommand(Undo, CanUndo);
+            appCommands.UndoCommand.RegisterCommand(UndoCommand);
         }
 
         private void OnLoaded(RoutedEventArgs e)
@@ -72,6 +80,9 @@ namespace XamlEditor.ViewModels
             set
             {
                 SetProperty(ref _isModified, value);
+
+                RedoCommand.RaiseCanExecuteChanged();
+                UndoCommand.RaiseCanExecuteChanged();
 
                 if (!_isReseting)
                 {
@@ -139,6 +150,38 @@ namespace XamlEditor.ViewModels
 
             if (_eventAggregator != null)
                 _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text });
+        }
+
+        private bool CanRedo()
+        {
+            if (_textEditor == null)
+                return false;
+
+            return _textEditor.CanRedo;
+        }
+
+        private void Redo()
+        { 
+            _textEditor.Redo();
+
+            RedoCommand.RaiseCanExecuteChanged();
+            UndoCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool CanUndo()
+        {
+            if (_textEditor == null)
+                return false;
+
+            return _textEditor.CanUndo;
+        }
+
+        private void Undo()
+        {
+            _textEditor.Undo();
+
+            RedoCommand.RaiseCanExecuteChanged();
+            UndoCommand.RaiseCanExecuteChanged();
         }
 
         #endregion

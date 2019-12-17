@@ -22,6 +22,7 @@ namespace XamlService.Commands
 
         //
         CompositeCommand RefreshCommand { get; }
+        CompositeCommand HelpCommand { get; }
     }
 
     public class ApplicationCommands : IApplicationCommands
@@ -72,6 +73,12 @@ namespace XamlService.Commands
         public CompositeCommand RefreshCommand
         {
             get { return _refreshCommand; }
-        } 
+        }
+
+        private CompositeCommand _helpCommand = new CompositeCommand();
+        public CompositeCommand HelpCommand
+        {
+            get { return _helpCommand; }
+        }
     }
 }

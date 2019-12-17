@@ -41,6 +41,16 @@ namespace XamlTheme.Controls
             }
         } 
 
+        public bool CanRedo
+        {
+            get { return _partTextEditor.CanRedo; }
+        }
+
+        public bool CanUndo
+        {
+            get { return _partTextEditor.CanUndo; }
+        }
+
         static TextEditorEx()
         {
             DefaultStyleKeyProperty.OverrideMetadata(_typeofSelf, new FrameworkPropertyMetadata(_typeofSelf));
@@ -165,6 +175,22 @@ namespace XamlTheme.Controls
         #endregion
 
         #region Func
+
+        public void Redo()
+        {
+            if (_partTextEditor == null)
+                return;
+
+            _partTextEditor.Redo();
+        }
+
+        public void Undo()
+        {
+            if (_partTextEditor == null)
+                return;
+
+            _partTextEditor.Undo();
+        }
 
         private void RefreshFoldings()
         {

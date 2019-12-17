@@ -28,6 +28,7 @@ namespace XamlViewer.ViewModels
         public DelegateCommand OpenCommand { get; private set; }
         public DelegateCommand SaveAllCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
+        public DelegateCommand HelpCommand { get; private set; }
 
         public ObservableCollection<TabViewModel> XamlTabs { get; private set; }
 
@@ -63,6 +64,9 @@ namespace XamlViewer.ViewModels
 
             RefreshCommand = new DelegateCommand(Refresh);
             _appCommands.RefreshCommand.RegisterCommand(RefreshCommand);
+
+            HelpCommand = new DelegateCommand(Help);
+            _appCommands.HelpCommand.RegisterCommand(HelpCommand);
         }
 
         private void InitData()
@@ -197,6 +201,18 @@ namespace XamlViewer.ViewModels
                     }
                 }
             }
+        }
+
+        private void Help()
+        {
+            var helpTab = XamlTabs.FirstOrDefault(tab => (tab.Status & TabStatus.Inner) == TabStatus.Inner);
+            if(helpTab == null)
+            {
+                helpTab = new TabViewModel("Help.xaml", CloseXamlTab) { Status = TabStatus.Inner };
+                XamlTabs.Add(helpTab);
+            }
+            
+            helpTab.IsSelected = true;
         }
 
         #endregion

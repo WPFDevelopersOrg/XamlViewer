@@ -4,11 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme" 
+             xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+             xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
         <ListBox ItemsSource="{Binding XamlTabs}"
                  ItemTemplate="{StaticResource XamlSelectionTemplate}"
                  ItemContainerStyle="{StaticResource XamlSelectionItemStyle}"
@@ -19,6 +24,18 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>  
         </ListBox>
-        <Path Stretch="Fill" Height="2" Stroke="#007ACC" StrokeThickness="2" Data="M0,0 1,0" VerticalAlignment="Bottom"/>
+        <controls:StatusToggle Grid.Column="1" Width="35">
+            <controls:StatusToggle.CheckedContent>
+                <Path RenderOptions.EdgeMode="Aliased"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
+                      Data="M0,0 H9V2 H8V3 H7V4 H6V5 H5V6 H4V5 H3V4 H2V3 H1V2 H0z" />
+            </controls:StatusToggle.CheckedContent>
+            <controls:StatusToggle.UnCheckedContent>
+                <Path RenderOptions.EdgeMode="Aliased"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
+                      Data="M0,0 H9V2 H0 M0,4 H9V6 H8V7 H7V8 H6V9 H5V10 H4V9 H3V8 H2V7 H1V6 H0z" />
+            </controls:StatusToggle.UnCheckedContent>
+        </controls:StatusToggle>
+        <Path Grid.ColumnSpan="2" Stretch="Fill" Height="2" Stroke="#007ACC" StrokeThickness="2" Data="M0,0 1,0" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

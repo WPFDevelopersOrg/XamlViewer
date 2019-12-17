@@ -10,11 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using XamlService;
 using XamlService.Events;
 using XamlService.Payloads;
 using XamlViewer.Models;
+using XamlViewer.Utils;
 using SWF = System.Windows.Forms;
 
 namespace XamlViewer.ViewModels
@@ -30,7 +33,7 @@ namespace XamlViewer.ViewModels
 		
 		public DelegateCommand<ScrollViewer> ScrollToLeftCommand { get; private set; }
 		public DelegateCommand<ScrollViewer> ScrollToRightCommand { get; private set; }
-		public DelegateCommand<object, MouseWheelEventArgs> MouseWheelCommand { get; private set; }
+		public DelegateCommand<MouseWheelEventArgs> MouseWheelCommand { get; private set; }
 
         public SettingViewModel(IContainerExtension container, IEventAggregator eventAggregator)
         {
@@ -215,19 +218,26 @@ namespace XamlViewer.ViewModels
 		
 		private void ScrollToLeft(ScrollViewer sv)
 		{
-			sv.ScrollToHorizontalOffset(Math.Min(sv.ScrollableWidth, sv.HorizontalOffset + 15));
-		}
+            sv.ScrollToHorizontalOffset(Math.Max(0, sv.HorizontalOffset - 15));
+        }
 		
 		private void ScrollToRight(ScrollViewer sv)
 		{
-			sv.ScrollToHorizontalOffset(Math.Max(0, sv.HorizontalOffset - 15));
+            sv.ScrollToHorizontalOffset(Math.Min(sv.ScrollableWidth, sv.HorizontalOffset + 15));
 		}
 		
-		private void MouseWheel(object sender, MouseWheelEventArgs e)
+		private void MouseWheel(MouseWheelEventArgs e)
 		{
-			var sv = sender as ScrollViewer;
-			if(sv == null)
-				return;
+            if (e.Source is ListBox)
+                return;
+
+			var sv = e.Source as ScrollViewer;
+            if (sv == null)
+            {
+                sv = Common.FindLogicParent<ScrollViewer>(e.Source as DependencyObject);
+                if(sv == null)
+                    return;
+            }
 			
 			if (e.Delta > 0)
                 sv.ScrollToHorizontalOffset(Math.Max(0, sv.HorizontalOffset - e.Delta));

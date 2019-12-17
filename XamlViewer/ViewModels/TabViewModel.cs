@@ -227,7 +227,7 @@ namespace XamlViewer.ViewModels
             if (!IsSelected)
                 return; ;
 
-            if (info.IsModified)
+            if (info.IsModified || !File.Exists(FileName))
                 Status |= TabStatus.NoSave;
             else
                 Status &= ~(TabStatus.NoSave);
