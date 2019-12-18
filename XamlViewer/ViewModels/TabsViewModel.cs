@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -20,6 +22,8 @@ namespace XamlViewer.ViewModels
 {
     public class TabsViewModel : BindableBase
     {
+        private ItemsControl _itemsControl = null;
+
         private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
@@ -29,6 +33,10 @@ namespace XamlViewer.ViewModels
         public DelegateCommand SaveAllCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
         public DelegateCommand HelpCommand { get; private set; }
+
+        public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
+        public DelegateCommand<SizeChangedEventArgs> SizeChangedCommand { get; private set; }
+        public DelegateCommand<int?> SelectionChangedCommand { get; private set; }
 
         public ObservableCollection<TabViewModel> XamlTabs { get; private set; }
 
@@ -42,6 +50,31 @@ namespace XamlViewer.ViewModels
             InitCommand();
 
             InitData();
+        }
+
+        private bool _isOpenActiveFiles;
+        public bool IsOpenActiveFiles
+        {
+            get { return _isOpenActiveFiles; }
+            set { SetProperty(ref _isOpenActiveFiles, value); }
+        }
+
+        private Action<int, int> _moveTabPosAction = null;
+        public Action<int, int> MoveTabPosAction
+        {
+            get
+            {
+                if (_moveTabPosAction == null)
+                    _moveTabPosAction = (si, ti) =>
+                    {
+                        if (si == ti)
+                            return;
+
+                        XamlTabs.Move(si, ti);
+                    };
+
+                return _moveTabPosAction;
+            }
         }
 
         #region Init
@@ -67,6 +100,10 @@ namespace XamlViewer.ViewModels
 
             HelpCommand = new DelegateCommand(Help);
             _appCommands.HelpCommand.RegisterCommand(HelpCommand);
+
+            SizeChangedCommand = new DelegateCommand<SizeChangedEventArgs>(SizeChanged);
+            LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
+            SelectionChangedCommand = new DelegateCommand<int?>(SelectionChanged);
         }
 
         private void InitData()
@@ -95,7 +132,7 @@ namespace XamlViewer.ViewModels
                     Status = TabStatus.NoSave,
                 };
 
-            XamlTabs.Add(newTab);
+            XamlTabs.Insert(0, newTab);
             newTab.IsSelected = true;
         }
 
@@ -106,11 +143,14 @@ namespace XamlViewer.ViewModels
             {
                 var tab = XamlTabs.FirstOrDefault(t => t.FileName == ofd.FileName);
                 if (tab != null)
+                {
                     tab.IsSelected = true;
+                    MoveToVisible(tab);
+                }
                 else
                 {
                     var newTab = new TabViewModel(ofd.FileName, CloseXamlTab);
-                    XamlTabs.Add(newTab);
+                    XamlTabs.Insert(0, newTab);
                     newTab.IsSelected = true;
                 }
             }
@@ -206,13 +246,62 @@ namespace XamlViewer.ViewModels
         private void Help()
         {
             var helpTab = XamlTabs.FirstOrDefault(tab => (tab.Status & TabStatus.Inner) == TabStatus.Inner);
-            if(helpTab == null)
+            if (helpTab == null)
             {
                 helpTab = new TabViewModel("Help.xaml", CloseXamlTab) { Status = TabStatus.Inner };
-                XamlTabs.Add(helpTab);
+                XamlTabs.Insert(0, helpTab);
+
+                helpTab.IsSelected = true;
             }
-            
-            helpTab.IsSelected = true;
+            else
+            {
+                helpTab.IsSelected = true;
+                MoveToVisible(helpTab);
+            }
+        }
+
+        private void SizeChanged(SizeChangedEventArgs e)
+        {
+            var itemsControl = e.Source as ItemsControl;
+            if (itemsControl == null)
+                return;
+
+            for (var i = 0; i < XamlTabs.Count; i++)
+            {
+                var curTab = XamlTabs[i];
+                if (!curTab.IsSelected)
+                    continue;
+
+                var container = (UIElement)itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
+                if (container == null)
+                    return;
+
+                if (DoubleUtil.LessThan(container.TranslatePoint(new Point(), itemsControl).Y, itemsControl.ActualHeight))
+                    return;
+
+                XamlTabs.Move(i, i - 1);
+                return;
+            }
+        }
+
+        private void OnLoaded(RoutedEventArgs e)
+        {
+            _itemsControl = e.OriginalSource as ItemsControl;
+        }
+
+        private void SelectionChanged(int? seletedIndex)
+        {
+            if (!seletedIndex.HasValue  || seletedIndex.Value < 0 || seletedIndex.Value > XamlTabs.Count - 1)
+                return;
+
+            IsOpenActiveFiles = false;
+
+            var tab = XamlTabs[seletedIndex.Value];
+            if (!tab.IsSelected)
+            {
+                tab.IsSelected = true;
+                MoveToVisible(tab);
+            }
         }
 
         #endregion
@@ -223,6 +312,22 @@ namespace XamlViewer.ViewModels
         #endregion
 
         #region Func
+
+        private void MoveToVisible(TabViewModel curTab)
+        {
+            if (_itemsControl == null || curTab == null)
+                return;
+
+            var container = (UIElement)_itemsControl.ItemContainerGenerator.ContainerFromItem(curTab);
+            if (container == null)
+                return;
+
+            if (DoubleUtil.LessThan(container.TranslatePoint(new Point(), _itemsControl).Y, _itemsControl.ActualHeight))
+                return;
+
+            var idnex = _itemsControl.ItemContainerGenerator.IndexFromContainer(container);
+            XamlTabs.Move(idnex, 0);
+        }
 
         private void CollectExistedFile()
         {

@@ -19,6 +19,7 @@ using XamlService.Payloads;
 using XamlViewer.Models;
 using XamlViewer.Utils;
 using SWF = System.Windows.Forms;
+using System.Windows.Controls.Primitives;
 
 namespace XamlViewer.ViewModels
 {
@@ -228,7 +229,7 @@ namespace XamlViewer.ViewModels
 		
 		private void MouseWheel(MouseWheelEventArgs e)
 		{
-            if (e.Source is ListBox)
+            if (e.Source is Selector)
                 return;
 
 			var sv = e.Source as ScrollViewer;
