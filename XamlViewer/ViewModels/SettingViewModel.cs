@@ -229,7 +229,8 @@ namespace XamlViewer.ViewModels
 		
 		private void MouseWheel(MouseWheelEventArgs e)
 		{
-            if (e.Source is Selector)
+            var itemsControl = e.Source as ItemsControl;
+            if (itemsControl != null && itemsControl.Items.Count > 0)
                 return;
 
 			var sv = e.Source as ScrollViewer;
