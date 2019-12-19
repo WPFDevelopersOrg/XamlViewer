@@ -44,5 +44,27 @@ namespace XamlViewer.Utils
 
             return null;
         }
+
+        public static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
+        {
+            if (obj == null)
+                return null;
+
+            var childCount = VisualTreeHelper.GetChildrenCount(obj);
+            for (var i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+
+                var tChild = child as T;
+                if (tChild != null)
+                    return tChild;
+
+                child = FindVisualChild<T>(child);
+                if (child != null)
+                    return (T)child;
+            }
+
+            return null;
+        }
     }
 }

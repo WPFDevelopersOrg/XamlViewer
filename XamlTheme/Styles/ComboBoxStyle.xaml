@@ -71,11 +71,9 @@
 				       IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
 				       PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
                     <mwt:SystemDropShadowChrome x:Name="Shdw" Color="Transparent" 
-					                               MaxHeight="{TemplateBinding MaxDropDownHeight}" 
-					                               MinWidth="{Binding ActualWidth, ElementName=Placement}">
-                        <Border x:Name="DropDownBorder" BorderThickness="1"
-						        BorderBrush="{TemplateBinding BorderBrush}"
-						        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+					                            MaxHeight="{TemplateBinding MaxDropDownHeight}" 
+					                            MinWidth="{Binding ActualWidth, ElementName=Placement}">
+                        <Border x:Name="DropDownBorder" BorderThickness="1" BorderBrush="LightGray" Background="#E7E8EC">
                             <ScrollViewer Style="{DynamicResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}">
                                 <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             </ScrollViewer>
@@ -112,9 +110,9 @@
     <Style x:Key="{x:Static themes:ResourceKeys.NormalComboBoxStyleKey}" TargetType="{x:Type ComboBox}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="#424242"/>
+        <Setter Property="Foreground" Value="#141414"/>
         <Setter Property="Background" Value="White"/>
-        <Setter Property="BorderBrush" Value="#424242"/>
+        <Setter Property="BorderBrush" Value="#141414"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
@@ -132,11 +130,9 @@
 						       IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
 						       PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
                             <mwt:SystemDropShadowChrome x:Name="Shdw" Color="Transparent" 
-							                               MaxHeight="{TemplateBinding MaxDropDownHeight}" 
-							                               MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
-                                <Border x:Name="DropDownBorder" BorderThickness="1"
-								        BorderBrush="{TemplateBinding BorderBrush}"
-								        Background="{TemplateBinding Background}">
+							                            MaxHeight="{TemplateBinding MaxDropDownHeight}" 
+							                            MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+                                <Border x:Name="DropDownBorder" BorderThickness="1" BorderBrush="LightGray" Background="#E7E8EC">
                                     <ScrollViewer CanContentScroll="true"
                                                   Style="{DynamicResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}">
                                         <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
@@ -213,8 +209,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#1C97EA"/>
-                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="#F8F9FA"/> 
             </Trigger>
         </Style.Triggers>
     </Style>

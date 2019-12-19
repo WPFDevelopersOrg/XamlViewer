@@ -3,7 +3,7 @@
                     xmlns:themes="clr-namespace:XamlTheme">
 
     <Style x:Key="{x:Static themes:ResourceKeys.NormalTabControlStyleKey}" TargetType="{x:Type TabControl}">
-        <Setter Property="Foreground" Value="#424242"/>
+        <Setter Property="Foreground" Value="#141414"/>
         <Setter Property="Padding" Value="4,4,4,4"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="LightGray"/>

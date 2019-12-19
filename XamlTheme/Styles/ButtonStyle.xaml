@@ -32,8 +32,7 @@
     <!--Toolbar Button-->
     <Style x:Key="{x:Static themes:ResourceKeys.ToolbarButtonStyleKey}" 
            BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}" 
-           TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="#424242"/>
+           TargetType="{x:Type Button}"> 
         <Style.Triggers>
             <Trigger Property="IsMouseOver"  Value="True">
                 <Setter Property="Background" Value="#FDFDFD"/>
@@ -41,7 +40,7 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="#FDFDFD"/>
-                <Setter Property="Foreground" Value="#424242"/>
+                <Setter Property="Foreground" Value="#141414"/>
             </Trigger>
         </Style.Triggers>
     </Style>

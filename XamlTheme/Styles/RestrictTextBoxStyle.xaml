@@ -5,11 +5,11 @@
 
     <Style TargetType="{x:Type controls:RestrictTextBox}">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="#424242" />
+        <Setter Property="BorderBrush" Value="#141414" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="#424242" />
+        <Setter Property="Foreground" Value="#141414" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="25" />

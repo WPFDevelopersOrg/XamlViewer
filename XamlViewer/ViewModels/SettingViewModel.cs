@@ -7,34 +7,32 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using XamlService;
 using XamlService.Events;
 using XamlService.Payloads;
+using XamlUtil.Common;
 using XamlViewer.Models;
-using XamlViewer.Utils;
-using SWF = System.Windows.Forms;
-using System.Windows.Controls.Primitives;
+using SWF = System.Windows.Forms; 
+using Common = XamlViewer.Utils.Common;
 
 namespace XamlViewer.ViewModels
 {
     public class SettingViewModel : BindableBase
     {
-        private AppData _appData = null; 
+        private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
 
         public DelegateCommand AddRefCommand { get; private set; }
         public DelegateCommand RemoveRefCommand { get; private set; }
         public DelegateCommand RefSelectionChangedCommand { get; private set; }
-		
-		public DelegateCommand<ScrollViewer> ScrollToLeftCommand { get; private set; }
-		public DelegateCommand<ScrollViewer> ScrollToRightCommand { get; private set; }
-		public DelegateCommand<MouseWheelEventArgs> MouseWheelCommand { get; private set; }
+
+        public DelegateCommand<ScrollViewer> ScrollToLeftCommand { get; private set; }
+        public DelegateCommand<ScrollViewer> ScrollToRightCommand { get; private set; }
+        public DelegateCommand<MouseWheelEventArgs> MouseWheelCommand { get; private set; }
 
         public SettingViewModel(IContainerExtension container, IEventAggregator eventAggregator)
         {
@@ -44,10 +42,10 @@ namespace XamlViewer.ViewModels
             AddRefCommand = new DelegateCommand(AddReference);
             RemoveRefCommand = new DelegateCommand(RemoveReference, CanRemoveReference);
             RefSelectionChangedCommand = new DelegateCommand(RefSelectionChanged);
-			
-			ScrollToLeftCommand = new DelegateCommand<ScrollViewer>(ScrollToLeft);
-			ScrollToRightCommand = new DelegateCommand<ScrollViewer>(ScrollToRight);
-			MouseWheelCommand = new  DelegateCommand<MouseWheelEventArgs>(MouseWheel);
+
+            ScrollToLeftCommand = new DelegateCommand<ScrollViewer>(ScrollToLeft);
+            ScrollToRightCommand = new DelegateCommand<ScrollViewer>(ScrollToRight);
+            MouseWheelCommand = new DelegateCommand<MouseWheelEventArgs>(MouseWheel);
 
             References = new ObservableCollection<ReferenceViewModel>(_appData.Config.References.Select(r => new ReferenceViewModel(r)));
 
@@ -72,7 +70,7 @@ namespace XamlViewer.ViewModels
                 _appData.Config.FontFamily = value;
 
                 RaisePropertyChanged();
-                ApplyEditorConfig(); 
+                ApplyEditorConfig();
             }
         }
 
@@ -84,7 +82,7 @@ namespace XamlViewer.ViewModels
                 _appData.Config.FontSize = value;
 
                 RaisePropertyChanged();
-                ApplyEditorConfig(); 
+                ApplyEditorConfig();
             }
         }
 
@@ -96,7 +94,7 @@ namespace XamlViewer.ViewModels
                 _appData.Config.WordWrap = value;
 
                 RaisePropertyChanged();
-                ApplyEditorConfig(); 
+                ApplyEditorConfig();
             }
         }
 
@@ -108,7 +106,7 @@ namespace XamlViewer.ViewModels
                 _appData.Config.ShowLineNumber = value;
 
                 RaisePropertyChanged();
-                ApplyEditorConfig(); 
+                ApplyEditorConfig();
             }
         }
 
@@ -120,7 +118,7 @@ namespace XamlViewer.ViewModels
                 _appData.Config.AutoCompile = value;
 
                 RaisePropertyChanged();
-                ApplyEditorConfig(); 
+                ApplyEditorConfig();
             }
         }
 
@@ -132,7 +130,7 @@ namespace XamlViewer.ViewModels
                 _appData.Config.AutoCompileDelay = value;
 
                 RaisePropertyChanged();
-                ApplyEditorConfig(); 
+                ApplyEditorConfig();
             }
         }
 
@@ -152,16 +150,16 @@ namespace XamlViewer.ViewModels
         #region Reference
 
         public ObservableCollection<ReferenceViewModel> References { get; private set; }
-         
+
         private void AddReference()
         {
             var ofd = new SWF.OpenFileDialog { Filter = "DLL|*.dll", Multiselect = true };
             if (ofd.ShowDialog() == SWF.DialogResult.OK)
             {
-                foreach(var selectedName in ofd.FileNames)
+                foreach (var selectedName in ofd.FileNames)
                 {
-					var fileName = Path.GetFileName(selectedName);
-					
+                    var fileName = Path.GetFileName(selectedName);
+
                     var reference = References.FirstOrDefault(r => string.Equals(r.FileName, fileName, StringComparison.OrdinalIgnoreCase));
                     if (reference != null)
                     {
@@ -170,14 +168,14 @@ namespace XamlViewer.ViewModels
                             return;
 
                         References.Remove(reference);
-                    } 
+                    }
 
                     File.Copy(ofd.FileName, AppDomain.CurrentDomain.BaseDirectory + fileName);
 
                     References.Add(new ReferenceViewModel(fileName));
                     _appData.Config.References.Add(fileName);
                 }
-                
+
                 RemoveRefCommand.RaiseCanExecuteChanged();
             }
         }
@@ -189,7 +187,7 @@ namespace XamlViewer.ViewModels
 
         private void RemoveReference()
         {
-            for(int i = 0; i < References.Count; i++)
+            for (int i = 0; i < References.Count; i++)
             {
                 var r = References[i];
                 if (r.IsSelected)
@@ -216,40 +214,48 @@ namespace XamlViewer.ViewModels
         #endregion
 
         #region Scroll
-		
-		private void ScrollToLeft(ScrollViewer sv)
-		{
+
+        private void ScrollToLeft(ScrollViewer sv)
+        {
             sv.ScrollToHorizontalOffset(Math.Max(0, sv.HorizontalOffset - 15));
         }
-		
-		private void ScrollToRight(ScrollViewer sv)
-		{
+
+        private void ScrollToRight(ScrollViewer sv)
+        {
             sv.ScrollToHorizontalOffset(Math.Min(sv.ScrollableWidth, sv.HorizontalOffset + 15));
-		}
-		
-		private void MouseWheel(MouseWheelEventArgs e)
-		{
-            var itemsControl = e.Source as ItemsControl;
-            if (itemsControl != null && itemsControl.Items.Count > 0)
+        }
+
+        private void MouseWheel(MouseWheelEventArgs e)
+        {
+            var comboBox = e.Source as ComboBox;
+            if (comboBox != null && comboBox.IsDropDownOpen)
                 return;
 
-			var sv = e.Source as ScrollViewer;
+            var listBox = e.Source as ListBox;
+            if (listBox != null)
+            {
+                var svChild = Common.FindVisualChild<ScrollViewer>(listBox);
+                if (svChild != null && DoubleUtil.GreaterThan(svChild.ScrollableHeight, 0))
+                    return;
+            }
+
+            var sv = e.Source as ScrollViewer;
             if (sv == null)
             {
                 sv = Common.FindLogicParent<ScrollViewer>(e.Source as DependencyObject);
-                if(sv == null)
+                if (sv == null)
                     return;
             }
-			
-			if (e.Delta > 0)
+
+            if (e.Delta > 0)
                 sv.ScrollToHorizontalOffset(Math.Max(0, sv.HorizontalOffset - e.Delta));
             else
                 sv.ScrollToHorizontalOffset(Math.Min(sv.ScrollableWidth, sv.HorizontalOffset - e.Delta));
 
             e.Handled = true;
-		}
-		
-		#endregion
+        }
+
+        #endregion
 
         private void LoadFonts()
         {

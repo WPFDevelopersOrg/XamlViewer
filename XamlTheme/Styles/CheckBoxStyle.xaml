@@ -5,7 +5,7 @@
     <Style x:Key="{x:Static themes:ResourceKeys.NormalCheckBoxStyleKey}" 
            TargetType="{x:Type CheckBox}">
         <!-- <Setter Property="FocusVisualStyle" Value="{x:Null}"/> -->
-        <Setter Property="Foreground" Value="#424242"/>
+        <Setter Property="Foreground" Value="#141414"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="MinHeight" Value="23"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>

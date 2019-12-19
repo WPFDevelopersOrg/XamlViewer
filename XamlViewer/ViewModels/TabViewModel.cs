@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -17,15 +18,19 @@ using SWF = System.Windows.Forms;
 namespace XamlViewer.ViewModels
 {
     public class TabViewModel : BindableBase
-    { 
+    {
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
 
         private bool _closeAfterSaving = false;
         private Action<TabViewModel, bool> _closeAction = null;
 
-        public DelegateCommand CloseCommand { get; private set; }
+        public DelegateCommand<bool?> CloseCommand { get; private set; }
+        public DelegateCommand CloseAllCommand { get; private set; }
+        public DelegateCommand CloseAllButThisCommand { get; private set; }
+
         public DelegateCommand SaveCommand { get; private set; }
+        public DelegateCommand<bool?> CopyOrOpenPathCommand { get; private set; }
 
         private TextChangedEvent _textChangedEvent = null;
         private RequestTextEvent _requestTextEvent = null;
@@ -36,7 +41,7 @@ namespace XamlViewer.ViewModels
         {
             FileName = fileName;
             _closeAction = closeAction;
-             
+
             _eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _appCommands = ServiceLocator.Current.GetInstance<IApplicationCommands>();
 
@@ -68,8 +73,14 @@ namespace XamlViewer.ViewModels
 
         private void InitCommand()
         {
-            CloseCommand = new DelegateCommand(Close);
+            CloseCommand = new DelegateCommand<bool?>(Close);
+            _appCommands.CloseAllCommand.RegisterCommand(CloseCommand);
+
+            CloseAllCommand = new DelegateCommand(CloseAll);
+            CloseAllButThisCommand = new DelegateCommand(CloseAllButThis); 
+
             SaveCommand = new DelegateCommand(Save, CanSave);
+            CopyOrOpenPathCommand = new DelegateCommand<bool?>(CopyOrOpenPath, CanCopyOrOpenPath);
         }
 
         #endregion
@@ -97,7 +108,7 @@ namespace XamlViewer.ViewModels
             get { return _isSelected; }
             set
             {
-                SetProperty(ref _isSelected, value); 
+                SetProperty(ref _isSelected, value);
 
                 UpdateTextToEditor();
             }
@@ -107,21 +118,21 @@ namespace XamlViewer.ViewModels
         public TabStatus Status
         {
             get { return _status; }
-            set 
-			{ 
-			    SetProperty(ref _status, value); 
-				
-				UpdateStatusToEditor();
-		    }
+            set
+            {
+                SetProperty(ref _status, value);
+
+                UpdateStatusToEditor();
+            }
         }
 
-		public void UpdateStatusToEditor()
-		{
-			if (!IsSelected || _eventAggregator == null)
+        public void UpdateStatusToEditor()
+        {
+            if (!IsSelected || _eventAggregator == null)
                 return;
-			
-			_eventAggregator.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
-		}
+
+            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
+        }
 
         public void UpdateTextToEditor()
         {
@@ -153,18 +164,35 @@ namespace XamlViewer.ViewModels
                 Title = FileName;
                 FileContent = Application.Current.Resources["FileContentTemplate"] as string;
             }
+
+            CopyOrOpenPathCommand.RaiseCanExecuteChanged();
         }
 
         public void UpdateFileName(string fileName)
         {
             Title = Path.GetFileName(fileName);
             FileName = fileName;
+
+            CopyOrOpenPathCommand.RaiseCanExecuteChanged();
         }
 
-        #region Command 
+        #region Command
 
-        private void Close()
+        private void CloseAll()
         {
+            _appCommands.CloseAllCommand.Execute(null);
+        }
+
+        private void CloseAllButThis()
+        {
+            _appCommands.CloseAllCommand.Execute(true);
+        }
+
+        private void Close(bool? ignoreSelected)
+        {
+            if (ignoreSelected.HasValue && ignoreSelected.Value && IsSelected)
+                return;
+
             if (IsSelected && (Status & TabStatus.NoSave) == TabStatus.NoSave)
             {
                 if (!File.Exists(FileName))
@@ -200,7 +228,7 @@ namespace XamlViewer.ViewModels
 
         private bool CanSave()
         {
-            return (Status & TabStatus.NoSave) == TabStatus.NoSave;
+            return (Status & TabStatus.NoSave) == TabStatus.NoSave && (Status & TabStatus.Inner) != TabStatus.Inner;
         }
 
         public void Save()
@@ -216,6 +244,26 @@ namespace XamlViewer.ViewModels
 
             //this--->Editor(text)--->this(Save)
             _appCommands.SaveCommand.Execute(null);
+        }
+
+        private bool CanCopyOrOpenPath(bool? isOpen)
+        {
+            return File.Exists(FileName);
+        }
+
+        private void CopyOrOpenPath(bool? isOpen)
+        {
+            if (isOpen.HasValue && isOpen.Value)
+            {
+                Process.Start(new ProcessStartInfo("Explorer.exe")
+                {
+                    Arguments = "/e,/select," + "\"" + FileName + "\""
+                });
+
+                return;
+            }
+
+            Clipboard.SetText(FileName);
         }
 
         #endregion
@@ -244,7 +292,7 @@ namespace XamlViewer.ViewModels
 
         private void OnSaveText(TabInfo tabInfo)
         {
-            if (tabInfo.FileName != FileName)
+            if (tabInfo.FileName != FileName || !CanSave())
                 return; ;
 
             if (!File.Exists(FileName))
@@ -300,6 +348,8 @@ namespace XamlViewer.ViewModels
             _requestTextEvent.Unsubscribe(OnRequestText);
             _saveTextEvent.Unsubscribe(OnSaveText);
             _cacheTextEvent.Unsubscribe(OnCacheText);
+
+            _appCommands.CloseAllCommand.UnregisterCommand(CloseCommand); 
         }
     }
 }

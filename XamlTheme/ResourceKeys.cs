@@ -112,7 +112,13 @@ namespace XamlTheme
 
         #endregion
 
-        #region SpitButton
+        #region MenuItem
+
+        public const string ContextMenuStyle = "ContextMenuStyle";
+        public static ComponentResourceKey ContextMenuStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), ContextMenuStyle); }
+        }
 
         public const string MenuItemStyle = "MenuItemStyle";
         public static ComponentResourceKey MenuItemStyleKey

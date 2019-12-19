@@ -5,7 +5,7 @@
     <Application.Resources>
          <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Strings.xaml"/>
+                <ResourceDictionary Source="Resources/Constants.xaml"/>
                 <ResourceDictionary Source="Resources/DataTemplates/XamlSelection.xaml"/>
                 <ResourceDictionary Source="Resources/DataTemplates/ReferenceSelection.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/XamlTheme;component/Themes/Generic.xaml" />

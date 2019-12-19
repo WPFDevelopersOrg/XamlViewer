@@ -14,11 +14,11 @@
         <Setter Property="MinWidth" Value="100" />
         <Setter Property="MinHeight" Value="100" />
         <Setter Property="BorderBrush" Value="#3498db"/>
-        <Setter Property="Foreground" Value="#424242"/>
+        <Setter Property="Foreground" Value="#141414"/>
         <Setter Property="Background" Value="#EFEFF2"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontFamily" Value="Arial,SimSun"/>
-        <Setter Property="TitleBarForeground" Value="#424242"/>
+        <Setter Property="TitleBarForeground" Value="#141414"/>
         <Setter Property="TitleBarBackground" Value="#EFEFF2"/>
         <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
         <Setter Property="Template">

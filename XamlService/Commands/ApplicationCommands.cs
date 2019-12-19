@@ -23,6 +23,8 @@ namespace XamlService.Commands
         //
         CompositeCommand RefreshCommand { get; }
         CompositeCommand HelpCommand { get; }
+        CompositeCommand CloseAllCommand { get; }
+        CompositeCommand CloseAllButThisCommand { get; }
     }
 
     public class ApplicationCommands : IApplicationCommands
@@ -79,6 +81,18 @@ namespace XamlService.Commands
         public CompositeCommand HelpCommand
         {
             get { return _helpCommand; }
+        }
+
+        private CompositeCommand _closeAllCommand = new CompositeCommand();
+        public CompositeCommand CloseAllCommand
+        {
+            get { return _closeAllCommand; }
+        }
+
+        private CompositeCommand _closeAllButThisCommand = new CompositeCommand();
+        public CompositeCommand CloseAllButThisCommand
+        {
+            get { return _closeAllButThisCommand; }
         }
     }
 }

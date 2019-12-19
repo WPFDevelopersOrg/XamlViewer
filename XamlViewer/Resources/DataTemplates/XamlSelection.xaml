@@ -13,7 +13,38 @@
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="24"/>
+        <Setter Property="FontSize" Value="13"/>
         <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}"/>
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu Style="{DynamicResource {x:Static themes:ResourceKeys.ContextMenuStyleKey}}">
+                    <MenuItem x:Name="SaveItem" Header="Save" InputGestureText="Ctrl+S" 
+                              Command="{Binding SaveCommand}"
+                              Style="{DynamicResource {x:Static themes:ResourceKeys.MenuItemStyleKey}}">
+                        <MenuItem.Icon>
+                            <Path RenderOptions.EdgeMode="Aliased" Width="12" Height="12" Stretch="Fill" Fill="#404040"
+                                  Data="M0,7 V-1 H3 V7 H13 V2 H16 V15 H0 M13,2 H15 V1 H13 M13,1 H14 V0 H13 M8,-1 H11 V5 H8"/>
+                        </MenuItem.Icon> 
+                    </MenuItem>
+                    <MenuItem Header="Close All"
+                              Command="{Binding CloseAllCommand}"
+                              Style="{DynamicResource {x:Static themes:ResourceKeys.MenuItemStyleKey}}"> 
+                    </MenuItem>
+                    <MenuItem Header="Close All But This"
+                              Command="{Binding CloseAllButThisCommand}"
+                              Style="{DynamicResource {x:Static themes:ResourceKeys.MenuItemStyleKey}}"/>
+                    <Separator Margin="0,1"
+                               Style="{DynamicResource {x:Static themes:ResourceKeys.HorSeparatorStyleKey}}"/>
+                    <MenuItem Header="Copy Full Path" 
+                              Command="{Binding CopyOrOpenPathCommand}"
+                              Style="{DynamicResource {x:Static themes:ResourceKeys.MenuItemStyleKey}}"/>
+                    <MenuItem Header="Open Containing Folder" 
+                              Command="{Binding CopyOrOpenPathCommand}"
+                              CommandParameter="{StaticResource TrueKey}"
+                              Style="{DynamicResource {x:Static themes:ResourceKeys.MenuItemStyleKey}}"/>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver"  Value="True">
                 <Setter Property="Background" Value="#1C97EA"/>
@@ -28,7 +59,7 @@
     
     <DataTemplate x:Key="XamlSelectionTemplate">
         <StackPanel Orientation="Horizontal" Margin="6,0,3,0">
-            <TextBlock x:Name="TitleTextBlock" VerticalAlignment="Center" FontSize="13"
+            <TextBlock x:Name="TitleTextBlock" VerticalAlignment="Center"
                        Text="{Binding Title}"
                        ToolTip="{Binding FileName}"/>
             <TextBlock Margin="2,0,0,0"
@@ -60,6 +91,8 @@
            BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalListBoxItemStyleKey}}"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="Padding" Value="0"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="#FF141414"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver"  Value="True">
                 <Setter Property="Background" Value="#F8F9FA"/>
@@ -77,7 +110,7 @@
             <Path Margin="0,0,10,0" Fill="{Binding Foreground, ElementName=TitleTextBlock}" 
 			      VerticalAlignment="Center" HorizontalAlignment="Center" 
 				  RenderOptions.EdgeMode="Aliased" Data="M1,0 H10V1 H11V2 H12V3 H13V4 H14V16 H12V15 H13V5 H9V1 H2V9 H1 M2,10 V11 H1V12 H0V14 H1V15 H2V16 H3V14 H2V12 H3V10 M7,11 V12 H6V13 H5V14 H4V15 H5V14 H6V13 H7V12 H8V11 M9,10 V12 H10V14 H9V16 H10V15 H11V14 H12V12 H11V11 H10V10" />
-            <TextBlock Grid.Column="1" x:Name="TitleTextBlock" VerticalAlignment="Center" FontSize="13" TextTrimming="CharacterEllipsis"
+            <TextBlock Grid.Column="1" x:Name="TitleTextBlock" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                        Text="{Binding Title}" ToolTip="{Binding FileName}"/>
 
             <Border Grid.Column="2" Margin="5,0,0,0" Background="Transparent" ToolTip="Read Only">

@@ -5,18 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:utils="clr-namespace:XamlEditor.Utils"
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
              xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <Style TargetType="ScrollViewer"
-               BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/>
-    </UserControl.Resources>
     <Grid Background="White">
         <controls:TextEditorEx Margin="6,0,0,0"
+                               IsCodeCompletion="true"
 		                       IsReadOnly="{Binding IsReadOnly}"
                                IsModified="{Binding IsModified, Mode=TwoWay}"
                                WordWrap="{Binding WordWrap}"
@@ -24,6 +20,10 @@
                                FontFamily="{Binding FontFamily}"
                                FontSize="{Binding FontSize}"
                                Delay="{Binding AutoCompileDelay}">
+            <controls:TextEditorEx.Resources>
+                <Style TargetType="ScrollViewer"
+                       BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/>
+            </controls:TextEditorEx.Resources>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Loaded">
                     <prism:InvokeCommandAction Command="{Binding LoadedCommand}"/>

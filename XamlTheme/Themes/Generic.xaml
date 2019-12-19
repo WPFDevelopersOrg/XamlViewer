@@ -12,6 +12,7 @@
         
         <ResourceDictionary Source="/XamlTheme;component/Styles/SeparatorStyle.xaml"/>
 
+        <ResourceDictionary Source="/XamlTheme;component/Styles/MenuItemStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/ListBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/SliderStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/GridSplitterStyle.xaml"/>
@@ -24,6 +25,7 @@
         <ResourceDictionary Source="/XamlTheme;component/Styles/NumericBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/RestrictTextBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/UserWindowStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/CodeCompletionStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/TextEditorExStyle.xaml"/>
 
         <ResourceDictionary Source="/XamlTheme;component/Styles/ZoomBoxStyle.xaml"/>

@@ -7,7 +7,7 @@
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
              xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              xmlns:behaviors="clr-namespace:XamlTheme.Behaviors;assembly=XamlTheme"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             prism:ViewModelLocator.AutoWireViewModel="True"> 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -59,6 +59,7 @@
             <mwt:SystemDropShadowChrome Color="#71000000" Margin="0,0,6,5">
                 <Border BorderThickness="1" BorderBrush="LightGray" Background="#E7E8EC" Width="230">
                     <ListBox x:Name="ActiveFilesListBox"
+                             Foreground="Black"
                              ItemsSource="{Binding XamlTabs}"
                              ItemTemplate="{StaticResource ActiveFilesTemplate}"
                              ItemContainerStyle="{StaticResource ActiveFilesItemStyle}"

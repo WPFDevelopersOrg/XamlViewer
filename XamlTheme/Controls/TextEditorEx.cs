@@ -4,7 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
+using XamlTheme.Datas;
 
 namespace XamlTheme.Controls
 {
@@ -18,6 +20,7 @@ namespace XamlTheme.Controls
         private TextEditor _partTextEditor = null;
         private FoldingManager _foldingManager = null;
         private XmlFoldingStrategy _foldingStrategy = null;
+        private CompletionWindow _completionWindow = null;
 
         private DispatcherTimer _timer = null;
         private bool _disabledTimer = false;
@@ -39,7 +42,7 @@ namespace XamlTheme.Controls
                     _partTextEditor.Text = value;
                 }
             }
-        } 
+        }
 
         public bool CanRedo
         {
@@ -62,7 +65,7 @@ namespace XamlTheme.Controls
 
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(Math.Max(1, Delay)) };
             _timer.Tick += _timer_Tick;
-        } 
+        }
 
         #region RouteEvent
 
@@ -97,12 +100,19 @@ namespace XamlTheme.Controls
             get { return (bool)GetValue(ShowLineNumbersProperty); }
             set { SetValue(ShowLineNumbersProperty, value); }
         }
-		
-		public static readonly DependencyProperty IsReadOnlyProperty = TextEditor.IsReadOnlyProperty.AddOwner(_typeofSelf);
+
+        public static readonly DependencyProperty IsReadOnlyProperty = TextEditor.IsReadOnlyProperty.AddOwner(_typeofSelf);
         public bool IsReadOnly
         {
             get { return (bool)GetValue(IsReadOnlyProperty); }
             set { SetValue(IsReadOnlyProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsCodeCompletionProperty = DependencyProperty.Register("IsCodeCompletion", typeof(bool), _typeofSelf);
+        public bool IsCodeCompletion
+        {
+            get { return (bool)GetValue(IsCodeCompletionProperty); }
+            set { SetValue(IsCodeCompletionProperty, value); }
         }
 
         public static readonly DependencyProperty DelayProperty = DependencyProperty.Register("Delay", typeof(double), _typeofSelf, new PropertyMetadata(1d, OnDelayPropertyChanged));
@@ -130,7 +140,12 @@ namespace XamlTheme.Controls
             base.OnApplyTemplate();
 
             if (_partTextEditor != null)
+            {
                 _partTextEditor.TextChanged -= _partTextEditor_TextChanged;
+
+                _partTextEditor.TextArea.TextEntering -= TextArea_TextEntering;
+                _partTextEditor.TextArea.TextEntered -= TextArea_TextEntered;
+            }
 
             _partTextEditor = GetTemplateChild(TextEditorTemplateName) as TextEditor;
 
@@ -138,12 +153,15 @@ namespace XamlTheme.Controls
             {
                 _partTextEditor.TextChanged += _partTextEditor_TextChanged;
 
+                _partTextEditor.TextArea.TextEntering += TextArea_TextEntering;
+                _partTextEditor.TextArea.TextEntered += TextArea_TextEntered;
+
                 _partTextEditor.TextArea.SelectionCornerRadius = 0;
                 _partTextEditor.TextArea.SelectionBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFADD6FF"));
                 _partTextEditor.TextArea.SelectionBorder = null;
                 _partTextEditor.TextArea.SelectionForeground = null;
             }
-        } 
+        }
 
         #endregion
 
@@ -156,7 +174,7 @@ namespace XamlTheme.Controls
         }
 
         private void _partTextEditor_TextChanged(object sender, EventArgs e)
-        {  
+        {
             RefreshFoldings();
 
             if (_disabledTimer)
@@ -169,6 +187,73 @@ namespace XamlTheme.Controls
             {
                 _timer.Stop();
                 _timer.Start();
+            }
+        }
+
+        private void TextArea_TextEntered(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            if (!IsCodeCompletion)
+                return;
+
+            if (e.Text == ".")
+            {
+                // Open code completion after the user has pressed dot:
+                _completionWindow = new CompletionWindow(_partTextEditor.TextArea);
+                _completionWindow.Resources = this.Resources;
+
+                var data = _completionWindow.CompletionList.CompletionData;
+                data.Add(new EditorCompletionData("Item1"));
+                data.Add(new EditorCompletionData("Item2"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                data.Add(new EditorCompletionData("Item3"));
+                
+                _completionWindow.Closed += delegate
+                {
+                    _completionWindow.Resources = null;
+                    _completionWindow = null;
+                };
+
+                _completionWindow.Show();
+            }
+        }
+
+        private void TextArea_TextEntering(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            if (!IsCodeCompletion)
+                return;
+
+            if (e.Text.Length > 0 && _completionWindow != null)
+            {
+                if (!char.IsLetterOrDigit(e.Text[0]))
+                {
+                    // Whenever a non-letter is typed while the completion window is open,
+                    // insert the currently selected element.
+                    _completionWindow.CompletionList.RequestInsertion(e);
+                }
             }
         }
 

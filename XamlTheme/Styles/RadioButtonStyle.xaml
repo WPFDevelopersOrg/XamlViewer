@@ -10,8 +10,7 @@
     <!--RadioButton-->
     <Style x:Key="{x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}" 
            BasedOn="{StaticResource {x:Static themes:ResourceKeys.NoBgButtonBaseStyleKey}}"
-           TargetType="{x:Type RadioButton}">
-        <Setter Property="Foreground" Value="#424242"/>
+           TargetType="{x:Type RadioButton}"> 
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
