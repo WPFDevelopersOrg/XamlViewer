@@ -7,6 +7,8 @@ using XamlService.Commands;
 using XamlService.Payloads;
 using System.Windows;
 using XamlTheme.Controls;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace XamlEditor.ViewModels
 {
@@ -140,6 +142,21 @@ namespace XamlEditor.ViewModels
         {
             get { return _autoCompileDelay; }
             set { SetProperty(ref _autoCompileDelay, value); }
+        }
+
+        private Func<string, List<string>> _generateCompletionDataFunc = null;
+        public Func<string, List<string>> GenerateCompletionDataFunc
+        {
+            get
+            {
+                if (_generateCompletionDataFunc == null)
+                    _generateCompletionDataFunc = editor =>
+                    {
+                        return Enumerable.Range(1, 20).Select(i => "Item" + i).ToList();
+                    };
+
+                return _generateCompletionDataFunc;
+            }
         }
 
         #region Command

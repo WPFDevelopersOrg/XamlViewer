@@ -76,11 +76,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Xaml2006.xsd">
+    <None Include="Assets\XamlPresentation2006.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Assets\Xaml2006.xsx">
-      <DependentUpon>Xaml2006.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

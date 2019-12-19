@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -131,6 +132,14 @@ namespace XamlTheme.Controls
                 ctrl._timer.Interval = TimeSpan.FromSeconds(Math.Max(1, delay));
         }
 
+        public static readonly DependencyProperty GenerateCompletionDataProperty =
+           DependencyProperty.Register("GenerateCompletionData", typeof(Func<string, List<string>>), _typeofSelf);
+        public Func<string, List<string>> GenerateCompletionData
+        {
+            get { return (Func<string, List<string>>)GetValue(GenerateCompletionDataProperty); }
+            set { SetValue(GenerateCompletionDataProperty, value); }
+        }
+
         #endregion
 
         #region Override
@@ -192,44 +201,20 @@ namespace XamlTheme.Controls
 
         private void TextArea_TextEntered(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            if (!IsCodeCompletion)
+            if (!IsCodeCompletion || GenerateCompletionData == null)
                 return;
 
             if (e.Text == ".")
             {
-                // Open code completion after the user has pressed dot:
+                var finalDatas = GenerateCompletionData("");
+                if (finalDatas == null || finalDatas.Count == 0)
+                    return;
+                 
                 _completionWindow = new CompletionWindow(_partTextEditor.TextArea);
-                _completionWindow.Resources = this.Resources;
+                _completionWindow.Resources = Resources;
 
                 var data = _completionWindow.CompletionList.CompletionData;
-                data.Add(new EditorCompletionData("Item1"));
-                data.Add(new EditorCompletionData("Item2"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
-                data.Add(new EditorCompletionData("Item3"));
+                finalDatas.ForEach(d => data.Add(new EditorCompletionData(d))); 
                 
                 _completionWindow.Closed += delegate
                 {

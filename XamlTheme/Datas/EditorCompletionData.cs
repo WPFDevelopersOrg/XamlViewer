@@ -21,7 +21,7 @@ namespace XamlTheme.Datas
 
         public object Description
         {
-            get { return "Description for " + Text; }
+            get { return null; }
         }
 
         public System.Windows.Media.ImageSource Image

@@ -19,10 +19,11 @@
                                ShowLineNumbers="{Binding ShowLineNumber}"
                                FontFamily="{Binding FontFamily}"
                                FontSize="{Binding FontSize}"
-                               Delay="{Binding AutoCompileDelay}">
+                               Delay="{Binding AutoCompileDelay}"
+                               GenerateCompletionData="{Binding GenerateCompletionDataFunc}">
             <controls:TextEditorEx.Resources>
                 <Style TargetType="ScrollViewer"
-                       BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/>
+                       BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/> 
             </controls:TextEditorEx.Resources>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Loaded">

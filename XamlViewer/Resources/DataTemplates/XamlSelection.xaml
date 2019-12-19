@@ -60,14 +60,20 @@
     <DataTemplate x:Key="XamlSelectionTemplate">
         <StackPanel Orientation="Horizontal" Margin="6,0,3,0">
             <TextBlock x:Name="TitleTextBlock" VerticalAlignment="Center"
-                       Text="{Binding Title}"
-                       ToolTip="{Binding FileName}"/>
+                       Text="{Binding Title}">
+                <TextBlock.ToolTip>
+                    <MultiBinding Converter="{StaticResource xamlTabToolTipMultiConverter}">
+                        <Binding Path="FileName"/>
+                        <Binding Path="Status"/>
+                    </MultiBinding>
+                </TextBlock.ToolTip>
+            </TextBlock>
             <TextBlock Margin="2,0,0,0"
                        Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.NoSave}}">
                 <Run FontSize="13" Text="*" BaselineAlignment="Superscript"/>
             </TextBlock>
             <Border Background="Transparent" ToolTip="Read Only"> 
-                <Path Margin="5,1,0,0" Fill="{Binding Foreground, ElementName=TitleTextBlock}" 
+                <Path Margin="5,1,0,0" Fill="{Binding Foreground, ElementName=TitleTextBlock}"
 					  VerticalAlignment="Center" HorizontalAlignment="Center" 
 					  RenderOptions.EdgeMode="Aliased" Data="M2,0 H6V1 H2 M1,1 H2V4 H1 M6,1 H7V4 H6 M0,4 H8V9 H0z" 
 					  Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.Locked}}"/>
@@ -111,7 +117,14 @@
 			      VerticalAlignment="Center" HorizontalAlignment="Center" 
 				  RenderOptions.EdgeMode="Aliased" Data="M1,0 H10V1 H11V2 H12V3 H13V4 H14V16 H12V15 H13V5 H9V1 H2V9 H1 M2,10 V11 H1V12 H0V14 H1V15 H2V16 H3V14 H2V12 H3V10 M7,11 V12 H6V13 H5V14 H4V15 H5V14 H6V13 H7V12 H8V11 M9,10 V12 H10V14 H9V16 H10V15 H11V14 H12V12 H11V11 H10V10" />
             <TextBlock Grid.Column="1" x:Name="TitleTextBlock" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
-                       Text="{Binding Title}" ToolTip="{Binding FileName}"/>
+                       Text="{Binding Title}">
+                <TextBlock.ToolTip>
+                    <MultiBinding Converter="{StaticResource xamlTabToolTipMultiConverter}">
+                        <Binding Path="FileName"/>
+                        <Binding Path="Status"/>
+                    </MultiBinding>
+                </TextBlock.ToolTip>
+            </TextBlock>
 
             <Border Grid.Column="2" Margin="5,0,0,0" Background="Transparent" ToolTip="Read Only">
                 <Path Fill="{Binding Foreground, ElementName=TitleTextBlock}" 

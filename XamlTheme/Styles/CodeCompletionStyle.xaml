@@ -2,9 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cc="clr-namespace:ICSharpCode.AvalonEdit.CodeCompletion;assembly=ICSharpCode.AvalonEdit"
                     xmlns:themes="clr-namespace:XamlTheme">
-    
+
     <Style TargetType="{x:Type cc:CompletionWindow}">
-        <Setter Property="Background" Value="#F6F6F6"/>
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome CornerRadius="0" GlassFrameThickness="0"/>
@@ -45,13 +44,13 @@
     </Style>
     
     <Style TargetType="{x:Type cc:CompletionListBox}">
-        <Setter Property="Background" Value="#F6F6F6" />
+        <Setter Property="Background" Value="#F5F5F5" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource CompletionListBoxItem}" />
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="0,3">
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
                         <Image Source="{Binding Image}" Width="16" Height="16" Margin="0,0,2,0"/>
                         <ContentPresenter Content="{Binding Content}"/>
                     </StackPanel>

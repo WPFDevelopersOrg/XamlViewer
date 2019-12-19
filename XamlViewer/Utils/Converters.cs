@@ -6,6 +6,7 @@ using System.Windows;
 using XamlUtil.Common;
 using System.Linq;
 using System.Text.RegularExpressions;
+using XamlViewer.Models;
 
 namespace XamlViewer.Utils
 {
@@ -62,6 +63,28 @@ namespace XamlViewer.Utils
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class XamlTabToolTipMultiConverter : IMultiValueConverter
+    { 
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Contains(null) || values.Contains(DependencyProperty.UnsetValue))
+                return null;
+
+            var fileName = (string)values[0];
+            var status = (TabStatus)values[1];
+
+            if ((status & TabStatus.Locked) == TabStatus.Locked)
+                return fileName + " [Ready Only]";
+
+            return fileName;
+        }  
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
