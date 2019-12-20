@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Rendering;
 using XamlTheme.Datas;
 
 namespace XamlTheme.Controls
@@ -81,6 +85,36 @@ namespace XamlTheme.Controls
 
         #region Properties
 
+        public static readonly DependencyProperty LinePositionProperty = DependencyProperty.Register("LinePosition", typeof(int), _typeofSelf, new PropertyMetadata(OnLinePositionPropertyChanged));
+        public int LinePosition
+        {
+            get { return (int)GetValue(LinePositionProperty); }
+            set { SetValue(LinePositionProperty, value); }
+        }
+
+        private static void OnLinePositionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var ctrl = d as TextEditorEx;
+            var pos = (int)e.NewValue;
+
+            ctrl._partTextEditor.TextArea.Caret.Column = pos;
+        }
+
+        public static readonly DependencyProperty LineNumberProperty = DependencyProperty.Register("LineNumber", typeof(int), _typeofSelf, new PropertyMetadata(OnLineNumberPropertyChanged));
+        public int LineNumber
+        {
+            get { return (int)GetValue(LineNumberProperty); }
+            set { SetValue(LineNumberProperty, value); }
+        }
+
+        private static void OnLineNumberPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var ctrl = d as TextEditorEx;
+            var line = (int)e.NewValue;
+
+            ctrl._partTextEditor.TextArea.Caret.Line = line;
+        }
+
         public static readonly DependencyProperty IsModifiedProperty = TextEditor.IsModifiedProperty.AddOwner(_typeofSelf);
         public bool IsModified
         {
@@ -154,6 +188,7 @@ namespace XamlTheme.Controls
 
                 _partTextEditor.TextArea.TextEntering -= TextArea_TextEntering;
                 _partTextEditor.TextArea.TextEntered -= TextArea_TextEntered;
+                _partTextEditor.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
             }
 
             _partTextEditor = GetTemplateChild(TextEditorTemplateName) as TextEditor;
@@ -164,6 +199,7 @@ namespace XamlTheme.Controls
 
                 _partTextEditor.TextArea.TextEntering += TextArea_TextEntering;
                 _partTextEditor.TextArea.TextEntered += TextArea_TextEntered;
+                _partTextEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
 
                 _partTextEditor.TextArea.SelectionCornerRadius = 0;
                 _partTextEditor.TextArea.SelectionBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFADD6FF"));
@@ -199,34 +235,61 @@ namespace XamlTheme.Controls
             }
         }
 
-        private void TextArea_TextEntered(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void Caret_PositionChanged(object sender, EventArgs e)
+        {
+            if (_partTextEditor == null)
+                return;
+
+            LineNumber = _partTextEditor.TextArea.Caret.Location.Line;
+            LinePosition = _partTextEditor.TextArea.Caret.Location.Column;
+        }
+
+        private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
             if (!IsCodeCompletion || GenerateCompletionData == null)
                 return;
 
-            if (e.Text == ".")
+            switch (e.Text)
             {
-                var finalDatas = GenerateCompletionData("");
-                if (finalDatas == null || finalDatas.Count == 0)
-                    return;
-                 
-                _completionWindow = new CompletionWindow(_partTextEditor.TextArea);
-                _completionWindow.Resources = Resources;
+                case ".":
+                case " ":
+                case "<":
+                    {
+                        var finalDatas = GenerateCompletionData("");
+                        if (finalDatas == null || finalDatas.Count == 0)
+                            return;
 
-                var data = _completionWindow.CompletionList.CompletionData;
-                finalDatas.ForEach(d => data.Add(new EditorCompletionData(d))); 
-                
-                _completionWindow.Closed += delegate
-                {
-                    _completionWindow.Resources = null;
-                    _completionWindow = null;
-                };
+                        _completionWindow = new CompletionWindow(_partTextEditor.TextArea);
+                        _completionWindow.Resources = Resources;
 
-                _completionWindow.Show();
+                        var datas = _completionWindow.CompletionList.CompletionData;
+                        finalDatas.ForEach(d => datas.Add(new EditorCompletionData(d)));
+
+                        _completionWindow.Closed += delegate
+                        {
+                            _completionWindow.Resources = null;
+                            _completionWindow = null;
+                        };
+
+                        _completionWindow.Show();
+                    }
+                    break;
+
+                case "{":
+                    InsertPairChar("}");
+                    break;
+
+                case "=":
+                    InsertPairChar("\"\"");
+                    break;
+
+                case "\"":
+                    InsertPairChar("\"");
+                    break;
             }
         }
 
-        private void TextArea_TextEntering(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void TextArea_TextEntering(object sender, TextCompositionEventArgs e)
         {
             if (!IsCodeCompletion)
                 return;
@@ -245,6 +308,15 @@ namespace XamlTheme.Controls
         #endregion
 
         #region Func
+
+        private void InsertPairChar(string chars, bool caretFallBack = true, int fallbackTimes = 1)
+        {
+            _partTextEditor.TextArea.Document.Insert(_partTextEditor.TextArea.Caret.Offset, chars);
+
+            if (caretFallBack)
+                _partTextEditor.TextArea.Caret.Column = _partTextEditor.TextArea.Caret.Column - fallbackTimes;
+        }
+
 
         public void Redo()
         {

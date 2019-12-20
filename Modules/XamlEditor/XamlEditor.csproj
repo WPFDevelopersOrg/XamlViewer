@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Utils\TextEditorUtil.cs" />
+    <Compile Include="Utils\XmlParser.cs" />
     <Compile Include="ViewModels\EditorControlViewModel.cs" />
     <Compile Include="Views\EditorControl.xaml.cs">
       <DependentUpon>EditorControl.xaml</DependentUpon>
@@ -76,8 +77,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Xaml2006.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\XamlPresentation2006.xsd">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

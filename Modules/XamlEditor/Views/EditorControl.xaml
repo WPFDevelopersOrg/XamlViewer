@@ -14,6 +14,8 @@
         <controls:TextEditorEx Margin="6,0,0,0"
                                IsCodeCompletion="true"
 		                       IsReadOnly="{Binding IsReadOnly}"
+                               LineNumber="{Binding CaretLine}"
+                               LinePosition="{Binding CaretColumn}"
                                IsModified="{Binding IsModified, Mode=TwoWay}"
                                WordWrap="{Binding WordWrap}"
                                ShowLineNumbers="{Binding ShowLineNumber}"

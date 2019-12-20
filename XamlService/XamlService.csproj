@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Commands\ApplicationCommands.cs" />
     <Compile Include="Events\DesignerEvents.cs" />
+    <Compile Include="Payloads\CaretPosition.cs" />
     <Compile Include="Payloads\EditorConfig.cs" />
     <Compile Include="Events\ConfigEvents.cs" />
     <Compile Include="Events\EditorEvents.cs" />

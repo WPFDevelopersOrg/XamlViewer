@@ -75,6 +75,28 @@ namespace XamlEditor.ViewModels
             set { SetProperty(ref _isReadOnly, value); }
         }
 
+        private int _caretLine = 0;
+        public int CaretLine
+        {
+            get { return _caretLine; }
+            set
+            {
+                SetProperty(ref _caretLine, value);
+                CaretPosChanged();
+            }
+        }
+
+        private int _caretColumn = 0;
+        public int CaretColumn
+        {
+            get { return _caretColumn; }
+            set
+            {
+                SetProperty(ref _caretColumn, value);
+                CaretPosChanged();
+            }
+        }
+
         private bool _isModified;
         public bool IsModified
         {
@@ -178,7 +200,7 @@ namespace XamlEditor.ViewModels
         }
 
         private void Redo()
-        { 
+        {
             _textEditor.Redo();
 
             RedoCommand.RaiseCanExecuteChanged();
@@ -206,7 +228,7 @@ namespace XamlEditor.ViewModels
         #region Event
 
         private void OnEditorConfig(EditorConfig config)
-        { 
+        {
             FontFamily = config.FontFamily;
             FontSize = config.FontSize;
             ShowLineNumber = config.ShowLineNumber;
@@ -233,7 +255,7 @@ namespace XamlEditor.ViewModels
                 Compile(tabInfo.FileContent);
             });
         }
-        
+
         private void OnUpdateTabStatus(TabFlag tabFlag)
         {
             IsReadOnly = tabFlag.IsReadOnly;
@@ -262,6 +284,12 @@ namespace XamlEditor.ViewModels
         {
             if (_eventAggregator != null && _textEditor != null)
                 _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(fileContent ?? _textEditor.Text);
+        }
+
+        private void CaretPosChanged()
+        {
+            if (_eventAggregator != null)
+                _eventAggregator.GetEvent<CaretPositionEvent>().Publish(new CaretPosition() { Line = CaretLine, Column = CaretColumn });
         }
     }
 }

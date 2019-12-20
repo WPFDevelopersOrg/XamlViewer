@@ -20,7 +20,7 @@
         <Setter Property="FontFamily" Value="Arial,SimSun"/>
         <Setter Property="TitleBarForeground" Value="#141414"/>
         <Setter Property="TitleBarBackground" Value="#EFEFF2"/>
-        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+        <Setter Property="ResizeMode" Value="CanResize"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:UserWindow}">
