@@ -37,7 +37,7 @@ namespace XamlViewer.ViewModels
         private SaveTextEvent _saveTextEvent = null;
         private CacheTextEvent _cacheTextEvent = null;
 
-        public TabViewModel(string fileName, Action<TabViewModel, bool> closeAction)
+        public TabViewModel(string fileName, TabStatus status, Action<TabViewModel, bool> closeAction)
         {
             FileName = fileName;
             _closeAction = closeAction;
@@ -48,7 +48,12 @@ namespace XamlViewer.ViewModels
             InitEvent();
             InitCommand();
 
-            InitInfo();
+            InitInfo(status);
+        }
+
+        public TabViewModel(string fileName, Action<TabViewModel, bool> closeAction)
+            : this(fileName, TabStatus.None, closeAction)
+        { 
         }
 
         #region Init
@@ -120,7 +125,7 @@ namespace XamlViewer.ViewModels
             get { return _status; }
             set
             {
-                SetProperty(ref _status, value);
+                SetProperty(ref _status, value); 
 
                 UpdateStatusToEditor();
             }
@@ -142,8 +147,10 @@ namespace XamlViewer.ViewModels
             _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
         }
 
-        private void InitInfo()
+        private void InitInfo(TabStatus status)
         {
+            Status = status;
+
             if (File.Exists(FileName))
             {
                 Title = Path.GetFileName(FileName);
@@ -162,7 +169,7 @@ namespace XamlViewer.ViewModels
             else
             {
                 Title = FileName;
-                FileContent = Application.Current.Resources["FileContentTemplate"] as string;
+                FileContent =  (status & TabStatus.Inner) == TabStatus.Inner ? Application.Current.Resources["HelpContentTemplate"] as string : Application.Current.Resources["FileContentTemplate"] as string;
             }
 
             CopyOrOpenPathCommand.RaiseCanExecuteChanged();

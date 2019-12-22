@@ -11,4 +11,118 @@
     
 </Grid>]]>
     </sys:String>
+
+    <sys:String x:Key="HelpContentTemplate" xml:space="preserve">
+        <![CDATA[<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
+      Background="White" Width="800" 
+      TextOptions.TextFormattingMode="Display"
+      TextBlock.FontSize="16">
+    <StackPanel TextBlock.Foreground="#262626" Margin="40,10">  
+        <TextBlock TextOptions.TextFormattingMode="Ideal" Text="Welcome" FontSize="50" HorizontalAlignment="Center"/>
+        <TextBlock TextOptions.TextFormattingMode="Ideal" FontSize="20" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="       XAML Viewer 是一个轻量级的XAML编辑器。在编写文本的同时，能够实时显示相应的设计预览。不仅提供方便的文档管理，更具人性化的智能提示。当你在学习或尝试一些XAML效果时，一定会是你的得力助手。"/>
+      
+        <TextBlock Text="Document Manager" TextOptions.TextFormattingMode="Ideal" FontSize="30"  Margin="5,30,0,0"/>
+        <TextBlock  Margin="10,15,0,0" Text="通过工具栏按钮（或快捷键）提供如下操作："/>
+        <TextBlock  Margin="10,15,0,0" TextWrapping="Wrap" Text="      1. 支持创建，打开，保存，关闭等操作；"/>
+        <TextBlock  Margin="10,15,0,0" TextWrapping="Wrap" Text="      2. 支持拖动页签进行位置交换；"/>
+        <TextBlock  Margin="10,15,0,0" TextWrapping="Wrap" Text="      3. 支持在 Active Files 下拉列表中针对已打开的文件进行快速选择。"/>
+        <TextBlock  Margin="10,15,0,0" TextWrapping="Wrap" Foreground="Red" Text="      注意：在关闭软件时，只会自动保存已经存储在本地的文档，请务必在此之前，将需要保留的临时文档保存到本地。"/>
+        
+        <TextBlock Text="Automitic Compile" TextOptions.TextFormattingMode="Ideal" FontSize="30"  Margin="5,20,0,0"/>
+        <TextBlock  Margin="10,15,0,0" Text="通过 [Setting] >> [Compile] 修改相应的设置。"/>
+        <TextBlock  Margin="10,15,0,0" TextWrapping="Wrap" Text="      1. Automitic Compile CheckBox，开启或关闭自动编译功能，但手动编译[F5]，一直生效；"/>
+        <TextBlock  Margin="10,15,0,0" TextWrapping="Wrap" Text="      2. Auto-Compile Delay Slider，在无任何输入的指定时间后自动执行编译。"/>
+      
+        <TextBlock Text="Custom Controls" TextOptions.TextFormattingMode="Ideal" FontSize="30"  Margin="5,20,0,0"/>
+        <TextBlock  Margin="10,15,0,0" Text="通过 [Setting] >> [Reference] >> [Add] 添加自定义控件库，可以在XAML中直接引用其中控件。"/>
+        <TextBlock  Margin="10,15,0,0" Text="但请注意以下两点："/>
+        <TextBlock  Margin="10,15,0,0" TextWrapping="Wrap" Text="      1. 当前软件基于.Net Framework 4.5，只要系统中包含.Net Framework 4.X（X >= 5），即可引用基于4.5--4.X任意版本的控件库；"/>
+        <TextBlock  Margin="10,15,0,0" TextWrapping="Wrap" Text="      2. 引用自定义控件库时，命名空间的申明只能是以下形式方能生效。"/>
+        <TextBlock  Margin="50,10,0,0" TextWrapping="Wrap">
+            <Span Foreground="#8C038C">xmlns:</Span>
+            <Span Foreground="#FF3737">controls</Span>
+            <Span Foreground="#4747FF">=&quot;clr-namespace:MyControl.Controls;assembly=MyControl&quot;</Span>
+        </TextBlock>
+        
+        <TextBlock Text="About" TextOptions.TextFormattingMode="Ideal" FontSize="30"  Margin="5,20,0,0"/>
+        <Grid Margin="10,15,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="auto"/> 
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="auto"/> 
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock  Text="Name"/>
+            <TextBlock Grid.Column="2" Text="XAML Viewer"/>            
+               
+            <TextBlock Grid.Row="2"  Text="Version"/>
+            <TextBlock  Grid.Row="2" Grid.Column="2" Text="1.0.0"/>    
+             
+            <TextBlock Grid.Row="4"  Text=".Net Framework"/>
+            <TextBlock  Grid.Row="4" Grid.Column="2" Text="4.5"/>       
+             
+            <TextBlock Grid.Row="6"  Text="Developer"/>
+            <TextBlock  Grid.Row="6" Grid.Column="2" Text="huangjia2107"/>        
+        </Grid>
+        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+            <controls:Hyperlink NavigateUri="https://github.com/huangjia2107/XamlViewer" Text="Github"/> 
+            <controls:Hyperlink Margin="50,0,0,0" NavigateUri="https://github.com/huangjia2107/XamlViewer/blob/master/LICENSE" Text="MIT"/> 
+            <controls:Hyperlink Margin="50,0,0,0" NavigateUri="https://github.com/huangjia2107/XamlViewer/issues" Text="Feedback"/>
+        </StackPanel>
+       
+        <TextBlock Text="Third-Party Notices" TextOptions.TextFormattingMode="Ideal" FontSize="30"  Margin="5,20,0,0"/>
+        <StackPanel Grid.IsSharedSizeScope="true">
+            <Grid Margin="10,15,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" SharedSizeGroup="NameColumn"/>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="auto" SharedSizeGroup="VersionColumn"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="auto" SharedSizeGroup="LisenseColumn"/>
+                </Grid.ColumnDefinitions>
+                <controls:Hyperlink NavigateUri="https://github.com/PrismLibrary/Prism" Text="Prism"/>
+                <TextBlock Grid.Column="2" Text="7.2.0.1367"/>              
+                <controls:Hyperlink Grid.Column="4" NavigateUri="https://github.com/PrismLibrary/Prism/blob/master/LICENSE" Text="MIT"/>
+            </Grid>
+          
+            <Grid Margin="10,15,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" SharedSizeGroup="NameColumn"/>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="auto" SharedSizeGroup="VersionColumn"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="auto" SharedSizeGroup="LisenseColumn"/>
+                </Grid.ColumnDefinitions>
+                <controls:Hyperlink NavigateUri="https://github.com/icsharpcode/AvalonEdit" Text="AvalonEdit"/> 
+                <TextBlock Grid.Column="2" Text="6.0"/>                
+                <controls:Hyperlink Grid.Column="4" NavigateUri="https://github.com/icsharpcode/AvalonEdit/blob/master/LICENSE" Text="MIT"/>
+            </Grid>
+          
+            <Grid Margin="10,15,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" SharedSizeGroup="NameColumn"/>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="auto" SharedSizeGroup="VersionColumn"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="auto" SharedSizeGroup="LisenseColumn"/>
+                </Grid.ColumnDefinitions>
+                <controls:Hyperlink NavigateUri="https://github.com/JamesNK/Newtonsoft.Json" Text="Json.NET"/>
+                <TextBlock Grid.Column="2" Text="12.0.3"/>
+                <controls:Hyperlink Grid.Column="4" NavigateUri="https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md" Text="MIT"/>
+            </Grid>
+        </StackPanel>
+    </StackPanel>
+    
+</Grid>]]>
+    </sys:String>
 </ResourceDictionary>

@@ -44,7 +44,7 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _appCommands, value); }
         }
 
-        private string _title = "Xaml Viewer";
+        private string _title = "XAML Viewer";
         public string Title
         {
             get { return _title; }

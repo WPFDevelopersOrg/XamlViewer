@@ -246,7 +246,7 @@ namespace XamlTheme.Controls
 
         private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
-            if (!IsCodeCompletion || GenerateCompletionData == null)
+            if (IsReadOnly || !IsCodeCompletion || GenerateCompletionData == null)
                 return;
 
             switch (e.Text)

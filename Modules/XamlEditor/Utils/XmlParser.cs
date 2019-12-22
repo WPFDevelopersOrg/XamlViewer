@@ -11,28 +11,30 @@ namespace XamlEditor.Utils
 {
     internal class XmlParser
     {
-        XmlSchema schema = null;
-        string fileName = AppDomain.CurrentDomain.BaseDirectory + "Modules\\Assets\\XamlPresentation2006.xsd";
+        private XmlSchema _schema = null;
+        private string _fileName = AppDomain.CurrentDomain.BaseDirectory + "Modules\\Assets\\XamlPresentation2006.xsd";
 
-        public void Parse()
+        public bool Parse()
         {
-            XmlSchemaSet set = new XmlSchemaSet();
+            if (!File.Exists(_fileName))
+                return false;
 
-            using (var reader = new StreamReader(fileName, true))
-            {
-                using (var xmlReader = new XmlTextReader(string.Empty, reader))
-                {
-                    xmlReader.XmlResolver = null;
-                    schema = XmlSchema.Read(xmlReader, SchemaValidation);
-                }
+            try
+            {  
+                var schemaSet = new XmlSchemaSet();
+                schemaSet.ValidationEventHandler += (s, e) => {  };
+
+                _schema = schemaSet.Add(null, _fileName);
+                schemaSet.Compile(); 
+
+                return true;
             }
-            set.Add(schema);
-            set.Compile();
+            catch
+            {
+                return false;
+            }
         }
 
-        void SchemaValidation(object source, ValidationEventArgs e)
-        {
-            // Do nothing.
-        }
+
     }
 }

@@ -79,7 +79,7 @@ namespace XamlViewer.Utils
             var status = (TabStatus)values[1];
 
             if ((status & TabStatus.Locked) == TabStatus.Locked)
-                return fileName + " [Ready Only]";
+                return fileName + " [Read Only]";
 
             return fileName;
         }  

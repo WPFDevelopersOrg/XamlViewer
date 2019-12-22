@@ -9,6 +9,8 @@ using System.Windows;
 using XamlTheme.Controls;
 using System.Collections.Generic;
 using System.Linq;
+using XamlEditor.Utils;
+using System.Threading.Tasks;
 
 namespace XamlEditor.ViewModels
 {
@@ -16,6 +18,8 @@ namespace XamlEditor.ViewModels
     {
         private string _fileName = null;
         private bool _isReseting = false;
+
+        private XmlParser _xmlParser = null;
 
         private TextEditorEx _textEditor = null;
         private IEventAggregator _eventAggregator = null;
@@ -52,6 +56,8 @@ namespace XamlEditor.ViewModels
 
             UndoCommand = new DelegateCommand(Undo, CanUndo);
             appCommands.UndoCommand.RegisterCommand(UndoCommand);
+
+            InitCodeCompletionParser();
         }
 
         private void OnLoaded(RoutedEventArgs e)
@@ -164,6 +170,13 @@ namespace XamlEditor.ViewModels
         {
             get { return _autoCompileDelay; }
             set { SetProperty(ref _autoCompileDelay, value); }
+        }
+
+        private bool _isCodeCompletion = true;
+        public bool IsCodeCompletion
+        {
+            get { return _isCodeCompletion; }
+            set { SetProperty(ref _isCodeCompletion, value); }
         }
 
         private Func<string, List<string>> _generateCompletionDataFunc = null;
@@ -290,6 +303,13 @@ namespace XamlEditor.ViewModels
         {
             if (_eventAggregator != null)
                 _eventAggregator.GetEvent<CaretPositionEvent>().Publish(new CaretPosition() { Line = CaretLine, Column = CaretColumn });
+        }
+
+        private void InitCodeCompletionParser()
+        {
+            _xmlParser = new XmlParser();
+
+            Task.Run(() => IsCodeCompletion = _xmlParser.Parse());
         }
     }
 }

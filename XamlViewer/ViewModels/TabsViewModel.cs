@@ -112,7 +112,7 @@ namespace XamlViewer.ViewModels
 
             XamlTabs = new ObservableCollection<TabViewModel>(_appData.Config.Files.Select(f => new TabViewModel(f, CloseXamlTab)));
             if (XamlTabs.Count == 0)
-                XamlTabs.Add(new TabViewModel("NewFile.xaml", CloseXamlTab) { Status = TabStatus.NoSave });
+                XamlTabs.Add(new TabViewModel("NewFile.xaml", TabStatus.NoSave, CloseXamlTab));
 
             XamlTabs[0].IsSelected = true;
         }
@@ -127,10 +127,7 @@ namespace XamlViewer.ViewModels
                 new TabViewModel(
                     Common.GetCopyName("NewFile", " ",
                         n => XamlTabs.Any(tab => Path.GetFileNameWithoutExtension(tab.Title).ToLower() == n.ToLower())) +
-                    ".xaml", CloseXamlTab)
-                {
-                    Status = TabStatus.NoSave,
-                };
+                    ".xaml", TabStatus.NoSave, CloseXamlTab);
 
             XamlTabs.Insert(0, newTab);
             newTab.IsSelected = true;
@@ -248,7 +245,7 @@ namespace XamlViewer.ViewModels
             var helpTab = XamlTabs.FirstOrDefault(tab => (tab.Status & TabStatus.Inner) == TabStatus.Inner);
             if (helpTab == null)
             {
-                helpTab = new TabViewModel("Help.xaml", CloseXamlTab) { Status = TabStatus.Inner };
+                helpTab = new TabViewModel("Help.xaml", TabStatus.Inner, CloseXamlTab);
                 XamlTabs.Insert(0, helpTab);
 
                 helpTab.IsSelected = true;

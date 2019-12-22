@@ -59,6 +59,9 @@
   <ItemGroup>
     <Compile Include="Adorners\MousePanelAdorner.cs" />
     <Compile Include="Behaviors\DragItemsPositionBehavior.cs" />
+    <Compile Include="Controls\Hyperlink.xaml.cs">
+      <DependentUpon>Hyperlink.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RestrictTextBox.cs" />
     <Compile Include="Controls\StatusToggle.cs" />
     <Compile Include="Controls\TextEditorEx.cs" />
@@ -77,6 +80,10 @@
     <Compile Include="Utils\DpiUtil.cs" />
     <Compile Include="Utils\GridSplitterUtil.cs" />
     <Compile Include="Utils\Win32.cs" />
+    <Page Include="Controls\Hyperlink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\CheckBoxStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

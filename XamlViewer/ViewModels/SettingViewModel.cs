@@ -156,6 +156,12 @@ namespace XamlViewer.ViewModels
             var ofd = new SWF.OpenFileDialog { Filter = "DLL|*.dll", Multiselect = true };
             if (ofd.ShowDialog() == SWF.DialogResult.OK)
             {
+                if(Path.GetDirectoryName(ofd.FileName).Contains(AppDomain.CurrentDomain.BaseDirectory.Trim('\\')))
+                {
+                    MessageBox.Show("Can not add current path dll!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 foreach (var selectedName in ofd.FileNames)
                 {
                     var fileName = Path.GetFileName(selectedName);
