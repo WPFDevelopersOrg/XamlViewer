@@ -77,6 +77,10 @@
                             <Setter TargetName="CloseBtn" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
 
+                        <Trigger Property="HideOriginalTitle" Value="true">
+                            <Setter TargetName="TitleTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        
                         <Trigger Property="Text" SourceName="TitleTextBlock" Value="{x:Null}">
                             <Setter TargetName="TitleTextBlock" Property="Visibility" Value="Collapsed"/>
                         </Trigger>

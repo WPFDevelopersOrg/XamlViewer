@@ -19,7 +19,7 @@ namespace XamlEditor.ViewModels
         private string _fileName = null;
         private bool _isReseting = false;
 
-        private XmlParser _xmlParser = null;
+        private XsdParser _xsdParser = null;
 
         private TextEditorEx _textEditor = null;
         private IEventAggregator _eventAggregator = null;
@@ -45,10 +45,10 @@ namespace XamlEditor.ViewModels
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
             DelayArrivedCommand = new DelegateCommand(OnDelayArrived);
 
-            CompileCommand = new DelegateCommand(Compile);
+            CompileCommand = new DelegateCommand(Compile, CanCompile);
             appCommands.CompileCommand.RegisterCommand(CompileCommand);
 
-            SaveCommand = new DelegateCommand(Save);
+            SaveCommand = new DelegateCommand(Save, CanSave);
             appCommands.SaveCommand.RegisterCommand(SaveCommand);
 
             RedoCommand = new DelegateCommand(Redo, CanRedo);
@@ -78,7 +78,13 @@ namespace XamlEditor.ViewModels
         public bool IsReadOnly
         {
             get { return _isReadOnly; }
-            set { SetProperty(ref _isReadOnly, value); }
+            set
+            {
+                SetProperty(ref _isReadOnly, value); 
+
+                SaveCommand.RaiseCanExecuteChanged();
+                CompileCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private int _caretLine = 0;
@@ -196,6 +202,11 @@ namespace XamlEditor.ViewModels
 
         #region Command
 
+        private bool CanSave()
+        {
+            return !IsReadOnly;
+        }
+
         private void Save()
         {
             Reset();
@@ -234,6 +245,16 @@ namespace XamlEditor.ViewModels
 
             RedoCommand.RaiseCanExecuteChanged();
             UndoCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool CanCompile()
+        {
+            return !IsReadOnly;
+        }
+
+        private void Compile()
+        {
+            Compile(null);
         }
 
         #endregion
@@ -288,11 +309,6 @@ namespace XamlEditor.ViewModels
             _isReseting = false;
         }
 
-        private void Compile()
-        {
-            Compile(null);
-        }
-
         private void Compile(string fileContent)
         {
             if (_eventAggregator != null && _textEditor != null)
@@ -307,9 +323,9 @@ namespace XamlEditor.ViewModels
 
         private void InitCodeCompletionParser()
         {
-            _xmlParser = new XmlParser();
+            _xsdParser = new XsdParser();
 
-            Task.Run(() => IsCodeCompletion = _xmlParser.Parse());
+            Task.Run(() => IsCodeCompletion = _xsdParser.TryParse());
         }
     }
 }

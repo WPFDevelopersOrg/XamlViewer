@@ -68,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Utils\TextEditorUtil.cs" />
-    <Compile Include="Utils\XmlParser.cs" />
+    <Compile Include="Utils\XsdParser.cs" />
     <Compile Include="ViewModels\EditorControlViewModel.cs" />
     <Compile Include="Views\EditorControl.xaml.cs">
       <DependentUpon>EditorControl.xaml</DependentUpon>

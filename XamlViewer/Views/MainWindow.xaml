@@ -10,6 +10,7 @@
                      xmlns:utils="clr-namespace:XamlViewer.Utils"
                      prism:ViewModelLocator.AutoWireViewModel="True"
                      Style="{StaticResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
+                     Title="{Binding Title}" HideOriginalTitle="True"
                      WindowStartupLocation="CenterScreen" Height="600" Width="900" MinWidth="500" MinHeight="500">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Activated">

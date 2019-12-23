@@ -87,6 +87,13 @@ namespace XamlTheme.Controls
             set { SetValue(IsCloseVisibleProperty, value); }
         }
 
+        public static readonly DependencyProperty HideOriginalTitleProperty = DependencyProperty.Register("HideOriginalTitle", typeof(bool), _typeofSelf, new PropertyMetadata(false));
+        public bool HideOriginalTitle
+        {
+            get { return (bool)GetValue(HideOriginalTitleProperty); }
+            set { SetValue(HideOriginalTitleProperty, value); }
+        }
+
         public static readonly DependencyProperty TitleBarBackgroundProperty = DependencyProperty.Register("TitleBarBackground", typeof(Brush), _typeofSelf);
         public Brush TitleBarBackground
         {
