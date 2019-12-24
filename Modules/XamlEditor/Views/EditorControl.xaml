@@ -12,7 +12,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="White">
         <controls:TextEditorEx Margin="6,0,0,0"
-                               IsCodeCompletion="{Binding IsCodeCompletion, Mode=TwoWay}"
+                               IsCodeCompletion="{Binding IsCodeCompletion}"
 		                       IsReadOnly="{Binding IsReadOnly}"
                                LineNumber="{Binding CaretLine, Mode=TwoWay}"
                                LinePosition="{Binding CaretColumn, Mode=TwoWay}"

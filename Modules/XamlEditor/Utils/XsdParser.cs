@@ -15,7 +15,7 @@ namespace XamlEditor.Utils
 
         public XsdParser()
         {
-            _fileName = AppDomain.CurrentDomain.BaseDirectory + "Assets\\XamlPresentation2006.xsd";
+            _fileName = AppDomain.CurrentDomain.BaseDirectory + "Modules\\Assets\\XamlPresentation2006.xsd";
             _simpleTypes = new List<XmlSchemaSimpleType>();
         }
 
@@ -49,7 +49,7 @@ namespace XamlEditor.Utils
             }
         }
 
-        public IEnumerable<string> GetElements()
+        public List<string> GetElements()
         {
             if (_schema == null)
                 return null;
@@ -58,37 +58,46 @@ namespace XamlEditor.Utils
 
             foreach (XmlSchemaElement element in _schema.Elements.Values)
             {
-                if (!string.IsNullOrEmpty(element.Name) && !char.IsLower(element.Name, 0))
+                if (!string.IsNullOrEmpty(element.Name) && char.IsUpper(element.Name, 0))
                     results.Add(element.Name);
             }
 
-            return results.OrderBy(s => s);
+            return results.OrderBy(s => s).ToList();
         }
 
-        public IEnumerable<string> GetAttributes(string elementName)
+        public List<string> GetChildElements(string parentElementName)
+        {
+            var results = new List<string>();
+
+            var element = GetElement(parentElementName);
+            GetChildElements(element, results);
+
+            return results.OrderBy(s => s).ToList();
+        }
+
+        public List<string> GetAttributes(string elementName)
         {
             var results = new List<XmlSchemaAttribute>();
 
             var element = GetElement(elementName);
-            if (element != null)
-                GetAttributes(element, results);
+            GetAttributes(element, results);
 
-            return results.Select(a => a.Name).OrderBy(n => n);
+            return results.Select(a => a.Name).OrderBy(n => n).ToList();
         }
 
         //x:...
-        public IEnumerable<string> GetNamespaceAttributes()
+        public List<string> GetNamespaceAttributes()
         {
             return new List<string> { "Class", "Key", "Name", "Subclass" };
         }
 
         //="{...
-        public IEnumerable<string> GetReferenceTypeValues()
+        public List<string> GetReferenceTypeValues()
         {
             return new List<string> { "StaticResource", "DynamicResource", "Binding", "x:Static", "x:Null" };
         }
 
-        public IEnumerable<string> GetValues(string elementName, string attributeName)
+        public List<string> GetValues(string elementName, string attributeName)
         {
             var results = new List<string>();
 
@@ -100,9 +109,55 @@ namespace XamlEditor.Utils
                     GetSimpleTypeValues(attribute.AttributeSchemaType.Content, results);
             }
 
-            return results.OrderBy(s => s);
+            return results.OrderBy(s => s).ToList();
         }
 
+        private void GetChildElements(XmlSchemaElement element, List<string> resultElements)
+        {
+            if (element == null)
+                return;
+
+            var complexType = element.ElementSchemaType as XmlSchemaComplexType;
+            if (complexType == null)
+                return;
+
+            //just for Sequence
+            var sequence = complexType.Particle as XmlSchemaSequence;
+            if (sequence == null)
+                return;
+
+            foreach (var item in sequence.Items)
+            {
+                var group = item as XmlSchemaGroupRef;
+                if (group == null || !group.RefName.Name.StartsWith("c"))
+                    continue;
+
+                var choice = group.Particle as XmlSchemaChoice;
+                GetChildElements(choice, resultElements);
+            }
+        }
+
+        private void GetChildElements(XmlSchemaChoice choice, List<string> resultElements)
+        {
+            if (choice == null)
+                return;
+
+            foreach (var c in choice.Items)
+            {
+                var xse = c as XmlSchemaElement;
+                if (xse != null)
+                {
+                    if (!string.IsNullOrEmpty(xse.RefName.Name) && char.IsUpper(xse.RefName.Name, 0))
+                        resultElements.Add(xse.RefName.Name);
+
+                    continue;
+                }
+
+                var xsgr = c as XmlSchemaChoice;
+                if (xsgr != null)
+                    GetChildElements(xsgr, resultElements);
+            }
+        }
 
         private void GetSimpleTypeValues(XmlSchemaSimpleTypeContent content, List<string> resultValues)
         {
@@ -129,7 +184,6 @@ namespace XamlEditor.Utils
                         {
                             GetSimpleTypeValues(simpleType.Content, resultValues);
                         }
-
                     }
                 }
             }

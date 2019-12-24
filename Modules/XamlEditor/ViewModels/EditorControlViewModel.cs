@@ -80,7 +80,7 @@ namespace XamlEditor.ViewModels
             get { return _isReadOnly; }
             set
             {
-                SetProperty(ref _isReadOnly, value); 
+                SetProperty(ref _isReadOnly, value);
 
                 SaveCommand.RaiseCanExecuteChanged();
                 CompileCommand.RaiseCanExecuteChanged();
@@ -185,15 +185,26 @@ namespace XamlEditor.ViewModels
             set { SetProperty(ref _isCodeCompletion, value); }
         }
 
-        private Func<string, List<string>> _generateCompletionDataFunc = null;
-        public Func<string, List<string>> GenerateCompletionDataFunc
+        private Func<string, string, string, List<string>> _generateCompletionDataFunc = null;
+        public Func<string, string, string, List<string>> GenerateCompletionDataFunc
         {
             get
             {
                 if (_generateCompletionDataFunc == null)
-                    _generateCompletionDataFunc = editor =>
+                    _generateCompletionDataFunc = (parentElement, element, attribute) =>
                     {
-                        return Enumerable.Range(1, 20).Select(i => "Item" + i).ToList();
+                        if (!string.IsNullOrWhiteSpace(parentElement))
+                            return _xsdParser.GetChildElements(parentElement);
+
+                        if (!string.IsNullOrWhiteSpace(element))
+                        {
+                            if (!string.IsNullOrWhiteSpace(attribute))
+                                return _xsdParser.GetValues(element, attribute);
+
+                            return _xsdParser.GetAttributes(element);
+                        }
+
+                        return null;
                     };
 
                 return _generateCompletionDataFunc;

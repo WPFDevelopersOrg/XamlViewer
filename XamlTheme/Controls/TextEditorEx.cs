@@ -167,10 +167,10 @@ namespace XamlTheme.Controls
         }
 
         public static readonly DependencyProperty GenerateCompletionDataProperty =
-           DependencyProperty.Register("GenerateCompletionData", typeof(Func<string, List<string>>), _typeofSelf);
-        public Func<string, List<string>> GenerateCompletionData
+           DependencyProperty.Register("GenerateCompletionData", typeof(Func<string, string, string, List<string>>), _typeofSelf);
+        public Func<string, string, string, List<string>> GenerateCompletionData
         {
-            get { return (Func<string, List<string>>)GetValue(GenerateCompletionDataProperty); }
+            get { return (Func<string, string, string, List<string>>)GetValue(GenerateCompletionDataProperty); }
             set { SetValue(GenerateCompletionDataProperty, value); }
         }
 
@@ -244,6 +244,166 @@ namespace XamlTheme.Controls
             LinePosition = _partTextEditor.TextArea.Caret.Location.Column;
         }
 
+        private char FindLastNonSpaceChar(int startOffset)
+        {
+            while (startOffset >= 0)
+            {
+                var curChar = _partTextEditor.Text[startOffset];
+                if (!char.IsWhiteSpace(curChar))
+                    return curChar;
+
+                startOffset--;
+            }
+
+            return ' ';
+        }
+
+        private string GetParentElement()
+        {
+            var curOffset = _partTextEditor.TextArea.Caret.Offset - 2;
+
+            var foundCount = 0;
+            var foundEnd = false;
+            for (int i = curOffset; i >= 0; i--)
+            {
+                var curChar = _partTextEditor.Text[i];
+
+                if (curChar == '>' && i > 0 && FindLastNonSpaceChar(i - 1) != '/')
+                {
+                    foundCount++;
+
+                    if (foundCount % 2 == 1)
+                        foundEnd = true;
+
+                    continue;
+                }
+
+                if (curChar == '/' && i > 0 && FindLastNonSpaceChar(i - 1) == '<')
+                {
+                    foundEnd = false;
+                    continue;
+                }
+
+                if (curChar == '<' && foundEnd)
+                {
+                    var element = "";
+                    for (int j = i + 1; j <= curOffset; j++)
+                    {
+                        curChar = _partTextEditor.Text[j];
+                        var isWhiteSpace = char.IsWhiteSpace(curChar);
+
+                        if (!string.IsNullOrEmpty(element) && isWhiteSpace)
+                            return element;
+
+                        if (!isWhiteSpace)
+                            element += curChar;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private string GetElementInFrontOfSymbol(int startOffset)
+        {
+            var element = "";
+
+            for (int i = startOffset; i >= 0; i--)
+            {
+                var curChar = _partTextEditor.Text[i];
+                var isLetter = char.IsLetter(curChar);
+
+                if (!string.IsNullOrEmpty(element) && !isLetter)
+                    return new string(element.Reverse().ToArray());
+
+                if (isLetter)
+                    element += curChar;
+            }
+
+            return null;
+        }
+
+        private Tuple<string, string> GetElementAndAttributeInFrontOfSymbol(int startOffset)
+        {
+            var finishAttribute = false;
+            var attribute = "";
+
+            var element = "";
+
+            for (int i = startOffset; i >= 0; i--)
+            {
+                var curChar = _partTextEditor.Text[i];
+
+                //attribute
+                var isLetter = char.IsLetter(curChar);
+                if (!string.IsNullOrEmpty(attribute) && !isLetter && !finishAttribute)
+                {
+                    finishAttribute = true;
+                    attribute = new string(attribute.Reverse().ToArray());
+                }
+
+                if (isLetter && !finishAttribute)
+                    attribute += curChar;
+
+                //element
+                if (curChar == '>')
+                    break;
+
+                if (curChar == '/' && i > 0 && FindLastNonSpaceChar(i - 1) == '<')
+                    break;
+
+                if (curChar == '<')
+                {
+                    for (int j = i + 1; j <= startOffset; j++)
+                    {
+                        curChar = _partTextEditor.Text[j];
+                        var isWhiteSpace = char.IsWhiteSpace(curChar);
+
+                        if (!string.IsNullOrEmpty(element) && isWhiteSpace)
+                            break;
+
+                        if (!isWhiteSpace)
+                            element += curChar;
+                    }
+                }
+            }
+
+            return new Tuple<string, string>(element, attribute);
+        }
+
+        private string GetElementBySpace()
+        {
+            var curOffset = _partTextEditor.TextArea.Caret.Offset - 1;
+
+            for (int i = curOffset; i >= 0; i--)
+            {
+                var curChar = _partTextEditor.Text[i];
+                if (curChar == '>')
+                    return null;
+
+                if (curChar == '/' && i > 0 && FindLastNonSpaceChar(i - 1) == '<')
+                    return null;
+
+                if (curChar == '<')
+                {
+                    var element = "";
+                    for (int j = i + 1; j <= curOffset; j++)
+                    {
+                        curChar = _partTextEditor.Text[j];
+                        var isWhiteSpace = char.IsWhiteSpace(curChar);
+
+                        if (!string.IsNullOrEmpty(element) && isWhiteSpace)
+                            return element;
+
+                        if (!isWhiteSpace)
+                            element += curChar;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
             if (IsReadOnly || !IsCodeCompletion || GenerateCompletionData == null)
@@ -251,50 +411,83 @@ namespace XamlTheme.Controls
 
             switch (e.Text)
             {
-                case ".":
-                case " ":
-                case "<":
+                case ".": //get attributes
                     {
-                        var finalDatas = GenerateCompletionData("");
-                        if (finalDatas == null || finalDatas.Count == 0)
-                            return;
+                        var element = GetElementInFrontOfSymbol(_partTextEditor.TextArea.Caret.Offset - 1);
+                        if (!string.IsNullOrEmpty(element))
+                            ShowCompletionWindow(GenerateCompletionData(null, element, null));
 
-                        _completionWindow = new CompletionWindow(_partTextEditor.TextArea);
-                        _completionWindow.Resources = Resources;
-
-                        var datas = _completionWindow.CompletionList.CompletionData;
-                        finalDatas.ForEach(d => datas.Add(new EditorCompletionData(d)));
-
-                        _completionWindow.Closed += delegate
-                        {
-                            _completionWindow.Resources = null;
-                            _completionWindow = null;
-                        };
-
-                        _completionWindow.Show();
+                        break;
                     }
-                    break;
+
+                case " ": //get attributes
+                    {
+                        var element = GetElementBySpace();
+                        if (!string.IsNullOrEmpty(element))
+                            ShowCompletionWindow(GenerateCompletionData(null, element, null));
+
+                        break;
+                    }
+
+                case "<": //get child elements
+                    {
+                        var parentElement = GetParentElement();
+                        if (!string.IsNullOrEmpty(parentElement))
+                            ShowCompletionWindow(GenerateCompletionData(parentElement, null, null));
+
+                        break;
+                    }
 
                 case "{":
-                    InsertPairChar("}");
+                    {
+                        InsertPairChar("}");
+                        ShowCompletionWindow(new List<string> { "Binding", "DynamicResource", "StaticResource", "x:Null", "x:Static" });
+
+                        break;
+                    }
+
+                case "=": //get values
+                    {
+                        InsertPairChar("\"\"");
+
+                        var element = GetElementAndAttributeInFrontOfSymbol(_partTextEditor.TextArea.Caret.Offset - 2);
+
+                        if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
+                            ShowCompletionWindow(GenerateCompletionData(null, element.Item1, element.Item2));
+
+                        break;
+                    }
+
+                case "\"": //get values
+                    {
+                        InsertPairChar("\"");
+
+                        var offset = _partTextEditor.TextArea.Caret.Offset;
+                        if (offset > 2 && _partTextEditor.Text[offset - 2] == '=')
+                        {
+                            var element = GetElementAndAttributeInFrontOfSymbol(_partTextEditor.TextArea.Caret.Offset - 2);
+
+                            if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
+                                ShowCompletionWindow(GenerateCompletionData(null, element.Item1, element.Item2));
+                        }
+
+                        break;
+                    }
+
+                case ">":  // auto add </XXX>
                     break;
 
-                case "=":
-                    InsertPairChar("\"\"");
-                    break;
-
-                case "\"":
-                    InsertPairChar("\"");
+                case "\n":  // auto align or insert one space line
                     break;
             }
         }
 
         private void TextArea_TextEntering(object sender, TextCompositionEventArgs e)
         {
-            if (!IsCodeCompletion)
+            if (IsReadOnly || !IsCodeCompletion || _completionWindow == null)
                 return;
 
-            if (e.Text.Length > 0 && _completionWindow != null)
+            if (e.Text.Length > 0)
             {
                 if (!char.IsLetterOrDigit(e.Text[0]))
                 {
@@ -305,18 +498,15 @@ namespace XamlTheme.Controls
             }
         }
 
+        private void CompletionList_InsertionRequested(object sender, EventArgs e)
+        {
+            //insert =""
+            //_partTextEditor.Document.Insert(_partTextEditor.TextArea.Caret.Offset, "=\"\"");
+        }
+
         #endregion
 
         #region Func
-
-        private void InsertPairChar(string chars, bool caretFallBack = true, int fallbackTimes = 1)
-        {
-            _partTextEditor.TextArea.Document.Insert(_partTextEditor.TextArea.Caret.Offset, chars);
-
-            if (caretFallBack)
-                _partTextEditor.TextArea.Caret.Column = _partTextEditor.TextArea.Caret.Column - fallbackTimes;
-        }
-
 
         public void Redo()
         {
@@ -333,6 +523,48 @@ namespace XamlTheme.Controls
 
             _partTextEditor.Undo();
         }
+
+        private void InsertPairChar(string chars, bool caretFallBack = true, int fallbackTimes = 1)
+        {
+            _partTextEditor.TextArea.Document.Insert(_partTextEditor.TextArea.Caret.Offset, chars);
+
+            if (caretFallBack)
+                _partTextEditor.TextArea.Caret.Column = _partTextEditor.TextArea.Caret.Column - fallbackTimes;
+        }
+
+        private void ShowCompletionWindow(List<string> showDatas)
+        {
+            if (showDatas == null || showDatas.Count == 0)
+                return;
+
+            _completionWindow = new CompletionWindow(_partTextEditor.TextArea);
+            _completionWindow.Resources = Resources;
+            _completionWindow.MinWidth = 300;
+            _completionWindow.MaxHeight = 300;
+            _completionWindow.SizeToContent = SizeToContent.Height;
+
+            _completionWindow.CompletionList.InsertionRequested += CompletionList_InsertionRequested;
+
+            var datas = _completionWindow.CompletionList.CompletionData;
+            showDatas.ForEach(d => datas.Add(new EditorCompletionData(d)));
+
+            EventHandler handler = null;
+            handler = (s, e) =>
+            {
+                if (_completionWindow != null)
+                {
+                    _completionWindow.CompletionList.InsertionRequested -= CompletionList_InsertionRequested;
+
+                    _completionWindow.Closed -= handler;
+                    _completionWindow.Resources = null;
+                    _completionWindow = null;
+                }
+            };
+
+            _completionWindow.Closed -= handler;
+            _completionWindow.Closed += handler;
+            _completionWindow.Show();
+        } 
 
         private void RefreshFoldings()
         {
