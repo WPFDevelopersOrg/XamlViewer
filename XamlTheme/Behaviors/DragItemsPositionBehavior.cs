@@ -13,7 +13,8 @@ namespace XamlTheme.Behaviors
 {
     public class DragItemsPositionBehavior : Behavior<Panel>
     {
-        private Point _cacheMouseDownPosToChild;
+        private Point _cacheMouseDownToChildPos;
+		private Point _cacheChildToPanelPos;
         private UIElement _dragedChild = null;
 
         private MousePanelAdorner _panelAdorner = null;
@@ -151,12 +152,14 @@ namespace XamlTheme.Behaviors
 
             foreach (UIElement child in AssociatedObject.Children)
             {
-                _cacheMouseDownPosToChild = e.GetPosition(child);
+                _cacheMouseDownToChildPos = e.GetPosition(child);
 
-                var hitResult = VisualTreeHelper.HitTest(child, _cacheMouseDownPosToChild);
+                var hitResult = VisualTreeHelper.HitTest(child, _cacheMouseDownToChildPos);
                 if (hitResult != null)
                 {
+					_cacheChildToPanelPos = child.TranslatePoint(new Point(), AssociatedObject);
                     _dragedChild = child;
+					
                     AssociatedObject.PreviewMouseMove += OnMouseMove;
 
                     break;
@@ -173,7 +176,7 @@ namespace XamlTheme.Behaviors
             if (panel == null || draggedChild == null)
                 return null;
 
-            return new MousePanelAdorner(panel, draggedChild as FrameworkElement, Mouse.GetPosition(draggedChild), draggedChild.TranslatePoint(new Point(), panel), DisabledYPosition);
+            return new MousePanelAdorner(panel, draggedChild as FrameworkElement, _cacheMouseDownToChildPos, _cacheChildToPanelPos, DisabledYPosition);
         } 
 
         private void StartDrag()
@@ -203,15 +206,15 @@ namespace XamlTheme.Behaviors
         }
 
         private void MoveChild(UIElement dragedChild)
-        {
-            var screenPos = new Win32.POINT();
-            if (!Win32.GetCursorPos(ref screenPos))
-                return;
-
-            var posToPanel = AssociatedObject.PointFromScreen(new Point(screenPos.X, screenPos.Y));
+        { 
+			var screenPos = new Win32.POINT();
+			if (!Win32.GetCursorPos(ref screenPos))
+				return;
+			
+			var posToPanel = AssociatedObject.PointFromScreen(new Point(screenPos.X, screenPos.Y)); 
             var dragedElement = dragedChild as FrameworkElement;
-
-            var childRect = new Rect(posToPanel.X - _cacheMouseDownPosToChild.X, posToPanel.Y - _cacheMouseDownPosToChild.Y, dragedElement.ActualWidth, dragedElement.ActualHeight);
+			
+            var childRect = new Rect(posToPanel.X - _cacheMouseDownToChildPos.X, DisabledYPosition ? _cacheChildToPanelPos.Y : (posToPanel.Y - _cacheMouseDownToChildPos.Y), dragedElement.ActualWidth, dragedElement.ActualHeight);
 
             //find the child which has max overlapping area with dragedChild
             Size? maxOverlapSize = null;
