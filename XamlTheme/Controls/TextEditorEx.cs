@@ -244,7 +244,7 @@ namespace XamlTheme.Controls
             LinePosition = _partTextEditor.TextArea.Caret.Location.Column;
         }
 
-        private string FindPreviousNonSpaceChars(int startOffset int charLength = 1)
+        private string FindPreviousNonSpaceChars(int startOffset, int charLength = 1)
         {
 			var foundChars = string.Empty;
 			
@@ -255,7 +255,7 @@ namespace XamlTheme.Controls
                 if (!char.IsWhiteSpace(curChar))
 				{
                     foundChars += curChar;
-					if(foundChars.Length = charLength)
+					if(foundChars.Length == charLength)
 						break;
 				}
 
@@ -277,7 +277,7 @@ namespace XamlTheme.Controls
                 if (!char.IsWhiteSpace(curChar))
 				{
 					foundChars += curChar;
-					if(foundChars.Length = charLength)
+					if(foundChars.Length == charLength)
 						break;
 				}
 
@@ -436,7 +436,7 @@ namespace XamlTheme.Controls
 		    var curOffset = _partTextEditor.TextArea.Caret.Offset;
 			var length = _partTextEditor.Text.Length;
 			
-		    if(curOffset > 0 && FindPreviousNonSpaceChars(i - 1) == ">" && FindPreviousNonSpaceChars(i - 1, 2) != "/>"
+		    if(curOffset > 0 && FindPreviousNonSpaceChars(curOffset - 1) == ">" && FindPreviousNonSpaceChars(curOffset - 1, 2) != "/>"
 			&& curOffset < length && FindNextNonSpaceChars(curOffset, 2) == "</")
 			{
 				_partTextEditor.TextArea.Document.Insert(_partTextEditor.TextArea.Caret.Offset, "\n");
@@ -449,11 +449,13 @@ namespace XamlTheme.Controls
             if (IsReadOnly || !IsCodeCompletion || GenerateCompletionData == null)
                 return;
 
+            var offset = _partTextEditor.TextArea.Caret.Offset;
+
             switch (e.Text)
             {
                 case ".": //get attributes
                     {
-                        var element = GetElementInFrontOfSymbol(_partTextEditor.TextArea.Caret.Offset - 1);
+                        var element = GetElementInFrontOfSymbol(offset - 1);
                         if (!string.IsNullOrEmpty(element))
                             ShowCompletionWindow(GenerateCompletionData(null, element, null));
 
@@ -462,7 +464,7 @@ namespace XamlTheme.Controls
 
                 case " ": //get attributes
                     {
-                        var element = GetElement(_partTextEditor.TextArea.Caret.Offset - 1);
+                        var element = GetElement(offset - 1);
                         if (!string.IsNullOrEmpty(element))
                             ShowCompletionWindow(GenerateCompletionData(null, element, null));
 
@@ -490,7 +492,7 @@ namespace XamlTheme.Controls
                     {
                         InsertText("\"\"");
 
-                        var element = GetElementAndAttributeInFrontOfSymbol(_partTextEditor.TextArea.Caret.Offset - 2);
+                        var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
 
                         if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
                             ShowCompletionWindow(GenerateCompletionData(null, element.Item1, element.Item2));
@@ -501,11 +503,10 @@ namespace XamlTheme.Controls
                 case "\"": //get values
                     {
                         InsertText("\"");
-
-                        var offset = _partTextEditor.TextArea.Caret.Offset;
+                         
                         if (offset > 2 && _partTextEditor.Text[offset - 2] == '=')
                         {
-                            var element = GetElementAndAttributeInFrontOfSymbol(_partTextEditor.TextArea.Caret.Offset - 2);
+                            var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
 
                             if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
                                 ShowCompletionWindow(GenerateCompletionData(null, element.Item1, element.Item2));
@@ -515,11 +516,11 @@ namespace XamlTheme.Controls
                     }
 
                 case ">":  // auto add </XXX>
-					{
-						if(FindPreviousNonSpaceChars(i - 1, 2) == "/>")
+					{  
+                        if (FindPreviousNonSpaceChars(offset - 1, 2) == "/>")
 							break;
 						
-						var element = GetElement(_partTextEditor.TextArea.Caret.Offset - 2);
+						var element = GetElement(offset - 2);
 						if (!string.IsNullOrEmpty(element))
 						{
 							var insertStr = string.Format("</{0}>", element);
