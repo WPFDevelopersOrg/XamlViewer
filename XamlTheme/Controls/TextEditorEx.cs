@@ -285,15 +285,13 @@ namespace XamlTheme.Controls
             }
 
             return foundChars;
-        }
-
-        private string GetParentElement()
-        {
-            var curOffset = _partTextEditor.TextArea.Caret.Offset - 2;
-
+        } 
+		
+        private string GetParentElement(int startOffset)
+        {  
             var foundCount = 0;
             var foundEnd = false;
-            for (int i = curOffset; i >= 0; i--)
+            for (int i = startOffset; i >= 0; i--)
             {
                 var curChar = _partTextEditor.Text[i];
 
@@ -316,7 +314,7 @@ namespace XamlTheme.Controls
                 if (curChar == '<' && foundEnd)
                 {
                     var element = "";
-                    for (int j = i + 1; j <= curOffset; j++)
+                    for (int j = i + 1; j <= startOffset; j++)
                     {
                         curChar = _partTextEditor.Text[j];
                         var isWhiteSpace = char.IsWhiteSpace(curChar);
@@ -434,15 +432,42 @@ namespace XamlTheme.Controls
 		private void DealBreak()
         { 
 		    var curOffset = _partTextEditor.TextArea.Caret.Offset;
+			if(curOffset == 0)
+				return;
+			
 			var length = _partTextEditor.Text.Length;
 			
-		    if(curOffset > 0 && FindPreviousNonSpaceChars(curOffset - 1) == ">" && FindPreviousNonSpaceChars(curOffset - 1, 2) != "/>"
-			&& curOffset < length && FindNextNonSpaceChars(curOffset, 2) == "</")
+			var previousNonSpaceChars = FindPreviousNonSpaceChars(curOffset - 1, 2);
+			
+		    if(previousNonSpaceChars.Length > 1 && previousNonSpaceChars[1] == '>' && previousNonSpaceChars != "/>" && FindNextNonSpaceChars(curOffset, 2) == "</")
 			{
-				_partTextEditor.TextArea.Document.Insert(_partTextEditor.TextArea.Caret.Offset, "\n");
+				_partTextEditor.TextArea.Document.Insert(curOffset, "\n");
 				_partTextEditor.TextArea.Caret.Line -= 1;
 			} 
         }
+
+		private bool IsEvenQuoteInElement(int startOffset)
+		{  
+			var quoteCount = 0;
+		    
+            for (int i = startOffset; i >= 0; i--)
+            {
+                var curChar = _partTextEditor.Text[i];
+                if (curChar == '>')
+                    return false; 
+
+                if (curChar == '/' && i > 0 && FindPreviousNonSpaceChars(i - 1) == "<")
+                    return false;
+
+                if (curChar == '\"') 
+					quoteCount++;  
+				
+                if (curChar == '<')
+                    return quoteCount % 2 == 0;
+            }
+			
+			return false;
+		}
 
         private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
@@ -473,9 +498,14 @@ namespace XamlTheme.Controls
 
                 case "<": //get child elements
                     {
-                        var parentElement = GetParentElement();
-                        if (!string.IsNullOrEmpty(parentElement))
-                            ShowCompletionWindow(GenerateCompletionData(parentElement, null, null));
+                        var parentElement = GetParentElement(offset - 2);
+						var elements = GenerateCompletionData(parentElement, null, null);
+						if(elements.Count > 0)
+						{
+							elements.Insert(0, @"!--");
+							elements.Insert(1, @"![CDATA[");
+							ShowCompletionWindow(elements);
+						}
 
                         break;
                     }
@@ -490,6 +520,9 @@ namespace XamlTheme.Controls
 
                 case "=": //get values
                     {
+						if(!IsEvenQuoteInElement(offset - 2))
+							break;
+						
                         InsertText("\"\"");
 
                         var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
@@ -530,6 +563,18 @@ namespace XamlTheme.Controls
 						break;
 					}
 
+                case "/":
+					{
+						if (FindPreviousNonSpaceChars(offset - 1, 2) == "</")
+						{
+							var parentElement = GetParentElement(offset - 3);
+							if(!string.IsNullOrEmpty(parentElement))
+    							ShowCompletionWindow(new List<string> { parentElement + ">" });
+						}
+						
+						break;
+					}
+
                 case "\n":  // auto align or insert one space line
 				    DealBreak();
                     break;
@@ -554,8 +599,20 @@ namespace XamlTheme.Controls
 
         private void CompletionList_InsertionRequested(object sender, EventArgs e)
         {
+			
             //insert =""
             //_partTextEditor.Document.Insert(_partTextEditor.TextArea.Caret.Offset, "=\"\"");
+			
+			var offset = _partTextEditor.TextArea.Caret.Offset;
+			
+			if (FindPreviousNonSpaceChars(offset - 1, 3) == "!--")
+			{
+				InsertText("-->", true, 3);
+			}
+			else if(FindPreviousNonSpaceChars(offset - 1, 8) == "![CDATA[")
+			{
+				InsertText("]]>", true, 3);
+			}
         }
 
         #endregion

@@ -202,9 +202,9 @@ namespace XamlEditor.ViewModels
                                 return _xsdParser.GetValues(element, attribute);
 
                             return _xsdParser.GetAttributes(element);
-                        }
+                        } 
 
-                        return null;
+                        return _xsdParser.GetElements();
                     };
 
                 return _generateCompletionDataFunc;
