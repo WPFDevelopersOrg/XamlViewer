@@ -4,7 +4,7 @@
                      xmlns:ms="clr-namespace:XamlService;assembly=XamlService"
                      xmlns:views="clr-namespace:XamlViewer.Views"
                      xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
-                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
                      xmlns:prism="http://prismlibrary.com/"
                      xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
                      xmlns:utils="clr-namespace:XamlViewer.Utils"
@@ -12,14 +12,14 @@
                      Style="{StaticResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
                      Title="{Binding Title}" HideOriginalTitle="True"
                      WindowStartupLocation="CenterScreen" Height="600" Width="900" MinWidth="500" MinHeight="500">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Activated">
-            <prism:InvokeCommandAction Command="{Binding ActivatedCommand}"/>
-        </i:EventTrigger>
-        <i:EventTrigger EventName="Closing">
-            <prism:InvokeCommandAction Command="{Binding ClosingCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Activated">
+            <behaviors:InvokeCommandAction Command="{Binding ActivatedCommand}"/>
+        </behaviors:EventTrigger>
+        <behaviors:EventTrigger EventName="Closing">
+            <behaviors:InvokeCommandAction Command="{Binding ClosingCommand}"/>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
     <controls:UserWindow.InputBindings>
         <KeyBinding Command="{Binding AppCommands.NewCommand}" Gesture="Ctrl+N"/>
         <KeyBinding Command="{Binding AppCommands.OpenCommand}" Gesture="Ctrl+O"/>

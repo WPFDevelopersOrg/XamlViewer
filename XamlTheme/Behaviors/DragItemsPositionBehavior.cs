@@ -4,10 +4,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Documents;
-using System.Windows.Interactivity;
 using XamlTheme.Adorners;
 using XamlTheme.Utils;
 using XamlUtil.Common;
+using Microsoft.Xaml.Behaviors;
 
 namespace XamlTheme.Behaviors
 {

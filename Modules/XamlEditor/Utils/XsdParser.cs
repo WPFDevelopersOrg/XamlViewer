@@ -82,7 +82,7 @@ namespace XamlEditor.Utils
             var element = GetElement(elementName);
             GetAttributes(element, results);
 
-            return results.Select(a => a.Name).OrderBy(n => n).ToList();
+            return results.Select(a => a.Name.Contains(".") ? a.Name.Split('.')[0] : a.Name).Distinct().OrderBy(n => n).ToList();
         }
 
         //x:...

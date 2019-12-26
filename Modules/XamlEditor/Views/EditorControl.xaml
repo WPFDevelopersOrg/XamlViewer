@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
              xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
@@ -27,14 +27,14 @@
                 <Style TargetType="ScrollViewer"
                        BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/> 
             </controls:TextEditorEx.Resources>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Loaded">
-                    <prism:InvokeCommandAction Command="{Binding LoadedCommand}"/>
-                </i:EventTrigger>
-                <i:EventTrigger EventName="DelayArrived">
-                    <prism:InvokeCommandAction Command="{Binding DelayArrivedCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="Loaded">
+                    <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}"/>
+                </behaviors:EventTrigger>
+                <behaviors:EventTrigger EventName="DelayArrived">
+                    <behaviors:InvokeCommandAction Command="{Binding DelayArrivedCommand}"/>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
         </controls:TextEditorEx>
     </Grid>
 </UserControl>

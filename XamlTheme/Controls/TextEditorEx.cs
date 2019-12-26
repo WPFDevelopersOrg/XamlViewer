@@ -262,7 +262,10 @@ namespace XamlTheme.Controls
                 startOffset--;
             }
 
-            return foundChars;
+            if (string.IsNullOrEmpty(foundChars) || foundChars.Length == 1)
+                return foundChars;
+
+            return new string(foundChars.Reverse().ToArray());
         }
 		
 		private string FindNextNonSpaceChars(int startOffset, int charLength = 1)
@@ -283,8 +286,8 @@ namespace XamlTheme.Controls
 
                 startOffset++;
             }
-
-            return foundChars;
+             
+            return foundChars; 
         } 
 		
         private string GetParentElement(int startOffset)
@@ -317,14 +320,17 @@ namespace XamlTheme.Controls
                     for (int j = i + 1; j <= startOffset; j++)
                     {
                         curChar = _partTextEditor.Text[j];
-                        var isWhiteSpace = char.IsWhiteSpace(curChar);
+                        var isLetterOrPoint = char.IsLetter(curChar) || curChar == '.';
 
-                        if (!string.IsNullOrEmpty(element) && isWhiteSpace)
+                        if (!string.IsNullOrEmpty(element) && !isLetterOrPoint)
                             return element;
 
-                        if (!isWhiteSpace)
+                        if (isLetterOrPoint)
                             element += curChar;
                     }
+
+                    if (!string.IsNullOrEmpty(element))
+                        return element;
                 }
             }
 
@@ -345,9 +351,9 @@ namespace XamlTheme.Controls
 
                 if (isLetter)
                     element += curChar;
-            }
+            } 
 
-            return null;
+            return element;
         }
 
         private Tuple<string, string> GetElementAndAttributeInFrontOfSymbol(int startOffset)
@@ -384,12 +390,12 @@ namespace XamlTheme.Controls
                     for (int j = i + 1; j <= startOffset; j++)
                     {
                         curChar = _partTextEditor.Text[j];
-                        var isWhiteSpace = char.IsWhiteSpace(curChar);
+                        var isLetterOrPoint = char.IsLetter(curChar) || curChar == '.';
 
-                        if (!string.IsNullOrEmpty(element) && isWhiteSpace)
+                        if (!string.IsNullOrEmpty(element) && !isLetterOrPoint)
                             break;
 
-                        if (!isWhiteSpace)
+                        if (isLetterOrPoint)
                             element += curChar;
                     }
                 }
@@ -415,14 +421,17 @@ namespace XamlTheme.Controls
                     for (int j = i + 1; j <= startOffset; j++)
                     {
                         curChar = _partTextEditor.Text[j];
-                        var isWhiteSpace = char.IsWhiteSpace(curChar);
+                        var isLetterOrPoint = char.IsLetter(curChar) || curChar == '.';
 
-                        if (!string.IsNullOrEmpty(element) && isWhiteSpace)
+                        if (!string.IsNullOrEmpty(element) && !isLetterOrPoint)
                             return element;
 
-                        if (!isWhiteSpace)
+                        if (isLetterOrPoint)
                             element += curChar;
                     }
+
+                    if (!string.IsNullOrEmpty(element))
+                        return element;
                 }
             }
 
@@ -499,13 +508,16 @@ namespace XamlTheme.Controls
                 case "<": //get child elements
                     {
                         var parentElement = GetParentElement(offset - 2);
-						var elements = GenerateCompletionData(parentElement, null, null);
-						if(elements.Count > 0)
-						{
-							elements.Insert(0, @"!--");
-							elements.Insert(1, @"![CDATA[");
-							ShowCompletionWindow(elements);
-						}
+                        if(!parentElement.Contains("."))
+                        {
+                            var elements = GenerateCompletionData(parentElement, null, null);
+                            if (elements.Count > 0)
+                            {
+                                elements.Insert(0, @"!--");
+                                elements.Insert(1, @"![CDATA[");
+                                ShowCompletionWindow(elements);
+                            }
+                        }
 
                         break;
                     }
@@ -536,8 +548,8 @@ namespace XamlTheme.Controls
                 case "\"": //get values
                     {
                         InsertText("\"");
-                         
-                        if (offset > 2 && _partTextEditor.Text[offset - 2] == '=')
+
+                        if(offset > 1 && FindPreviousNonSpaceChars(offset - 1, 2) == "=\"")
                         {
                             var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
 
@@ -588,7 +600,7 @@ namespace XamlTheme.Controls
 
             if (e.Text.Length > 0)
             {
-                if (!char.IsLetterOrDigit(e.Text[0]))
+                if (!char.IsLetterOrDigit(e.Text[0]) && e.Text[0] != '!')
                 {
                     // Whenever a non-letter is typed while the completion window is open,
                     // insert the currently selected element.
@@ -613,6 +625,10 @@ namespace XamlTheme.Controls
 			{
 				InsertText("]]>", true, 3);
 			}
+            else
+            {
+
+            }
         }
 
         #endregion
@@ -673,7 +689,7 @@ namespace XamlTheme.Controls
             };
 
             _completionWindow.Closed -= handler;
-            _completionWindow.Closed += handler;
+            _completionWindow.Closed += handler; 
             _completionWindow.Show();
         } 
 
