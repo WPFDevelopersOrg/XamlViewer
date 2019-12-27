@@ -562,7 +562,7 @@ namespace XamlTheme.Controls
 
                 case ">":  // auto add </XXX>
 					{  
-                        if (FindPreviousNonSpaceChars(offset - 1, 2) == "/>")
+                        if (FindPreviousNonSpaceChars(offset - 1, 2) == "/>") 
 							break;
 						
 						var element = GetElement(offset - 2);

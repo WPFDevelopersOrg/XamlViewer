@@ -12,11 +12,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Prism.Services.Dialogs;
 using XamlService.Events;
 using XamlService.Payloads;
 using XamlUtil.Common;
 using XamlViewer.Models;
-using SWF = System.Windows.Forms; 
+using XamlViewer.Utils;
+using SWF = System.Windows.Forms;
 using Common = XamlViewer.Utils.Common;
 
 namespace XamlViewer.ViewModels
@@ -25,6 +27,7 @@ namespace XamlViewer.ViewModels
     {
         private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
+        private IDialogService _dialogService = null;
 
         public DelegateCommand AddRefCommand { get; private set; }
         public DelegateCommand RemoveRefCommand { get; private set; }
@@ -34,10 +37,11 @@ namespace XamlViewer.ViewModels
         public DelegateCommand<ScrollViewer> ScrollToRightCommand { get; private set; }
         public DelegateCommand<MouseWheelEventArgs> MouseWheelCommand { get; private set; }
 
-        public SettingViewModel(IContainerExtension container, IEventAggregator eventAggregator)
+        public SettingViewModel(IContainerExtension container, IEventAggregator eventAggregator, IDialogService dialogService)
         {
             _appData = container.Resolve<AppData>();
             _eventAggregator = eventAggregator;
+            _dialogService = dialogService;
 
             AddRefCommand = new DelegateCommand(AddReference);
             RemoveRefCommand = new DelegateCommand(RemoveReference, CanRemoveReference);
@@ -156,9 +160,9 @@ namespace XamlViewer.ViewModels
             var ofd = new SWF.OpenFileDialog { Filter = "DLL|*.dll", Multiselect = true };
             if (ofd.ShowDialog() == SWF.DialogResult.OK)
             {
-                if(Path.GetDirectoryName(ofd.FileName).Contains(AppDomain.CurrentDomain.BaseDirectory.Trim('\\')))
+                if (Path.GetDirectoryName(ofd.FileName).Contains(AppDomain.CurrentDomain.BaseDirectory.Trim('\\')))
                 {
-                    MessageBox.Show("Can not add current path dll!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    _dialogService.ShowMessage("Please do not add files in the installation directory!", MessageButton.OK, MessageType.Warning);
                     return;
                 }
 
@@ -169,17 +173,31 @@ namespace XamlViewer.ViewModels
                     var reference = References.FirstOrDefault(r => string.Equals(r.FileName, fileName, StringComparison.OrdinalIgnoreCase));
                     if (reference != null)
                     {
-                        var r = MessageBox.Show("Same File, Replace?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (r == MessageBoxResult.No)
-                            return;
+                        var result = ButtonResult.Yes;
+                        var msg = string.Format("{0}\n\nThis file already exists.\nDo you want to replace it?", fileName);
+                        _dialogService.ShowMessage(msg, MessageButton.YesNo, MessageType.Question, r =>
+                        {
+                            result = r.Result;
+                        });
+
+                        if (result != ButtonResult.Yes)
+                            continue;
 
                         References.Remove(reference);
                     }
 
-                    File.Copy(ofd.FileName, AppDomain.CurrentDomain.BaseDirectory + fileName);
+                    try
+                    {
+                        File.Copy(ofd.FileName, AppDomain.CurrentDomain.BaseDirectory + fileName);
 
-                    References.Add(new ReferenceViewModel(fileName));
-                    _appData.Config.References.Add(fileName);
+                        References.Add(new ReferenceViewModel(fileName));
+                        _appData.Config.References.Add(fileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        var msg = string.Format("{0}\n\nAdd failed: {1}.\nPlease try again!", fileName, ex.Message);
+                        _dialogService.ShowMessage(msg, MessageButton.OK, MessageType.Error);
+                    }
                 }
 
                 RemoveRefCommand.RaiseCanExecuteChanged();

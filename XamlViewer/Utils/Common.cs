@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
 namespace XamlViewer.Utils
@@ -65,6 +66,14 @@ namespace XamlViewer.Utils
             }
 
             return null;
+        }
+
+        public static BitmapSource ToBitmapSource(string uri)
+        { 
+            if (string.IsNullOrWhiteSpace(uri))
+                return null;
+
+            return new BitmapImage(new Uri(uri, UriKind.RelativeOrAbsolute));
         }
     }
 }

@@ -17,7 +17,7 @@
             <behaviors:InvokeCommandAction Command="{Binding ActivatedCommand}"/>
         </behaviors:EventTrigger>
         <behaviors:EventTrigger EventName="Closing">
-            <behaviors:InvokeCommandAction Command="{Binding ClosingCommand}"/>
+            <behaviors:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="true"/>
         </behaviors:EventTrigger>
     </behaviors:Interaction.Triggers>
     <controls:UserWindow.InputBindings>

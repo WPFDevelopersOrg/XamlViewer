@@ -31,10 +31,10 @@
             </ListBox.ItemsPanel>  
 			<b:Interaction.Triggers>
                 <b:EventTrigger EventName="Loaded">
-                    <b:InvokeCommandAction Command="{Binding LoadedCommand}"/>
+                    <b:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="true"/>
                 </b:EventTrigger>
                 <b:EventTrigger EventName="SizeChanged">
-					<b:InvokeCommandAction Command="{Binding SizeChangedCommand}"/>
+					<b:InvokeCommandAction Command="{Binding SizeChangedCommand}" PassEventArgsToCommand="true"/>
 				</b:EventTrigger>
      		</b:Interaction.Triggers>
         </ListBox>

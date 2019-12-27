@@ -27,7 +27,8 @@
                     <AdornerDecorator>
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}">
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                UseLayoutRounding="True">
                             <Grid x:Name="LayoutRoot">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>

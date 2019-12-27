@@ -29,7 +29,7 @@
             </controls:TextEditorEx.Resources>
             <behaviors:Interaction.Triggers>
                 <behaviors:EventTrigger EventName="Loaded">
-                    <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}"/>
+                    <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="true"/>
                 </behaviors:EventTrigger>
                 <behaviors:EventTrigger EventName="DelayArrived">
                     <behaviors:InvokeCommandAction Command="{Binding DelayArrivedCommand}"/>

@@ -18,6 +18,7 @@ using XamlService;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Payloads;
+using XamlViewer.Dialogs;
 using XamlViewer.Models;
 using XamlViewer.ViewModels;
 using XamlViewer.Views;
@@ -38,6 +39,8 @@ namespace XamlViewer
             ViewModelLocationProvider.Register<SettingControl, SettingViewModel>();
             ViewModelLocationProvider.Register<TabsControl, TabsViewModel>();
             ViewModelLocationProvider.Register<StatusControl, StatusViewModel>();
+
+            ViewModelLocationProvider.Register<MessageDialog, MessageDialogViewModel>();
         }
 
         protected override Window CreateShell()
@@ -47,6 +50,10 @@ namespace XamlViewer
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            //Dialog
+            containerRegistry.RegisterDialogWindow<DialogWindow>();
+            containerRegistry.RegisterDialog<MessageDialog, MessageDialogViewModel>();
+
             //Command
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
 

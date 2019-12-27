@@ -18,4 +18,21 @@ namespace XamlViewer.Models
         Locked = 2,
         Inner = 6, //contains Locked
     }
+
+    public enum MessageType
+    { 
+        None, 
+        Error, 
+        Warning,
+        Information, 
+        Question
+    }
+
+    public enum MessageButton
+    {
+        OK, 
+        OKCancel,
+        YesNoCancel,
+        YesNo
+    }
 }

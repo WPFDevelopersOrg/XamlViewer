@@ -8,11 +8,13 @@ using CommonServiceLocator;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using Utils.IO;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Payloads;
 using XamlViewer.Models;
+using XamlViewer.Utils;
 using SWF = System.Windows.Forms;
 
 namespace XamlViewer.ViewModels
@@ -21,6 +23,7 @@ namespace XamlViewer.ViewModels
     {
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
+        private IDialogService _dialogService = null;
 
         private bool _closeAfterSaving = false;
         private Action<TabViewModel, bool> _closeAction = null;
@@ -44,6 +47,7 @@ namespace XamlViewer.ViewModels
 
             _eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _appCommands = ServiceLocator.Current.GetInstance<IApplicationCommands>();
+            _dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
             InitEvent();
             InitCommand();
@@ -204,24 +208,27 @@ namespace XamlViewer.ViewModels
             {
                 if (!File.Exists(FileName))
                 {
-                    var r = MessageBox.Show("Save to file?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (r == MessageBoxResult.No)
+                    _dialogService.ShowMessage(string.Format("Save file \"{0}\"?", FileName), MessageButton.YesNo, MessageType.Question, r =>
                     {
-                        if (_closeAction != null)
-                            _closeAction(this, true);
+                        if (r.Result != ButtonResult.Yes)
+                        {
+                            if (_closeAction != null)
+                                _closeAction(this, true);
 
-                        return;
-                    }
+                            return;
+                        }
 
-                    var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
-                    if (sfd.ShowDialog() != SWF.DialogResult.OK)
-                        return;
+                        var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
+                        if (sfd.ShowDialog() != SWF.DialogResult.OK)
+                            return;
 
-                    UpdateFileName(sfd.FileName);
+                        UpdateFileName(sfd.FileName);
 
-                    ////this--->Editor(text)--->this(Save)
-                    _closeAfterSaving = true;
-                    _appCommands.SaveCommand.Execute(null);
+                        ////this--->Editor(text)--->this(Save)
+                        _closeAfterSaving = true;
+                        _appCommands.SaveCommand.Execute(null);
+
+                    }); 
                 }
             }
             else

@@ -3,19 +3,18 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using Utils.IO;
 using XamlService.Commands;
-using XamlService.Events;
 using XamlUtil.Common;
 using XamlViewer.Models;
+using XamlViewer.Utils;
+using Common = XamlUtil.Common.Common;
 using SWF = System.Windows.Forms;
 
 namespace XamlViewer.ViewModels
@@ -25,8 +24,8 @@ namespace XamlViewer.ViewModels
         private ItemsControl _itemsControl = null;
 
         private AppData _appData = null;
-        private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
+        private IDialogService _dialogService = null;
 
         public DelegateCommand NewCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
@@ -40,11 +39,11 @@ namespace XamlViewer.ViewModels
 
         public ObservableCollection<TabViewModel> XamlTabs { get; private set; }
 
-        public TabsViewModel(IContainerExtension container, IEventAggregator eventAggregator, IApplicationCommands appCommands)
+        public TabsViewModel(IContainerExtension container, IApplicationCommands appCommands, IDialogService dialogService)
         {
             _appData = container.Resolve<AppData>();
-            _eventAggregator = eventAggregator;
             _appCommands = appCommands;
+            _dialogService = dialogService;
 
             InitEvent();
             InitCommand();
@@ -202,19 +201,21 @@ namespace XamlViewer.ViewModels
                         //reset
                         curTab.MD5Code = md5Code;
 
-                        var msg = string.Format("{0}\n\nThis file has been modified outside of the source editor.\nDo you want to reload it?", curTab.FileName);
-                        var r = MessageBox.Show(msg, "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (r == MessageBoxResult.Yes)
+                        var msg = string.Format("{0}\n\nThis file has been modified outside of the editor.\nDo you want to reload it?", curTab.FileName);
+                        _dialogService.ShowMessage(msg, MessageButton.YesNo, MessageType.Question, r =>
                         {
-                            curTab.FileContent = fileContent;
-                            curTab.Status &= ~(TabStatus.NoSave);
+                            if (r.Result == ButtonResult.Yes)
+                            {
+                                curTab.FileContent = fileContent;
+                                curTab.Status &= ~(TabStatus.NoSave);
 
-                            curTab.UpdateTextToEditor();
-                        }
-                        else
-                        {
-                            curTab.Status |= TabStatus.NoSave;
-                        }
+                                curTab.UpdateTextToEditor();
+                            }
+                            else
+                            {
+                                curTab.Status |= TabStatus.NoSave;
+                            }
+                        });
                     }
                 }
                 else
@@ -223,18 +224,20 @@ namespace XamlViewer.ViewModels
                     {
                         curTab.MD5Code = null;
 
-                        var msg = string.Format("{0}\n\nThis file has been deleted.\nDo you want to remove it?", curTab.FileName);
-                        var r = MessageBox.Show(msg, "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (r == MessageBoxResult.Yes)
+                        var msg = string.Format("{0}\n\nThis file no longer exists.\nDo you want to remove it?", curTab.FileName);
+                        _dialogService.ShowMessage(msg, MessageButton.YesNo, MessageType.Question, r =>
                         {
-                            Remove(curTab);
-                            i--;
-                        }
-                        else
-                        {
-                            curTab.UpdateFileName(Path.GetFileName(curTab.FileName));
-                            curTab.Status |= TabStatus.NoSave;
-                        }
+                            if (r.Result == ButtonResult.Yes)
+                            {
+                                Remove(curTab);
+                                i--;
+                            }
+                            else
+                            {
+                                curTab.UpdateFileName(Path.GetFileName(curTab.FileName));
+                                curTab.Status |= TabStatus.NoSave;
+                            }
+                        });
                     }
                 }
             }
@@ -288,7 +291,7 @@ namespace XamlViewer.ViewModels
 
         private void SelectionChanged(int? seletedIndex)
         {
-            if (!seletedIndex.HasValue  || seletedIndex.Value < 0 || seletedIndex.Value > XamlTabs.Count - 1)
+            if (!seletedIndex.HasValue || seletedIndex.Value < 0 || seletedIndex.Value > XamlTabs.Count - 1)
                 return;
 
             IsOpenActiveFiles = false;
@@ -337,26 +340,30 @@ namespace XamlViewer.ViewModels
             {
                 if (!File.Exists(tab.FileName))
                 {
-                    var r = MessageBox.Show("Save to file?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (r == MessageBoxResult.Yes)
+                    _dialogService.ShowMessage(string.Format("Save file \"{0}\"?", tab.FileName), MessageButton.YesNo, MessageType.Question, r =>
                     {
-                        var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(tab.FileName) };
-                        if (sfd.ShowDialog() != SWF.DialogResult.OK)
-                            return;
-
-                        tab.UpdateFileName(sfd.FileName);
-                        tab.SaveToFile();
-                    }
+                        if (r.Result == ButtonResult.Yes)
+                        {
+                            var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(tab.FileName) };
+                            if (sfd.ShowDialog() == SWF.DialogResult.OK)
+                            {
+                                tab.UpdateFileName(sfd.FileName);
+                                tab.SaveToFile();
+                            }
+                        }
+                    });
                 }
                 else
                 {
                     if ((tab.Status & TabStatus.NoSave) == TabStatus.NoSave)
                     {
-                        var r = MessageBox.Show("Save?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (r == MessageBoxResult.Yes)
+                        _dialogService.ShowMessage(string.Format("Save file \"{0}\"?", Path.GetFileName(tab.FileName)), MessageButton.YesNo, MessageType.Question, r =>
                         {
-                            tab.SaveToFile();
-                        }
+                            if (r.Result == ButtonResult.Yes)
+                            {
+                                tab.SaveToFile();
+                            }
+                        });
                     }
                 }
             }

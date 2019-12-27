@@ -3,9 +3,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace XamlTheme.Controls
-{ 
+{
     public class UserWindow : Window
     {
         private static readonly Type _typeofSelf = typeof(UserWindow);
@@ -123,7 +124,7 @@ namespace XamlTheme.Controls
         {
             base.OnStateChanged(e);
 
-            if(this.WindowState == WindowState.Normal)
+            if (this.WindowState == WindowState.Normal)
                 this.Top = Math.Max(0, this.Top);
         }
 
@@ -143,6 +144,38 @@ namespace XamlTheme.Controls
                 e.Handled = true;
         }
 
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            HandleSizeToContent();
+        }
+
         #endregion
+
+        private void HandleSizeToContent()
+        {
+            if (SizeToContent == SizeToContent.Manual)
+                return;
+
+            var previosTopXPosition = Left;
+            var previosTopYPosition = Top;
+            var previosWidth = RestoreBounds.Width;
+            var previosHeight = RestoreBounds.Height;
+
+            var previousWindowStartupLocation = WindowStartupLocation;
+            var previousSizeToContent = SizeToContent;
+
+            SizeToContent = SizeToContent.Manual;
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, (Action)(() =>
+            {
+                SizeToContent = previousSizeToContent;
+
+                WindowStartupLocation = WindowStartupLocation.Manual;
+
+                Left = previosTopXPosition + (previosWidth - this.ActualWidth) / 2;
+                Top = previosTopYPosition + (previosHeight - this.ActualHeight) / 2;
+                WindowStartupLocation = previousWindowStartupLocation;
+            }));
+        } 
     }
 }
