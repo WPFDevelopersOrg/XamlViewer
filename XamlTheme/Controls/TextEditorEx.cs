@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,9 +8,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
-using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
-using ICSharpCode.AvalonEdit.Rendering;
 using XamlTheme.Datas;
 
 namespace XamlTheme.Controls
@@ -291,7 +288,7 @@ namespace XamlTheme.Controls
             return foundChars;
         }
 
-        private string GetParentElement(int startOffset)
+        private string GetParentElement(int startOffset, ref int parentOffset)
         {
             var foundCount = 0;
             var foundEnd = false;
@@ -317,6 +314,7 @@ namespace XamlTheme.Controls
 
                 if (curChar == '<' && foundEnd)
                 {
+                    parentOffset = i;
                     var element = "";
                     for (int j = i + 1; j <= startOffset; j++)
                     {
@@ -439,11 +437,9 @@ namespace XamlTheme.Controls
             return null;
         }
 
-        private void DealBreak()
+        private void FormatIndentInElement()
         {
             var curOffset = _partTextEditor.TextArea.Caret.Offset;
-            if (curOffset == 0)
-                return;
 
             var docLine = _partTextEditor.Document.GetLineByNumber(_partTextEditor.TextArea.Caret.Line - 1);
             if (docLine == null)
@@ -452,7 +448,7 @@ namespace XamlTheme.Controls
             var lineText = _partTextEditor.Document.GetText(docLine.Offset, docLine.Length);
             if (string.IsNullOrWhiteSpace(lineText))
                 return;
-             
+
             for (int i = 0; i < lineText.Length; i++)
             {
                 var curChar = lineText[i];
@@ -460,7 +456,7 @@ namespace XamlTheme.Controls
                     continue;
 
                 if (curChar == '<')
-                {
+                { 
                     var startOffset = i;
 
                     var foundSpace = false;
@@ -493,15 +489,44 @@ namespace XamlTheme.Controls
 
                 break;
             }
-             
-            /*
-            var previousNonSpaceChars = FindPreviousNonSpaceChars(curOffset - 1, 2);
+        }
 
-            if (previousNonSpaceChars.Length > 1 && previousNonSpaceChars[1] == '>' && previousNonSpaceChars != "/>" && FindNextNonSpaceChars(curOffset, 2) == "</")
+        private void DealBreak()
+        {
+            var curOffset = _partTextEditor.TextArea.Caret.Offset;
+            if (curOffset == 0)
+                return; 
+
+            var element = GetElement(curOffset - 1);
+            if(!string.IsNullOrEmpty(element))
             {
-                _partTextEditor.TextArea.Document.Insert(curOffset, "\n");
-                _partTextEditor.TextArea.Caret.Line -= 1;
-            }*/
+                FormatIndentInElement();
+                return;
+            }
+
+            var parentOffset = -1;
+            var parentElement = GetParentElement(curOffset - 1, ref parentOffset);
+            if (!string.IsNullOrEmpty(parentElement))
+            {
+                var parentColumn = _partTextEditor.Document.GetLocation(parentOffset).Column;
+                var curColumn = _partTextEditor.TextArea.Caret.Column;
+                 
+                var targetColumn = parentColumn + 4;
+
+                if (targetColumn > curColumn)
+                    _partTextEditor.Document.Insert(curOffset, string.Join("", Enumerable.Repeat(" ", targetColumn - curColumn)));
+                else if (targetColumn < curColumn)
+                    _partTextEditor.TextArea.Caret.Offset -= (curColumn - targetColumn);
+
+                curOffset = _partTextEditor.TextArea.Caret.Offset;
+                var thisLine = _partTextEditor.Document.GetLineByOffset(curOffset);
+
+                if (FindNextNonSpaceChars(curOffset, 2, thisLine.EndOffset) == "</")
+                {
+                    _partTextEditor.Document.Insert(curOffset, "\n"+ (parentColumn > 0 ? string.Join("", Enumerable.Repeat(" ", parentColumn - 1)) : ""));
+                    _partTextEditor.TextArea.Caret.Offset = curOffset;
+                }
+            }  
         }
 
         private bool IsEvenQuoteInElement(int startOffset)
@@ -556,7 +581,8 @@ namespace XamlTheme.Controls
 
                 case "<": //get child elements
                     {
-                        var parentElement = GetParentElement(offset - 2);
+                        var parentOffset = -1;
+                        var parentElement = GetParentElement(offset - 2, ref parentOffset);
                         if (!parentElement.Contains("."))
                         {
                             var elements = GenerateCompletionData(parentElement, null, null);
@@ -628,7 +654,8 @@ namespace XamlTheme.Controls
                     {
                         if (FindPreviousNonSpaceChars(offset - 1, 2) == "</")
                         {
-                            var parentElement = GetParentElement(offset - 3);
+                            var parentOffset = -1;
+                            var parentElement = GetParentElement(offset - 3, ref parentOffset);
                             if (!string.IsNullOrEmpty(parentElement))
                                 ShowCompletionWindow(new List<string> { parentElement + ">" });
                         }
