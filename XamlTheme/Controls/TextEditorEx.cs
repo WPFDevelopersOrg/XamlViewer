@@ -6,10 +6,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using XamlTheme.Datas;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
-using XamlTheme.Datas;
 
 namespace XamlTheme.Controls
 {
@@ -199,6 +199,8 @@ namespace XamlTheme.Controls
                 _partTextEditor.TextArea.TextEntered += TextArea_TextEntered;
                 _partTextEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
 
+
+                _partTextEditor.Options = new TextEditorOptions { ConvertTabsToSpaces = true };
                 _partTextEditor.TextArea.SelectionCornerRadius = 0;
                 _partTextEditor.TextArea.SelectionBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFADD6FF"));
                 _partTextEditor.TextArea.SelectionBorder = null;
@@ -240,7 +242,158 @@ namespace XamlTheme.Controls
 
             LineNumber = _partTextEditor.TextArea.Caret.Location.Line;
             LinePosition = _partTextEditor.TextArea.Caret.Location.Column;
+        } 
+
+        private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
+        {
+            if (IsReadOnly || !IsCodeCompletion || GenerateCompletionData == null)
+                return;
+
+            var offset = _partTextEditor.TextArea.Caret.Offset;
+
+            switch (e.Text)
+            {
+                case ".": //get attributes
+                    {
+                        var element = GetElementInFrontOfSymbol(offset - 1);
+                        if (!string.IsNullOrEmpty(element))
+                            ShowCompletionWindow(GenerateCompletionData(null, element, null));
+
+                        break;
+                    }
+
+                case " ": //get attributes
+                    {
+                        var element = GetElement(offset - 1);
+                        if (!string.IsNullOrEmpty(element))
+                            ShowCompletionWindow(GenerateCompletionData(null, element, null));
+
+                        break;
+                    }
+
+                case "<": //get child elements
+                    {
+                        var parentOffset = -1;
+                        var parentElement = GetParentElement(offset - 2, ref parentOffset);
+                        if (!parentElement.Contains("."))
+                        {
+                            var elements = GenerateCompletionData(parentElement, null, null);
+                            if (elements.Count > 0)
+                            {
+                                elements.Insert(0, @"!--");
+                                elements.Insert(1, @"![CDATA[");
+                                ShowCompletionWindow(elements);
+                            }
+                        }
+
+                        break;
+                    }
+
+                case "{":
+                    {
+                        InsertText("}");
+                        ShowCompletionWindow(new List<string> { "Binding", "DynamicResource", "StaticResource", "x:Null", "x:Static" });
+
+                        break;
+                    }
+
+                case "=": //get values
+                    {
+                        if (!IsEvenQuoteInElement(offset - 2))
+                            break;
+
+                        InsertText("\"\"");
+
+                        var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
+
+                        if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
+                            ShowCompletionWindow(GenerateCompletionData(null, element.Item1, element.Item2));
+
+                        break;
+                    }
+
+                case "\"": //get values
+                    {
+                        InsertText("\"");
+
+                        if (offset > 1 && FindPreviousNonSpaceChars(offset - 1, 2) == "=\"")
+                        {
+                            var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
+
+                            if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
+                                ShowCompletionWindow(GenerateCompletionData(null, element.Item1, element.Item2));
+                        }
+
+                        break;
+                    }
+
+                case ">":  // auto add </XXX>
+                    {
+                        if (FindPreviousNonSpaceChars(offset - 1, 2) == "/>")
+                            break;
+
+                        var element = GetElement(offset - 2);
+                        if (!string.IsNullOrEmpty(element))
+                        {
+                            var insertStr = string.Format("</{0}>", element);
+                            InsertText(insertStr, true, insertStr.Length);
+                        }
+
+                        break;
+                    }
+
+                case "/":
+                    {
+                        if (FindPreviousNonSpaceChars(offset - 1, 2) == "</")
+                        {
+                            var parentOffset = -1;
+                            var parentElement = GetParentElement(offset - 3, ref parentOffset);
+                            if (!string.IsNullOrEmpty(parentElement))
+                                ShowCompletionWindow(new List<string> { parentElement + ">" });
+                        }
+
+                        break;
+                    }
+
+                case "\n":  // auto align or insert one space line
+                    DealBreak();
+                    break;
+            }
         }
+
+        private void TextArea_TextEntering(object sender, TextCompositionEventArgs e)
+        {
+            if (IsReadOnly || !IsCodeCompletion || _completionWindow == null)
+                return;
+
+            if (e.Text.Length > 0)
+            {
+                if (!char.IsLetterOrDigit(e.Text[0]) && e.Text[0] != '!')
+                {
+                    // Whenever a non-letter is typed while the completion window is open,
+                    // insert the currently selected element.
+                    _completionWindow.CompletionList.RequestInsertion(e);
+                }
+            }
+        }
+
+        private void CompletionList_InsertionRequested(object sender, EventArgs e)
+        {
+            var offset = _partTextEditor.TextArea.Caret.Offset;
+
+            if (FindPreviousNonSpaceChars(offset - 1, 3) == "!--")
+            {
+                InsertText("-->", true, 3);
+            }
+            else if (FindPreviousNonSpaceChars(offset - 1, 8) == "![CDATA[")
+            {
+                InsertText("]]>", true, 3);
+            }
+        }
+
+        #endregion
+
+        #region IntelliSense
 
         private string FindPreviousNonSpaceChars(int startOffset, int charLength = 1, int minOffset = 0)
         {
@@ -269,7 +422,7 @@ namespace XamlTheme.Controls
         private string FindNextNonSpaceChars(int startOffset, int charLength = 1, int maxOffset = -1)
         {
             var foundChars = string.Empty;
-            var length = maxOffset < 0 ? _partTextEditor.Text.Length : maxOffset + 1;
+            var length = maxOffset < 0 ? _partTextEditor.Text.Length : (maxOffset + 1);
 
             while (startOffset < length)
             {
@@ -437,32 +590,27 @@ namespace XamlTheme.Controls
             return null;
         }
 
-        private void FormatIndentInElement()
+        private void FormatIndentInElement(string lastLineText)
         {
+            if (string.IsNullOrWhiteSpace(lastLineText))
+                return;
+
             var curOffset = _partTextEditor.TextArea.Caret.Offset;
 
-            var docLine = _partTextEditor.Document.GetLineByNumber(_partTextEditor.TextArea.Caret.Line - 1);
-            if (docLine == null)
-                return;
-
-            var lineText = _partTextEditor.Document.GetText(docLine.Offset, docLine.Length);
-            if (string.IsNullOrWhiteSpace(lineText))
-                return;
-
-            for (int i = 0; i < lineText.Length; i++)
+            for (int i = 0; i < lastLineText.Length; i++)
             {
-                var curChar = lineText[i];
+                var curChar = lastLineText[i];
                 if (char.IsWhiteSpace(curChar))
                     continue;
 
                 if (curChar == '<')
-                { 
+                {
                     var startOffset = i;
 
                     var foundSpace = false;
-                    for (int j = i + 1; j < lineText.Length; j++)
+                    for (int j = i + 1; j < lastLineText.Length; j++)
                     {
-                        curChar = lineText[j];
+                        curChar = lastLineText[j];
                         var isWhiteSpace = char.IsWhiteSpace(curChar);
 
                         if (!isWhiteSpace)
@@ -493,14 +641,22 @@ namespace XamlTheme.Controls
 
         private void DealBreak()
         {
+            var docLine = _partTextEditor.Document.GetLineByNumber(_partTextEditor.TextArea.Caret.Line - 1);
+            if (docLine == null)
+                return;
+
+            var lineText = _partTextEditor.Document.GetText(docLine.Offset, docLine.Length);
+            if (string.IsNullOrWhiteSpace(lineText))
+                return;
+
             var curOffset = _partTextEditor.TextArea.Caret.Offset;
             if (curOffset == 0)
-                return; 
+                return;
 
             var element = GetElement(curOffset - 1);
-            if(!string.IsNullOrEmpty(element))
+            if (!string.IsNullOrEmpty(element))
             {
-                FormatIndentInElement();
+                FormatIndentInElement(lineText);
                 return;
             }
 
@@ -510,7 +666,7 @@ namespace XamlTheme.Controls
             {
                 var parentColumn = _partTextEditor.Document.GetLocation(parentOffset).Column;
                 var curColumn = _partTextEditor.TextArea.Caret.Column;
-                 
+
                 var targetColumn = parentColumn + 4;
 
                 if (targetColumn > curColumn)
@@ -523,10 +679,10 @@ namespace XamlTheme.Controls
 
                 if (FindNextNonSpaceChars(curOffset, 2, thisLine.EndOffset) == "</")
                 {
-                    _partTextEditor.Document.Insert(curOffset, "\n"+ (parentColumn > 0 ? string.Join("", Enumerable.Repeat(" ", parentColumn - 1)) : ""));
+                    _partTextEditor.Document.Insert(curOffset, "\n" + (parentColumn > 0 ? string.Join("", Enumerable.Repeat(" ", parentColumn - 1)) : ""));
                     _partTextEditor.TextArea.Caret.Offset = curOffset;
                 }
-            }  
+            }
         }
 
         private bool IsEvenQuoteInElement(int startOffset)
@@ -550,153 +706,6 @@ namespace XamlTheme.Controls
             }
 
             return false;
-        }
-
-        private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
-        {
-            if (IsReadOnly || !IsCodeCompletion || GenerateCompletionData == null)
-                return;
-
-            var offset = _partTextEditor.TextArea.Caret.Offset;
-
-            switch (e.Text)
-            {
-                case ".": //get attributes
-                    {
-                        var element = GetElementInFrontOfSymbol(offset - 1);
-                        if (!string.IsNullOrEmpty(element))
-                            ShowCompletionWindow(GenerateCompletionData(null, element, null));
-
-                        break;
-                    }
-
-                case " ": //get attributes
-                    {
-                        var element = GetElement(offset - 1);
-                        if (!string.IsNullOrEmpty(element))
-                            ShowCompletionWindow(GenerateCompletionData(null, element, null));
-
-                        break;
-                    }
-
-                case "<": //get child elements
-                    {
-                        var parentOffset = -1;
-                        var parentElement = GetParentElement(offset - 2, ref parentOffset);
-                        if (!parentElement.Contains("."))
-                        {
-                            var elements = GenerateCompletionData(parentElement, null, null);
-                            if (elements.Count > 0)
-                            {
-                                elements.Insert(0, @"!--");
-                                elements.Insert(1, @"![CDATA[");
-                                ShowCompletionWindow(elements);
-                            }
-                        }
-
-                        break;
-                    }
-
-                case "{":
-                    {
-                        InsertText("}");
-                        ShowCompletionWindow(new List<string> { "Binding", "DynamicResource", "StaticResource", "x:Null", "x:Static" });
-
-                        break;
-                    }
-
-                case "=": //get values
-                    {
-                        if (!IsEvenQuoteInElement(offset - 2))
-                            break;
-
-                        InsertText("\"\"");
-
-                        var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
-
-                        if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
-                            ShowCompletionWindow(GenerateCompletionData(null, element.Item1, element.Item2));
-
-                        break;
-                    }
-
-                case "\"": //get values
-                    {
-                        InsertText("\"");
-
-                        if (offset > 1 && FindPreviousNonSpaceChars(offset - 1, 2) == "=\"")
-                        {
-                            var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
-
-                            if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
-                                ShowCompletionWindow(GenerateCompletionData(null, element.Item1, element.Item2));
-                        }
-
-                        break;
-                    }
-
-                case ">":  // auto add </XXX>
-                    {
-                        if (FindPreviousNonSpaceChars(offset - 1, 2) == "/>")
-                            break;
-
-                        var element = GetElement(offset - 2);
-                        if (!string.IsNullOrEmpty(element))
-                        {
-                            var insertStr = string.Format("</{0}>", element);
-                            InsertText(insertStr, true, insertStr.Length);
-                        }
-
-                        break;
-                    }
-
-                case "/":
-                    {
-                        if (FindPreviousNonSpaceChars(offset - 1, 2) == "</")
-                        {
-                            var parentOffset = -1;
-                            var parentElement = GetParentElement(offset - 3, ref parentOffset);
-                            if (!string.IsNullOrEmpty(parentElement))
-                                ShowCompletionWindow(new List<string> { parentElement + ">" });
-                        }
-
-                        break;
-                    }
-
-                case "\n":  // auto align or insert one space line
-                    DealBreak();
-                    break;
-            }
-        }
-
-        private void TextArea_TextEntering(object sender, TextCompositionEventArgs e)
-        {
-            if (IsReadOnly || !IsCodeCompletion || _completionWindow == null)
-                return;
-
-            if (e.Text.Length > 0)
-            {
-                if (!char.IsLetterOrDigit(e.Text[0]) && e.Text[0] != '!')
-                {
-                    // Whenever a non-letter is typed while the completion window is open,
-                    // insert the currently selected element.
-                    _completionWindow.CompletionList.RequestInsertion(e);
-                }
-            }
-        }
-
-        private void CompletionList_InsertionRequested(object sender, EventArgs e)
-        {
-            var offset = _partTextEditor.TextArea.Caret.Offset;
-
-            if (FindPreviousNonSpaceChars(offset - 1, 3) == "!--")
-            {
-                InsertText("-->", true, 3);
-            }
-            else if (FindPreviousNonSpaceChars(offset - 1, 8) == "![CDATA[")
-            {
-                InsertText("]]>", true, 3);
-            }
         }
 
         #endregion
