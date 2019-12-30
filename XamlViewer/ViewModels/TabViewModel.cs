@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
-using System.Windows.Navigation;
 using CommonServiceLocator;
 using Prism.Commands;
 using Prism.Events;
@@ -57,7 +56,7 @@ namespace XamlViewer.ViewModels
 
         public TabViewModel(string fileName, Action<TabViewModel, bool> closeAction)
             : this(fileName, TabStatus.None, closeAction)
-        { 
+        {
         }
 
         #region Init
@@ -86,7 +85,7 @@ namespace XamlViewer.ViewModels
             _appCommands.CloseAllCommand.RegisterCommand(CloseCommand);
 
             CloseAllCommand = new DelegateCommand(CloseAll);
-            CloseAllButThisCommand = new DelegateCommand(CloseAllButThis); 
+            CloseAllButThisCommand = new DelegateCommand(CloseAllButThis);
 
             SaveCommand = new DelegateCommand(Save, CanSave);
             CopyOrOpenPathCommand = new DelegateCommand<bool?>(CopyOrOpenPath, CanCopyOrOpenPath);
@@ -129,7 +128,7 @@ namespace XamlViewer.ViewModels
             get { return _status; }
             set
             {
-                SetProperty(ref _status, value); 
+                SetProperty(ref _status, value);
 
                 UpdateStatusToEditor();
             }
@@ -173,7 +172,7 @@ namespace XamlViewer.ViewModels
             else
             {
                 Title = FileName;
-                FileContent =  (status & TabStatus.Inner) == TabStatus.Inner ? Application.Current.Resources["HelpContentTemplate"] as string : Application.Current.Resources["FileContentTemplate"] as string;
+                FileContent = (status & TabStatus.Inner) == TabStatus.Inner ? Application.Current.Resources["HelpContentTemplate"] as string : Application.Current.Resources["FileContentTemplate"] as string;
             }
 
             CopyOrOpenPathCommand.RaiseCanExecuteChanged();
@@ -206,30 +205,34 @@ namespace XamlViewer.ViewModels
 
             if (IsSelected && (Status & TabStatus.NoSave) == TabStatus.NoSave)
             {
+                var isContinue = true;
+                _dialogService.ShowMessage(string.Format("Save file \"{0}\"?", FileName), MessageButton.YesNo, MessageType.Question, r =>
+                {
+                    if (r.Result != ButtonResult.Yes)
+                    {
+                        if (_closeAction != null)
+                            _closeAction(this, true);
+
+                        UnsubscribeEvents();
+                        isContinue = false;
+                    }
+                });
+
+                if (!isContinue)
+                    return;
+
                 if (!File.Exists(FileName))
                 {
-                    _dialogService.ShowMessage(string.Format("Save file \"{0}\"?", FileName), MessageButton.YesNo, MessageType.Question, r =>
-                    {
-                        if (r.Result != ButtonResult.Yes)
-                        {
-                            if (_closeAction != null)
-                                _closeAction(this, true);
+                    var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
+                    if (sfd.ShowDialog() != SWF.DialogResult.OK)
+                        return;
 
-                            return;
-                        }
-
-                        var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
-                        if (sfd.ShowDialog() != SWF.DialogResult.OK)
-                            return;
-
-                        UpdateFileName(sfd.FileName);
-
-                        ////this--->Editor(text)--->this(Save)
-                        _closeAfterSaving = true;
-                        _appCommands.SaveCommand.Execute(null);
-
-                    }); 
+                    UpdateFileName(sfd.FileName);
                 }
+
+                //this--->Editor(text)--->this(Save)
+                _closeAfterSaving = true;
+                _appCommands.SaveCommand.Execute(FileName);
             }
             else
             {
@@ -257,7 +260,7 @@ namespace XamlViewer.ViewModels
             }
 
             //this--->Editor(text)--->this(Save)
-            _appCommands.SaveCommand.Execute(null);
+            _appCommands.SaveCommand.Execute(FileName);
         }
 
         private bool CanCopyOrOpenPath(bool? isOpen)
@@ -309,15 +312,6 @@ namespace XamlViewer.ViewModels
             if (tabInfo.FileName != FileName || !CanSave())
                 return; ;
 
-            if (!File.Exists(FileName))
-            {
-                var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
-                if (sfd.ShowDialog() != SWF.DialogResult.OK)
-                    return;
-
-                UpdateFileName(sfd.FileName);
-            }
-
             FileContent = tabInfo.FileContent;
             SaveToFile();
 
@@ -363,7 +357,7 @@ namespace XamlViewer.ViewModels
             _saveTextEvent.Unsubscribe(OnSaveText);
             _cacheTextEvent.Unsubscribe(OnCacheText);
 
-            _appCommands.CloseAllCommand.UnregisterCommand(CloseCommand); 
+            _appCommands.CloseAllCommand.UnregisterCommand(CloseCommand);
         }
     }
 }

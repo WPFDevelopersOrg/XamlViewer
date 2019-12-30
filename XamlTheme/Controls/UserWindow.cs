@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
-using System.Windows.Threading;
+using XamlTheme.Utils;
 
 namespace XamlTheme.Controls
 {
@@ -95,6 +95,13 @@ namespace XamlTheme.Controls
             set { SetValue(HideOriginalTitleProperty, value); }
         }
 
+        public static readonly DependencyProperty TitleBarFontSizeProperty = DependencyProperty.Register("TitleBarFontSize", typeof(double), _typeofSelf, new PropertyMetadata(14d));
+        public double TitleBarFontSize
+        {
+            get { return (double)GetValue(TitleBarFontSizeProperty); }
+            set { SetValue(TitleBarFontSizeProperty, value); }
+        }
+
         public static readonly DependencyProperty TitleBarBackgroundProperty = DependencyProperty.Register("TitleBarBackground", typeof(Brush), _typeofSelf);
         public Brush TitleBarBackground
         {
@@ -147,35 +154,9 @@ namespace XamlTheme.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            HandleSizeToContent();
+            WindowUtil.HandleSizeToContent(this);
         }
 
-        #endregion
-
-        private void HandleSizeToContent()
-        {
-            if (SizeToContent == SizeToContent.Manual)
-                return;
-
-            var previosTopXPosition = Left;
-            var previosTopYPosition = Top;
-            var previosWidth = RestoreBounds.Width;
-            var previosHeight = RestoreBounds.Height;
-
-            var previousWindowStartupLocation = WindowStartupLocation;
-            var previousSizeToContent = SizeToContent;
-
-            SizeToContent = SizeToContent.Manual;
-            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, (Action)(() =>
-            {
-                SizeToContent = previousSizeToContent;
-
-                WindowStartupLocation = WindowStartupLocation.Manual;
-
-                Left = previosTopXPosition + (previosWidth - this.ActualWidth) / 2;
-                Top = previosTopYPosition + (previosHeight - this.ActualHeight) / 2;
-                WindowStartupLocation = previousWindowStartupLocation;
-            }));
-        } 
+        #endregion 
     }
 }

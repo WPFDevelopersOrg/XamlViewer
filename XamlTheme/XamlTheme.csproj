@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Adorners\MousePanelAdorner.cs" />
     <Compile Include="Behaviors\DragItemsPositionBehavior.cs" />
+    <Compile Include="Controls\CompletionWindowEx.cs" />
     <Compile Include="Controls\Hyperlink.xaml.cs">
       <DependentUpon>Hyperlink.xaml</DependentUpon>
     </Compile>
@@ -79,6 +80,7 @@
     <Compile Include="Utils\DpiUtil.cs" />
     <Compile Include="Utils\GridSplitterUtil.cs" />
     <Compile Include="Utils\Win32.cs" />
+    <Compile Include="Utils\WindowUtil.cs" />
     <Page Include="Controls\Hyperlink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

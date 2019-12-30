@@ -1,16 +1,10 @@
 ﻿using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using Prism.Events;
 using XamlService.Events;
 using System.Windows;
-using System.Windows.Media;
 using XamlService.Payloads;
 
 namespace XamlDesigner.ViewModels

@@ -281,6 +281,8 @@ namespace XamlViewer.ViewModels
 
         #endregion
 
+        #region Func
+
         private void LoadFonts()
         {
             _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.LoadFonts);
@@ -306,5 +308,7 @@ namespace XamlViewer.ViewModels
                 AutoCompileDelay = AutoCompileDelay
             });
         }
+
+        #endregion
     }
 }

@@ -42,7 +42,7 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.Column="0" Source="{TemplateBinding Icon}" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True"/>
-                                    <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Margin="5,0,0,0" Text="{TemplateBinding Title}" FontSize="14" FontWeight="Medium"  VerticalAlignment="Center" Foreground="{TemplateBinding TitleBarForeground}" TextTrimming="CharacterEllipsis" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                    <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Margin="5,0,0,0" Text="{TemplateBinding Title}" FontSize="{TemplateBinding TitleBarFontSize}" FontWeight="Medium"  VerticalAlignment="Center" Foreground="{TemplateBinding TitleBarForeground}" TextTrimming="CharacterEllipsis" WindowChrome.IsHitTestVisibleInChrome="True"/>
                                     <ContentPresenter Grid.Column="2" ContentSource="TitleBarContent" WindowChrome.IsHitTestVisibleInChrome="True"/>
                                     <StackPanel Grid.Column="3" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
                                         <Button x:Name="MiniBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" VerticalContentAlignment="Center" Padding="0,5,0,0" >

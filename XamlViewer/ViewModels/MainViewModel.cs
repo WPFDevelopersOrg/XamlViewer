@@ -2,9 +2,7 @@
 using Prism.Ioc;
 using Prism.Mvvm;
 using System.ComponentModel;
-using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using Utils.IO;
 using XamlViewer.Models;
 using XamlService.Commands;
@@ -13,7 +11,7 @@ namespace XamlViewer.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        private AppData _appData = null; 
+        private AppData _appData = null;
 
         public DelegateCommand ExpandOrCollapseCommand { get; private set; }
         public DelegateCommand ActivatedCommand { get; private set; }
@@ -28,6 +26,13 @@ namespace XamlViewer.ViewModels
             _appData = container.Resolve<AppData>();
             AppCommands = appCommands;
 
+            InitCommand();
+        }
+
+        #region Init
+
+        private void InitCommand()
+        {
             ExpandOrCollapseCommand = new DelegateCommand(ExpandOrCollapse);
             ActivatedCommand = new DelegateCommand(Activated);
             ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing);
@@ -36,6 +41,65 @@ namespace XamlViewer.ViewModels
             HorSplitCommand = new DelegateCommand(HorSplit);
             VerSplitCommand = new DelegateCommand(VerSplit);
         }
+
+        #endregion
+
+        #region Command
+
+        private void ExpandOrCollapse()
+        {
+            ExpandOrCollapse(_isExpandSetting);
+        }
+
+        private void Activated()
+        {
+            if (_appCommands == null)
+                return;
+
+            _appCommands.RefreshCommand.Execute(null);
+        }
+
+        private void Closing(CancelEventArgs e)
+        {
+            if (_appData.CollectExistedFileAction != null)
+                _appData.CollectExistedFileAction();
+
+            FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _appData.Config);
+        }
+
+        private void Swap()
+        {
+            if (DesignerRow == 0)
+            {
+                DesignerRow = 2;
+                EditorRow = 0;
+            }
+            else
+            {
+                DesignerRow = 0;
+                EditorRow = 2;
+            }
+        }
+
+        private void HorSplit()
+        {
+            GridAngle = 0d;
+            PaneAngle = 0d;
+            HorSplitAngle = 0d;
+            VerSplitAngle = 90d;
+            CursorSource = @"./Assets/Cursors/Splitter_ud.cur";
+        }
+
+        private void VerSplit()
+        {
+            GridAngle = -90d;
+            PaneAngle = 90d;
+            HorSplitAngle = 90d;
+            VerSplitAngle = 0d;
+            CursorSource = @"./Assets/Cursors/Splitter_lr.cur";
+        }
+
+        #endregion
 
         private IApplicationCommands _appCommands;
         public IApplicationCommands AppCommands
@@ -114,62 +178,13 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _verSplitAngle, value); }
         }
 
-        private void ExpandOrCollapse()
-        {
-            ExpandOrCollapse(_isExpandSetting);
-        }
+        #region Func
 
         private void ExpandOrCollapse(bool isExpand)
         {
             SettingRowHeight = isExpand ? GridLength.Auto : new GridLength(0);
         }
 
-        private void Activated()
-        {
-            if (_appCommands == null)
-                return;
-
-            _appCommands.RefreshCommand.Execute(null);
-        }
-
-        private void Closing(CancelEventArgs e)
-        {
-            if (_appData.CollectExistedFileAction != null)
-                _appData.CollectExistedFileAction();
-
-            FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _appData.Config);
-        }
-
-        private void Swap()
-        {
-            if (DesignerRow == 0)
-            {
-                DesignerRow = 2;
-                EditorRow = 0;
-            }
-            else
-            {
-                DesignerRow = 0;
-                EditorRow = 2;
-            }
-        }
-
-        private void HorSplit()
-        {
-            GridAngle = 0d;
-            PaneAngle = 0d;
-            HorSplitAngle = 0d;
-            VerSplitAngle = 90d;
-            CursorSource = @"./Assets/Cursors/Splitter_ud.cur";
-        }
-
-        private void VerSplit()
-        {
-            GridAngle = -90d;
-            PaneAngle = 90d;
-            HorSplitAngle = 90d;
-            VerSplitAngle = 0d;
-            CursorSource = @"./Assets/Cursors/Splitter_lr.cur";
-        }
+        #endregion
     }
 }

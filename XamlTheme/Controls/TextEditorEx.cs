@@ -741,11 +741,11 @@ namespace XamlTheme.Controls
             if (showDatas == null || showDatas.Count == 0)
                 return;
 
-            _completionWindow = new CompletionWindow(_partTextEditor.TextArea);
+            _completionWindow = new CompletionWindowEx(_partTextEditor.TextArea);
             _completionWindow.Resources = Resources;
             _completionWindow.MinWidth = 300;
             _completionWindow.MaxHeight = 300;
-            _completionWindow.SizeToContent = SizeToContent.Height;
+            _completionWindow.SizeToContent = SizeToContent.WidthAndHeight;
 
             _completionWindow.CompletionList.InsertionRequested += CompletionList_InsertionRequested;
 

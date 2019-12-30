@@ -8,7 +8,6 @@ using XamlService.Payloads;
 using System.Windows;
 using XamlTheme.Controls;
 using System.Collections.Generic;
-using System.Linq;
 using XamlEditor.Utils;
 using System.Threading.Tasks;
 
@@ -20,45 +19,61 @@ namespace XamlEditor.ViewModels
         private bool _isReseting = false;
 
         private XsdParser _xsdParser = null;
-
         private TextEditorEx _textEditor = null;
+
         private IEventAggregator _eventAggregator = null;
+        private IApplicationCommands _appCommands = null;
 
         public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
         public DelegateCommand DelayArrivedCommand { get; private set; }
 
         public DelegateCommand CompileCommand { get; private set; }
-        public DelegateCommand SaveCommand { get; private set; }
+        public DelegateCommand<string> SaveCommand { get; private set; }
         public DelegateCommand RedoCommand { get; private set; }
         public DelegateCommand UndoCommand { get; private set; }
 
         public EditorControlViewModel(IEventAggregator eventAggregator, IApplicationCommands appCommands)
         {
             _eventAggregator = eventAggregator;
+            _appCommands = appCommands;
 
+            InitEvent();
+            InitCommand();
+            InitCodeCompletionParser();
+        }
+
+        #region Init
+
+        private void InitEvent()
+        {
             //event
             _eventAggregator.GetEvent<ConfigEvents>().Subscribe(OnEditorConfig);
             _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnLoadText);
             _eventAggregator.GetEvent<UpdateTabStatusEvent>().Subscribe(OnUpdateTabStatus);
+        }
 
+        private void InitCommand()
+        {
             //Command
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
             DelayArrivedCommand = new DelegateCommand(OnDelayArrived);
 
             CompileCommand = new DelegateCommand(Compile, CanCompile);
-            appCommands.CompileCommand.RegisterCommand(CompileCommand);
+            _appCommands.CompileCommand.RegisterCommand(CompileCommand);
 
-            SaveCommand = new DelegateCommand(Save, CanSave);
-            appCommands.SaveCommand.RegisterCommand(SaveCommand);
+            SaveCommand = new DelegateCommand<string>(Save, CanSave);
+            _appCommands.SaveCommand.RegisterCommand(SaveCommand);
 
             RedoCommand = new DelegateCommand(Redo, CanRedo);
-            appCommands.RedoCommand.RegisterCommand(RedoCommand);
+            _appCommands.RedoCommand.RegisterCommand(RedoCommand);
 
             UndoCommand = new DelegateCommand(Undo, CanUndo);
-            appCommands.UndoCommand.RegisterCommand(UndoCommand);
-
-            InitCodeCompletionParser();
+            _appCommands.UndoCommand.RegisterCommand(UndoCommand);
         }
+
+        #endregion
+
+        #region Command
 
         private void OnLoaded(RoutedEventArgs e)
         {
@@ -73,6 +88,8 @@ namespace XamlEditor.ViewModels
             if (AutoCompile)
                 Compile();
         }
+
+        #endregion
 
         private bool _isReadOnly = false;
         public bool IsReadOnly
@@ -202,7 +219,7 @@ namespace XamlEditor.ViewModels
                                 return _xsdParser.GetValues(element, attribute);
 
                             return _xsdParser.GetAttributes(element);
-                        } 
+                        }
 
                         return _xsdParser.GetElements();
                     };
@@ -213,15 +230,17 @@ namespace XamlEditor.ViewModels
 
         #region Command
 
-        private bool CanSave()
+        private bool CanSave(string fileName)
         {
             return !IsReadOnly;
         }
 
-        private void Save()
+        private void Save(string fileName)
         {
-            Reset();
+            _fileName = fileName;
 
+            Reset();
+            
             if (_eventAggregator != null)
                 _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text });
         }
@@ -308,6 +327,8 @@ namespace XamlEditor.ViewModels
 
         #endregion
 
+        #region Func
+
         private void Reset(Action reset = null)
         {
             _isReseting = true;
@@ -338,5 +359,7 @@ namespace XamlEditor.ViewModels
 
             Task.Run(() => IsCodeCompletion = _xsdParser.TryParse());
         }
+
+        #endregion
     }
 }

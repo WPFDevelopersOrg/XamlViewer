@@ -1,9 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cc="clr-namespace:ICSharpCode.AvalonEdit.CodeCompletion;assembly=ICSharpCode.AvalonEdit"
-                    xmlns:themes="clr-namespace:XamlTheme">
+                    xmlns:themes="clr-namespace:XamlTheme"
+                    xmlns:controls="clr-namespace:XamlTheme.Controls">
 
-    <Style TargetType="{x:Type cc:CompletionWindow}">
+    <Style TargetType="{x:Type controls:CompletionWindowEx}">
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome CornerRadius="0" GlassFrameThickness="0"/>

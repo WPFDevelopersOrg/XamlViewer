@@ -141,6 +141,8 @@ namespace XamlViewer.ViewModels
 
         #endregion
 
+        #region Func
+
         private void UpdateMessageButton(MessageButton button)
         {
             switch (button)
@@ -197,5 +199,7 @@ namespace XamlViewer.ViewModels
                     break;
             }
         }
+
+        #endregion
     }
 }

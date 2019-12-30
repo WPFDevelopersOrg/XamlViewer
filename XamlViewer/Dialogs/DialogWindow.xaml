@@ -7,8 +7,4 @@
                      Style="{StaticResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
                      SizeToContent="WidthAndHeight" ResizeMode="NoResize" ShowInTaskbar="False"
                      prism:Dialog.WindowStartupLocation="CenterScreen"
-                     Title="XAML Viewer" Background="White" MinWidth="350">
-    <Grid>
-        
-    </Grid>
-</controls:UserWindow>
+                     Title="XAML Viewer" Background="White" MinWidth="350" TitleBarFontSize="13"/>
