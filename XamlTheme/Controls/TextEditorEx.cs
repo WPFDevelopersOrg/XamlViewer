@@ -10,6 +10,7 @@ using XamlTheme.Datas;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Search;
 
 namespace XamlTheme.Controls
 {
@@ -24,6 +25,7 @@ namespace XamlTheme.Controls
         private FoldingManager _foldingManager = null;
         private XmlFoldingStrategy _foldingStrategy = null;
         private CompletionWindow _completionWindow = null;
+        private SearchPanel _searchPanel = null;
 
         private DispatcherTimer _timer = null;
         private bool _disabledTimer = false;
@@ -176,14 +178,41 @@ namespace XamlTheme.Controls
 
         #region Override
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            switch (e.Key)
+            {
+                case Key.Left:
+                    {
+                        if (_partTextEditor.SelectionLength < 2 || Keyboard.Modifiers != ModifierKeys.None)
+                            return;
+
+                        _partTextEditor.TextArea.Caret.Offset = _partTextEditor.SelectionStart + 1;
+                        break;
+                    }
+                case Key.Right:
+                    {
+                        if (_partTextEditor.SelectionLength < 2 || Keyboard.Modifiers != ModifierKeys.None)
+                            return;
+
+                        _partTextEditor.TextArea.Caret.Offset = _partTextEditor.SelectionStart + _partTextEditor.SelectionLength - 1;
+                        break;
+                    }
+            }
+        }
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
+            if (_searchPanel != null)
+                _searchPanel.Uninstall();
+
             if (_partTextEditor != null)
             {
                 _partTextEditor.TextChanged -= _partTextEditor_TextChanged;
-
                 _partTextEditor.TextArea.TextEntering -= TextArea_TextEntering;
                 _partTextEditor.TextArea.TextEntered -= TextArea_TextEntered;
                 _partTextEditor.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
@@ -194,7 +223,6 @@ namespace XamlTheme.Controls
             if (_partTextEditor != null)
             {
                 _partTextEditor.TextChanged += _partTextEditor_TextChanged;
-
                 _partTextEditor.TextArea.TextEntering += TextArea_TextEntering;
                 _partTextEditor.TextArea.TextEntered += TextArea_TextEntered;
                 _partTextEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
@@ -205,6 +233,8 @@ namespace XamlTheme.Controls
                 _partTextEditor.TextArea.SelectionBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFADD6FF"));
                 _partTextEditor.TextArea.SelectionBorder = null;
                 _partTextEditor.TextArea.SelectionForeground = null;
+
+                _searchPanel = SearchPanel.Install(_partTextEditor.TextArea);
             }
         }
 
@@ -242,7 +272,7 @@ namespace XamlTheme.Controls
 
             LineNumber = _partTextEditor.TextArea.Caret.Location.Line;
             LinePosition = _partTextEditor.TextArea.Caret.Location.Column;
-        } 
+        }
 
         private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {

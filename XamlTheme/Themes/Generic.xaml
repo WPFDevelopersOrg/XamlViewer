@@ -26,6 +26,7 @@
         <ResourceDictionary Source="/XamlTheme;component/Styles/RestrictTextBoxStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/UserWindowStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/CodeCompletionStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/SearchPanelStyle.xaml"/>
         <ResourceDictionary Source="/XamlTheme;component/Styles/TextEditorExStyle.xaml"/>
 
         <ResourceDictionary Source="/XamlTheme;component/Styles/ZoomBoxStyle.xaml"/>
