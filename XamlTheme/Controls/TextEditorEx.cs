@@ -235,6 +235,7 @@ namespace XamlTheme.Controls
                 _partTextEditor.TextArea.SelectionForeground = null;
 
                 _searchPanel = SearchPanel.Install(_partTextEditor.TextArea);
+                _searchPanel.MarkerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F6B94D"));
             }
         }
 
