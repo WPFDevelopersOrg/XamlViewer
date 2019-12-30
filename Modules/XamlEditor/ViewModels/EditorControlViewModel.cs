@@ -237,10 +237,11 @@ namespace XamlEditor.ViewModels
 
         private void Save(string fileName)
         {
-            _fileName = fileName;
+            if (!string.IsNullOrEmpty(fileName))
+                _fileName = fileName;
 
             Reset();
-            
+
             if (_eventAggregator != null)
                 _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text });
         }
