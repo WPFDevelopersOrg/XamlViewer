@@ -3,13 +3,28 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
-using XamlTheme.Utils;
+using System.Security;
+using System.Windows.Interop;
 
 namespace XamlTheme.Controls
 {
     public class UserWindow : Window
     {
         private static readonly Type _typeofSelf = typeof(UserWindow);
+
+        /// <summary>Underlying HWND for the _window.</summary>
+        /// <SecurityNote>
+        ///   Critical : Critical member
+        /// </SecurityNote>
+        [SecurityCritical]
+        private IntPtr windowHandle;
+
+        /// <summary>Underlying HWND for the _window.</summary>
+        /// <SecurityNote>
+        ///   Critical : Critical member provides access to HWND's window messages which are critical
+        /// </SecurityNote>
+        [SecurityCritical]
+        private HwndSource hwndSource;
 
         static UserWindow()
         {
@@ -131,8 +146,8 @@ namespace XamlTheme.Controls
         {
             base.OnStateChanged(e);
 
-            if (this.WindowState == WindowState.Normal)
-                this.Top = Math.Max(0, this.Top);
+            if (WindowState == WindowState.Normal)
+                Top = Math.Max(0, Top);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -141,7 +156,7 @@ namespace XamlTheme.Controls
                 e.Cancel = true;
             else
                 base.OnClosing(e);
-        }
+        } 
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
@@ -151,12 +166,14 @@ namespace XamlTheme.Controls
                 e.Handled = true;
         }
 
-        public override void OnApplyTemplate()
+        protected override void OnSourceInitialized(EventArgs e)
         {
-            base.OnApplyTemplate();
-            WindowUtil.HandleSizeToContent(this);
+            base.OnSourceInitialized(e);
+
+            if (SizeToContent != SizeToContent.Manual && WindowState == WindowState.Normal)
+                InvalidateMeasure();
         }
 
-        #endregion 
+        #endregion
     }
 }

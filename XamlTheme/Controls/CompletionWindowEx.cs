@@ -1,6 +1,7 @@
-﻿using ICSharpCode.AvalonEdit.CodeCompletion;
+﻿using System;
+using System.Windows;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Editing;
-using XamlTheme.Utils;
 
 namespace XamlTheme.Controls
 {
@@ -9,13 +10,14 @@ namespace XamlTheme.Controls
         public CompletionWindowEx(TextArea textArea)
             : base(textArea)
         {
-        }
+        } 
 
-        public override void OnApplyTemplate()
+        protected override void OnSourceInitialized(EventArgs e)
         {
-            base.OnApplyTemplate();
+            base.OnSourceInitialized(e);
 
-            WindowUtil.HandleSizeToContent(this, () => UpdatePosition());
+            if (SizeToContent != SizeToContent.Manual && WindowState == WindowState.Normal)
+                InvalidateMeasure();
         }
     }
 }

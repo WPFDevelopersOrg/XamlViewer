@@ -14,7 +14,7 @@
             <ColumnDefinition Width="auto"/> 
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Path Height="35" Width="35" Stretch="Fill" Margin="0,5,20,0" VerticalAlignment="Top" Focusable="False"
+        <Path Height="35" Width="35" Stretch="Fill" Margin="0,5,15,0" VerticalAlignment="Top" Focusable="False"
               Fill="{Binding GeometryBrush}"
               Data="{Binding MessageGeometry}"
               Visibility="{Binding GeometryVisibility}"/>
