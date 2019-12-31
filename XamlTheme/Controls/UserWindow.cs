@@ -3,28 +3,12 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
-using System.Security;
-using System.Windows.Interop;
 
 namespace XamlTheme.Controls
 {
     public class UserWindow : Window
     {
         private static readonly Type _typeofSelf = typeof(UserWindow);
-
-        /// <summary>Underlying HWND for the _window.</summary>
-        /// <SecurityNote>
-        ///   Critical : Critical member
-        /// </SecurityNote>
-        [SecurityCritical]
-        private IntPtr windowHandle;
-
-        /// <summary>Underlying HWND for the _window.</summary>
-        /// <SecurityNote>
-        ///   Critical : Critical member provides access to HWND's window messages which are critical
-        /// </SecurityNote>
-        [SecurityCritical]
-        private HwndSource hwndSource;
 
         static UserWindow()
         {
