@@ -3,7 +3,7 @@
 set frameworkpath=%windir%\microsoft.net\framework\v4.0.30319
 set solutionname=XamlViewer
 set platform=Any CPU
-set configuration=Debug
+set configuration=Release
  
 cd %~dp0
 

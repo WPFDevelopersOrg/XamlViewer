@@ -15,7 +15,7 @@ namespace XamlEditor.ViewModels
 {
     public class EditorControlViewModel : BindableBase
     {
-        private string _fileName = null;
+        private string _fileGuid = null;
         private bool _isReseting = false;
 
         private XsdParser _xsdParser = null;
@@ -28,7 +28,7 @@ namespace XamlEditor.ViewModels
         public DelegateCommand DelayArrivedCommand { get; private set; }
 
         public DelegateCommand CompileCommand { get; private set; }
-        public DelegateCommand<string> SaveCommand { get; private set; }
+        public DelegateCommand<bool?> SaveCommand { get; private set; }
         public DelegateCommand RedoCommand { get; private set; }
         public DelegateCommand UndoCommand { get; private set; }
 
@@ -61,7 +61,7 @@ namespace XamlEditor.ViewModels
             CompileCommand = new DelegateCommand(Compile, CanCompile);
             _appCommands.CompileCommand.RegisterCommand(CompileCommand);
 
-            SaveCommand = new DelegateCommand<string>(Save, CanSave);
+            SaveCommand = new DelegateCommand<bool?>(Save, CanSave);
             _appCommands.SaveCommand.RegisterCommand(SaveCommand);
 
             RedoCommand = new DelegateCommand(Redo, CanRedo);
@@ -230,20 +230,17 @@ namespace XamlEditor.ViewModels
 
         #region Command
 
-        private bool CanSave(string fileName)
+        private bool CanSave(bool? alreadySelectPath)
         {
             return !IsReadOnly;
         }
 
-        private void Save(string fileName)
+        private void Save(bool? alreadySelectPath)
         {
-            if (!string.IsNullOrEmpty(fileName))
-                _fileName = fileName;
-
             Reset();
 
             if (_eventAggregator != null)
-                _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text });
+                _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, AlreadySelectPath = alreadySelectPath.HasValue && alreadySelectPath.Value, FileContent = _textEditor.Text });
         }
 
         private bool CanRedo()
@@ -305,15 +302,15 @@ namespace XamlEditor.ViewModels
 
         private void OnLoadText(TabInfo tabInfo)
         {
-            if (!string.IsNullOrEmpty(_fileName))
+            if (!string.IsNullOrEmpty(_fileGuid))
             {
                 if (_eventAggregator != null)
-                    _eventAggregator.GetEvent<CacheTextEvent>().Publish(new TabInfo { FileName = _fileName, FileContent = _textEditor.Text });
+                    _eventAggregator.GetEvent<CacheTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = _textEditor.Text });
             }
 
             Reset(() =>
             {
-                _fileName = tabInfo.FileName;
+                _fileGuid = tabInfo.Guid;
                 _textEditor.Text = tabInfo.FileContent;
                 IsReadOnly = tabInfo.IsReadOnly;
 

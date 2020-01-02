@@ -24,6 +24,7 @@ namespace XamlViewer.ViewModels
         private IApplicationCommands _appCommands = null;
         private IDialogService _dialogService = null;
 
+        private readonly string _guid = null;
         private bool _closeAfterSaving = false;
         private Action<TabViewModel, bool> _closeAction = null;
 
@@ -43,6 +44,7 @@ namespace XamlViewer.ViewModels
         {
             FileName = fileName;
             _closeAction = closeAction;
+            _guid = Guid.NewGuid().ToString();
 
             _eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _appCommands = ServiceLocator.Current.GetInstance<IApplicationCommands>();
@@ -147,7 +149,7 @@ namespace XamlViewer.ViewModels
             if (!IsSelected || _eventAggregator == null)
                 return;
 
-            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
+            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
         }
 
         private void InitInfo(TabStatus status)
@@ -223,16 +225,16 @@ namespace XamlViewer.ViewModels
 
                 if (!File.Exists(FileName))
                 {
-                    var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
-                    if (sfd.ShowDialog() != SWF.DialogResult.OK)
+                    var fileName = Common.ShowSaveFileDialog(FileName);
+                    if (string.IsNullOrEmpty(fileName))
                         return;
 
-                    UpdateFileName(sfd.FileName);
+                    UpdateFileName(fileName);
                 }
 
                 //this--->Editor(text)--->this(Save)
                 _closeAfterSaving = true;
-                _appCommands.SaveCommand.Execute(FileName);
+                _appCommands.SaveCommand.Execute(true);
             }
             else
             {
@@ -252,15 +254,15 @@ namespace XamlViewer.ViewModels
         {
             if (!File.Exists(FileName))
             {
-                var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(FileName) };
-                if (sfd.ShowDialog() != SWF.DialogResult.OK)
+                var fileName = Common.ShowSaveFileDialog(FileName);
+                if (string.IsNullOrEmpty(fileName))
                     return;
 
-                UpdateFileName(sfd.FileName);
+                UpdateFileName(fileName);
             }
 
             //this--->Editor(text)--->this(Save)
-            _appCommands.SaveCommand.Execute(FileName);
+            _appCommands.SaveCommand.Execute(true);
         }
 
         private bool CanCopyOrOpenPath(bool? isOpen)
@@ -303,14 +305,23 @@ namespace XamlViewer.ViewModels
             if (tabInfo == null)
                 return;
 
-            if (!string.IsNullOrEmpty(tabInfo.FileName) && tabInfo.FileName == FileName || IsSelected)
-                _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { FileName = FileName, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
+            if (!string.IsNullOrEmpty(tabInfo.Guid) && tabInfo.Guid == _guid || IsSelected)
+                _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
         }
 
         private void OnSaveText(TabInfo tabInfo)
         {
-            if (tabInfo.FileName != FileName || !CanSave())
+            if (tabInfo.Guid != _guid || !CanSave())
                 return; ;
+
+            if (!tabInfo.AlreadySelectPath)
+            {
+                var fileName = Common.ShowSaveFileDialog(FileName);
+                if (string.IsNullOrEmpty(fileName))
+                    return;
+
+                UpdateFileName(fileName);
+            }
 
             FileContent = tabInfo.FileContent;
             SaveToFile();
@@ -328,7 +339,7 @@ namespace XamlViewer.ViewModels
 
         private void OnCacheText(TabInfo tabInfo)
         {
-            if (tabInfo == null || tabInfo.FileName != FileName)
+            if (tabInfo == null || tabInfo.Guid != _guid)
                 return;
 
             FileContent = tabInfo.FileContent;

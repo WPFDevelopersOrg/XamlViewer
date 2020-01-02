@@ -87,7 +87,7 @@
                         <RowDefinition Height="*" MinHeight="10"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <CheckBox x:Name="CompileCheckBox" Content="Automitic Compile"
+                    <CheckBox x:Name="CompileCheckBox" Content="Auto-Compile"
                               Style="{StaticResource {x:Static themes:ResourceKeys.NormalCheckBoxStyleKey}}"
                               IsChecked="{Binding AutoCompile,Mode=TwoWay}"/>
 
@@ -106,7 +106,7 @@
                                    Text="{Binding Value,ElementName=DelaySlider,StringFormat={}{0:N1}s}"/>
                     </StackPanel>
 
-                    <TextBlock Grid.Row="5" Text="Compile" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="5" Text="Compilation" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
 
                 <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>

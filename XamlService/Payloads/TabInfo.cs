@@ -5,10 +5,11 @@ namespace XamlService.Payloads
     {
         public bool IsReadOnly { get; set; }
     }
-    
+
     public class TabInfo : TabFlag
     {
-        public string FileName { get; set; }
+        public string Guid { get; set; }
+        public bool AlreadySelectPath { get; set; } 
         public string FileContent { get; set; }
     }
 }

@@ -14,7 +14,8 @@ using XamlService.Commands;
 using XamlUtil.Common;
 using XamlViewer.Models;
 using XamlViewer.Utils;
-using Common = XamlUtil.Common.Common;
+using XUCommon = XamlUtil.Common.Common;
+using XVCommon = XamlViewer.Utils.Common;
 using SWF = System.Windows.Forms;
 
 namespace XamlViewer.ViewModels
@@ -124,7 +125,7 @@ namespace XamlViewer.ViewModels
         {
             var newTab =
                 new TabViewModel(
-                    Common.GetCopyName("NewFile", " ",
+                    XUCommon.GetCopyName("NewFile", " ",
                         n => XamlTabs.Any(tab => Path.GetFileNameWithoutExtension(tab.Title).ToLower() == n.ToLower())) +
                     ".xaml", TabStatus.NoSave, CloseXamlTab);
 
@@ -161,8 +162,7 @@ namespace XamlViewer.ViewModels
 
                 if (!File.Exists(curTab.FileName))
                 {
-                    var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(curTab.FileName) };
-                    if (sfd.ShowDialog() != SWF.DialogResult.OK)
+                    if (string.IsNullOrEmpty(XVCommon.ShowSaveFileDialog(curTab.FileName)))
                         continue;
                 }
 
@@ -344,10 +344,10 @@ namespace XamlViewer.ViewModels
                     {
                         if (r.Result == ButtonResult.Yes)
                         {
-                            var sfd = new SWF.SaveFileDialog { Filter = "XAML|*.xaml", FileName = Path.GetFileNameWithoutExtension(tab.FileName) };
-                            if (sfd.ShowDialog() == SWF.DialogResult.OK)
+                            var fileName = XVCommon.ShowSaveFileDialog(tab.FileName);
+                            if (!string.IsNullOrEmpty(fileName))
                             {
-                                tab.UpdateFileName(sfd.FileName);
+                                tab.UpdateFileName(fileName);
                                 tab.SaveToFile();
                             }
                         }
