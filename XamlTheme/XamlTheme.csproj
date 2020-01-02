@@ -63,6 +63,21 @@
       <DependentUpon>Hyperlink.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\RestrictTextBox.cs" />
+    <Compile Include="Controls\Shell\Standard\ComGuids.cs" />
+    <Compile Include="Controls\Shell\Standard\Debug.cs" />
+    <Compile Include="Controls\Shell\Standard\DoubleUtil.cs" />
+    <Compile Include="Controls\Shell\Standard\DpiHelper.cs" />
+    <Compile Include="Controls\Shell\Standard\ErrorCodes.cs" />
+    <Compile Include="Controls\Shell\Standard\MessageWindow.cs" />
+    <Compile Include="Controls\Shell\Standard\NativeMethods.cs" />
+    <Compile Include="Controls\Shell\Standard\ShellProvider.cs" />
+    <Compile Include="Controls\Shell\Standard\StreamHelper.cs" />
+    <Compile Include="Controls\Shell\Standard\Utilities.cs" />
+    <Compile Include="Controls\Shell\Standard\Verify.cs" />
+    <Compile Include="Controls\Shell\SystemCommands.cs" />
+    <Compile Include="Controls\Shell\SystemParameters2.cs" />
+    <Compile Include="Controls\Shell\WindowChrome.cs" />
+    <Compile Include="Controls\Shell\WindowChromeWorker.cs" />
     <Compile Include="Controls\StatusToggle.cs" />
     <Compile Include="Controls\TextEditorEx.cs" />
     <Compile Include="Datas\EditorCompletionData.cs" />
