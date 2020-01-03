@@ -8,7 +8,8 @@
            TargetType="{x:Type controls:UserWindow}">
         <Setter Property="shell:WindowChrome.WindowChrome">
             <Setter.Value>
-                <shell:WindowChrome CaptionHeight="30" ResizeBorderThickness="4" GlassFrameThickness="0,0,0,1"/>
+                <shell:WindowChrome ResizeBorderThickness="4" GlassFrameThickness="0,0,0,1"
+				                    CaptionHeight="{Binding CaptionHeight, RelativeSource={RelativeSource AncestorType=controls:UserWindow}}"/>
             </Setter.Value>
         </Setter>
         <Setter Property="BorderThickness" Value="0"/>
@@ -19,8 +20,8 @@
         <Setter Property="Background" Value="#EFEFF2"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontFamily" Value="Arial,SimSun"/>
-        <Setter Property="TitleBarForeground" Value="#141414"/>
-        <Setter Property="TitleBarBackground" Value="#EFEFF2"/>
+        <Setter Property="CaptionForeground" Value="#141414"/>
+        <Setter Property="CaptionBackground" Value="#EFEFF2"/>
         <Setter Property="ResizeMode" Value="CanResize"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -32,10 +33,10 @@
                                 UseLayoutRounding="True">
                             <Grid x:Name="LayoutRoot">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Grid Grid.Row="0" Background="{TemplateBinding TitleBarBackground}">
+                                <Grid Grid.Row="0" Background="{TemplateBinding CaptionBackground}" Height="{TemplateBinding CaptionHeight}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
@@ -43,8 +44,8 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.Column="0" Source="{TemplateBinding Icon}" VerticalAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="False"/>
-                                    <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Margin="5,0,0,0" Text="{TemplateBinding Title}" FontSize="{TemplateBinding TitleBarFontSize}" FontWeight="Medium"  VerticalAlignment="Center" Foreground="{TemplateBinding TitleBarForeground}" TextTrimming="CharacterEllipsis" shell:WindowChrome.IsHitTestVisibleInChrome="False"/>
-                                    <ContentPresenter Grid.Column="2" ContentSource="TitleBarContent" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                    <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Margin="5,0,0,0" Text="{TemplateBinding Title}" FontSize="{TemplateBinding CaptionFontSize}" FontWeight="Medium"  VerticalAlignment="Center" Foreground="{TemplateBinding CaptionForeground}" TextTrimming="CharacterEllipsis" shell:WindowChrome.IsHitTestVisibleInChrome="False"/>
+                                    <ContentPresenter Grid.Column="2" ContentSource="CaptionContent" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
                                     <StackPanel Grid.Column="3" Orientation="Horizontal" shell:WindowChrome.IsHitTestVisibleInChrome="True">
                                         <Button x:Name="MiniBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" VerticalContentAlignment="Center" Padding="0,5,0,0" >
                                             <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 

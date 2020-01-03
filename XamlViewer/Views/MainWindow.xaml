@@ -29,7 +29,7 @@
         <KeyBinding Command="{Binding AppCommands.RedoCommand}" Gesture="Ctrl+Y"/>
         <KeyBinding Command="{Binding AppCommands.CompileCommand}" Gesture="F5"/>
     </controls:UserWindow.InputBindings>
-    <controls:UserWindow.TitleBarContent>
+    <controls:UserWindow.CaptionContent>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -59,7 +59,7 @@
 					  RenderOptions.EdgeMode="Aliased" Data="M1,0 H5V1 H6V5 H5V6 H4V7 H2V5 H3V4 H4V2 H2V4 H0V1 H1 M2,8 H4V10 H2z"/>
 			</Button>
         </Grid>
-    </controls:UserWindow.TitleBarContent>
+    </controls:UserWindow.CaptionContent>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="{Binding SettingRowHeight}"/>

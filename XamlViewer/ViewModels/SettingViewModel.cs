@@ -43,6 +43,8 @@ namespace XamlViewer.ViewModels
             _eventAggregator = eventAggregator;
             _dialogService = dialogService;
 
+            _eventAggregator.GetEvent<SearchConfigEvents>().Subscribe(OnSearchConfig);
+
             AddRefCommand = new DelegateCommand(AddReference);
             RemoveRefCommand = new DelegateCommand(RemoveReference, CanRemoveReference);
             RefSelectionChangedCommand = new DelegateCommand(RefSelectionChanged);
@@ -71,6 +73,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.FontFamily; }
             set
             {
+                if(_appData.Config.FontFamily == value)
+                    return;
+                    
                 _appData.Config.FontFamily = value;
 
                 RaisePropertyChanged();
@@ -83,6 +88,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.FontSize; }
             set
             {
+                if(_appData.Config.FontSize == value)
+                    return;
+                    
                 _appData.Config.FontSize = value;
 
                 RaisePropertyChanged();
@@ -95,6 +103,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.WordWrap; }
             set
             {
+                if(_appData.Config.WordWrap == value)
+                    return;
+                    
                 _appData.Config.WordWrap = value;
 
                 RaisePropertyChanged();
@@ -107,6 +118,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.ShowLineNumber; }
             set
             {
+                if(_appData.Config.ShowLineNumber == value)
+                    return;
+                    
                 _appData.Config.ShowLineNumber = value;
 
                 RaisePropertyChanged();
@@ -119,6 +133,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.AutoCompile; }
             set
             {
+                if(_appData.Config.AutoCompile == value)
+                    return;
+                    
                 _appData.Config.AutoCompile = value;
 
                 RaisePropertyChanged();
@@ -131,6 +148,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.AutoCompileDelay; }
             set
             {
+                if(_appData.Config.AutoCompileDelay == value)
+                    return;
+                    
                 _appData.Config.AutoCompileDelay = value;
 
                 RaisePropertyChanged();
@@ -281,6 +301,20 @@ namespace XamlViewer.ViewModels
 
         #endregion
 
+        #region EVent
+        
+        private void OnSearchConfig(SearchConfig config)
+        {
+            if(_appData == null)
+                return;
+                
+            _appData.Config.IsMatchCase = config.IsMatchCase;
+            _appData.Config.IsWholeWords = config.IsWholeWords;
+            _appData.Config.UseRegex = config.UseRegex;
+        }
+        
+        #endregion
+
         #region Func
 
         private void LoadFonts()
@@ -292,20 +326,24 @@ namespace XamlViewer.ViewModels
                 FontFamilies = Fonts.SystemFontFamilies.Select(f => f.Source).OrderBy(f => f).ToList();
                 _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.FinishLoadFonts);
             });
-        }
+        } 
 
         private void ApplyEditorConfig()
         {
             _eventAggregator.GetEvent<ConfigEvents>().Publish(new EditorConfig
             {
-                FontFamily = FontFamily,
-                FontSize = FontSize,
+                FontFamily = _appData.Config.FontFamily,
+                FontSize = _appData.Config.FontSize,
 
-                WordWrap = WordWrap,
-                ShowLineNumber = ShowLineNumber,
+                WordWrap = _appData.Config.WordWrap,
+                ShowLineNumber = _appData.Config.ShowLineNumber,
 
-                AutoCompile = AutoCompile,
-                AutoCompileDelay = AutoCompileDelay
+                AutoCompile = _appData.Config.AutoCompile,
+                AutoCompileDelay = _appData.Config.AutoCompileDelay,
+                
+                IsMatchCase = _appData.Config.IsMatchCase,
+                IsWholeWords = _appData.Config.IsWholeWords,
+                UseRegex = _appData.Config.UseRegex,
             });
         }
 

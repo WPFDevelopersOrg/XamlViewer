@@ -1,13 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cc="clr-namespace:ICSharpCode.AvalonEdit.CodeCompletion;assembly=ICSharpCode.AvalonEdit"
-                    xmlns:themes="clr-namespace:XamlTheme"
+                    xmlns:shell="clr-namespace:Microsoft.Windows.Shell"
                     xmlns:controls="clr-namespace:XamlTheme.Controls">
 
     <Style TargetType="{x:Type controls:CompletionWindowEx}">
-        <Setter Property="WindowChrome.WindowChrome">
+        <Setter Property="shell:WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome CornerRadius="0" GlassFrameThickness="0"/>
+                <shell:WindowChrome CaptionHeight="0" GlassFrameThickness="0,0,0,1"/>
             </Setter.Value>
         </Setter> 
     </Style>

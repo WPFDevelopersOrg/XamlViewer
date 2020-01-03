@@ -1,17 +1,16 @@
 ﻿<UserControl x:Class="XamlEditor.Views.EditorControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
              xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid Background="White">
         <controls:TextEditorEx Margin="6,0,0,0"
+		                       IsMatchCase="{Binding IsMatchCase, Mode=TwoWay}"
+							   IsWholeWords="{Binding IsWholeWords, Mode=TwoWay}"
+							   UseRegex="{Binding UseRegex, Mode=TwoWay}"
                                IsCodeCompletion="{Binding IsCodeCompletion}"
 		                       IsReadOnly="{Binding IsReadOnly}"
                                LineNumber="{Binding CaretLine, Mode=TwoWay}"

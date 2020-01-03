@@ -94,32 +94,39 @@ namespace XamlTheme.Controls
             set { SetValue(HideOriginalTitleProperty, value); }
         }
 
-        public static readonly DependencyProperty TitleBarFontSizeProperty = DependencyProperty.Register("TitleBarFontSize", typeof(double), _typeofSelf, new PropertyMetadata(14d));
-        public double TitleBarFontSize
+        public static readonly DependencyProperty CaptionFontSizeProperty = DependencyProperty.Register("CaptionFontSize", typeof(double), _typeofSelf, new PropertyMetadata(14d));
+        public double CaptionFontSize
         {
-            get { return (double)GetValue(TitleBarFontSizeProperty); }
-            set { SetValue(TitleBarFontSizeProperty, value); }
+            get { return (double)GetValue(CaptionFontSizeProperty); }
+            set { SetValue(CaptionFontSizeProperty, value); }
+        }
+		
+		public static readonly DependencyProperty CaptionHeightProperty = DependencyProperty.Register("CaptionHeight", typeof(double), _typeofSelf, new PropertyMetadata(30d));
+        public double CaptionHeight
+        {
+            get { return (double)GetValue(CaptionHeightProperty); }
+            set { SetValue(CaptionHeightProperty, value); }
         }
 
-        public static readonly DependencyProperty TitleBarBackgroundProperty = DependencyProperty.Register("TitleBarBackground", typeof(Brush), _typeofSelf);
-        public Brush TitleBarBackground
+        public static readonly DependencyProperty CaptionBackgroundProperty = DependencyProperty.Register("CaptionBackground", typeof(Brush), _typeofSelf);
+        public Brush CaptionBackground
         {
-            get { return (Brush)GetValue(TitleBarBackgroundProperty); }
-            set { SetValue(TitleBarBackgroundProperty, value); }
+            get { return (Brush)GetValue(CaptionBackgroundProperty); }
+            set { SetValue(CaptionBackgroundProperty, value); }
         }
 
-        public static readonly DependencyProperty TitleBarForegroundProperty = DependencyProperty.Register("TitleBarForeground", typeof(Brush), _typeofSelf);
-        public Brush TitleBarForeground
+        public static readonly DependencyProperty CaptionForegroundProperty = DependencyProperty.Register("CaptionForeground", typeof(Brush), _typeofSelf);
+        public Brush CaptionForeground
         {
-            get { return (Brush)GetValue(TitleBarForegroundProperty); }
-            set { SetValue(TitleBarForegroundProperty, value); }
+            get { return (Brush)GetValue(CaptionForegroundProperty); }
+            set { SetValue(CaptionForegroundProperty, value); }
         }
 
-        public static readonly DependencyProperty TitleBarContentProperty = DependencyProperty.Register("TitleBarContent", typeof(object), _typeofSelf);
-        public object TitleBarContent
+        public static readonly DependencyProperty CaptionContentProperty = DependencyProperty.Register("CaptionContent", typeof(object), _typeofSelf);
+        public object CaptionContent
         {
-            get { return (object)GetValue(TitleBarContentProperty); }
-            set { SetValue(TitleBarContentProperty, value); }
+            get { return (object)GetValue(CaptionContentProperty); }
+            set { SetValue(CaptionContentProperty, value); }
         }
 
         #endregion

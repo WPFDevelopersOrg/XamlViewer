@@ -95,7 +95,11 @@ namespace XamlViewer
                     ShowLineNumber = appData.Config.ShowLineNumber,
 
                     AutoCompile = appData.Config.AutoCompile,
-                    AutoCompileDelay = appData.Config.AutoCompileDelay
+                    AutoCompileDelay = appData.Config.AutoCompileDelay,
+                    
+                    IsMatchCase = appData.Config.IsMatchCase,
+                    IsWholeWords = appData.Config.IsWholeWords,
+                    UseRegex = appData.Config.UseRegex
                 });
             }
         }

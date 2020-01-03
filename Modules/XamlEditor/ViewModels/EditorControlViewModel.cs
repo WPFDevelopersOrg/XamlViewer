@@ -17,6 +17,7 @@ namespace XamlEditor.ViewModels
     {
         private string _fileGuid = null;
         private bool _isReseting = false;
+        private bool _canSyncSearchConfig = false;
 
         private XsdParser _xsdParser = null;
         private TextEditorEx _textEditor = null;
@@ -228,6 +229,52 @@ namespace XamlEditor.ViewModels
             }
         }
 
+        #region Search
+
+        private bool _isMatchCase;
+        public bool IsMatchCase
+        {
+            get { return _isMatchCase; }
+            set 
+            { 
+                if(_isMatchCase == value)
+                    return;
+                    
+                SetProperty(ref _isMatchCase, value); 
+                ApplySearchConfig();
+            }
+        }
+        
+        private bool _isWholeWords;
+        public bool IsWholeWords
+        {
+            get { return _isWholeWords; }
+            set 
+            { 
+                if(_isWholeWords == value)
+                    return;
+                    
+                SetProperty(ref _isWholeWords, value); 
+                ApplySearchConfig();
+            }
+        }
+        
+        private bool _useRegex;
+        public bool UseRegex
+        {
+            get { return _useRegex; }
+            set 
+            { 
+                if(_useRegex == value)
+                    return;
+            
+                SetProperty(ref _useRegex, value); 
+                ApplySearchConfig();
+            }
+        }
+
+        #endregion
+
         #region Command
 
         private bool CanSave(bool? alreadySelectPath)
@@ -298,6 +345,12 @@ namespace XamlEditor.ViewModels
 
             AutoCompile = config.AutoCompile;
             AutoCompileDelay = config.AutoCompileDelay;
+            
+            IsMatchCase = config.IsMatchCase;
+            IsWholeWords = config.IsWholeWords;
+            UseRegex = config.UseRegex;
+            
+            _canSyncSearchConfig = true;
         }
 
         private void OnLoadText(TabInfo tabInfo)
@@ -356,6 +409,19 @@ namespace XamlEditor.ViewModels
             _xsdParser = new XsdParser();
 
             Task.Run(() => IsCodeCompletion = _xsdParser.TryParse());
+        }
+        
+        private void ApplySearchConfig()
+        {
+            if (_eventAggregator != null && _canSyncSearchConfig)
+            {
+                _eventAggregator.GetEvent<SearchConfigEvents>().Publish(new SearchConfig
+                { 
+                    IsMatchCase = IsMatchCase,
+                    IsWholeWords = IsWholeWords,
+                    UseRegex = UseRegex,
+                });    
+            }
         }
 
         #endregion

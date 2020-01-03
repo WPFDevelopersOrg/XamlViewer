@@ -1,7 +1,14 @@
 ﻿
 namespace XamlService.Payloads
 {
-    public class EditorConfig
+    public class SearchConfig
+    {
+        public bool IsMatchCase { get; set; }
+        public bool IsWholeWords { get; set; }
+        public bool UseRegex { get; set; }
+    }
+
+    public class EditorConfig : SearchConfig
     { 
         public string FontFamily { get; set; }
         public double FontSize { get; set; }
@@ -10,6 +17,6 @@ namespace XamlService.Payloads
         public bool ShowLineNumber { get; set; }
 
         public bool AutoCompile { get; set; }
-        public double AutoCompileDelay { get; set; }
+        public double AutoCompileDelay { get; set; } 
     }
 }
