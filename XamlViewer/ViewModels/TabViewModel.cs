@@ -234,7 +234,7 @@ namespace XamlViewer.ViewModels
 
                 //this--->Editor(text)--->this(Save)
                 _closeAfterSaving = true;
-                _appCommands.SaveCommand.Execute(true);
+                _appCommands.SaveCommand.Execute(null);
             }
             else
             {
@@ -262,7 +262,7 @@ namespace XamlViewer.ViewModels
             }
 
             //this--->Editor(text)--->this(Save)
-            _appCommands.SaveCommand.Execute(true);
+            _appCommands.SaveCommand.Execute(null);
         }
 
         private bool CanCopyOrOpenPath(bool? isOpen)
@@ -314,7 +314,7 @@ namespace XamlViewer.ViewModels
             if (tabInfo.Guid != _guid || !CanSave())
                 return; ;
 
-            if (!tabInfo.AlreadySelectPath)
+            if (!string.Equals(Path.GetFullPath(FileName), FileName, StringComparison.OrdinalIgnoreCase))
             {
                 var fileName = Common.ShowSaveFileDialog(FileName);
                 if (string.IsNullOrEmpty(fileName))

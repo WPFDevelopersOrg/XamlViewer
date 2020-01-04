@@ -9,7 +9,6 @@ namespace XamlService.Payloads
     public class TabInfo : TabFlag
     {
         public string Guid { get; set; }
-        public bool AlreadySelectPath { get; set; } 
         public string FileContent { get; set; }
     }
 }

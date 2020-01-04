@@ -29,7 +29,7 @@ namespace XamlEditor.ViewModels
         public DelegateCommand DelayArrivedCommand { get; private set; }
 
         public DelegateCommand CompileCommand { get; private set; }
-        public DelegateCommand<bool?> SaveCommand { get; private set; }
+        public DelegateCommand SaveCommand { get; private set; }
         public DelegateCommand RedoCommand { get; private set; }
         public DelegateCommand UndoCommand { get; private set; }
 
@@ -62,7 +62,7 @@ namespace XamlEditor.ViewModels
             CompileCommand = new DelegateCommand(Compile, CanCompile);
             _appCommands.CompileCommand.RegisterCommand(CompileCommand);
 
-            SaveCommand = new DelegateCommand<bool?>(Save, CanSave);
+            SaveCommand = new DelegateCommand(Save, CanSave);
             _appCommands.SaveCommand.RegisterCommand(SaveCommand);
 
             RedoCommand = new DelegateCommand(Redo, CanRedo);
@@ -277,17 +277,17 @@ namespace XamlEditor.ViewModels
 
         #region Command
 
-        private bool CanSave(bool? alreadySelectPath)
+        private bool CanSave()
         {
             return !IsReadOnly;
         }
 
-        private void Save(bool? alreadySelectPath)
+        private void Save()
         {
             Reset();
 
             if (_eventAggregator != null)
-                _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, AlreadySelectPath = alreadySelectPath.HasValue && alreadySelectPath.Value, FileContent = _textEditor.Text });
+                _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = _textEditor.Text });
         }
 
         private bool CanRedo()
