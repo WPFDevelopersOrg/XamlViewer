@@ -1,6 +1,6 @@
 # XAML Viewer
 
-XAML Viewer is a lightweight XAML editor. 在编写文本的同时，能够实时显示相应的设计预览。不仅提供方便的文档管理，更具人性化的智能提示。当你在学习或尝试一些XAML效果时，一定会是你的不错选择。
+XAML Viewer是一款轻量级的XAML编辑器。在编写文本的同时，能够实时显示相应的设计预览。不仅提供方便的文档管理，更具人性化的智能提示。当你在学习或尝试一些XAML效果时，一定会是你的不错选择。
 
 ![Preview](images/XAMLViewer.png)
 
@@ -13,8 +13,8 @@ XAML Viewer is a lightweight XAML editor. 在编写文本的同时，能够实�
 
 ## Automitic Compilation
 [Setting] >> [Compilation]
-1. Auto-Compile CheckBox，开启或关闭自动编译功能，但手动编译[F5]，一直生效；
-2. Auto-Compile Delay Slider，在无任何输入的指定时间后自动执行编译。
+1. Auto-Compile 勾选框，开启或关闭自动编译功能，但手动编译[F5]，一直生效；
+2. Auto-Compile Delay 滑块，在无任何输入的指定时间后自动执行编译。
 
 ## Reference
 [Setting] >> [Reference] >> [Add]: 添加自定义控件库，可以在XAML中直接引用其中控件。  
