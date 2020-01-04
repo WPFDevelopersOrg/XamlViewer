@@ -12,7 +12,7 @@ XAML Viewer is a lightweight XAML editor. 在编写文本的同时，能够实�
 <font color=red>_注意：在关闭软件时，只会自动保存已经存储在本地的文档，请务必在此之前，将需要保留的临时文档保存到本地。_</font>
 
 ## Automitic Compilation
-通[Setting] >> [Compilation]
+[Setting] >> [Compilation]
 1. Auto-Compile CheckBox，开启或关闭自动编译功能，但手动编译[F5]，一直生效；
 2. Auto-Compile Delay Slider，在无任何输入的指定时间后自动执行编译。
 
