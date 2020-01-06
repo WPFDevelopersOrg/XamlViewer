@@ -12,15 +12,13 @@ XAML Viewer是一款轻量级的XAML编辑器。在编写文本的同时，能�
 _注意：在关闭软件时，只会自动保存已经存储在本地的文档，请务必在此之前，将需要保留的临时文档保存到本地。_
 
 ## Automitic Compilation
-[Setting] >> [Compilation]
-1. Auto-Compile 勾选框，开启或关闭自动编译功能，但手动编译[F5]，一直生效；
-2. Auto-Compile Delay 滑块，在无任何输入的指定时间后自动执行编译。
+1. Auto-Compile，开启或关闭自动编译功能，但手动编译[F5]，一直生效；
+2. Auto-Compile Delay，在无任何输入的指定时间后自动执行编译。
 
 ## Reference
-[Setting] >> [Reference] >> [Add]: 添加自定义控件库，可以在XAML中直接引用其中控件。  
-注意：
-1. 当前软件基于.Net Framework 4.5，只要系统中包含.Net Framework 4.X（X >= 5），即可引用基于4.0--4.X任意版本的控件库；
-2. 引用自定义控件库时，请按照以下形式声明命名空间：</br>
+1. [Setting] >> [Reference] >> [Add]: 添加自定义控件库，可以在XAML中直接引用其中控件；
+2. 当前软件基于.Net Framework 4.5，只要系统中包含.Net Framework 4.X（X >= 5），即可引用基于4.0--4.X任意版本的控件库；
+3. 引用自定义控件库时，请按照以下形式声明命名空间：</br>
 ``` xml
 xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 ```
