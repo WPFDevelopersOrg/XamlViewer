@@ -540,31 +540,38 @@ namespace XamlTheme.Controls
         }
 
         private string GetParentElement(int startOffset, ref int parentOffset)
-        {
-            var foundCount = 0;
+        { 
             var foundEnd = false;
+            var ignoreNextEndCount = 0;
+
             for (int i = startOffset; i >= 0; i--)
             {
                 var curChar = _partTextEditor.Text[i];
 
                 if (curChar == '>' && i > 0 && FindPreviousNonSpaceChars(i - 1) != "/")
-                {
-                    foundCount++;
-
-                    if (foundCount % 2 == 1)
-                        foundEnd = true;
-
+                { 
+                    foundEnd = true; 
                     continue;
                 }
 
                 if (curChar == '/' && i > 0 && FindPreviousNonSpaceChars(i - 1) == "<")
                 {
                     foundEnd = false;
+                    ignoreNextEndCount++;
+
                     continue;
                 }
 
                 if (curChar == '<' && foundEnd)
                 {
+                    if (ignoreNextEndCount > 0)
+                    {
+                        foundEnd = false;
+                        ignoreNextEndCount--;
+
+                        continue;
+                    }
+
                     parentOffset = i;
                     var element = "";
                     for (int j = i + 1; j <= startOffset; j++)
