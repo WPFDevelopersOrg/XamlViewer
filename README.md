@@ -5,11 +5,11 @@ XAML Viewer是一款轻量级的XAML编辑器。在编写文本的同时，能�
 ![Preview](images/XAMLViewer.png)
 
 ## Document Manager  
-1. 支持创建，打开，保存，关闭等操作；
-2. 支持拖动页签进行位置交换；
-3. 支持在 Active Files 下拉列表中针对已打开的文件进行快速选择。  
+1. 支持新建，打开，保存，关闭，拖动等操作；
+2. 支持预览与编辑面板位置交换操作；
+3. 支持在Active Files下拉列表中针对已打开的文件进行快速选择。  
 
-<font color=red>_注意：在关闭软件时，只会自动保存已经存储在本地的文档，请务必在此之前，将需要保留的临时文档保存到本地。_</font>
+_注意：在关闭软件时，只会自动保存已经存储在本地的文档，请务必在此之前，将需要保留的临时文档保存到本地。_
 
 ## Automitic Compilation
 [Setting] >> [Compilation]
