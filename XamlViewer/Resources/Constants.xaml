@@ -25,24 +25,18 @@
                    Text="       XAML Viewer is a lightweight XAML editor. While writing text, the corresponding design preview can be displayed in real time. It not only provides convenient document management, but also has more user-friendly intellisense. When you are learning or trying some XAML effects, it will definitely be a good choice for you."/>
       
         <TextBlock Text="Document Manager" FontSize="25"  Margin="0,20,0,0"/>
-        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      1. Support create, open, save, close and other operations;"/>
-        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      2. Support dragging tabs for position exchange;"/>
+        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      1. Support new, open, save, close and drag;"/>
+        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      2. Support preview and edit panel position exchange operation;"/>
         <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      3. Supports quick selection of opened files in active files drop-down list."/>
         <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Foreground="Red" 
                     Text="      Note: When you close this software, only the documents that have been stored locally will be automatically saved. Be sure to save the temporary documents that need to be saved to the local before this."/>
         
         <TextBlock Text="Automitic Compilation" FontSize="25"  Margin="0,20,0,0"/>
-        <TextBlock  Margin="0,15,0,0" Text="[">
-			<Span FontWeight="Bold">Setting</Span>
-			<Span>]  >>  [</Span>
-			<Span FontWeight="Bold">Compilation</Span>
-			<Span>]</Span>
-        </TextBlock>
-        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      1. Auto-Compile CheckBox: Enable or disable the automatic compilation function, but manual compilation [F5] always takes effect;"/>
-        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      2. Auto-Compile Delay Slider: Compile automatically after a specified time without any input."/>
+        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      1. Auto-Compile: Enable or disable the automatic compilation function, but manual compilation [F5] always takes effect;"/>
+        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      2. Auto-Compile Delay: Compile automatically after a specified time without any input."/>
       
         <TextBlock Text="Reference" TextOptions.TextFormattingMode="Ideal" FontSize="25"  Margin="0,20,0,0"/>
-		<TextBlock  Margin="0,15,0,0" Text="[">
+		<TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      1. [">
 			<Span FontWeight="Bold">Setting</Span>
 			<Span>]  >>  [</Span>
 			<Span FontWeight="Bold">Reference</Span>
@@ -50,9 +44,8 @@
 			<Span FontWeight="Bold">Add</Span>
 			<Span>]: Add custom control library, you can directly reference the controls in XAML.</Span>
         </TextBlock>
-        <TextBlock  Margin="0,15,0,0" Text="Note:"/>
-        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      1. The current software is based on .Net Framework 4.5. As long as the system contains .Net Framework 4.X (X> = 5), you can reference the control library based on any version of 4.0--4.X;"/>
-        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      2. When referencing a custom control, please declare the namespace as follows:"/>
+        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      2. The current software is based on .Net Framework 4.5. As long as the system contains .Net Framework 4.X (X> = 5), you can reference the control library based on any version of 4.0--4.X;"/>
+        <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      3. When referencing a custom control, please declare the namespace as follows:"/>
         <TextBlock  Margin="40,10,0,0" TextWrapping="Wrap">
             <Span Foreground="#8C038C">xmlns:</Span>
             <Span Foreground="#FF3737">controls</Span>
