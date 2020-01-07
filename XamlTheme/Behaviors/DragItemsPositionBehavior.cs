@@ -14,7 +14,7 @@ namespace XamlTheme.Behaviors
     public class DragItemsPositionBehavior : Behavior<Panel>
     {
         private Point _cacheMouseDownToChildPos;
-		private Point _cacheChildToPanelPos;
+        private Point _cacheChildToPanelPos;
         private UIElement _dragedChild = null;
 
         private MousePanelAdorner _panelAdorner = null;
@@ -157,7 +157,7 @@ namespace XamlTheme.Behaviors
                 var hitResult = VisualTreeHelper.HitTest(child, _cacheMouseDownToChildPos);
                 if (hitResult != null)
                 {
-					_cacheChildToPanelPos = child.TranslatePoint(new Point(), AssociatedObject);
+                    _cacheChildToPanelPos = child.TranslatePoint(new Point(), AssociatedObject);
                     _dragedChild = child;
 					
                     AssociatedObject.PreviewMouseMove += OnMouseMove;
@@ -207,11 +207,11 @@ namespace XamlTheme.Behaviors
 
         private void MoveChild(UIElement dragedChild)
         { 
-			var screenPos = new Win32.POINT();
-			if (!Win32.GetCursorPos(ref screenPos))
-				return;
-			
-			var posToPanel = AssociatedObject.PointFromScreen(new Point(screenPos.X, screenPos.Y)); 
+            var screenPos = new Win32.POINT();
+            if (!Win32.GetCursorPos(ref screenPos))
+            	return;
+            
+            var posToPanel = AssociatedObject.PointFromScreen(new Point(screenPos.X, screenPos.Y)); 
             var dragedElement = dragedChild as FrameworkElement;
 			
             var childRect = new Rect(posToPanel.X - _cacheMouseDownToChildPos.X, DisabledYPosition ? _cacheChildToPanelPos.Y : (posToPanel.Y - _cacheMouseDownToChildPos.Y), dragedElement.ActualWidth, dragedElement.ActualHeight);

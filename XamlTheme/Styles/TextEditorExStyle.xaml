@@ -19,7 +19,7 @@
                                                VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" 
                                                SyntaxHighlighting="XML"
                                                LineNumbersForeground="#2B91AF"
-											   IsReadOnly="{TemplateBinding IsReadOnly}"
+                                               IsReadOnly="{TemplateBinding IsReadOnly}"
                                                IsModified="{Binding IsModified,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                                                WordWrap="{TemplateBinding WordWrap}"
                                                ShowLineNumbers="{TemplateBinding ShowLineNumbers}"

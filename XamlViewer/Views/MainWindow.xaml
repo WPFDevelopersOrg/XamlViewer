@@ -52,12 +52,12 @@
                 </controls:StatusToggle.UnCheckedContent>
             </controls:StatusToggle>
             <Button Grid.Column="3" ToolTip="Help" Width="37"
-                     Command="{Binding AppCommands.HelpCommand}"
+                    Command="{Binding AppCommands.HelpCommand}"
                     Style="{StaticResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}">
-				<Path VerticalAlignment="Center" HorizontalAlignment="Center"
-				      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" 
-					  RenderOptions.EdgeMode="Aliased" Data="M1,0 H5V1 H6V5 H5V6 H4V7 H2V5 H3V4 H4V2 H2V4 H0V1 H1 M2,8 H4V10 H2z"/>
-			</Button>
+                <Path VerticalAlignment="Center" HorizontalAlignment="Center"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" 
+                      RenderOptions.EdgeMode="Aliased" Data="M1,0 H5V1 H6V5 H5V6 H4V7 H2V5 H3V4 H4V2 H2V4 H0V1 H1 M2,8 H4V10 H2z"/>
+            </Button>
         </Grid>
     </controls:UserWindow.CaptionContent>
     <Grid>

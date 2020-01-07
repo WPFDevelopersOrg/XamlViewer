@@ -9,7 +9,7 @@
         <Setter Property="shell:WindowChrome.WindowChrome">
             <Setter.Value>
                 <shell:WindowChrome ResizeBorderThickness="4" GlassFrameThickness="0,0,0,1"
-				                    CaptionHeight="{Binding CaptionHeight, RelativeSource={RelativeSource AncestorType=controls:UserWindow}}"/>
+                                    CaptionHeight="{Binding CaptionHeight, RelativeSource={RelativeSource AncestorType=controls:UserWindow}}"/>
             </Setter.Value>
         </Setter>
         <Setter Property="BorderThickness" Value="0"/>

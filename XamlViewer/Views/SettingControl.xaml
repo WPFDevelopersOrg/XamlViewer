@@ -13,8 +13,8 @@
             <behaviors:Interaction.Triggers>
                 <behaviors:EventTrigger EventName="PreviewMouseWheel">
                     <behaviors:InvokeCommandAction Command="{Binding MouseWheelCommand}" PassEventArgsToCommand="true"/>
-				</behaviors:EventTrigger>
-			</behaviors:Interaction.Triggers>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
             <StackPanel Orientation="Horizontal">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -120,19 +120,19 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Margin="-7,0,4,0">
                             <Button Width="30" ToolTip="Add"
-									Command="{Binding AddRefCommand}"
-									Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+                                    Command="{Binding AddRefCommand}"
+                                    Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
                                 <Path RenderOptions.EdgeMode="Aliased" 
-					                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-						              Data="M0,0 H7V7 H0 M0,9 H7V16 H0 M9,9 H16V16 H9 M12,0 H13V7 H12 M9,3 H12V4 H9 M13,3 H16V4 H13"/>
+                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                      Data="M0,0 H7V7 H0 M0,9 H7V16 H0 M9,9 H16V16 H9 M12,0 H13V7 H12 M9,3 H12V4 H9 M13,3 H16V4 H13"/>
                             </Button>
 
                             <Button Width="30" ToolTip="Remove" Margin="0,5,0,0"
-									Command="{Binding RemoveRefCommand}"
-									Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+                                    Command="{Binding RemoveRefCommand}"
+                                    Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
                                 <Path RenderOptions.EdgeMode="Aliased" 
-					                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-						              Data="M0,2 H6V0 H8V2 H14V4 H13V16 H1V4 H0 M2,4 H12V14 H2 M3,5 H4V13 H3 M6,5 H8V13 H6 M10,5 H11V13 H10"/>
+                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                      Data="M0,2 H6V0 H8V2 H14V4 H13V16 H1V4 H0 M2,4 H12V14 H2 M3,5 H4V13 H3 M6,5 H8V13 H6 M10,5 H11V13 H10"/>
                             </Button>
                         </StackPanel>
 
@@ -150,9 +150,9 @@
                     </Grid>
 
                     <TextBlock Grid.Row="2" Text="Reference" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-	            </Grid>
-		
-		        <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3,0,15,0"/>
+                </Grid>
+
+                <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3,0,15,0"/>
          
                 <controls:ColorPicker Width="145" SelectedColor="{Binding SelectedColor}"/>  
 
@@ -235,7 +235,7 @@
         </RepeatButton>
 
         <RepeatButton Width="20" HorizontalAlignment="Right"
-		              Command="{Binding ScrollToRightCommand}"
+                      Command="{Binding ScrollToRightCommand}"
                       CommandParameter="{Binding ElementName=RootScrollViewer}"
                       Style="{StaticResource {x:Static themes:ResourceKeys.ScrollRepeatButtonStyleKey}}">
             <RepeatButton.Visibility>

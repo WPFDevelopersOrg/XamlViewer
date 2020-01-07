@@ -121,8 +121,8 @@ namespace XamlTheme.Controls
             get { return (bool)GetValue(IsMatchCaseProperty); }
             set { SetValue(IsMatchCaseProperty, value); }
         }
-		
-		private static void OnIsMatchCasePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+        private static void OnIsMatchCasePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ctrl = d as TextEditorEx;
             var isMatchCase = (bool)e.NewValue;
@@ -131,14 +131,14 @@ namespace XamlTheme.Controls
 			    ctrl._searchPanel.MatchCase = isMatchCase;	
         }
 		
-		public static readonly DependencyProperty IsWholeWordsProperty = DependencyProperty.Register("IsWholeWords", typeof(bool), _typeofSelf, new PropertyMetadata(OnIsWholeWordsPropertyChanged));
+        public static readonly DependencyProperty IsWholeWordsProperty = DependencyProperty.Register("IsWholeWords", typeof(bool), _typeofSelf, new PropertyMetadata(OnIsWholeWordsPropertyChanged));
         public bool IsWholeWords
         {
             get { return (bool)GetValue(IsWholeWordsProperty); }
             set { SetValue(IsWholeWordsProperty, value); }
         }
 		
-		private static void OnIsWholeWordsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnIsWholeWordsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ctrl = d as TextEditorEx;
             var isWholeWords = (bool)e.NewValue;
@@ -147,14 +147,14 @@ namespace XamlTheme.Controls
 			    ctrl._searchPanel.WholeWords = isWholeWords;	
         }
 		
-		public static readonly DependencyProperty UseRegexProperty = DependencyProperty.Register("UseRegex", typeof(bool), _typeofSelf, new PropertyMetadata(OnUseRegexPropertyChanged));
+        public static readonly DependencyProperty UseRegexProperty = DependencyProperty.Register("UseRegex", typeof(bool), _typeofSelf, new PropertyMetadata(OnUseRegexPropertyChanged));
         public bool UseRegex
         {
             get { return (bool)GetValue(UseRegexProperty); }
             set { SetValue(UseRegexProperty, value); }
         }
 		
-		private static void OnUseRegexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnUseRegexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ctrl = d as TextEditorEx;
             var useRegex = (bool)e.NewValue;
@@ -256,10 +256,10 @@ namespace XamlTheme.Controls
             base.OnApplyTemplate();
 
             if (_searchPanel != null)
-			{
-				_searchPanel.SearchOptionsChanged -= _searchPanel_SearchOptionsChanged;
-				_searchPanel.Uninstall();
-			}
+            {
+                _searchPanel.SearchOptionsChanged -= _searchPanel_SearchOptionsChanged;
+                _searchPanel.Uninstall();
+            }
 
             if (_partTextEditor != null)
             {
@@ -288,15 +288,15 @@ namespace XamlTheme.Controls
                 _searchPanel = SearchPanel.Install(_partTextEditor.TextArea);
             }
 			
-			if(_searchPanel != null)
-			{
-				IsMatchCase = _searchPanel.MatchCase;
-				IsWholeWords = _searchPanel.WholeWords;
-				UseRegex = _searchPanel.UseRegex;
-				
-				_searchPanel.MarkerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F6B94D"));
-				_searchPanel.SearchOptionsChanged += _searchPanel_SearchOptionsChanged;
-			}
+            if(_searchPanel != null)
+            {
+                IsMatchCase = _searchPanel.MatchCase;
+                IsWholeWords = _searchPanel.WholeWords;
+                UseRegex = _searchPanel.UseRegex;
+                
+                _searchPanel.MarkerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F6B94D"));
+                _searchPanel.SearchOptionsChanged += _searchPanel_SearchOptionsChanged;
+            }
         }
 
         #endregion
@@ -309,12 +309,12 @@ namespace XamlTheme.Controls
             RaiseEvent(new RoutedEventArgs(DelayArrivedEvent));
         }
 
-		private void _searchPanel_SearchOptionsChanged(object sender, SearchOptionsChangedEventArgs e)
-		{
-			IsMatchCase = e.MatchCase;
-			IsWholeWords = e.WholeWords;
-			UseRegex = e.UseRegex;
-		}
+        private void _searchPanel_SearchOptionsChanged(object sender, SearchOptionsChangedEventArgs e)
+        {
+            IsMatchCase = e.MatchCase;
+            IsWholeWords = e.WholeWords;
+            UseRegex = e.UseRegex;
+        }
 
         private void _partTextEditor_TextChanged(object sender, EventArgs e)
         {

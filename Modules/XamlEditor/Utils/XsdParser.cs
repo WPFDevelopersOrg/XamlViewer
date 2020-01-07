@@ -147,14 +147,14 @@ namespace XamlEditor.Utils
                 var xse = c as XmlSchemaElement;
                 if (xse != null)
                 {
-					var name = xse.RefName.Name;
-					if(!string.IsNullOrEmpty(name))
-					{
-						if(char.IsUpper(name, 0))
-							resultElements.Add(name);
-						else if(name.StartsWith("sg"))
-							resultElements.Add(name.Substring(2));
-					}
+                    var name = xse.RefName.Name;
+                    if(!string.IsNullOrEmpty(name))
+                    {
+                    	if(char.IsUpper(name, 0))
+                    		resultElements.Add(name);
+                    	else if(name.StartsWith("sg"))
+                    		resultElements.Add(name.Substring(2));
+                    }
 
                     continue;
                 }

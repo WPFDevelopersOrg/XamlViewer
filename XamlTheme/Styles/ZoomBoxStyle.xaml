@@ -55,7 +55,7 @@
 
                             <!-- Vertical Ruler -->
                             <controls:Ruler x:Name="PART_VerticalRuler" 
-							                Orientation="Vertical"
+                                            Orientation="Vertical"
                                             Grid.Row="1" Grid.Column="0"
                                             Unit="{TemplateBinding Unit}">
                                 <controls:Ruler.Shift>

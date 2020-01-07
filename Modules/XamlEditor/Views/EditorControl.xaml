@@ -8,11 +8,11 @@
              prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid Background="White">
         <controls:TextEditorEx Margin="6,0,0,0"
-		                       IsMatchCase="{Binding IsMatchCase, Mode=TwoWay}"
-							   IsWholeWords="{Binding IsWholeWords, Mode=TwoWay}"
-							   UseRegex="{Binding UseRegex, Mode=TwoWay}"
+                               IsMatchCase="{Binding IsMatchCase, Mode=TwoWay}"
+                               IsWholeWords="{Binding IsWholeWords, Mode=TwoWay}"
+                               UseRegex="{Binding UseRegex, Mode=TwoWay}"
                                IsCodeCompletion="{Binding IsCodeCompletion}"
-		                       IsReadOnly="{Binding IsReadOnly}"
+                               IsReadOnly="{Binding IsReadOnly}"
                                LineNumber="{Binding CaretLine, Mode=TwoWay}"
                                LinePosition="{Binding CaretColumn, Mode=TwoWay}"
                                IsModified="{Binding IsModified, Mode=TwoWay}"
