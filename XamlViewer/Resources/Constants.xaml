@@ -42,7 +42,7 @@
             <Span FontWeight="Bold">Reference</Span>
             <Span>]  >>  [</Span>
             <Span FontWeight="Bold">Add</Span>
-            <Span>]: Add custom control library, you can directly reference the controls in XAML.</Span>
+            <Span>], Add custom control library, you can directly reference the controls in XAML.</Span>
         </TextBlock>
         <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      2. The current software is based on .Net Framework 4.5. As long as the system contains .Net Framework 4.X (X> = 5), you can reference the control library based on any version of 4.0--4.X;"/>
         <TextBlock  Margin="0,15,0,0" TextWrapping="Wrap" Text="      3. When referencing a custom control, please declare the namespace as follows:"/>
@@ -72,7 +72,7 @@
             <TextBlock Grid.Column="2" Text="XAML Viewer"/>            
                
             <TextBlock Grid.Row="2"  Text="Version"/>
-            <TextBlock  Grid.Row="2" Grid.Column="2" Text="1.0.0"/>    
+            <TextBlock  Grid.Row="2" Grid.Column="2" Text="1.0.1"/>    
              
             <TextBlock Grid.Row="4"  Text=".Net Framework"/>
             <TextBlock  Grid.Row="4" Grid.Column="2" Text="4.5"/>       

@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Assets\Logos\Logo2.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\Logos\Logo4.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
@@ -224,16 +224,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Logos\Logo3.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Logos\Logo.ico" />
-    <Resource Include="Assets\Logos\Logo1.ico" />
-    <Resource Include="Assets\Logos\Logo2.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\Logos\Logo4.ico" />
-    <Resource Include="Assets\Logos\Logo5.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Cursors\Splitter_lr.cur" />
