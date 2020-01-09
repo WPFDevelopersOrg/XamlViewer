@@ -5,5 +5,6 @@ namespace XamlService
     {
         public const string DesignerName = "XamlDesignerRegion";
         public const string EditorName = "XamlEditorRegion";
+        public const string WorkName = "WorkRegion";
     }
 }

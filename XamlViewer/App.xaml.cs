@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using CommonServiceLocator;
 using Prism.DryIoc;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
+using Prism.Regions;
 using Utils.IO;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Payloads;
 using XamlViewer.Dialogs;
 using XamlViewer.Models;
+using XamlViewer.Regions;
 using XamlViewer.ViewModels;
 using XamlViewer.Views;
 
@@ -32,6 +35,7 @@ namespace XamlViewer
             ViewModelLocationProvider.Register<ToolbarControl, ToolbarViewModel>();
             ViewModelLocationProvider.Register<SettingControl, SettingViewModel>();
             ViewModelLocationProvider.Register<TabsControl, TabsViewModel>();
+            ViewModelLocationProvider.Register<WorkControl, WorkViewModel>();
             ViewModelLocationProvider.Register<StatusControl, StatusViewModel>();
 
             ViewModelLocationProvider.Register<MessageDialog, MessageDialogViewModel>();
@@ -40,6 +44,12 @@ namespace XamlViewer
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();
+        }
+
+        protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
+        {
+            base.ConfigureRegionAdapterMappings(regionAdapterMappings);
+            regionAdapterMappings.RegisterMapping(typeof(Grid), Container.Resolve<GridRegionAdapter>());
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

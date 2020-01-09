@@ -91,6 +91,7 @@
     <Compile Include="Models\AppData.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\XamlConfig.cs" />
+    <Compile Include="Regions\GridRegionAdapter.cs" />
     <Compile Include="Utils\Common.cs" />
     <Compile Include="Utils\CursorUtil.cs" />
     <Compile Include="Utils\DialogServiceExtensions.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Compile Include="ViewModels\ToolbarViewModel.cs" />
+    <Compile Include="ViewModels\WorkViewModel.cs" />
     <Compile Include="Views\TabsControl.xaml.cs">
       <DependentUpon>TabsControl.xaml</DependentUpon>
     </Compile>
@@ -115,6 +117,9 @@
     </Compile>
     <Compile Include="Views\ToolbarControl.xaml.cs">
       <DependentUpon>ToolbarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorkControl.xaml.cs">
+      <DependentUpon>WorkControl.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\DialogWindow.xaml">
       <SubType>Designer</SubType>
@@ -173,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ToolbarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

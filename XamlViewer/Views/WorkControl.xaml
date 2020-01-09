@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="XamlViewer.Views.WorkControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ms="clr-namespace:XamlService;assembly=XamlService"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+             xmlns:utils="clr-namespace:XamlViewer.Utils"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <Grid.LayoutTransform>
+            <RotateTransform Angle="{Binding GridAngle}"/>
+        </Grid.LayoutTransform>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MinHeight="50"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" MinHeight="50"/>
+        </Grid.RowDefinitions>
+
+        <!--Designer-->
+        <ContentControl Grid.Row="{Binding DesignerRow}"
+                        prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}">
+            <ContentControl.LayoutTransform>
+                <RotateTransform Angle="{Binding PaneAngle}"/>
+            </ContentControl.LayoutTransform>
+        </ContentControl>
+        <GridSplitter Grid.Row="1" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                      Style="{StaticResource {x:Static themes:ResourceKeys.NormalGridSplitterStyleKey}}"
+                      utils:CursorUtil.Source="{Binding CursorSource}"/>
+        <Grid Grid.Row="1" Margin="2,1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Width="35" ToolTip="Swap Panes"
+                    Command="{Binding SwapCommand}"
+                    Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+                <Path RenderOptions.EdgeMode="Aliased" 
+                      Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
+                      Data="M0,4 H5 V3 H0 M1,3 H4 V2 H1 M2,2 H3 V1 H2 M2,4 H3 V11 H2 M8,-1 H9 V6 H8 M6,6 H11 V7 H6 M7,7 H10 V8 H7 M8,8 H9 V9 H8 z"/>
+            </Button>
+
+            <RadioButton Grid.Column="2" Width="35" ToolTip="Vertical Split"
+                         Command="{Binding VerSplitCommand}"
+                         Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
+                <Path RenderOptions.EdgeMode="Aliased" 
+                      Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                      Data="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z">
+                    <Path.LayoutTransform>
+                        <RotateTransform Angle="{Binding VerSplitAngle}"/>
+                    </Path.LayoutTransform>
+                </Path>
+            </RadioButton>
+            <RadioButton Grid.Column="3" Width="35" ToolTip="Horizontal Split" IsChecked="True"
+                         Command="{Binding HorSplitCommand}"
+                         Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
+                <Path RenderOptions.EdgeMode="Aliased" 
+                      Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                      Data="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z">
+                    <Path.LayoutTransform>
+                        <RotateTransform Angle="{Binding HorSplitAngle}"/>
+                    </Path.LayoutTransform>
+                </Path>
+            </RadioButton>
+        </Grid>
+        <!--Editor-->
+        <ContentControl Grid.Row="{Binding EditorRow}" 
+                        prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}">
+            <ContentControl.LayoutTransform>
+                <RotateTransform Angle="{Binding PaneAngle}"/>
+            </ContentControl.LayoutTransform>
+        </ContentControl>
+    </Grid>
+</UserControl>

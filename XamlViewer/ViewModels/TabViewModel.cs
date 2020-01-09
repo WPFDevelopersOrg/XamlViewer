@@ -14,7 +14,6 @@ using XamlService.Events;
 using XamlService.Payloads;
 using XamlViewer.Models;
 using XamlViewer.Utils;
-using SWF = System.Windows.Forms;
 
 namespace XamlViewer.ViewModels
 {

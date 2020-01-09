@@ -17,6 +17,9 @@ using XamlViewer.Utils;
 using XUCommon = XamlUtil.Common.Common;
 using XVCommon = XamlViewer.Utils.Common;
 using SWF = System.Windows.Forms;
+using Prism.Regions;
+using XamlService;
+using XamlViewer.Views;
 
 namespace XamlViewer.ViewModels
 {
@@ -27,6 +30,7 @@ namespace XamlViewer.ViewModels
         private AppData _appData = null;
         private IApplicationCommands _appCommands = null;
         private IDialogService _dialogService = null;
+        private IRegionManager _regionManager = null;
 
         public DelegateCommand NewCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
@@ -40,9 +44,10 @@ namespace XamlViewer.ViewModels
 
         public ObservableCollection<TabViewModel> XamlTabs { get; private set; }
 
-        public TabsViewModel(IContainerExtension container, IApplicationCommands appCommands, IDialogService dialogService)
+        public TabsViewModel(IContainerExtension container, IRegionManager regionManager, IApplicationCommands appCommands, IDialogService dialogService)
         {
             _appData = container.Resolve<AppData>();
+            _regionManager = regionManager;
             _appCommands = appCommands;
             _dialogService = dialogService;
 
@@ -131,6 +136,8 @@ namespace XamlViewer.ViewModels
 
             XamlTabs.Insert(0, newTab);
             newTab.IsSelected = true;
+
+            _regionManager.AddToRegion(RegionNames.WorkName, new WorkControl());
         }
 
         private void Open()
