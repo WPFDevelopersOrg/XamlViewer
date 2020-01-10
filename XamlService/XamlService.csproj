@@ -34,7 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-	<Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+    <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple">
@@ -50,14 +50,14 @@
     <Compile Include="Commands\ApplicationCommands.cs" />
     <Compile Include="Events\DesignerEvents.cs" />
     <Compile Include="Payloads\CaretPosition.cs" />
-    <Compile Include="Payloads\EditorConfig.cs" />
-    <Compile Include="Events\ConfigEvents.cs" />
+    <Compile Include="Payloads\Settings.cs" />
+    <Compile Include="Events\SettingEvents.cs" />
     <Compile Include="Events\EditorEvents.cs" />
     <Compile Include="Events\TabEvents.cs" />
     <Compile Include="Events\ProcessStatusEvent.cs" />
-    <Compile Include="Payloads\ProcessStatus.cs" />
+    <Compile Include="Payloads\ProcessInfo.cs" />
     <Compile Include="Payloads\TabInfo.cs" />
-    <Compile Include="Payloads\TextInfo.cs" />
+    <Compile Include="Payloads\EditorInfo.cs" />
     <Compile Include="RegionNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

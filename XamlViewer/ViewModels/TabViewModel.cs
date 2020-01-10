@@ -6,26 +6,34 @@ using System.Windows;
 using CommonServiceLocator;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Ioc;
 using Prism.Mvvm;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using Utils.IO;
+using XamlService;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Payloads;
 using XamlViewer.Models;
 using XamlViewer.Utils;
+using XamlViewer.Views;
 
 namespace XamlViewer.ViewModels
 {
     public class TabViewModel : BindableBase
     {
+        private IContainerExtension _container = null;
+        private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
         private IDialogService _dialogService = null;
+        private IRegionManager _regionManager = null;
 
         private readonly string _guid = null;
         private bool _closeAfterSaving = false;
         private Action<TabViewModel, bool> _closeAction = null;
+        private WorkControl _workControl = null;
 
         public DelegateCommand<bool?> CloseCommand { get; private set; }
         public DelegateCommand CloseAllCommand { get; private set; }
@@ -45,9 +53,15 @@ namespace XamlViewer.ViewModels
             _closeAction = closeAction;
             _guid = Guid.NewGuid().ToString();
 
-            _eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-            _appCommands = ServiceLocator.Current.GetInstance<IApplicationCommands>();
-            _dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            _container = ServiceLocator.Current.GetInstance<IContainerExtension>();
+            if (_container != null)
+            {
+                _appData = _container.Resolve<AppData>();
+                _eventAggregator = _container.Resolve<IEventAggregator>();
+                _appCommands = _container.Resolve<IApplicationCommands>();
+                _dialogService = _container.Resolve<IDialogService>();
+                _regionManager = _container.Resolve<IRegionManager>();
+            }
 
             InitEvent();
             InitCommand();
@@ -119,7 +133,8 @@ namespace XamlViewer.ViewModels
             {
                 SetProperty(ref _isSelected, value);
 
-                UpdateTextToEditor();
+                if (_workControl != null)
+                    _workControl.Visibility = _isSelected ? Visibility.Visible : Visibility.Hidden;
             }
         }
 
@@ -133,58 +148,6 @@ namespace XamlViewer.ViewModels
 
                 UpdateStatusToEditor();
             }
-        }
-
-        public void UpdateStatusToEditor()
-        {
-            if (!IsSelected || _eventAggregator == null)
-                return;
-
-            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
-        }
-
-        public void UpdateTextToEditor()
-        {
-            if (!IsSelected || _eventAggregator == null)
-                return;
-
-            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
-        }
-
-        private void InitInfo(TabStatus status)
-        {
-            Status = status;
-
-            if (File.Exists(FileName))
-            {
-                Title = Path.GetFileName(FileName);
-
-                using (var fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    MD5Code = FileHelper.ComputeMD5(fs);
-
-                    fs.Position = 0;
-                    using (var sr = new StreamReader(fs, Encoding.UTF8))
-                    {
-                        FileContent = sr.ReadToEnd();
-                    }
-                }
-            }
-            else
-            {
-                Title = FileName;
-                FileContent = (status & TabStatus.Inner) == TabStatus.Inner ? Application.Current.Resources["HelpContentTemplate"] as string : Application.Current.Resources["FileContentTemplate"] as string;
-            }
-
-            CopyOrOpenPathCommand.RaiseCanExecuteChanged();
-        }
-
-        public void UpdateFileName(string fileName)
-        {
-            Title = Path.GetFileName(fileName);
-            FileName = fileName;
-
-            CopyOrOpenPathCommand.RaiseCanExecuteChanged();
         }
 
         #region Command
@@ -214,7 +177,7 @@ namespace XamlViewer.ViewModels
                         if (_closeAction != null)
                             _closeAction(this, true);
 
-                        UnsubscribeEvents();
+                        Dispose();
                         isContinue = false;
                     }
                 });
@@ -240,7 +203,7 @@ namespace XamlViewer.ViewModels
                 if (_closeAction != null)
                     _closeAction(this, false);
 
-                UnsubscribeEvents();
+                Dispose();
             }
         }
 
@@ -332,7 +295,7 @@ namespace XamlViewer.ViewModels
                 if (_closeAction != null)
                     _closeAction(this, true);
 
-                UnsubscribeEvents();
+                Dispose();
             }
         }
 
@@ -345,6 +308,22 @@ namespace XamlViewer.ViewModels
         }
 
         #endregion
+
+        #region Func
+
+        public void InitWorkArea()
+        {
+            if (!_regionManager.Regions.ContainsRegionWithName(RegionNames.WorkName))
+                return;
+
+            if (_workControl != null)
+                return;
+
+            _workControl = _container.Resolve<WorkControl>(new ValueTuple<Type, object>(typeof(string), _guid));
+            _workControl.Visibility = IsSelected ? Visibility.Visible : Visibility.Hidden;
+
+            _regionManager.Regions[RegionNames.WorkName].Add(_workControl, null, true);
+        }
 
         public void SaveToFile()
         {
@@ -360,6 +339,61 @@ namespace XamlViewer.ViewModels
             Status &= ~(TabStatus.NoSave);
         }
 
+        public void UpdateStatusToEditor()
+        {
+            if (!IsSelected || _eventAggregator == null)
+                return;
+
+            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
+        }
+
+        public void UpdateTextToEditor()
+        {
+            if (!IsSelected || _eventAggregator == null)
+                return;
+
+            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = ((Status & TabStatus.Locked) == TabStatus.Locked) });
+        }
+
+        public void UpdateFileName(string fileName)
+        {
+            Title = Path.GetFileName(fileName);
+            FileName = fileName;
+
+            CopyOrOpenPathCommand.RaiseCanExecuteChanged();
+        }
+
+        private void InitInfo(TabStatus status)
+        {
+            Status = status;
+
+            if (File.Exists(FileName))
+            {
+                Title = Path.GetFileName(FileName);
+
+                using (var fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    MD5Code = FileHelper.ComputeMD5(fs);
+
+                    fs.Position = 0;
+                    using (var sr = new StreamReader(fs, Encoding.UTF8))
+                    {
+                        FileContent = sr.ReadToEnd();
+                    }
+                }
+            }
+            else
+            {
+                Title = FileName;
+                FileContent = (status & TabStatus.Inner) == TabStatus.Inner ? Application.Current.Resources["HelpContentTemplate"] as string : Application.Current.Resources["FileContentTemplate"] as string;
+            }
+
+            InitWorkArea();
+            CopyOrOpenPathCommand.RaiseCanExecuteChanged();
+
+            _eventAggregator.GetEvent<SettingChangedEvents>().Publish(Common.GetCurrentSettings(_appData.Config));
+        }
+
         private void UnsubscribeEvents()
         {
             _textChangedEvent.Unsubscribe(OnTextChanged);
@@ -369,5 +403,15 @@ namespace XamlViewer.ViewModels
 
             _appCommands.CloseAllCommand.UnregisterCommand(CloseCommand);
         }
+
+        private void Dispose()
+        {
+            UnsubscribeEvents();
+
+            _regionManager.Regions[RegionNames.WorkName].Remove(_workControl);
+            _workControl = null;
+        }
+
+        #endregion
     }
 }

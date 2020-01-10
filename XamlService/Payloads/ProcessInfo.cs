@@ -12,4 +12,10 @@ namespace XamlService.Payloads
         LoadFonts,
         FinishLoadFonts,
     }
+
+    public class ProcessInfo
+    {
+        public ProcessStatus status { get; set; }
+        public string Guid { get; set; }
+    }
 }

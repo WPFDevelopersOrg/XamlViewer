@@ -3,8 +3,7 @@ using XamlService.Payloads;
 
 namespace XamlService.Events
 {
-    public class CloseTabEvent : PubSubEvent<string> {}
-    
-    public class UpdateTabStatusEvent : PubSubEvent<TabFlag> {}
-
+    public class CloseTabEvent : PubSubEvent<string> { }
+    public class UpdateTabStatusEvent : PubSubEvent<TabFlag> { }
+    public class InitWorkAreaEvent : PubSubEvent { }
 }

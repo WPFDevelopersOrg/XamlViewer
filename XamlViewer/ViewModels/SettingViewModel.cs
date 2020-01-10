@@ -43,7 +43,7 @@ namespace XamlViewer.ViewModels
             _eventAggregator = eventAggregator;
             _dialogService = dialogService;
 
-            _eventAggregator.GetEvent<SearchConfigEvents>().Subscribe(OnSearchConfig);
+            _eventAggregator.GetEvent<SearchFilterChangedEvents>().Subscribe(OnSearchConfig);
 
             AddRefCommand = new DelegateCommand(AddReference);
             RemoveRefCommand = new DelegateCommand(RemoveReference, CanRemoveReference);
@@ -303,7 +303,7 @@ namespace XamlViewer.ViewModels
 
         #region EVent
         
-        private void OnSearchConfig(SearchConfig config)
+        private void OnSearchConfig(SearchFilter config)
         {
             if(_appData == null)
                 return;
@@ -311,6 +311,9 @@ namespace XamlViewer.ViewModels
             _appData.Config.IsMatchCase = config.IsMatchCase;
             _appData.Config.IsWholeWords = config.IsWholeWords;
             _appData.Config.UseRegex = config.UseRegex;
+
+            //Sync to all documents
+            ApplyEditorConfig();
         }
         
         #endregion
@@ -319,32 +322,18 @@ namespace XamlViewer.ViewModels
 
         private void LoadFonts()
         {
-            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.LoadFonts);
+            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.LoadFonts });
 
             Task.Run(() =>
             {
                 FontFamilies = Fonts.SystemFontFamilies.Select(f => f.Source).OrderBy(f => f).ToList();
-                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.FinishLoadFonts);
+                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.FinishLoadFonts });
             });
         } 
 
         private void ApplyEditorConfig()
         {
-            _eventAggregator.GetEvent<ConfigEvents>().Publish(new EditorConfig
-            {
-                FontFamily = _appData.Config.FontFamily,
-                FontSize = _appData.Config.FontSize,
-
-                WordWrap = _appData.Config.WordWrap,
-                ShowLineNumber = _appData.Config.ShowLineNumber,
-
-                AutoCompile = _appData.Config.AutoCompile,
-                AutoCompileDelay = _appData.Config.AutoCompileDelay,
-                
-                IsMatchCase = _appData.Config.IsMatchCase,
-                IsWholeWords = _appData.Config.IsWholeWords,
-                UseRegex = _appData.Config.UseRegex,
-            });
+            _eventAggregator.GetEvent<SettingChangedEvents>().Publish(Common.GetCurrentSettings(_appData.Config));
         }
 
         #endregion

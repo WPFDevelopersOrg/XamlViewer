@@ -35,8 +35,27 @@ namespace XamlViewer.Regions
                     foreach (UIElement element in e.OldItems)
                     {
                         regionTarget.Children.Remove(element);
+
+                        var childRegionManager = RegionManager.GetRegionManager(element);
+                        var regionNames = new List<string>();
+
+                        foreach (var childRegion in childRegionManager.Regions)
+                        {
+                            foreach (var view in childRegion.Views)
+                            {
+                                //...
+                            }
+
+                            childRegion.RemoveAll();
+                            regionNames.Add(childRegion.Name);
+                        }
+
+                        regionNames.ForEach(name => childRegionManager.Regions.Remove(name));
+
+                        RegionManager.SetRegionManager(element, null);
+                        RegionManager.SetRegionContext(element, null);
                     }
-                } 
+                }
             };
         }
 

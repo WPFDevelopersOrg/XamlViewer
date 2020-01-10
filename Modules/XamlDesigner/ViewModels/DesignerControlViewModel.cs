@@ -16,8 +16,14 @@ namespace XamlDesigner.ViewModels
         public DesignerControlViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<RefreshDesignerEvent>().Subscribe(OnRefreshDesigner, ThreadOption.PublisherThread, false, tab => tab.Guid == FileGuid);
+        }
 
-            _eventAggregator.GetEvent<RefreshDesignerEvent>().Subscribe(OnRefreshDesigner);
+        private string _fileGuid = null;
+        public string FileGuid
+        {
+            get { return _fileGuid; }
+            set { SetProperty(ref _fileGuid, value); }
         }
 
         private object _element;
@@ -27,13 +33,16 @@ namespace XamlDesigner.ViewModels
             set { SetProperty(ref _element, value); }
         }
 
-        private void OnRefreshDesigner(string content)
+        private void OnRefreshDesigner(TabInfo tabInfo)
         {
-            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.Compile);
+            if (tabInfo.Guid != FileGuid)
+                return;
+
+            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.Compile, Guid = FileGuid });
 
             try
             {
-                Element = XamlReader.Parse(content) as FrameworkElement;
+                Element = XamlReader.Parse(tabInfo.FileContent) as FrameworkElement;
             }
             catch (Exception ex)
             {
@@ -41,7 +50,7 @@ namespace XamlDesigner.ViewModels
                 {
                     Text = "Error: " + ex.Message,
                     Margin = new Thickness(5),
-                    FontSize = 14, 
+                    FontSize = 14,
                     FontWeight = FontWeights.Medium,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
@@ -49,7 +58,7 @@ namespace XamlDesigner.ViewModels
             }
             finally
             {
-                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(ProcessStatus.FinishCompile);
+                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.FinishCompile, Guid = FileGuid });
             }
         }
     }

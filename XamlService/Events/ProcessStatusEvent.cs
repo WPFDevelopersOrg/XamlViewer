@@ -3,8 +3,5 @@ using XamlService.Payloads;
 
 namespace XamlService.Events
 {
-    public class ProcessStatusEvent : PubSubEvent<ProcessStatus>
-    {
-
-    }
+    public class ProcessStatusEvent : PubSubEvent<ProcessInfo> { }
 }

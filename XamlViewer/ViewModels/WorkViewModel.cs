@@ -14,10 +14,18 @@ namespace XamlViewer.ViewModels
             InitCommand();
         }
 
+        private string _tabGuid;
+        public string TabGuid
+        {
+            get { return _tabGuid; }
+            set { SetProperty(ref _tabGuid, value); }
+        }
+
+
         #region Init
 
         private void InitCommand()
-        { 
+        {
             SwapCommand = new DelegateCommand(Swap);
             HorSplitCommand = new DelegateCommand(HorSplit);
             VerSplitCommand = new DelegateCommand(VerSplit);
@@ -60,6 +68,8 @@ namespace XamlViewer.ViewModels
         }
 
         #endregion
+
+        #region Layout
 
         private int _designerRow = 0;
         public int DesignerRow
@@ -109,5 +119,7 @@ namespace XamlViewer.ViewModels
             get { return _verSplitAngle; }
             set { SetProperty(ref _verSplitAngle, value); }
         }
+
+        #endregion
     }
 }

@@ -3,7 +3,7 @@ using XamlService.Payloads;
 
 namespace XamlViewer.Models
 {
-    public class XamlConfig : EditorConfig
+    public class XamlConfig : EditorSetting
     {
         public XamlConfig()
         {

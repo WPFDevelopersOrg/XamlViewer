@@ -51,12 +51,12 @@ namespace XamlTheme.Controls
 
         public bool CanRedo
         {
-            get { return _partTextEditor.CanRedo; }
+            get { return _partTextEditor != null ? _partTextEditor.CanRedo : false; }
         }
 
         public bool CanUndo
         {
-            get { return _partTextEditor.CanUndo; }
+            get { return _partTextEditor != null ? _partTextEditor.CanUndo : false; }
         }
 
         static TextEditorEx()
@@ -127,40 +127,40 @@ namespace XamlTheme.Controls
             var ctrl = d as TextEditorEx;
             var isMatchCase = (bool)e.NewValue;
 
-            if(ctrl._searchPanel != null)
-			    ctrl._searchPanel.MatchCase = isMatchCase;	
+            if (ctrl._searchPanel != null)
+                ctrl._searchPanel.MatchCase = isMatchCase;
         }
-		
+
         public static readonly DependencyProperty IsWholeWordsProperty = DependencyProperty.Register("IsWholeWords", typeof(bool), _typeofSelf, new PropertyMetadata(OnIsWholeWordsPropertyChanged));
         public bool IsWholeWords
         {
             get { return (bool)GetValue(IsWholeWordsProperty); }
             set { SetValue(IsWholeWordsProperty, value); }
         }
-		
+
         private static void OnIsWholeWordsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ctrl = d as TextEditorEx;
             var isWholeWords = (bool)e.NewValue;
 
-            if(ctrl._searchPanel != null)
-			    ctrl._searchPanel.WholeWords = isWholeWords;	
+            if (ctrl._searchPanel != null)
+                ctrl._searchPanel.WholeWords = isWholeWords;
         }
-		
+
         public static readonly DependencyProperty UseRegexProperty = DependencyProperty.Register("UseRegex", typeof(bool), _typeofSelf, new PropertyMetadata(OnUseRegexPropertyChanged));
         public bool UseRegex
         {
             get { return (bool)GetValue(UseRegexProperty); }
             set { SetValue(UseRegexProperty, value); }
         }
-		
+
         private static void OnUseRegexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ctrl = d as TextEditorEx;
             var useRegex = (bool)e.NewValue;
 
-            if(ctrl._searchPanel != null)
-			    ctrl._searchPanel.UseRegex = useRegex;	
+            if (ctrl._searchPanel != null)
+                ctrl._searchPanel.UseRegex = useRegex;
         }
 
         public static readonly DependencyProperty IsModifiedProperty = TextEditor.IsModifiedProperty.AddOwner(_typeofSelf);
@@ -287,13 +287,13 @@ namespace XamlTheme.Controls
 
                 _searchPanel = SearchPanel.Install(_partTextEditor.TextArea);
             }
-			
-            if(_searchPanel != null)
+
+            if (_searchPanel != null)
             {
                 IsMatchCase = _searchPanel.MatchCase;
                 IsWholeWords = _searchPanel.WholeWords;
                 UseRegex = _searchPanel.UseRegex;
-                
+
                 _searchPanel.MarkerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F6B94D"));
                 _searchPanel.SearchOptionsChanged += _searchPanel_SearchOptionsChanged;
             }
@@ -540,7 +540,7 @@ namespace XamlTheme.Controls
         }
 
         private string GetParentElement(int startOffset, ref int parentOffset)
-        { 
+        {
             var foundEnd = false;
             var ignoreNextEndCount = 0;
 
@@ -549,8 +549,8 @@ namespace XamlTheme.Controls
                 var curChar = _partTextEditor.Text[i];
 
                 if (curChar == '>' && i > 0 && FindPreviousNonSpaceChars(i - 1) != "/")
-                { 
-                    foundEnd = true; 
+                {
+                    foundEnd = true;
                     continue;
                 }
 

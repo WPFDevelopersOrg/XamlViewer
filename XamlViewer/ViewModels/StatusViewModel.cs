@@ -43,9 +43,9 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _caretColumn, value); }
         }
 
-        private void OnProcessStatusEvent(ProcessStatus status)
+        private void OnProcessStatusEvent(ProcessInfo info)
         {
-            switch (status)
+            switch (info.status)
             {
                 case ProcessStatus.FinishCompile:
                     _processStatuses.Remove(ProcessStatus.Compile);
@@ -60,7 +60,7 @@ namespace XamlViewer.ViewModels
                     break;
 
                 default:
-                    _processStatuses.Add(status);
+                    _processStatuses.Add(info.status);
                     break;
             }
 

@@ -18,7 +18,8 @@
 
         <!--Designer-->
         <ContentControl Grid.Row="{Binding DesignerRow}"
-                        prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}">
+                        prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}"
+                        prism:RegionManager.RegionContext="{Binding TabGuid}">
             <ContentControl.LayoutTransform>
                 <RotateTransform Angle="{Binding PaneAngle}"/>
             </ContentControl.LayoutTransform>
@@ -66,7 +67,8 @@
         </Grid>
         <!--Editor-->
         <ContentControl Grid.Row="{Binding EditorRow}" 
-                        prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}">
+                        prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}"
+                        prism:RegionManager.RegionContext="{Binding TabGuid}">
             <ContentControl.LayoutTransform>
                 <RotateTransform Angle="{Binding PaneAngle}"/>
             </ContentControl.LayoutTransform>

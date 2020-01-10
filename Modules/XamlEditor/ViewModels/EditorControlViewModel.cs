@@ -15,7 +15,6 @@ namespace XamlEditor.ViewModels
 {
     public class EditorControlViewModel : BindableBase
     {
-        private string _fileGuid = null;
         private bool _isReseting = false;
         private bool _canSyncSearchConfig = false;
 
@@ -48,9 +47,9 @@ namespace XamlEditor.ViewModels
         private void InitEvent()
         {
             //event
-            _eventAggregator.GetEvent<ConfigEvents>().Subscribe(OnEditorConfig);
-            _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnLoadText);
-            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Subscribe(OnUpdateTabStatus);
+            _eventAggregator.GetEvent<SettingChangedEvents>().Subscribe(OnEditorConfig);
+            _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnLoadText, ThreadOption.PublisherThread, false, tab => tab.Guid == FileGuid);
+            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Subscribe(OnUpdateTabStatus, ThreadOption.PublisherThread, false, tab => tab.Guid == FileGuid);
         }
 
         private void InitCommand()
@@ -91,6 +90,13 @@ namespace XamlEditor.ViewModels
         }
 
         #endregion
+
+        private string _fileGuid = null;
+        public string FileGuid
+        {
+            get { return _fileGuid; }
+            set { SetProperty(ref _fileGuid, value); }
+        }
 
         private bool _isReadOnly = false;
         public bool IsReadOnly
@@ -235,40 +241,40 @@ namespace XamlEditor.ViewModels
         public bool IsMatchCase
         {
             get { return _isMatchCase; }
-            set 
-            { 
-                if(_isMatchCase == value)
+            set
+            {
+                if (_isMatchCase == value)
                     return;
-                    
-                SetProperty(ref _isMatchCase, value); 
+
+                SetProperty(ref _isMatchCase, value);
                 ApplySearchConfig();
             }
         }
-        
+
         private bool _isWholeWords;
         public bool IsWholeWords
         {
             get { return _isWholeWords; }
-            set 
-            { 
-                if(_isWholeWords == value)
+            set
+            {
+                if (_isWholeWords == value)
                     return;
-                    
-                SetProperty(ref _isWholeWords, value); 
+
+                SetProperty(ref _isWholeWords, value);
                 ApplySearchConfig();
             }
         }
-        
+
         private bool _useRegex;
         public bool UseRegex
         {
             get { return _useRegex; }
-            set 
-            { 
-                if(_useRegex == value)
+            set
+            {
+                if (_useRegex == value)
                     return;
-            
-                SetProperty(ref _useRegex, value); 
+
+                SetProperty(ref _useRegex, value);
                 ApplySearchConfig();
             }
         }
@@ -287,7 +293,7 @@ namespace XamlEditor.ViewModels
             Reset();
 
             if (_eventAggregator != null)
-                _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = _textEditor.Text });
+                _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = FileGuid, FileContent = _textEditor.Text });
         }
 
         private bool CanRedo()
@@ -329,14 +335,15 @@ namespace XamlEditor.ViewModels
 
         private void Compile()
         {
-            Compile(null);
+            if (_eventAggregator != null && _textEditor != null)
+                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(new TabInfo { Guid = FileGuid, FileContent = _textEditor.Text });
         }
 
         #endregion
 
         #region Event
 
-        private void OnEditorConfig(EditorConfig config)
+        private void OnEditorConfig(EditorSetting config)
         {
             FontFamily = config.FontFamily;
             FontSize = config.FontSize;
@@ -345,34 +352,34 @@ namespace XamlEditor.ViewModels
 
             AutoCompile = config.AutoCompile;
             AutoCompileDelay = config.AutoCompileDelay;
-            
+
             IsMatchCase = config.IsMatchCase;
             IsWholeWords = config.IsWholeWords;
             UseRegex = config.UseRegex;
-            
+
             _canSyncSearchConfig = true;
         }
 
         private void OnLoadText(TabInfo tabInfo)
         {
-            if (!string.IsNullOrEmpty(_fileGuid))
-            {
-                if (_eventAggregator != null)
-                    _eventAggregator.GetEvent<CacheTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = _textEditor.Text });
-            }
+            if (tabInfo.Guid != FileGuid || _textEditor == null)
+                return;
 
             Reset(() =>
             {
-                _fileGuid = tabInfo.Guid;
+                FileGuid = tabInfo.Guid;
                 _textEditor.Text = tabInfo.FileContent;
                 IsReadOnly = tabInfo.IsReadOnly;
 
-                Compile(tabInfo.FileContent);
+                Compile();
             });
         }
 
         private void OnUpdateTabStatus(TabFlag tabFlag)
         {
+            if (tabFlag.Guid != FileGuid)
+                return;
+
             IsReadOnly = tabFlag.IsReadOnly;
         }
 
@@ -392,12 +399,6 @@ namespace XamlEditor.ViewModels
             _isReseting = false;
         }
 
-        private void Compile(string fileContent)
-        {
-            if (_eventAggregator != null && _textEditor != null)
-                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(fileContent ?? _textEditor.Text);
-        }
-
         private void CaretPosChanged()
         {
             if (_eventAggregator != null)
@@ -410,17 +411,17 @@ namespace XamlEditor.ViewModels
 
             Task.Run(() => IsCodeCompletion = _xsdParser.TryParse());
         }
-        
+
         private void ApplySearchConfig()
         {
             if (_eventAggregator != null && _canSyncSearchConfig)
             {
-                _eventAggregator.GetEvent<SearchConfigEvents>().Publish(new SearchConfig
-                { 
+                _eventAggregator.GetEvent<SearchFilterChangedEvents>().Publish(new SearchFilter
+                {
                     IsMatchCase = IsMatchCase,
                     IsWholeWords = IsWholeWords,
                     UseRegex = UseRegex,
-                });    
+                });
             }
         }
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using CommonServiceLocator;
 using Prism.DryIoc;
 using Prism.Events;
 using Prism.Ioc;
@@ -11,6 +10,7 @@ using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Regions;
 using Utils.IO;
+using XamlService;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Payloads;
@@ -53,7 +53,7 @@ namespace XamlViewer
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
-        {
+        {  
             //Dialog
             containerRegistry.RegisterDialogWindow<DialogWindow>();
             containerRegistry.RegisterDialog<MessageDialog, MessageDialogViewModel>();
@@ -61,8 +61,25 @@ namespace XamlViewer
             //Command
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
 
+            //Work Area
+            containerRegistry.Register<WorkControl>();
+
             //Config
             var localConfig = FileHelper.LoadFromJsonFile<XamlConfig>(ResourcesMap.LocationDic[Location.GlobalConfigFile]);
+            if (localConfig != null)
+            {
+                //check history file
+                if (localConfig.Files == null)
+                    localConfig.Files = new List<string>();
+                else
+                    localConfig.Files.RemoveAll(f => !File.Exists(f) || Path.GetExtension(f).ToLower() != ".xaml");
+
+                //check reference file
+                if (localConfig.References == null)
+                    localConfig.References = new List<string>();
+                else
+                    localConfig.References.RemoveAll(f => !File.Exists(AppDomain.CurrentDomain.BaseDirectory + f) || Path.GetExtension(f).ToLower() != ".dll");
+            }
 
             containerRegistry.RegisterInstance(new AppData { Config = localConfig ?? new XamlConfig() });
         }
@@ -73,44 +90,14 @@ namespace XamlViewer
         }
 
         protected override void OnInitialized()
-        {
+        { 
             base.OnInitialized();
 
-            var appData = Container.Resolve<AppData>();
-            if (appData == null)
-                return;
-
-            //check history file
-            if (appData.Config.Files == null)
-                appData.Config.Files = new List<string>();
-            else
-                appData.Config.Files.RemoveAll(f => !File.Exists(f) || Path.GetExtension(f).ToLower() != ".xaml");
-
-            //check reference file
-            if (appData.Config.References == null)
-                appData.Config.References = new List<string>();
-            else
-                appData.Config.References.RemoveAll(f => !File.Exists(AppDomain.CurrentDomain.BaseDirectory + f) || Path.GetExtension(f).ToLower() != ".dll");
-
             //apply config
-            var ea = ServiceLocator.Current.GetInstance<IEventAggregator>();
-            if (ea != null)
+            var eventAggregator = Container.Resolve<IEventAggregator>();
+            if (eventAggregator != null)
             {
-                ea.GetEvent<ConfigEvents>().Publish(new EditorConfig
-                {
-                    FontFamily = appData.Config.FontFamily,
-                    FontSize = appData.Config.FontSize,
-
-                    WordWrap = appData.Config.WordWrap,
-                    ShowLineNumber = appData.Config.ShowLineNumber,
-
-                    AutoCompile = appData.Config.AutoCompile,
-                    AutoCompileDelay = appData.Config.AutoCompileDelay,
-                    
-                    IsMatchCase = appData.Config.IsMatchCase,
-                    IsWholeWords = appData.Config.IsWholeWords,
-                    UseRegex = appData.Config.UseRegex
-                });
+                eventAggregator.GetEvent<InitWorkAreaEvent>().Publish(); 
             }
         }
     }

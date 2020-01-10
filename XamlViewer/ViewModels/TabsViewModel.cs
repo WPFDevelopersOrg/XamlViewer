@@ -17,20 +17,20 @@ using XamlViewer.Utils;
 using XUCommon = XamlUtil.Common.Common;
 using XVCommon = XamlViewer.Utils.Common;
 using SWF = System.Windows.Forms;
-using Prism.Regions;
-using XamlService;
-using XamlViewer.Views;
+using Prism.Events;
+using XamlService.Events;
 
 namespace XamlViewer.ViewModels
 {
     public class TabsViewModel : BindableBase
     {
+        private bool _isWorkAreaIniting = false;
         private ItemsControl _itemsControl = null;
 
         private AppData _appData = null;
+        private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
         private IDialogService _dialogService = null;
-        private IRegionManager _regionManager = null;
 
         public DelegateCommand NewCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
@@ -44,12 +44,13 @@ namespace XamlViewer.ViewModels
 
         public ObservableCollection<TabViewModel> XamlTabs { get; private set; }
 
-        public TabsViewModel(IContainerExtension container, IRegionManager regionManager, IApplicationCommands appCommands, IDialogService dialogService)
+        public TabsViewModel(IContainerExtension container, IDialogService dialogService)
         {
-            _appData = container.Resolve<AppData>();
-            _regionManager = regionManager;
-            _appCommands = appCommands;
             _dialogService = dialogService;
+
+            _appData = container.Resolve<AppData>();
+            _eventAggregator = container.Resolve<IEventAggregator>();
+            _appCommands = container.Resolve<IApplicationCommands>();
 
             InitEvent();
             InitCommand();
@@ -86,18 +87,18 @@ namespace XamlViewer.ViewModels
 
         private void InitEvent()
         {
-
+            _eventAggregator.GetEvent<InitWorkAreaEvent>().Subscribe(OnInitWorkArea);
         }
 
         private void InitCommand()
         {
-            NewCommand = new DelegateCommand(New);
+            NewCommand = new DelegateCommand(New, CanNew);
             _appCommands.NewCommand.RegisterCommand(NewCommand);
 
-            OpenCommand = new DelegateCommand(Open);
+            OpenCommand = new DelegateCommand(Open, CanOpen);
             _appCommands.OpenCommand.RegisterCommand(OpenCommand);
 
-            SaveAllCommand = new DelegateCommand(SaveAll);
+            SaveAllCommand = new DelegateCommand(SaveAll, CanSaveAll);
             _appCommands.SaveAllCommand.RegisterCommand(SaveAllCommand);
 
             RefreshCommand = new DelegateCommand(Refresh);
@@ -126,6 +127,11 @@ namespace XamlViewer.ViewModels
 
         #region Command
 
+        private bool CanNew()
+        {
+            return !_isWorkAreaIniting;
+        }
+
         private void New()
         {
             var newTab =
@@ -136,8 +142,11 @@ namespace XamlViewer.ViewModels
 
             XamlTabs.Insert(0, newTab);
             newTab.IsSelected = true;
+        }
 
-            _regionManager.AddToRegion(RegionNames.WorkName, new WorkControl());
+        private bool CanOpen()
+        {
+            return !_isWorkAreaIniting;
         }
 
         private void Open()
@@ -158,6 +167,11 @@ namespace XamlViewer.ViewModels
                     newTab.IsSelected = true;
                 }
             }
+        }
+
+        private bool CanSaveAll()
+        {
+            return !_isWorkAreaIniting;
         }
 
         private void SaveAll()
@@ -315,6 +329,29 @@ namespace XamlViewer.ViewModels
 
         #region Event
 
+        private void OnInitWorkArea()
+        {
+            _isWorkAreaIniting = true;
+
+            NewCommand.RaiseCanExecuteChanged();
+            OpenCommand.RaiseCanExecuteChanged();
+            SaveAllCommand.RaiseCanExecuteChanged();
+
+            //Work Area
+            foreach (var curTab in XamlTabs)
+            {
+                curTab.InitWorkArea();
+            }
+
+            //Settings
+            _eventAggregator.GetEvent<SettingChangedEvents>().Publish(XVCommon.GetCurrentSettings(_appData.Config));
+
+            _isWorkAreaIniting = false;
+
+            NewCommand.RaiseCanExecuteChanged();
+            OpenCommand.RaiseCanExecuteChanged();
+            SaveAllCommand.RaiseCanExecuteChanged();
+        }
 
         #endregion
 

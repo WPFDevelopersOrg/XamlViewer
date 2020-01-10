@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using XamlService.Payloads;
+using XamlViewer.Models;
 using SWF = System.Windows.Forms;
 
 namespace XamlViewer.Utils
@@ -81,6 +83,25 @@ namespace XamlViewer.Utils
                 return sfd.FileName;
 
             return null;
+        }
+
+        public static EditorSetting GetCurrentSettings(XamlConfig config)
+        {
+            return new EditorSetting
+            {
+                FontFamily = config.FontFamily,
+                FontSize = config.FontSize,
+
+                WordWrap = config.WordWrap,
+                ShowLineNumber = config.ShowLineNumber,
+
+                AutoCompile = config.AutoCompile,
+                AutoCompileDelay = config.AutoCompileDelay,
+
+                IsMatchCase = config.IsMatchCase,
+                IsWholeWords = config.IsWholeWords,
+                UseRegex = config.UseRegex
+            };
         }
     }
 }
