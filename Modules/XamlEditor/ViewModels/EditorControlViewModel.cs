@@ -10,32 +10,42 @@ using XamlTheme.Controls;
 using System.Collections.Generic;
 using XamlEditor.Utils;
 using System.Threading.Tasks;
+using Prism.Regions;
+using XamlEditor.Views;
+using Prism;
 
 namespace XamlEditor.ViewModels
-{
-    public class EditorControlViewModel : BindableBase
+{ 
+    public class EditorControlViewModel : BindableBase, IDisposable, IActiveAware
     {
+        private string _fileGuid = null;
         private bool _isReseting = false;
-        private bool _canSyncSearchConfig = false;
 
         private XsdParser _xsdParser = null;
         private TextEditorEx _textEditor = null;
 
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
+        private IRegionManager _regionManager = null;
+
+        private SettingChangedEvent _settingChangedEvent = null;
+        private LoadTextEvent _loadTextEvent = null;
+        private UpdateTabStatusEvent _updateTabStatusEvent = null;
+        private CompileTabEvent _compileEvent = null;
+        private ActiveTabEvent _activeTabEvent = null;
 
         public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
         public DelegateCommand DelayArrivedCommand { get; private set; }
-
-        public DelegateCommand CompileCommand { get; private set; }
-        public DelegateCommand SaveCommand { get; private set; }
+         
+        public DelegateCommand<string> SaveCommand { get; private set; }
         public DelegateCommand RedoCommand { get; private set; }
         public DelegateCommand UndoCommand { get; private set; }
 
-        public EditorControlViewModel(IEventAggregator eventAggregator, IApplicationCommands appCommands)
+        public EditorControlViewModel(IEventAggregator eventAggregator, IApplicationCommands appCommands, IRegionManager regionManager)
         {
             _eventAggregator = eventAggregator;
             _appCommands = appCommands;
+            _regionManager = regionManager;
 
             InitEvent();
             InitCommand();
@@ -47,21 +57,29 @@ namespace XamlEditor.ViewModels
         private void InitEvent()
         {
             //event
-            _eventAggregator.GetEvent<SettingChangedEvents>().Subscribe(OnEditorConfig);
-            _eventAggregator.GetEvent<LoadTextEvent>().Subscribe(OnLoadText, ThreadOption.PublisherThread, false, tab => tab.Guid == FileGuid);
-            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Subscribe(OnUpdateTabStatus, ThreadOption.PublisherThread, false, tab => tab.Guid == FileGuid);
+            _settingChangedEvent = _eventAggregator.GetEvent<SettingChangedEvent>();
+            _settingChangedEvent.Subscribe(OnSettingChanged, ThreadOption.PublisherThread, false, info => string.IsNullOrEmpty(info.Guid) || info.Guid == _fileGuid);
+
+            _loadTextEvent = _eventAggregator.GetEvent<LoadTextEvent>();
+            _loadTextEvent.Subscribe(OnLoadText, ThreadOption.UIThread, false, tab => tab.Guid == _fileGuid);
+
+            _updateTabStatusEvent = _eventAggregator.GetEvent<UpdateTabStatusEvent>();
+            _updateTabStatusEvent.Subscribe(OnUpdateTabStatus, ThreadOption.PublisherThread, false, tab => tab.Guid == _fileGuid);
+
+            _compileEvent = _eventAggregator.GetEvent<CompileTabEvent>();
+            _compileEvent.Subscribe(OnCompile, ThreadOption.UIThread, false, guid => guid == _fileGuid);
+
+            _activeTabEvent = _eventAggregator.GetEvent<ActiveTabEvent>();
+            _activeTabEvent.Subscribe(OnActiveTab, ThreadOption.PublisherThread, false, info => info.Guid == _fileGuid);
         }
 
         private void InitCommand()
         {
             //Command
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
-            DelayArrivedCommand = new DelegateCommand(OnDelayArrived);
+            DelayArrivedCommand = new DelegateCommand(OnDelayArrived); 
 
-            CompileCommand = new DelegateCommand(Compile, CanCompile);
-            _appCommands.CompileCommand.RegisterCommand(CompileCommand);
-
-            SaveCommand = new DelegateCommand(Save, CanSave);
+            SaveCommand = new DelegateCommand<string>(Save, CanSave);
             _appCommands.SaveCommand.RegisterCommand(SaveCommand);
 
             RedoCommand = new DelegateCommand(Redo, CanRedo);
@@ -71,31 +89,19 @@ namespace XamlEditor.ViewModels
             _appCommands.UndoCommand.RegisterCommand(UndoCommand);
         }
 
-        #endregion
+        #endregion 
 
-        #region Command
+        #region Property
 
-        private void OnLoaded(RoutedEventArgs e)
+        private bool _isActive = false;
+        public bool IsActive
         {
-            _textEditor = e.OriginalSource as TextEditorEx;
-
-            if (_eventAggregator != null)
-                _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo());
-        }
-
-        private void OnDelayArrived()
-        {
-            if (AutoCompile)
-                Compile();
-        }
-
-        #endregion
-
-        private string _fileGuid = null;
-        public string FileGuid
-        {
-            get { return _fileGuid; }
-            set { SetProperty(ref _fileGuid, value); }
+            get { return _isActive; }
+            set
+            {
+                SetProperty(ref _isActive, value);
+                OnIsActiveChanged();
+            }
         }
 
         private bool _isReadOnly = false;
@@ -107,7 +113,6 @@ namespace XamlEditor.ViewModels
                 SetProperty(ref _isReadOnly, value);
 
                 SaveCommand.RaiseCanExecuteChanged();
-                CompileCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -148,6 +153,7 @@ namespace XamlEditor.ViewModels
                 {
                     _eventAggregator.GetEvent<TextChangedEvent>().Publish(new EditorInfo
                     {
+                        Guid = _fileGuid,
                         IsModified = _isModified,
                     });
                 }
@@ -188,9 +194,12 @@ namespace XamlEditor.ViewModels
             get { return _autoCompile; }
             set
             {
+                if (_autoCompile == value)
+                    return;
+
                 SetProperty(ref _autoCompile, value);
 
-                if (AutoCompile)
+                if (_autoCompile)
                     Compile();
             }
         }
@@ -235,65 +244,51 @@ namespace XamlEditor.ViewModels
             }
         }
 
-        #region Search
-
-        private bool _isMatchCase;
-        public bool IsMatchCase
-        {
-            get { return _isMatchCase; }
-            set
-            {
-                if (_isMatchCase == value)
-                    return;
-
-                SetProperty(ref _isMatchCase, value);
-                ApplySearchConfig();
-            }
-        }
-
-        private bool _isWholeWords;
-        public bool IsWholeWords
-        {
-            get { return _isWholeWords; }
-            set
-            {
-                if (_isWholeWords == value)
-                    return;
-
-                SetProperty(ref _isWholeWords, value);
-                ApplySearchConfig();
-            }
-        }
-
-        private bool _useRegex;
-        public bool UseRegex
-        {
-            get { return _useRegex; }
-            set
-            {
-                if (_useRegex == value)
-                    return;
-
-                SetProperty(ref _useRegex, value);
-                ApplySearchConfig();
-            }
-        }
-
         #endregion
 
         #region Command
 
-        private bool CanSave()
+        private void OnLoaded(RoutedEventArgs e)
+        {
+            var editorControl = e.OriginalSource as EditorControl; 
+            _textEditor = editorControl.XamlTextEditorEx; 
+
+            _fileGuid = (string)(RegionContext.GetObservableContext(editorControl).Value);
+
+            if (_eventAggregator != null)
+            {
+                _eventAggregator.GetEvent<RequestSettingEvent>().Publish(_fileGuid);
+                _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo { Guid = _fileGuid });
+            }
+        }
+
+        private void OnDelayArrived()
+        {
+            if (AutoCompile)
+                Compile();
+        }
+
+        private bool CanSave(string fileGuid)
         {
             return !IsReadOnly;
         }
 
-        private void Save()
-        {
-            Reset();
+        private void Save(string fileGuid)
+        { 
+            if(IsActive || fileGuid == _fileGuid)
+            {
+                Reset();
 
-            if (_eventAggregator != null)
-                _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = FileGuid, FileContent = _textEditor.Text });
+                var text = string.Empty;
+
+                if (!_textEditor.CheckAccess())
+                    _textEditor.Dispatcher.Invoke((Action)(() => text = _textEditor.Text));
+                else
+                    text = _textEditor.Text;
+
+                if (_eventAggregator != null)
+                    _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = text });
+            } 
         }
 
         private bool CanRedo()
@@ -326,66 +321,125 @@ namespace XamlEditor.ViewModels
 
             RedoCommand.RaiseCanExecuteChanged();
             UndoCommand.RaiseCanExecuteChanged();
-        }
-
-        private bool CanCompile()
-        {
-            return !IsReadOnly;
-        }
-
-        private void Compile()
-        {
-            if (_eventAggregator != null && _textEditor != null)
-                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(new TabInfo { Guid = FileGuid, FileContent = _textEditor.Text });
-        }
+        }  
 
         #endregion
 
         #region Event
 
-        private void OnEditorConfig(EditorSetting config)
+        private void OnSettingChanged(ValueWithGuid<EditorSetting> valueWithGuid)
         {
-            FontFamily = config.FontFamily;
-            FontSize = config.FontSize;
-            ShowLineNumber = config.ShowLineNumber;
-            WordWrap = config.WordWrap;
+            if (!string.IsNullOrEmpty(valueWithGuid.Guid) && valueWithGuid.Guid != _fileGuid)
+                return;
 
-            AutoCompile = config.AutoCompile;
-            AutoCompileDelay = config.AutoCompileDelay;
+            FontFamily = valueWithGuid.Value.FontFamily;
+            FontSize = valueWithGuid.Value.FontSize;
+            ShowLineNumber = valueWithGuid.Value.ShowLineNumber;
+            WordWrap = valueWithGuid.Value.WordWrap;
 
-            IsMatchCase = config.IsMatchCase;
-            IsWholeWords = config.IsWholeWords;
-            UseRegex = config.UseRegex;
-
-            _canSyncSearchConfig = true;
+            AutoCompile = valueWithGuid.Value.AutoCompile;
+            AutoCompileDelay = valueWithGuid.Value.AutoCompileDelay; 
         }
 
         private void OnLoadText(TabInfo tabInfo)
         {
-            if (tabInfo.Guid != FileGuid || _textEditor == null)
+            if (tabInfo.Guid != _fileGuid || _textEditor == null)
                 return;
 
             Reset(() =>
             {
-                FileGuid = tabInfo.Guid;
+                _fileGuid = tabInfo.Guid;
                 _textEditor.Text = tabInfo.FileContent;
                 IsReadOnly = tabInfo.IsReadOnly;
 
-                Compile();
+                Compile(tabInfo.FileContent);
             });
+
+            if (IsActive)
+                _textEditor.Focus();
         }
 
         private void OnUpdateTabStatus(TabFlag tabFlag)
         {
-            if (tabFlag.Guid != FileGuid)
+            if (tabFlag.Guid != _fileGuid)
                 return;
 
             IsReadOnly = tabFlag.IsReadOnly;
         }
 
+        private void OnCompile(string guid)
+        {
+            if (guid != _fileGuid || IsReadOnly)
+                return;
+
+            Compile();
+        }
+
+        private void OnActiveTab(TabActiveInfo info)
+        {
+            if (info.Guid != _fileGuid)
+                return;
+
+            IsActive = info.IsActive;
+        }
+
+        #endregion
+
+        #region IActiveAware
+
+        public event EventHandler IsActiveChanged;
+
+        private void OnIsActiveChanged()
+        { 
+            RedoCommand.IsActive = IsActive;
+            RedoCommand.RaiseCanExecuteChanged();
+
+            UndoCommand.IsActive = IsActive;
+            UndoCommand.RaiseCanExecuteChanged();
+
+            if (IsActiveChanged != null)
+                IsActiveChanged.Invoke(this, new EventArgs());
+
+            if (IsActive && _textEditor != null)
+                _textEditor.Focus();
+
+            CaretPosChanged();
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            _settingChangedEvent.Unsubscribe(OnSettingChanged);
+            _loadTextEvent.Unsubscribe(OnLoadText);
+            _updateTabStatusEvent.Unsubscribe(OnUpdateTabStatus);
+            _compileEvent.Unsubscribe(OnCompile);
+            _activeTabEvent.Unsubscribe(OnActiveTab);
+
+            if (_xsdParser != null)
+            {
+                _xsdParser.Dispose();
+                _xsdParser = null;
+            }
+
+            if (_textEditor != null)
+            {
+                _textEditor.Dispose();
+                _textEditor = null;
+            }
+        }
+
         #endregion
 
         #region Func
+
+        private void Compile(string content = null)
+        {
+            if (_eventAggregator != null && _textEditor != null)
+                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = string.IsNullOrEmpty(content)  ?_textEditor.Text : content });
+        }
 
         private void Reset(Action reset = null)
         {
@@ -401,7 +455,7 @@ namespace XamlEditor.ViewModels
 
         private void CaretPosChanged()
         {
-            if (_eventAggregator != null)
+            if (_eventAggregator != null && IsActive)
                 _eventAggregator.GetEvent<CaretPositionEvent>().Publish(new CaretPosition() { Line = CaretLine, Column = CaretColumn });
         }
 
@@ -410,20 +464,7 @@ namespace XamlEditor.ViewModels
             _xsdParser = new XsdParser();
 
             Task.Run(() => IsCodeCompletion = _xsdParser.TryParse());
-        }
-
-        private void ApplySearchConfig()
-        {
-            if (_eventAggregator != null && _canSyncSearchConfig)
-            {
-                _eventAggregator.GetEvent<SearchFilterChangedEvents>().Publish(new SearchFilter
-                {
-                    IsMatchCase = IsMatchCase,
-                    IsWholeWords = IsWholeWords,
-                    UseRegex = UseRegex,
-                });
-            }
-        }
+        }  
 
         #endregion
     }

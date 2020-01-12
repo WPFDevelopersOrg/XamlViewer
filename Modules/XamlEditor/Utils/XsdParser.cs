@@ -9,6 +9,7 @@ namespace XamlEditor.Utils
     internal class XsdParser
     {
         private XmlSchema _schema = null;
+        private XmlSchemaSet _schemaSet = null;
 
         private readonly string _fileName = null;
         private readonly List<XmlSchemaSimpleType> _simpleTypes = null;
@@ -26,11 +27,11 @@ namespace XamlEditor.Utils
 
             try
             {
-                var schemaSet = new XmlSchemaSet();
-                schemaSet.ValidationEventHandler += (s, e) => { };
+                _schemaSet = new XmlSchemaSet();
+                //_schemaSet.ValidationEventHandler += (s, e) => { };
 
-                _schema = schemaSet.Add(null, _fileName);
-                schemaSet.Compile();
+                _schema = _schemaSet.Add(null, _fileName);
+                _schemaSet.Compile();
 
                 foreach (var item in _schema.Items)
                 {
@@ -46,6 +47,17 @@ namespace XamlEditor.Utils
             {
                 _schema = null;
                 return false;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_schemaSet != null && _schema != null)
+            {
+                _schemaSet.RemoveRecursive(_schema);
+
+                _schema = null;
+                _schemaSet = null;
             }
         }
 

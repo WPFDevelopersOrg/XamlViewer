@@ -3,6 +3,6 @@ using XamlService.Payloads;
 
 namespace XamlService.Events
 {
-    public class SettingChangedEvents : PubSubEvent<EditorSetting> {}
-    public class SearchFilterChangedEvents : PubSubEvent<SearchFilter> {}
+    public class RequestSettingEvent : PubSubEvent<string> { }
+    public class SettingChangedEvent : PubSubEvent<ValueWithGuid<EditorSetting>> {}
 }

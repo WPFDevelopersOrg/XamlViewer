@@ -6,11 +6,14 @@
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
              xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              prism:ViewModelLocator.AutoWireViewModel="True">
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Loaded">
+            <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="true"/>
+        </behaviors:EventTrigger> 
+    </behaviors:Interaction.Triggers>
     <Grid Background="White">
-        <controls:TextEditorEx Margin="6,0,0,0"
-                               IsMatchCase="{Binding IsMatchCase, Mode=TwoWay}"
-                               IsWholeWords="{Binding IsWholeWords, Mode=TwoWay}"
-                               UseRegex="{Binding UseRegex, Mode=TwoWay}"
+        <controls:TextEditorEx x:Name="XamlTextEditorEx"
+                               Margin="6,0,0,0"
                                IsCodeCompletion="{Binding IsCodeCompletion}"
                                IsReadOnly="{Binding IsReadOnly}"
                                LineNumber="{Binding CaretLine, Mode=TwoWay}"
@@ -27,9 +30,6 @@
                        BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/> 
             </controls:TextEditorEx.Resources>
             <behaviors:Interaction.Triggers>
-                <behaviors:EventTrigger EventName="Loaded">
-                    <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="true"/>
-                </behaviors:EventTrigger>
                 <behaviors:EventTrigger EventName="DelayArrived">
                     <behaviors:InvokeCommandAction Command="{Binding DelayArrivedCommand}"/>
                 </behaviors:EventTrigger>

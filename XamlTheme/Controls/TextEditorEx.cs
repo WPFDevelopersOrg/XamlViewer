@@ -226,6 +226,14 @@ namespace XamlTheme.Controls
 
         #region Override
 
+        protected override void OnGotFocus(RoutedEventArgs e)
+        {
+            base.OnGotFocus(e);
+
+            if (Focusable && _partTextEditor != null)
+                _partTextEditor.Focus();
+        }
+
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -249,25 +257,13 @@ namespace XamlTheme.Controls
                         break;
                     }
             }
-        }
+        } 
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            if (_searchPanel != null)
-            {
-                _searchPanel.SearchOptionsChanged -= _searchPanel_SearchOptionsChanged;
-                _searchPanel.Uninstall();
-            }
-
-            if (_partTextEditor != null)
-            {
-                _partTextEditor.TextChanged -= _partTextEditor_TextChanged;
-                _partTextEditor.TextArea.TextEntering -= TextArea_TextEntering;
-                _partTextEditor.TextArea.TextEntered -= TextArea_TextEntered;
-                _partTextEditor.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
-            }
+            UnsubscribeEvents(); 
 
             _partTextEditor = GetTemplateChild(TextEditorTemplateName) as TextEditor;
 
@@ -277,7 +273,6 @@ namespace XamlTheme.Controls
                 _partTextEditor.TextArea.TextEntering += TextArea_TextEntering;
                 _partTextEditor.TextArea.TextEntered += TextArea_TextEntered;
                 _partTextEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
-
 
                 _partTextEditor.Options = new TextEditorOptions { ConvertTabsToSpaces = true };
                 _partTextEditor.TextArea.SelectionCornerRadius = 0;
@@ -833,6 +828,50 @@ namespace XamlTheme.Controls
             _partTextEditor.Undo();
         }
 
+        public void Dispose()
+        {
+            if (_timer != null)
+            {
+                _timer.Stop();
+                _timer.Tick -= _timer_Tick;
+                _timer = null;
+            }
+
+            if (_completionWindow != null)
+                _completionWindow.Close();
+
+            UnsubscribeEvents();
+        }
+
+        private void UnsubscribeEvents()
+        {
+            if (_searchPanel != null)
+            {
+                _searchPanel.SearchOptionsChanged -= _searchPanel_SearchOptionsChanged;
+                _searchPanel.Uninstall();
+            }
+
+            if (_partTextEditor != null)
+            {
+                _partTextEditor.TextChanged -= _partTextEditor_TextChanged;
+                _partTextEditor.TextArea.TextEntering -= TextArea_TextEntering;
+                _partTextEditor.TextArea.TextEntered -= TextArea_TextEntered;
+                _partTextEditor.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
+            }
+        }
+
+        private void AfterCloseCompletionWindow(EventHandler handler = null)
+        {
+            if (_completionWindow != null)
+            {
+                _completionWindow.CompletionList.InsertionRequested -= CompletionList_InsertionRequested;
+
+                _completionWindow.Closed -= handler;
+                _completionWindow.Resources = null;
+                _completionWindow = null;
+            }
+        }
+
         private void InsertText(string text, bool caretFallBack = true, int fallbackLength = 1)
         {
             _partTextEditor.TextArea.Document.Insert(_partTextEditor.TextArea.Caret.Offset, text);
@@ -860,14 +899,7 @@ namespace XamlTheme.Controls
             EventHandler handler = null;
             handler = (s, e) =>
             {
-                if (_completionWindow != null)
-                {
-                    _completionWindow.CompletionList.InsertionRequested -= CompletionList_InsertionRequested;
-
-                    _completionWindow.Closed -= handler;
-                    _completionWindow.Resources = null;
-                    _completionWindow = null;
-                }
+                AfterCloseCompletionWindow(handler); 
             };
 
             _completionWindow.Closed -= handler;

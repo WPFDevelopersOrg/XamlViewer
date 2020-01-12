@@ -318,23 +318,12 @@ namespace XamlTheme.Controls
         #endregion
 
         #region Override
-
+         
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            if (_valueTextBox != null)
-            {
-                _valueTextBox.LostFocus -= OnTextBoxLostFocus;
-                _valueTextBox.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
-                DataObject.RemovePastingHandler(_valueTextBox, OnValueTextBoxPaste);
-            }
-
-            if (_repeatUp != null)
-                _repeatUp.PreviewMouseUp -= OnRepeatButtonPreviewMouseUp;
-
-            if(_repeatDown!=null)
-                _repeatDown.PreviewMouseUp -= OnRepeatButtonPreviewMouseUp;
+            UnsubscribeEvents();
 
             _valueTextBox = GetTemplateChild(TextBoxTemplateName) as TextBox;
             _repeatUp = GetTemplateChild(NumericUpTemplateName) as RepeatButton;
@@ -452,6 +441,22 @@ namespace XamlTheme.Controls
         #endregion
 
         #region Private
+
+        private void UnsubscribeEvents()
+        {
+            if (_valueTextBox != null)
+            {
+                _valueTextBox.LostFocus -= OnTextBoxLostFocus;
+                _valueTextBox.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
+                DataObject.RemovePastingHandler(_valueTextBox, OnValueTextBoxPaste);
+            }
+
+            if (_repeatUp != null)
+                _repeatUp.PreviewMouseUp -= OnRepeatButtonPreviewMouseUp;
+
+            if (_repeatDown != null)
+                _repeatDown.PreviewMouseUp -= OnRepeatButtonPreviewMouseUp;
+        }
 
         private void Focused()
         {
@@ -632,7 +637,5 @@ namespace XamlTheme.Controls
         }
 
         #endregion
-
-
     }
 }

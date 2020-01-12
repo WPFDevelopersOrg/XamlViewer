@@ -51,10 +51,10 @@ namespace XamlViewer.ViewModels
             _appCommands.RefreshCommand.Execute(null);
         }
 
-        private void Closing(CancelEventArgs e)
+        private async void Closing(CancelEventArgs e)
         {
             if (_appData.CollectExistedFileAction != null)
-                _appData.CollectExistedFileAction();
+                await _appData.CollectExistedFileAction();
 
             FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _appData.Config);
         } 

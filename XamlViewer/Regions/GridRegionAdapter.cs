@@ -24,36 +24,18 @@ namespace XamlViewer.Regions
             {
                 if (e.Action == NotifyCollectionChangedAction.Add)
                 {
-                    foreach (UIElement element in e.NewItems)
+                    foreach (FrameworkElement view in e.NewItems)
                     {
-                        regionTarget.Children.Add(element);
+                        regionTarget.Children.Add(view);
                     }
                 }
 
                 if (e.Action == NotifyCollectionChangedAction.Remove)
                 {
-                    foreach (UIElement element in e.OldItems)
+                    foreach (FrameworkElement view in e.OldItems)
                     {
-                        regionTarget.Children.Remove(element);
-
-                        var childRegionManager = RegionManager.GetRegionManager(element);
-                        var regionNames = new List<string>();
-
-                        foreach (var childRegion in childRegionManager.Regions)
-                        {
-                            foreach (var view in childRegion.Views)
-                            {
-                                //...
-                            }
-
-                            childRegion.RemoveAll();
-                            regionNames.Add(childRegion.Name);
-                        }
-
-                        regionNames.ForEach(name => childRegionManager.Regions.Remove(name));
-
-                        RegionManager.SetRegionManager(element, null);
-                        RegionManager.SetRegionContext(element, null);
+                        regionTarget.Children.Remove(view);
+                        ClearChildRegionsAndViews(view); 
                     }
                 }
             };
@@ -62,6 +44,49 @@ namespace XamlViewer.Regions
         protected override IRegion CreateRegion()
         {
             return new AllActiveRegion();
+        }
+
+        private void ClearChildRegionsAndViews(FrameworkElement curView)
+        {
+            var childRegionManager = RegionManager.GetRegionManager(curView);
+            if (childRegionManager != null)
+            {
+                var regionNames = new List<string>();
+
+                foreach (var childRegion in childRegionManager.Regions)
+                {
+                    foreach (FrameworkElement childView in childRegion.Views)
+                    {
+                        ClearChildRegionsAndViews(childView);
+                    }
+
+                    childRegion.RemoveAll();
+                    regionNames.Add(childRegion.Name);
+                }
+
+                regionNames.ForEach(name => childRegionManager.Regions.Remove(name));
+                regionNames.Clear();
+            } 
+
+            curView.ClearValue(RegionManager.RegionManagerProperty);
+            curView.ClearValue(RegionManager.RegionContextProperty);
+
+            DisposeView(curView);
+        }
+
+        private void DisposeView(FrameworkElement view)
+        {
+            if (view == null)
+                return; 
+
+            var disposableView = view as IDisposable;
+            var disposableViewModel = view.DataContext as IDisposable; 
+
+            if(disposableView != null)
+                disposableView.Dispose();
+
+            if (disposableViewModel != null)
+                disposableViewModel.Dispose();
         }
     }
 }

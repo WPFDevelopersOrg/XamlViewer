@@ -19,6 +19,8 @@ using XVCommon = XamlViewer.Utils.Common;
 using SWF = System.Windows.Forms;
 using Prism.Events;
 using XamlService.Events;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace XamlViewer.ViewModels
 {
@@ -34,7 +36,8 @@ namespace XamlViewer.ViewModels
 
         public DelegateCommand NewCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
-        public DelegateCommand SaveAllCommand { get; private set; }
+        public DelegateCommand<bool?> SaveAllCommand { get; private set; }
+        public DelegateCommand CompileCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
         public DelegateCommand HelpCommand { get; private set; }
 
@@ -98,8 +101,11 @@ namespace XamlViewer.ViewModels
             OpenCommand = new DelegateCommand(Open, CanOpen);
             _appCommands.OpenCommand.RegisterCommand(OpenCommand);
 
-            SaveAllCommand = new DelegateCommand(SaveAll, CanSaveAll);
+            SaveAllCommand = new DelegateCommand<bool?>(SaveAll, CanSaveAll);
             _appCommands.SaveAllCommand.RegisterCommand(SaveAllCommand);
+
+            CompileCommand = new DelegateCommand(Compile);
+            _appCommands.CompileCommand.RegisterCommand(CompileCommand);
 
             RefreshCommand = new DelegateCommand(Refresh);
             _appCommands.RefreshCommand.RegisterCommand(RefreshCommand);
@@ -151,31 +157,43 @@ namespace XamlViewer.ViewModels
 
         private void Open()
         {
-            var ofd = new SWF.OpenFileDialog { Filter = "XAML|*.xaml" };
+            var ofd = new SWF.OpenFileDialog { Filter = "XAML|*.xaml", Multiselect = true };
             if (ofd.ShowDialog() == SWF.DialogResult.OK)
             {
-                var tab = XamlTabs.FirstOrDefault(t => t.FileName == ofd.FileName);
-                if (tab != null)
+                var length = ofd.FileNames.Length;
+                for (int i = 0; i < length; i++)
                 {
-                    tab.IsSelected = true;
-                    MoveToVisible(tab);
-                }
-                else
-                {
-                    var newTab = new TabViewModel(ofd.FileName, CloseXamlTab);
-                    XamlTabs.Insert(0, newTab);
-                    newTab.IsSelected = true;
+                    var fileName = ofd.FileNames[i];
+                    var tab = XamlTabs.FirstOrDefault(t => t.FileName == fileName);
+                    if (tab != null)
+                    {
+                        if (i == length - 1)
+                        {
+                            tab.IsSelected = true;
+                            MoveToVisible(tab);
+                        }
+                    }
+                    else
+                    {
+                        tab = new TabViewModel(fileName, CloseXamlTab);
+                        XamlTabs.Insert(0, tab);
+
+                        if (i == length - 1)
+                            tab.IsSelected = true;
+                    }
                 }
             }
         }
 
-        private bool CanSaveAll()
+        private bool CanSaveAll(bool? ignoreUnsavedTab)
         {
             return !_isWorkAreaIniting;
         }
 
-        private void SaveAll()
+        private void SaveAll(bool? ignoreUnsavedTab)
         {
+            var ignore = ignoreUnsavedTab.HasValue && ignoreUnsavedTab.Value;
+
             foreach (var curTab in XamlTabs)
             {
                 if ((curTab.Status & TabStatus.NoSave) != TabStatus.NoSave)
@@ -183,18 +201,19 @@ namespace XamlViewer.ViewModels
 
                 if (!File.Exists(curTab.FileName))
                 {
-                    if (string.IsNullOrEmpty(XVCommon.ShowSaveFileDialog(curTab.FileName)))
+                    if (ignore || string.IsNullOrEmpty(XVCommon.ShowSaveFileDialog(curTab.FileName)))
                         continue;
-                }
-
-                if (!curTab.IsSelected)
-                {
-                    curTab.SaveToFile();
-                    continue;
-                }
+                } 
 
                 curTab.Save();
             }
+        }
+
+        private void Compile()
+        {
+            var selectedTab = XamlTabs.FirstOrDefault(t => t.IsSelected && !t.IsReadOnly);
+            if(selectedTab != null)
+                _eventAggregator.GetEvent<CompileTabEvent>().Publish(selectedTab.FileGuid);
         }
 
         private void Refresh()
@@ -341,10 +360,7 @@ namespace XamlViewer.ViewModels
             foreach (var curTab in XamlTabs)
             {
                 curTab.InitWorkArea();
-            }
-
-            //Settings
-            _eventAggregator.GetEvent<SettingChangedEvents>().Publish(XVCommon.GetCurrentSettings(_appData.Config));
+            } 
 
             _isWorkAreaIniting = false;
 
@@ -373,9 +389,26 @@ namespace XamlViewer.ViewModels
             XamlTabs.Move(idnex, 0);
         }
 
-        private void CollectExistedFile()
+        private async Task CollectExistedFile()
         {
-            _appData.Config.Files = XamlTabs.Where(tab => File.Exists(tab.FileName)).Select(tab => tab.FileName).ToList();
+            var validTabs = XamlTabs.Where(tab => File.Exists(tab.FileName)).ToList();
+            if (validTabs == null || validTabs.Count == 0)
+            {
+                _appData.Config.Files = new List<string>();
+                return;
+            }
+
+            await Task.Run(() =>
+            {
+                _appCommands.SaveAllCommand.Execute(true);
+
+                while(validTabs.Any(tab => (tab.Status & TabStatus.NoSave) == TabStatus.NoSave))
+                {
+                    Task.Delay(100);
+                }
+            });
+
+            _appData.Config.Files = validTabs.Select(tab => tab.FileName).ToList();
         }
 
         private void CloseXamlTab(TabViewModel tab, bool ignoreSaving = false)

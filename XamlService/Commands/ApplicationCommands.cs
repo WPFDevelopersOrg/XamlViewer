@@ -48,13 +48,13 @@ namespace XamlService.Commands
             get { return _saveAllCommand; }
         }
 
-        private CompositeCommand _undoCommand = new CompositeCommand();
+        private CompositeCommand _undoCommand = new CompositeCommand(true);
         public CompositeCommand UndoCommand
         {
             get { return _undoCommand; }
         }
 		
-        private CompositeCommand _redoCommand = new CompositeCommand();
+        private CompositeCommand _redoCommand = new CompositeCommand(true);
         public CompositeCommand RedoCommand
         {
             get { return _redoCommand; }

@@ -69,7 +69,7 @@
         <!--Config-->
         <views:SettingControl Height="120" Margin="6,0"/>
         <!--Tab-->
-        <views:TabsControl Grid.Row="1" Margin="0,6,0,0" />
+        <views:TabsControl Grid.Row="1" Margin="0,6,0,0"/>
         <!--Work Area-->
         <Grid Grid.Row="2" prism:RegionManager.RegionName="{x:Static ms:RegionNames.WorkName}"/>
         <!--Status-->

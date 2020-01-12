@@ -11,4 +11,10 @@ namespace XamlService.Payloads
     {
         public string FileContent { get; set; }
     }
+
+    public class TabActiveInfo
+    {
+        public string Guid { get; set; }
+        public bool IsActive { get; set; }
+    }
 }

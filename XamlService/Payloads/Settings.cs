@@ -1,14 +1,13 @@
 ﻿
 namespace XamlService.Payloads
 {
-    public class SearchFilter
+    public class ValueWithGuid<T>
     {
-        public bool IsMatchCase { get; set; }
-        public bool IsWholeWords { get; set; }
-        public bool UseRegex { get; set; }
+        public string Guid { get; set; }
+        public T Value { get; set; }
     }
 
-    public class EditorSetting : SearchFilter
+    public class EditorSetting
     { 
         public string FontFamily { get; set; }
         public double FontSize { get; set; }

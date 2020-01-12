@@ -85,22 +85,22 @@ namespace XamlViewer.Utils
             return null;
         }
 
-        public static EditorSetting GetCurrentSettings(XamlConfig config)
+        public static ValueWithGuid<EditorSetting> GetCurrentSettings(XamlConfig config, string guid = null)
         {
-            return new EditorSetting
+            return new ValueWithGuid<EditorSetting>
             {
-                FontFamily = config.FontFamily,
-                FontSize = config.FontSize,
+                Guid = guid,
+                Value = new EditorSetting
+                {
+                    FontFamily = config.FontFamily,
+                    FontSize = config.FontSize,
 
-                WordWrap = config.WordWrap,
-                ShowLineNumber = config.ShowLineNumber,
+                    WordWrap = config.WordWrap,
+                    ShowLineNumber = config.ShowLineNumber,
 
-                AutoCompile = config.AutoCompile,
-                AutoCompileDelay = config.AutoCompileDelay,
-
-                IsMatchCase = config.IsMatchCase,
-                IsWholeWords = config.IsWholeWords,
-                UseRegex = config.UseRegex
+                    AutoCompile = config.AutoCompile,
+                    AutoCompileDelay = config.AutoCompileDelay
+                }
             };
         }
     }

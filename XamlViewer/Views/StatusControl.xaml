@@ -7,16 +7,17 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition MinWidth="30" Width="auto"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition MinWidth="30" Width="auto"/>
         </Grid.ColumnDefinitions>
         <TextBlock Text="{Binding CurrentStatus}" Margin="5,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
         <TextBlock Grid.Column="1" Text="Ln" VerticalAlignment="Center"/>
         <TextBlock Grid.Column="2" Text="{Binding CaretLine}" Margin="5,0,0,0" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Column="3" Text="Col" VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="4" Text="{Binding CaretColumn}" Margin="5,0,0,0" VerticalAlignment="Center"/> 
+        <TextBlock Grid.Column="4" Text="Col" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="5" Text="{Binding CaretColumn}" Margin="5,0,0,0" VerticalAlignment="Center"/> 
     </Grid>
 </UserControl>

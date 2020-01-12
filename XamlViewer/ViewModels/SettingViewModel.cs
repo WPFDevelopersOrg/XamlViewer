@@ -41,9 +41,7 @@ namespace XamlViewer.ViewModels
         {
             _appData = container.Resolve<AppData>();
             _eventAggregator = eventAggregator;
-            _dialogService = dialogService;
-
-            _eventAggregator.GetEvent<SearchFilterChangedEvents>().Subscribe(OnSearchConfig);
+            _dialogService = dialogService; 
 
             AddRefCommand = new DelegateCommand(AddReference);
             RemoveRefCommand = new DelegateCommand(RemoveReference, CanRemoveReference);
@@ -299,24 +297,7 @@ namespace XamlViewer.ViewModels
             e.Handled = true;
         }
 
-        #endregion
-
-        #region EVent
-        
-        private void OnSearchConfig(SearchFilter config)
-        {
-            if(_appData == null)
-                return;
-                
-            _appData.Config.IsMatchCase = config.IsMatchCase;
-            _appData.Config.IsWholeWords = config.IsWholeWords;
-            _appData.Config.UseRegex = config.UseRegex;
-
-            //Sync to all documents
-            ApplyEditorConfig();
-        }
-        
-        #endregion
+        #endregion 
 
         #region Func
 
@@ -333,7 +314,7 @@ namespace XamlViewer.ViewModels
 
         private void ApplyEditorConfig()
         {
-            _eventAggregator.GetEvent<SettingChangedEvents>().Publish(Common.GetCurrentSettings(_appData.Config));
+            _eventAggregator.GetEvent<SettingChangedEvent>().Publish(Common.GetCurrentSettings(_appData.Config));
         }
 
         #endregion

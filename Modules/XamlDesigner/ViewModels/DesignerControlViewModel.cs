@@ -6,25 +6,29 @@ using Prism.Events;
 using XamlService.Events;
 using System.Windows;
 using XamlService.Payloads;
+using Prism.Commands;
+using XamlDesigner.Views;
+using Prism.Regions;
 
 namespace XamlDesigner.ViewModels
-{
-    public class DesignerControlViewModel : BindableBase
+{ 
+    public class DesignerControlViewModel : BindableBase, IDisposable
     {
+        private string _fileGuid = null;
         private IEventAggregator _eventAggregator = null;
+        private RefreshDesignerEvent _refreshDesignerEvent = null;
+
+        public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
 
         public DesignerControlViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<RefreshDesignerEvent>().Subscribe(OnRefreshDesigner, ThreadOption.PublisherThread, false, tab => tab.Guid == FileGuid);
-        }
 
-        private string _fileGuid = null;
-        public string FileGuid
-        {
-            get { return _fileGuid; }
-            set { SetProperty(ref _fileGuid, value); }
-        }
+            _refreshDesignerEvent = _eventAggregator.GetEvent<RefreshDesignerEvent>();
+            _refreshDesignerEvent.Subscribe(OnRefreshDesigner, ThreadOption.UIThread, false, tab => tab.Guid == _fileGuid);
+
+            LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
+        } 
 
         private object _element;
         public object Element
@@ -33,12 +37,21 @@ namespace XamlDesigner.ViewModels
             set { SetProperty(ref _element, value); }
         }
 
+        private void OnLoaded(RoutedEventArgs e)
+        {
+            var designerControl = e.OriginalSource as DesignerControl; 
+            _fileGuid = (string)(RegionContext.GetObservableContext(designerControl).Value);
+
+            if (_eventAggregator != null)
+                _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo());
+        }
+
         private void OnRefreshDesigner(TabInfo tabInfo)
         {
-            if (tabInfo.Guid != FileGuid)
+            if (tabInfo.Guid != _fileGuid)
                 return;
 
-            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.Compile, Guid = FileGuid });
+            _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.Compile, Guid = _fileGuid });
 
             try
             {
@@ -58,8 +71,13 @@ namespace XamlDesigner.ViewModels
             }
             finally
             {
-                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.FinishCompile, Guid = FileGuid });
+                _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.FinishCompile, Guid = _fileGuid });
             }
+        }
+
+        public void Dispose()
+        {
+            _refreshDesignerEvent.Unsubscribe(OnRefreshDesigner);
         }
     }
 }
