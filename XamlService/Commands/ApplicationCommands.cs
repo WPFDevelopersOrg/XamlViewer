@@ -60,7 +60,7 @@ namespace XamlService.Commands
             get { return _redoCommand; }
         }
 
-        private CompositeCommand _compileCommand = new CompositeCommand();
+        private CompositeCommand _compileCommand = new CompositeCommand(true);
         public CompositeCommand CompileCommand
         {
             get { return _compileCommand; }

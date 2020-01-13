@@ -6,6 +6,6 @@ namespace XamlViewer.Models
     public class AppData
     {
         public XamlConfig Config { get; set; }
-        public Func<Task> CollectExistedFileAction { get; set; }
+        public Func<Task> DealExistedFileAction { get; set; }
     }
 }

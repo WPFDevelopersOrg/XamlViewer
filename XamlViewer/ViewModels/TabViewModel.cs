@@ -418,19 +418,23 @@ namespace XamlViewer.ViewModels
             CopyOrOpenPathCommand.RaiseCanExecuteChanged(); 
         }
 
-        private void UnsubscribeEvents()
+        #endregion
+
+        #region IDisposable
+
+        private void UnsubscribeEventAndCommands()
         {
             _requestSettingEvent.Unsubscribe(OnRequestSetting);
             _textChangedEvent.Unsubscribe(OnTextChanged);
             _requestTextEvent.Unsubscribe(OnRequestText);
-            _saveTextEvent.Unsubscribe(OnSaveText); 
+            _saveTextEvent.Unsubscribe(OnSaveText);
 
             _appCommands.CloseAllCommand.UnregisterCommand(CloseCommand);
         }
 
         private void Dispose()
         {
-            UnsubscribeEvents();
+            UnsubscribeEventAndCommands();
 
             _regionManager.Regions[RegionNames.WorkName].Remove(_workControl);
             _workControl = null;

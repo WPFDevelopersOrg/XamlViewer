@@ -37,7 +37,6 @@ namespace XamlViewer.ViewModels
         public DelegateCommand NewCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
         public DelegateCommand<bool?> SaveAllCommand { get; private set; }
-        public DelegateCommand CompileCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
         public DelegateCommand HelpCommand { get; private set; }
 
@@ -102,10 +101,7 @@ namespace XamlViewer.ViewModels
             _appCommands.OpenCommand.RegisterCommand(OpenCommand);
 
             SaveAllCommand = new DelegateCommand<bool?>(SaveAll, CanSaveAll);
-            _appCommands.SaveAllCommand.RegisterCommand(SaveAllCommand);
-
-            CompileCommand = new DelegateCommand(Compile);
-            _appCommands.CompileCommand.RegisterCommand(CompileCommand);
+            _appCommands.SaveAllCommand.RegisterCommand(SaveAllCommand); 
 
             RefreshCommand = new DelegateCommand(Refresh);
             _appCommands.RefreshCommand.RegisterCommand(RefreshCommand);
@@ -120,7 +116,7 @@ namespace XamlViewer.ViewModels
 
         private void InitData()
         {
-            _appData.CollectExistedFileAction = CollectExistedFile;
+            _appData.DealExistedFileAction = DealExistedFile;
 
             XamlTabs = new ObservableCollection<TabViewModel>(_appData.Config.Files.Select(f => new TabViewModel(f, CloseXamlTab)));
             if (XamlTabs.Count == 0)
@@ -199,21 +195,11 @@ namespace XamlViewer.ViewModels
                 if ((curTab.Status & TabStatus.NoSave) != TabStatus.NoSave)
                     continue;
 
-                if (!File.Exists(curTab.FileName))
-                {
-                    if (ignore || string.IsNullOrEmpty(XVCommon.ShowSaveFileDialog(curTab.FileName)))
-                        continue;
-                } 
+                if (!File.Exists(curTab.FileName) && ignore)
+                    continue;
 
                 curTab.Save();
             }
-        }
-
-        private void Compile()
-        {
-            var selectedTab = XamlTabs.FirstOrDefault(t => t.IsSelected && !t.IsReadOnly);
-            if(selectedTab != null)
-                _eventAggregator.GetEvent<CompileTabEvent>().Publish(selectedTab.FileGuid);
         }
 
         private void Refresh()
@@ -389,24 +375,23 @@ namespace XamlViewer.ViewModels
             XamlTabs.Move(idnex, 0);
         }
 
-        private async Task CollectExistedFile()
+        private async Task DealExistedFile()
         {
-            var validTabs = XamlTabs.Where(tab => File.Exists(tab.FileName)).ToList();
-            if (validTabs == null || validTabs.Count == 0)
-            {
-                _appData.Config.Files = new List<string>();
-                return;
-            }
+            var validTabs = XamlTabs.Where(tab => File.Exists(tab.FileName));
+            var noSavedTabs = validTabs.Where(tab => (tab.Status & TabStatus.NoSave) == TabStatus.NoSave).ToList();
 
-            await Task.Run(() =>
+            if (noSavedTabs.Count > 0)
             {
-                _appCommands.SaveAllCommand.Execute(true);
-
-                while(validTabs.Any(tab => (tab.Status & TabStatus.NoSave) == TabStatus.NoSave))
+                await Task.Run(() =>
                 {
-                    Task.Delay(100);
-                }
-            });
+                    _appCommands.SaveAllCommand.Execute(true);
+
+                    while (noSavedTabs.Any(tab => (tab.Status & TabStatus.NoSave) == TabStatus.NoSave))
+                    {
+                        Task.Delay(100);
+                    }
+                });
+            }
 
             _appData.Config.Files = validTabs.Select(tab => tab.FileName).ToList();
         }
