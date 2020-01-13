@@ -46,7 +46,6 @@ namespace XamlViewer.ViewModels
         private TextChangedEvent _textChangedEvent = null;
         private RequestTextEvent _requestTextEvent = null;
         private SaveTextEvent _saveTextEvent = null;
-        private InitComplatedEvent _initComplatedEvent = null;
 
         public TabViewModel(string fileName, TabStatus status, Action<TabViewModel, bool> closeAction)
         {
@@ -81,9 +80,6 @@ namespace XamlViewer.ViewModels
         {
             if (_eventAggregator == null)
                 return;
-
-            _initComplatedEvent = _eventAggregator.GetEvent<InitComplatedEvent>();
-            _initComplatedEvent.Subscribe(OnInitComplated);
 
             _requestSettingEvent = _eventAggregator.GetEvent<RequestSettingEvent>();
             _requestSettingEvent.Subscribe(OnRequestSetting);
@@ -141,6 +137,8 @@ namespace XamlViewer.ViewModels
             set
             {
                 SetProperty(ref _isSelected, value);
+
+                InitWorkArea();
 
                 if (_workControl != null)
                     _workControl.Visibility = _isSelected ? Visibility.Visible : Visibility.Hidden;
@@ -264,15 +262,6 @@ namespace XamlViewer.ViewModels
 
         #region Event
 
-        private void OnInitComplated(string guid)
-        {
-            if (_guid != guid)
-                return;
-
-            if (IsSelected)
-                UpdateSelectInfo();
-        }
-
         private void OnRequestSetting(string guid)
         {
             if (_guid != guid)
@@ -335,13 +324,13 @@ namespace XamlViewer.ViewModels
 
         public void InitWorkArea()
         {
-            if (!_regionManager.Regions.ContainsRegionWithName(RegionNames.WorkName))
-                return;
-
             if (_workControl != null)
                 return;
 
-            _workControl = _container.Resolve<WorkControl>(new ValueTuple<Type, object>(typeof(string), _guid));
+            if (!_regionManager.Regions.ContainsRegionWithName(RegionNames.WorkName))
+                return;
+
+            _workControl = _container.Resolve<WorkControl>(new ValueTuple<Type, object>(typeof(string), _guid), new ValueTuple<Type, object>(typeof(bool), IsSelected));
             _workControl.Visibility = IsSelected ? Visibility.Visible : Visibility.Hidden;
 
             _regionManager.Regions[RegionNames.WorkName].Add(_workControl, null, true);
@@ -416,9 +405,8 @@ namespace XamlViewer.ViewModels
             {
                 Title = FileName;
                 FileContent = (status & TabStatus.Inner) == TabStatus.Inner ? Application.Current.Resources["HelpContentTemplate"] as string : Application.Current.Resources["FileContentTemplate"] as string;
-            }
+            } 
 
-            InitWorkArea();
             CopyOrOpenPathCommand.RaiseCanExecuteChanged(); 
         }
 
@@ -428,7 +416,6 @@ namespace XamlViewer.ViewModels
 
         private void UnsubscribeEventAndCommands()
         {
-            _initComplatedEvent.Unsubscribe(OnInitComplated);
             _requestSettingEvent.Unsubscribe(OnRequestSetting);
             _textChangedEvent.Unsubscribe(OnTextChanged);
             _requestTextEvent.Unsubscribe(OnRequestText);

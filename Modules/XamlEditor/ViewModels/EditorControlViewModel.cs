@@ -269,10 +269,13 @@ namespace XamlEditor.ViewModels
             var editorControl = e.OriginalSource as EditorControl;
 
             _textEditor = editorControl.XamlTextEditorEx;
-            _fileGuid = (string)(RegionContext.GetObservableContext(editorControl).Value);
 
-            if (_eventAggregator != null)
-                _eventAggregator.GetEvent<InitComplatedEvent>().Publish(_fileGuid);
+            var selectInfo = (TabSelectInfo)(RegionContext.GetObservableContext(editorControl).Value);
+            if(selectInfo!=null)
+            {
+                _fileGuid = selectInfo.Guid;
+                IsActive = IsSelected = selectInfo.IsSelected;
+            }
         }
 
         private void DelayArrived()

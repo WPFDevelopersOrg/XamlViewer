@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XamlService.Payloads;
 using XamlViewer.Utils;
 using XamlViewer.ViewModels;
 
@@ -28,10 +29,10 @@ namespace XamlViewer.Views
             InitializeComponent();
         }
 
-        public WorkControl(string tabGuid)
+        public WorkControl(string tabGuid, bool isSelected)
             : this()
         {
-            (DataContext as WorkViewModel).TabGuid = tabGuid;
+            (DataContext as WorkViewModel).SelectInfo = new TabSelectInfo { Guid = tabGuid, IsSelected = isSelected };
         }
     }
 }

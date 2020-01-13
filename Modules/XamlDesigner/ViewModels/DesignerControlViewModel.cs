@@ -40,7 +40,10 @@ namespace XamlDesigner.ViewModels
         private void OnLoaded(RoutedEventArgs e)
         {
             var designerControl = e.OriginalSource as DesignerControl;
-            _fileGuid = (string)(RegionContext.GetObservableContext(designerControl).Value);
+
+            var selectInfo = (TabSelectInfo)(RegionContext.GetObservableContext(designerControl).Value);
+            if (selectInfo != null)
+                _fileGuid = selectInfo.Guid; 
         }
 
         private void OnRefreshDesigner(TabInfo tabInfo)

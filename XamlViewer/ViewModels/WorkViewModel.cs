@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using XamlService.Payloads;
 
 namespace XamlViewer.ViewModels
 {
@@ -14,13 +15,12 @@ namespace XamlViewer.ViewModels
             InitCommand();
         }
 
-        private string _tabGuid;
-        public string TabGuid
+        private TabSelectInfo _selectInfo;
+        public TabSelectInfo SelectInfo
         {
-            get { return _tabGuid; }
-            set { SetProperty(ref _tabGuid, value); }
-        }
-
+            get { return _selectInfo; }
+            set { SetProperty(ref _selectInfo, value); }
+        } 
 
         #region Init
 
