@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using CommonServiceLocator;
-using Prism;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -47,6 +46,7 @@ namespace XamlViewer.ViewModels
         private TextChangedEvent _textChangedEvent = null;
         private RequestTextEvent _requestTextEvent = null;
         private SaveTextEvent _saveTextEvent = null;
+        private InitComplatedEvent _initComplatedEvent = null;
 
         public TabViewModel(string fileName, TabStatus status, Action<TabViewModel, bool> closeAction)
         {
@@ -82,17 +82,20 @@ namespace XamlViewer.ViewModels
             if (_eventAggregator == null)
                 return;
 
+            _initComplatedEvent = _eventAggregator.GetEvent<InitComplatedEvent>();
+            _initComplatedEvent.Subscribe(OnInitComplated);
+
             _requestSettingEvent = _eventAggregator.GetEvent<RequestSettingEvent>();
             _requestSettingEvent.Subscribe(OnRequestSetting);
 
             _textChangedEvent = _eventAggregator.GetEvent<TextChangedEvent>();
-            _textChangedEvent.Subscribe(OnTextChanged);
+            _textChangedEvent.Subscribe(OnTextChanged, ThreadOption.UIThread);
 
             _requestTextEvent = _eventAggregator.GetEvent<RequestTextEvent>();
             _requestTextEvent.Subscribe(OnRequestText);
 
             _saveTextEvent = _eventAggregator.GetEvent<SaveTextEvent>();
-            _saveTextEvent.Subscribe(OnSaveText);
+            _saveTextEvent.Subscribe(OnSaveText, ThreadOption.UIThread);
         }
 
         private void InitCommand()
@@ -140,9 +143,9 @@ namespace XamlViewer.ViewModels
                 SetProperty(ref _isSelected, value);
 
                 if (_workControl != null)
-                    _workControl.Visibility = _isSelected ? Visibility.Visible : Visibility.Collapsed;
+                    _workControl.Visibility = _isSelected ? Visibility.Visible : Visibility.Hidden;
 
-                UpdateActiveInfo();
+                UpdateSelectInfo();
             }
         } 
 
@@ -261,6 +264,15 @@ namespace XamlViewer.ViewModels
 
         #region Event
 
+        private void OnInitComplated(string guid)
+        {
+            if (_guid != guid)
+                return;
+
+            if (IsSelected)
+                UpdateSelectInfo();
+        }
+
         private void OnRequestSetting(string guid)
         {
             if (_guid != guid)
@@ -317,14 +329,6 @@ namespace XamlViewer.ViewModels
             }
         }
 
-        private void OnCacheText(TabInfo tabInfo)
-        {
-            if (tabInfo == null || tabInfo.Guid != _guid)
-                return;
-
-            FileContent = tabInfo.FileContent;
-        }
-
         #endregion
 
         #region Func
@@ -338,7 +342,7 @@ namespace XamlViewer.ViewModels
                 return;
 
             _workControl = _container.Resolve<WorkControl>(new ValueTuple<Type, object>(typeof(string), _guid));
-            _workControl.Visibility = IsSelected ? Visibility.Visible : Visibility.Collapsed;
+            _workControl.Visibility = IsSelected ? Visibility.Visible : Visibility.Hidden;
 
             _regionManager.Regions[RegionNames.WorkName].Add(_workControl, null, true);
         }
@@ -373,12 +377,12 @@ namespace XamlViewer.ViewModels
             _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = IsReadOnly });
         }
 
-        private void UpdateActiveInfo()
+        public void UpdateSelectInfo()
         {
             if (_eventAggregator == null)
                 return;
 
-            _eventAggregator.GetEvent<ActiveTabEvent>().Publish(new TabActiveInfo { Guid = _guid, IsActive = IsSelected });
+            _eventAggregator.GetEvent<SelectTabEvent>().Publish(new TabSelectInfo { Guid = _guid, IsSelected = IsSelected });
         }
 
         public void UpdateFileName(string fileName)
@@ -424,6 +428,7 @@ namespace XamlViewer.ViewModels
 
         private void UnsubscribeEventAndCommands()
         {
+            _initComplatedEvent.Unsubscribe(OnInitComplated);
             _requestSettingEvent.Unsubscribe(OnRequestSetting);
             _textChangedEvent.Unsubscribe(OnTextChanged);
             _requestTextEvent.Unsubscribe(OnRequestText);

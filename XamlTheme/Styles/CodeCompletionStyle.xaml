@@ -5,9 +5,9 @@
                     xmlns:controls="clr-namespace:XamlTheme.Controls">
 
     <Style TargetType="{x:Type controls:CompletionWindowEx}">
-        <Setter Property="shell:WindowChrome.WindowChrome">
+        <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <shell:WindowChrome CaptionHeight="0" GlassFrameThickness="0,0,0,1"/>
+                <WindowChrome CaptionHeight="0" GlassFrameThickness="0,0,0,1"/>
             </Setter.Value>
         </Setter> 
     </Style>

@@ -12,4 +12,6 @@ namespace XamlService.Events
     public class LoadTextEvent : PubSubEvent<TabInfo> {}
 
     public class CaretPositionEvent : PubSubEvent<CaretPosition> { }
+
+    public class InitComplatedEvent : PubSubEvent<string> { }
 }

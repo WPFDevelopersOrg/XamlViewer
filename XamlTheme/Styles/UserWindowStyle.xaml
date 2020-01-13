@@ -6,9 +6,9 @@
 
     <Style x:Key="{x:Static themes:ResourceKeys.NormalUserWindowStyleKey}" 
            TargetType="{x:Type controls:UserWindow}">
-        <Setter Property="shell:WindowChrome.WindowChrome">
+        <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <shell:WindowChrome ResizeBorderThickness="4" GlassFrameThickness="0,0,0,1"
+                <WindowChrome ResizeBorderThickness="4" GlassFrameThickness="0,0,0,1"
                                     CaptionHeight="{Binding CaptionHeight, RelativeSource={RelativeSource AncestorType=controls:UserWindow}}"/>
             </Setter.Value>
         </Setter>
@@ -43,10 +43,10 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Image Grid.Column="0" Source="{TemplateBinding Icon}" VerticalAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="False"/>
-                                    <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Margin="5,0,0,0" Text="{TemplateBinding Title}" FontSize="{TemplateBinding CaptionFontSize}" FontWeight="Medium"  VerticalAlignment="Center" Foreground="{TemplateBinding CaptionForeground}" TextTrimming="CharacterEllipsis" shell:WindowChrome.IsHitTestVisibleInChrome="False"/>
-                                    <ContentPresenter Grid.Column="2" ContentSource="CaptionContent" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
-                                    <StackPanel Grid.Column="3" Orientation="Horizontal" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                                    <Image Grid.Column="0" Source="{TemplateBinding Icon}" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="False"/>
+                                    <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Margin="5,0,0,0" Text="{TemplateBinding Title}" FontSize="{TemplateBinding CaptionFontSize}" FontWeight="Medium"  VerticalAlignment="Center" Foreground="{TemplateBinding CaptionForeground}" TextTrimming="CharacterEllipsis" WindowChrome.IsHitTestVisibleInChrome="False"/>
+                                    <ContentPresenter Grid.Column="2" ContentSource="CaptionContent" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
                                         <Button x:Name="MiniBtn" Style="{DynamicResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}" Width="37" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" VerticalContentAlignment="Center" Padding="0,5,0,0" >
                                             <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                                   RenderOptions.EdgeMode="Aliased" Margin="0,0,0,5" Data="F1M0,6L0,9 9,9 9,6 0,6z"/>

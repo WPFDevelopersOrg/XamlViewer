@@ -6,6 +6,7 @@ using System.Windows;
 using Utils.IO;
 using XamlViewer.Models;
 using XamlService.Commands;
+using System;
 
 namespace XamlViewer.ViewModels
 {

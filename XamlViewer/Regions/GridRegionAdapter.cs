@@ -43,7 +43,7 @@ namespace XamlViewer.Regions
 
         protected override IRegion CreateRegion()
         {
-            return new AllActiveRegion();
+            return new SingleActiveRegion();
         }
 
         private void ClearChildRegionsAndViews(FrameworkElement curView)

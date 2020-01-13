@@ -18,8 +18,8 @@ namespace XamlViewer.ViewModels
             _eventAggregator = eventAggregator;
             _processStatuses = new HashSet<ProcessStatus>();
 
-            _eventAggregator.GetEvent<ProcessStatusEvent>().Subscribe(OnProcessStatusEvent);
-            _eventAggregator.GetEvent<CaretPositionEvent>().Subscribe(OnCaretPositionEvent);
+            _eventAggregator.GetEvent<ProcessStatusEvent>().Subscribe(OnProcessStatus, ThreadOption.BackgroundThread);
+            _eventAggregator.GetEvent<CaretPositionEvent>().Subscribe(OnCaretPosition, ThreadOption.BackgroundThread);
         }
 
         private string _currentStatus = "Ready";
@@ -43,7 +43,7 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _caretColumn, value); }
         }
 
-        private void OnProcessStatusEvent(ProcessInfo info)
+        private void OnProcessStatus(ProcessInfo info)
         {
             switch (info.status)
             {
@@ -70,7 +70,7 @@ namespace XamlViewer.ViewModels
                 CurrentStatus = ResourcesMap.ProcessStatusDic[_processStatuses.Min()];
         }
 
-        private void OnCaretPositionEvent(CaretPosition pos)
+        private void OnCaretPosition(CaretPosition pos)
         {
             CaretLine = pos.Line;
             CaretColumn = pos.Column;

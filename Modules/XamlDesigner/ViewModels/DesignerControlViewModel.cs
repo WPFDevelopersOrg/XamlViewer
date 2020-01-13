@@ -11,7 +11,7 @@ using XamlDesigner.Views;
 using Prism.Regions;
 
 namespace XamlDesigner.ViewModels
-{ 
+{
     public class DesignerControlViewModel : BindableBase, IDisposable
     {
         private string _fileGuid = null;
@@ -28,7 +28,7 @@ namespace XamlDesigner.ViewModels
             _refreshDesignerEvent.Subscribe(OnRefreshDesigner, ThreadOption.UIThread, false, tab => tab.Guid == _fileGuid);
 
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
-        } 
+        }
 
         private object _element;
         public object Element
@@ -39,11 +39,8 @@ namespace XamlDesigner.ViewModels
 
         private void OnLoaded(RoutedEventArgs e)
         {
-            var designerControl = e.OriginalSource as DesignerControl; 
+            var designerControl = e.OriginalSource as DesignerControl;
             _fileGuid = (string)(RegionContext.GetObservableContext(designerControl).Value);
-
-            if (_eventAggregator != null)
-                _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo());
         }
 
         private void OnRefreshDesigner(TabInfo tabInfo)

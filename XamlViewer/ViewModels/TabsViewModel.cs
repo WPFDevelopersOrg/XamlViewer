@@ -20,7 +20,6 @@ using SWF = System.Windows.Forms;
 using Prism.Events;
 using XamlService.Events;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace XamlViewer.ViewModels
 {
@@ -388,7 +387,7 @@ namespace XamlViewer.ViewModels
 
                     while (noSavedTabs.Any(tab => (tab.Status & TabStatus.NoSave) == TabStatus.NoSave))
                     {
-                        Task.Delay(100);
+                        Task.Delay(200);
                     }
                 });
             }

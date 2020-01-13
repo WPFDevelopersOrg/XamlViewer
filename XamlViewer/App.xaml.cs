@@ -10,10 +10,8 @@ using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Regions;
 using Utils.IO;
-using XamlService;
 using XamlService.Commands;
 using XamlService.Events;
-using XamlService.Payloads;
 using XamlViewer.Dialogs;
 using XamlViewer.Models;
 using XamlViewer.Regions;
@@ -93,12 +91,9 @@ namespace XamlViewer
         { 
             base.OnInitialized();
 
-            //apply config
             var eventAggregator = Container.Resolve<IEventAggregator>();
             if (eventAggregator != null)
-            {
-                eventAggregator.GetEvent<InitWorkAreaEvent>().Publish(); 
-            }
+                eventAggregator.GetEvent<InitWorkAreaEvent>().Publish();
         }
     }
 }

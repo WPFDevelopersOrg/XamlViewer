@@ -6,6 +6,7 @@ using XamlEditor.Views;
 
 namespace XamlEditor
 {
+    [ModuleDependency("XamlDesignerModule")]
     public class XamlEditorModule : IModule
     {
         private IRegionManager _regionManager = null;

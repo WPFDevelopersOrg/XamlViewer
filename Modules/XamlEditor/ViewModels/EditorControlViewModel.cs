@@ -20,18 +20,18 @@ namespace XamlEditor.ViewModels
     {
         private string _fileGuid = null;
         private bool _isReseting = false;
+        private bool _isLoadedFile = false;
 
         private XsdParser _xsdParser = null;
         private TextEditorEx _textEditor = null;
 
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
-        private IRegionManager _regionManager = null;
 
         private SettingChangedEvent _settingChangedEvent = null;
         private LoadTextEvent _loadTextEvent = null;
         private UpdateTabStatusEvent _updateTabStatusEvent = null;
-        private ActiveTabEvent _activeTabEvent = null;
+        private SelectTabEvent _selectTabEvent = null;
 
         public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
         public DelegateCommand DelayArrivedCommand { get; private set; }
@@ -41,11 +41,10 @@ namespace XamlEditor.ViewModels
         public DelegateCommand RedoCommand { get; private set; }
         public DelegateCommand UndoCommand { get; private set; }
 
-        public EditorControlViewModel(IEventAggregator eventAggregator, IApplicationCommands appCommands, IRegionManager regionManager)
+        public EditorControlViewModel(IEventAggregator eventAggregator, IApplicationCommands appCommands)
         {
             _eventAggregator = eventAggregator;
             _appCommands = appCommands;
-            _regionManager = regionManager;
 
             InitEvent();
             InitCommand();
@@ -66,8 +65,8 @@ namespace XamlEditor.ViewModels
             _updateTabStatusEvent = _eventAggregator.GetEvent<UpdateTabStatusEvent>();
             _updateTabStatusEvent.Subscribe(OnUpdateTabStatus, ThreadOption.PublisherThread, false, tab => tab.Guid == _fileGuid);
 
-            _activeTabEvent = _eventAggregator.GetEvent<ActiveTabEvent>();
-            _activeTabEvent.Subscribe(OnActiveTab, ThreadOption.PublisherThread, false, info => info.Guid == _fileGuid);
+            _selectTabEvent = _eventAggregator.GetEvent<SelectTabEvent>();
+            _selectTabEvent.Subscribe(OnSelectTab, ThreadOption.PublisherThread, false, info => info.Guid == _fileGuid);
         }
 
         private void InitCommand()
@@ -93,14 +92,30 @@ namespace XamlEditor.ViewModels
 
         #region Property
 
-        private bool _isActive = false;
-        public bool IsActive
+        private bool _isSelected = false;
+        public bool IsSelected
         {
-            get { return _isActive; }
+            get { return _isSelected; }
             set
             {
-                SetProperty(ref _isActive, value);
-                OnIsActiveChanged();
+                if (SetProperty(ref _isSelected, value))
+                {
+                    if (_isSelected)
+                    {
+                        if (_eventAggregator != null && !_isLoadedFile)
+                        {
+                            _eventAggregator.GetEvent<RequestSettingEvent>().Publish(_fileGuid);
+                            _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo {Guid = _fileGuid});
+                        }
+                        else
+                        {
+                            if (_textEditor != null)
+                                _textEditor.Focus();
+
+                            CaretPosChanged();
+                        }
+                    }
+                }
             }
         }
 
@@ -110,10 +125,11 @@ namespace XamlEditor.ViewModels
             get { return _isReadOnly; }
             set
             {
-                SetProperty(ref _isReadOnly, value);
-
-                CompileCommand.RaiseCanExecuteChanged();
-                SaveCommand.RaiseCanExecuteChanged();
+                if (SetProperty(ref _isReadOnly, value))
+                {
+                    CompileCommand.RaiseCanExecuteChanged();
+                    SaveCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -123,8 +139,8 @@ namespace XamlEditor.ViewModels
             get { return _caretLine; }
             set
             {
-                SetProperty(ref _caretLine, value);
-                CaretPosChanged();
+                if (SetProperty(ref _caretLine, value))
+                    CaretPosChanged();
             }
         }
 
@@ -134,8 +150,8 @@ namespace XamlEditor.ViewModels
             get { return _caretColumn; }
             set
             {
-                SetProperty(ref _caretColumn, value);
-                CaretPosChanged();
+                if (SetProperty(ref _caretColumn, value))
+                    CaretPosChanged();
             }
         }
 
@@ -145,18 +161,19 @@ namespace XamlEditor.ViewModels
             get { return _isModified; }
             set
             {
-                SetProperty(ref _isModified, value);
-
-                RedoCommand.RaiseCanExecuteChanged();
-                UndoCommand.RaiseCanExecuteChanged();
-
-                if (!_isReseting)
+                if (SetProperty(ref _isModified, value))
                 {
-                    _eventAggregator.GetEvent<TextChangedEvent>().Publish(new EditorInfo
+                    RedoCommand.RaiseCanExecuteChanged();
+                    UndoCommand.RaiseCanExecuteChanged();
+
+                    if (!_isReseting)
                     {
-                        Guid = _fileGuid,
-                        IsModified = _isModified,
-                    });
+                        _eventAggregator.GetEvent<TextChangedEvent>().Publish(new EditorInfo
+                        {
+                            Guid = _fileGuid,
+                            IsModified = _isModified,
+                        });
+                    }
                 }
             }
         }
@@ -195,13 +212,11 @@ namespace XamlEditor.ViewModels
             get { return _autoCompile; }
             set
             {
-                if (_autoCompile == value)
-                    return;
-
-                SetProperty(ref _autoCompile, value);
-
-                if (_autoCompile)
-                    Compile();
+                if (SetProperty(ref _autoCompile, value))
+                {
+                    if (_autoCompile)
+                        Compile();
+                }
             }
         }
 
@@ -252,15 +267,12 @@ namespace XamlEditor.ViewModels
         private void Loaded(RoutedEventArgs e)
         {
             var editorControl = e.OriginalSource as EditorControl;
-            _textEditor = editorControl.XamlTextEditorEx;
 
+            _textEditor = editorControl.XamlTextEditorEx;
             _fileGuid = (string)(RegionContext.GetObservableContext(editorControl).Value);
 
             if (_eventAggregator != null)
-            {
-                _eventAggregator.GetEvent<RequestSettingEvent>().Publish(_fileGuid);
-                _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo { Guid = _fileGuid });
-            }
+                _eventAggregator.GetEvent<InitComplatedEvent>().Publish(_fileGuid);
         }
 
         private void DelayArrived()
@@ -364,22 +376,25 @@ namespace XamlEditor.ViewModels
             if (tabInfo.Guid != _fileGuid || _textEditor == null)
                 return;
 
+            _isLoadedFile = true;
+
             Reset(() =>
             {
                 _fileGuid = tabInfo.Guid;
-                _textEditor.Text = tabInfo.FileContent;
                 IsReadOnly = tabInfo.IsReadOnly;
-
-                Compile(tabInfo.FileContent);
+                _textEditor.Text = tabInfo.FileContent;
             });
 
-            if (IsActive)
+            if (IsSelected)
             {
                 CompileCommand.RaiseCanExecuteChanged();
                 RedoCommand.RaiseCanExecuteChanged();
                 UndoCommand.RaiseCanExecuteChanged();
 
                 _textEditor.Focus();
+                CaretPosChanged();
+
+                Compile(tabInfo.FileContent);
             }
         }
 
@@ -391,17 +406,28 @@ namespace XamlEditor.ViewModels
             IsReadOnly = tabFlag.IsReadOnly;
         }
 
-        private void OnActiveTab(TabActiveInfo info)
+        private void OnSelectTab(TabSelectInfo info)
         {
             if (info.Guid != _fileGuid)
                 return;
 
-            IsActive = info.IsActive;
+            IsActive = IsSelected = info.IsSelected;
         }
 
         #endregion
 
         #region IActiveAware
+
+        private bool _isActive = false;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (SetProperty(ref _isActive, value))
+                    OnIsActiveChanged();
+            }
+        }
 
         public event EventHandler IsActiveChanged;
 
@@ -419,12 +445,7 @@ namespace XamlEditor.ViewModels
             UndoCommand.RaiseCanExecuteChanged();
 
             if (IsActiveChanged != null)
-                IsActiveChanged.Invoke(this, new EventArgs());
-
-            if (IsActive && _textEditor != null)
-                _textEditor.Focus();
-
-            CaretPosChanged();
+                IsActiveChanged.Invoke(this, new EventArgs()); 
         }
 
         #endregion
@@ -437,7 +458,7 @@ namespace XamlEditor.ViewModels
             _settingChangedEvent.Unsubscribe(OnSettingChanged);
             _loadTextEvent.Unsubscribe(OnLoadText);
             _updateTabStatusEvent.Unsubscribe(OnUpdateTabStatus);
-            _activeTabEvent.Unsubscribe(OnActiveTab);
+            _selectTabEvent.Unsubscribe(OnSelectTab);
 
             //Command
             _appCommands.SaveCommand.UnregisterCommand(SaveCommand);
