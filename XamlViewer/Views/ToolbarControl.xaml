@@ -9,29 +9,37 @@
         <Button Width="30" ToolTip="New (Ctrl+N)" 
                 Command="{Binding ApplicationCommands.NewCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+            <Grid Width="14" Height="16">
+                <Path RenderOptions.EdgeMode="Aliased" Fill="#005198" Data="M0,0 H10V1 H11V2 H12V3 H13V4 H14V16 H0V0 M1,1 H9V5 H13V15 H1"/>
+                <Path RenderOptions.EdgeMode="Aliased" Fill="#FF5400" Data="M6,6 H7V13 H6 M3,9 H6V10 H3 M7,9 H10V10 H7"/>
+            </Grid>
+            <!--
             <Path RenderOptions.EdgeMode="Aliased" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   Data="M0,0 H10V1 H11V2 H12V3 H13V4 H14V16 H0V0 M1,1 H9V5 H13V15 H1 M6,6 H7V13 H6 M3,9 H6V10 H3 M7,9 H10V10 H7"/>
-            <!--
-            <Path Width="14" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                  Data="M842.24 312.746667l-189.44-213.333334a42.666667 42.666667 0 0 0-31.573333-14.08h-341.333334A107.946667 107.946667 0 0 0 170.666667 192v640A107.946667 107.946667 0 0 0 279.893333 938.666667h464.213334A107.946667 107.946667 0 0 0 853.333333 832V341.333333a42.666667 42.666667 0 0 0-11.093333-28.586666zM597.333333 640h-42.666666v42.666667a42.666667 42.666667 0 0 1-85.333334 0v-42.666667h-42.666666a42.666667 42.666667 0 0 1 0-85.333333h42.666666v-42.666667a42.666667 42.666667 0 0 1 85.333334 0v42.666667h42.666666a42.666667 42.666667 0 0 1 0 85.333333z m30.293334-298.666667a33.706667 33.706667 0 0 1-30.293334-36.266666V170.666667l159.573334 170.666666z"/>
-            -->
+             -->
         </Button> 
         <Button Width="30" ToolTip="Open (Ctrl+O)"
                 Command="{Binding ApplicationCommands.OpenCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+            <Grid Width="16" Height="16">
+                <Path RenderOptions.EdgeMode="Aliased" Fill="#E27713" Data="M9,1 H16V16 H3V15 H2V13 H1V11 H0V7 H1V8 H2V9 H5V8 H6V7 H13V11 H14V14 H15V2 H9 M10,3 H13V4 H10"/>	
+                <Path RenderOptions.EdgeMode="Aliased" Fill="#005198" Data="M4,0 H6V1 H7V2 H8V4 H7V5 H6V6 H4V5 H5V4 H2V6 H3V7 H4V8 H2V7 H1V6 H0V3 H1V2 H5V1 H4"/>	
+            </Grid>
+            <!--
             <Path RenderOptions.EdgeMode="Aliased" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   Data="M4,0 H6V1 H7V2 H8V4 H7V5 H6V6 H4V5 H5V4 H2V6 H3V7 H4V8 H2V7 H1V6 H0V3 H1V2 H5V1 H4 M9,1 H16V16 H3V15 H2V13 H1V11 H0V7 H1V8 H2V9 H5V8 H6V7 H13V11 H14V14 H15V2 H9 M10,3 H13V4 H10"/>
+             -->
         </Button>
         <Button Width="30" ToolTip="Save (Ctrl+S)"
                 Command="{Binding ApplicationCommands.SaveCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path RenderOptions.EdgeMode="Aliased" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+            <Path RenderOptions.EdgeMode="Aliased" Fill="#812DAB"
                   Data="M0,7 V-1 H3 V7 H13 V2 H16 V15 H0 M13,2 H15 V1 H13 M13,1 H14 V0 H13 M8,-1 H11 V5 H8"/>
         </Button>
         <Button Width="30" ToolTip="Save All (Ctrl+Shift+S)"
                 Command="{Binding ApplicationCommands.SaveAllCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path RenderOptions.EdgeMode="Aliased" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+            <Path RenderOptions.EdgeMode="Aliased" Fill="#812DAB"
                   Data="M0,15 V0 H2 V13 H15 V15 M3,12 V-1 H5 V5 H14 V1 H16 V12 M14,0 H15 V1 H14 M10,-1 H12 V3 H10"/>
         </Button>
 
@@ -40,13 +48,13 @@
         <Button Width="30" ToolTip="Undo (Ctrl+Z)"
                 Command="{Binding ApplicationCommands.UndoCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Width="15" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+            <Path Width="15" Height="16" Stretch="Fill" Fill="#005198"
                   Data="M5.3228061,0.00021910667 C5.4403496,0.00461483 5.525836,0.074941635 5.5258362,0.19550169 L5.5258362,1.7386731 10.121581,1.7386731 C14.49848,1.7386731 18,3.8605336 18,6.4324856 18,9.0044379 14.49848,11.061999 10.121581,11.061999 L5.963526,11.061999 C5.3069909,11.061999 4.869301,10.804805 4.8693011,10.419012 4.869301,10.033219 5.3069909,9.7760239 5.963526,9.7760239 L10.121581,9.7760239 C13.185411,9.7760239 15.81155,8.2971511 15.81155,6.4324856 15.81155,4.5678205 13.185411,3.0246491 10.012158,3.0246491 L5.4164135,3.0246491 5.4164135,4.9536133 C5.4164135,5.1465096 5.1975684,5.2108085 4.9787234,5.082211 L0.16413379,2.767454 C-0.054711342,2.7031551 -0.054711342,2.5102587 0.16413379,2.3816611 L5.088146,0.066904068 C5.1702127,0.018680096 5.2522798,-0.0024180412 5.3228061,0.00021910667 z"/>
         </Button>
         <Button Width="30" ToolTip="Redo (Ctrl+Y)"
                 Command="{Binding ApplicationCommands.RedoCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Width="15" Height="16" Stretch="Fill" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+            <Path Width="15" Height="16" Stretch="Fill" Fill="#005198"
                   Data="M661.333333 341.333333h-179.2C358.4 341.333333 256 443.733333 256 567.466667s102.4 221.866667 221.866667 221.866666H640c25.6 0 42.666667 17.066667 42.666667 42.666667s-17.066667 42.666667-42.666667 42.666667h-162.133333c-170.666667 0-307.2-136.533333-307.2-307.2S307.2 256 477.866667 256h179.2V153.6c0-12.8 8.533333-17.066667 17.066666-8.533333L866.133333 298.666667c8.533333 8.533333 8.533333 21.333333 0 25.6l-187.733333 153.6c-8.533333 8.533333-17.066667 4.266667-17.066667-8.533334V341.333333z"/>
         </Button>
 
@@ -55,8 +63,7 @@
         <Button Width="30" ToolTip="Compile (F5)"
                 Command="{Binding ApplicationCommands.CompileCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                  Data="M0,0 L12,8 0,16 z"/>
+            <Path Fill="Green" Data="M0,0 L12,8 0,16 z"/>
         </Button>
     </StackPanel>
 </UserControl>

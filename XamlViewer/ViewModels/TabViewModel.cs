@@ -279,6 +279,8 @@ namespace XamlViewer.ViewModels
                 Status |= TabStatus.NoSave;
             else
                 Status &= ~(TabStatus.NoSave);
+                
+            SaveCommand.RaiseCanExecuteChanged();
         }
 
         private void OnRequestText(TabInfo tabInfo)
@@ -348,6 +350,8 @@ namespace XamlViewer.ViewModels
 
             MD5Code = FileHelper.ComputeMD5(FileName);
             Status &= ~(TabStatus.NoSave);
+            
+            SaveCommand.RaiseCanExecuteChanged();
         }
 
         private void UpdateStatusToEditor()
