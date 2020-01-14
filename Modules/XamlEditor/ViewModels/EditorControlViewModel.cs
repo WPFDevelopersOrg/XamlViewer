@@ -35,6 +35,7 @@ namespace XamlEditor.ViewModels
 
         public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
         public DelegateCommand DelayArrivedCommand { get; private set; }
+        public DelegateCommand TextChangedCommand { get; private set; }
 
         public DelegateCommand<string> SaveCommand { get; private set; }
         public DelegateCommand CompileCommand { get; private set; }
@@ -74,6 +75,7 @@ namespace XamlEditor.ViewModels
             //Command
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(Loaded);
             DelayArrivedCommand = new DelegateCommand(DelayArrived);
+            TextChangedCommand = new DelegateCommand(TextChanged);
 
             SaveCommand = new DelegateCommand<string>(Save, CanSave);
             _appCommands.SaveCommand.RegisterCommand(SaveCommand);
@@ -284,6 +286,12 @@ namespace XamlEditor.ViewModels
                 Compile();
         }
 
+        private void TextChanged()
+        {
+            UndoCommand.RaiseCanExecuteChanged();
+            RedoCommand.RaiseCanExecuteChanged();
+        }
+
         private bool CanSave(string fileGuid)
         {
             return !IsActive || !IsReadOnly;
@@ -326,34 +334,24 @@ namespace XamlEditor.ViewModels
 
         private bool CanRedo()
         {
-            if (_textEditor == null)
-                return false;
-
-            return _textEditor.CanRedo;
+            return _textEditor != null && _textEditor.CanRedo;
         }
 
         private void Redo()
         {
-            _textEditor.Redo();
-
-            RedoCommand.RaiseCanExecuteChanged();
-            UndoCommand.RaiseCanExecuteChanged();
+            if (_textEditor != null)
+                _textEditor.Redo();
         }
 
         private bool CanUndo()
         {
-            if (_textEditor == null)
-                return false;
-
-            return _textEditor.CanUndo;
+            return _textEditor != null && _textEditor.CanUndo;
         }
 
         private void Undo()
         {
-            _textEditor.Undo();
-
-            RedoCommand.RaiseCanExecuteChanged();
-            UndoCommand.RaiseCanExecuteChanged();
+            if (_textEditor != null)
+                _textEditor.Undo();
         }
 
         #endregion

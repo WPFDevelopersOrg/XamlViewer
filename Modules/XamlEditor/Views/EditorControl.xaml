@@ -33,6 +33,9 @@
                 <behaviors:EventTrigger EventName="DelayArrived">
                     <behaviors:InvokeCommandAction Command="{Binding DelayArrivedCommand}"/>
                 </behaviors:EventTrigger>
+                <behaviors:EventTrigger EventName="TextChanged">
+                    <behaviors:InvokeCommandAction Command="{Binding TextChangedCommand}"/>
+                </behaviors:EventTrigger>
             </behaviors:Interaction.Triggers>
         </controls:TextEditorEx>
     </Grid>

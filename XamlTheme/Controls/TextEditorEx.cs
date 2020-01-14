@@ -51,12 +51,12 @@ namespace XamlTheme.Controls
 
         public bool CanRedo
         {
-            get { return _partTextEditor != null ? _partTextEditor.CanRedo : false; }
+            get { return _partTextEditor != null && _partTextEditor.CanRedo; }
         }
 
         public bool CanUndo
         {
-            get { return _partTextEditor != null ? _partTextEditor.CanUndo : false; }
+            get { return _partTextEditor != null && _partTextEditor.CanUndo; }
         }
 
         static TextEditorEx()
@@ -73,6 +73,13 @@ namespace XamlTheme.Controls
         }
 
         #region RouteEvent
+
+        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged", RoutingStrategy.Bubble, typeof(RoutedEventArgs), _typeofSelf);
+        public event RoutedEventHandler TextChanged
+        {
+            add { AddHandler(TextChangedEvent, value); }
+            remove { RemoveHandler(TextChangedEvent, value); }
+        }
 
         public static readonly RoutedEvent DelayArrivedEvent = EventManager.RegisterRoutedEvent("DelayArrived", RoutingStrategy.Bubble, typeof(RoutedEventArgs), _typeofSelf);
         public event RoutedEventHandler DelayArrived
@@ -314,6 +321,7 @@ namespace XamlTheme.Controls
         private void _partTextEditor_TextChanged(object sender, EventArgs e)
         {
             RefreshFoldings();
+            RaiseEvent(new RoutedEventArgs(TextChangedEvent));
 
             if (_disabledTimer)
             {
