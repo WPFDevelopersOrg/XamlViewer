@@ -245,6 +245,18 @@
     <Resource Include="Assets\Images\Question.png" />
     <Resource Include="Assets\Images\Warning.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Compile.png" />
+    <Resource Include="Assets\Icons\NewFile.png" />
+    <Resource Include="Assets\Icons\OpenFolder.png" />
+    <Resource Include="Assets\Icons\Question.png" />
+    <Resource Include="Assets\Icons\Redo.png" />
+    <Resource Include="Assets\Icons\Save.png" />
+    <Resource Include="Assets\Icons\SaveAll.png" />
+    <Resource Include="Assets\Icons\SyncArrow.png" />
+    <Resource Include="Assets\Icons\Undo.png" />
+    <Resource Include="Assets\Icons\XAML.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

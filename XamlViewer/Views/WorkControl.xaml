@@ -39,7 +39,7 @@
                     Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
                 <Path RenderOptions.EdgeMode="Aliased" 
                       Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
-                      Data="M0,4 H5 V3 H0 M1,3 H4 V2 H1 M2,2 H3 V1 H2 M2,4 H3 V11 H2 M8,-1 H9 V6 H8 M6,6 H11 V7 H6 M7,7 H10 V8 H7 M8,8 H9 V9 H8 z"/>
+                      Data="M0,4 H5 V3 H0 M1,3 H4 V2 H1 M2,2 H3 V1 H2 M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 H11 V8 H6 M7,8 H10 V9 H7 M8,9 H9 V10 H8 z"/>
             </Button>
 
             <RadioButton Grid.Column="2" Width="35" ToolTip="Vertical Split"

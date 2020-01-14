@@ -34,16 +34,16 @@
                 Command="{Binding ApplicationCommands.SaveCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
             <Path RenderOptions.EdgeMode="Aliased" Fill="#812DAB"
-                  Data="M0,7 V-1 H3 V7 H13 V2 H16 V15 H0 M13,2 H15 V1 H13 M13,1 H14 V0 H13 M8,-1 H11 V5 H8"/>
+                  Data="M0,0 H3V8 H13V1 H14V2 H15V3 H16V16 H0 M8,0 H11V6 H8"/>
         </Button>
         <Button Width="30" ToolTip="Save All (Ctrl+Shift+S)"
                 Command="{Binding ApplicationCommands.SaveAllCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
             <Path RenderOptions.EdgeMode="Aliased" Fill="#812DAB"
-                  Data="M0,15 V0 H2 V13 H15 V15 M3,12 V-1 H5 V5 H14 V1 H16 V12 M14,0 H15 V1 H14 M10,-1 H12 V3 H10"/>
+                  Data="M0,1 V16 H15V14 H2V1 M3,0 H5V6 H14V1 H15V2 H16V13 H3 M10,0 H12V4 H10Z"/>
         </Button>
 
-        <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3"/>
+        <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3,5"/>
 
         <Button Width="30" ToolTip="Undo (Ctrl+Z)"
                 Command="{Binding ApplicationCommands.UndoCommand}"
@@ -58,7 +58,7 @@
                   Data="M661.333333 341.333333h-179.2C358.4 341.333333 256 443.733333 256 567.466667s102.4 221.866667 221.866667 221.866666H640c25.6 0 42.666667 17.066667 42.666667 42.666667s-17.066667 42.666667-42.666667 42.666667h-162.133333c-170.666667 0-307.2-136.533333-307.2-307.2S307.2 256 477.866667 256h179.2V153.6c0-12.8 8.533333-17.066667 17.066666-8.533333L866.133333 298.666667c8.533333 8.533333 8.533333 21.333333 0 25.6l-187.733333 153.6c-8.533333 8.533333-17.066667 4.266667-17.066667-8.533334V341.333333z"/>
         </Button>
 
-        <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3"/>
+        <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3,5"/>
 
         <Button Width="30" ToolTip="Compile (F5)"
                 Command="{Binding ApplicationCommands.CompileCommand}"
