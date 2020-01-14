@@ -21,11 +21,11 @@
         <TextBlock Grid.Column="1" FontSize="13" VerticalAlignment="Center" Text="{Binding Message}"/>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Width="60" Height="27" Content="Ignore" IsDefault="True"
+            <Button Width="60" Height="27" Content="Ignore"
                     Style="{StaticResource {x:Static themes:ResourceKeys.NormalButtonStyleKey}}"
                     Visibility="{Binding IgnoreVisibility}"
                     Command="{Binding IgnoreCommand}"/>
-            <Button Width="60" Height="27" Content="Yes" Margin="15,0,0,0"
+            <Button Width="60" Height="27" Content="Yes" Margin="15,0,0,0" IsDefault="True"
                     Style="{StaticResource {x:Static themes:ResourceKeys.NormalButtonStyleKey}}"
                     Visibility="{Binding YesVisibility}"
                     Command="{Binding YesCommand}"/>
@@ -33,7 +33,7 @@
                     Style="{StaticResource {x:Static themes:ResourceKeys.NormalButtonStyleKey}}"
                     Visibility="{Binding NoVisibility}"
                     Command="{Binding NoCommand}"/>
-            <Button Width="60" Height="27" Content="OK" Margin="15,0,0,0"
+            <Button Width="60" Height="27" Content="OK" Margin="15,0,0,0" IsDefault="True"
                     Style="{StaticResource {x:Static themes:ResourceKeys.NormalButtonStyleKey}}"
                     Visibility="{Binding OKVisibility}"
                     Command="{Binding OKCommand}"/>

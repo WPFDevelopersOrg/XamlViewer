@@ -5,6 +5,6 @@
                      xmlns:prism="http://prismlibrary.com/"
                      xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
                      Style="{StaticResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
-                     SizeToContent="WidthAndHeight" ResizeMode="NoResize" ShowInTaskbar="False"
+                     SizeToContent="WidthAndHeight" ResizeMode="NoResize" ShowInTaskbar="False" IsCloseCanceled="True"
                      prism:Dialog.WindowStartupLocation="CenterScreen"
                      Title="XAML Viewer" Background="White" MinWidth="350" CaptionFontSize="13" CaptionHeight="27"/>
