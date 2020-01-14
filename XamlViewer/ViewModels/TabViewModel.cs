@@ -138,12 +138,16 @@ namespace XamlViewer.ViewModels
             {
                 SetProperty(ref _isSelected, value);
 
-                InitWorkArea();
-
                 if (_workControl != null)
+                {
                     _workControl.Visibility = _isSelected ? Visibility.Visible : Visibility.Hidden;
-
-                UpdateSelectInfo();
+                    UpdateSelectInfo();
+                }
+                else
+                {
+                    if (_isSelected)
+                        InitWorkArea();
+                }
             }
         } 
 

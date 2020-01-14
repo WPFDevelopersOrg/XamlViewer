@@ -342,10 +342,9 @@ namespace XamlViewer.ViewModels
             SaveAllCommand.RaiseCanExecuteChanged();
 
             //Work Area
-            foreach (var curTab in XamlTabs)
-            {
-                curTab.InitWorkArea();
-            } 
+            var selectedTab = XamlTabs.FirstOrDefault(tab => tab.IsSelected);
+            if (selectedTab != null)
+                selectedTab.InitWorkArea();
 
             _isWorkAreaIniting = false;
 
