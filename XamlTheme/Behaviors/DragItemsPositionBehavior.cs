@@ -14,6 +14,7 @@ namespace XamlTheme.Behaviors
     public class DragItemsPositionBehavior : Behavior<Panel>
     {
         private Point _cacheMouseDownToChildPos;
+        private Point _cacheMouseDownToPanelPos;
         private Point _cacheChildToPanelPos;
         private UIElement _dragedChild = null;
 
@@ -142,6 +143,35 @@ namespace XamlTheme.Behaviors
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
+            var curPos = e.GetPosition(AssociatedObject);
+            var xMoveDis = curPos.X - _cacheMouseDownToPanelPos.X;
+            var yMoveDis = curPos.Y - _cacheMouseDownToPanelPos.Y;
+            
+            var canXMove = DoubleUtil.GreaterThanOrClose(Math.Abs(xMoveDis), SystemParameters.MinimumHorizontalDragDistance);
+            var canYMove = DoubleUtil.GreaterThanOrClose(Math.Abs(yMoveDis), SystemParameters.MinimumVerticalDragDistance);
+            
+            if (DisabledYPosition)
+            {
+                if(!canXMove)
+                    return;
+                
+                //adjust
+                _cacheMouseDownToChildPos.X += xMoveDis;
+                _cacheChildToPanelPos.X += xMoveDis;
+            }
+            else
+            {
+                if(!canXMove && !canYMove)
+                    return;
+                
+                //adjust
+                _cacheMouseDownToChildPos.X += xMoveDis;
+                _cacheChildToPanelPos.X += xMoveDis;
+                
+                _cacheMouseDownToChildPos.Y += yMoveDis;
+                _cacheChildToPanelPos.Y += yMoveDis;
+            }
+            
             StartDrag();
         }
 
@@ -157,6 +187,7 @@ namespace XamlTheme.Behaviors
                 var hitResult = VisualTreeHelper.HitTest(child, _cacheMouseDownToChildPos);
                 if (hitResult != null)
                 {
+                    _cacheMouseDownToPanelPos = e.GetPosition(AssociatedObject);
                     _cacheChildToPanelPos = child.TranslatePoint(new Point(), AssociatedObject);
                     _dragedChild = child;
 					
