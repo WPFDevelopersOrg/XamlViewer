@@ -4,6 +4,7 @@
              xmlns:ms="clr-namespace:XamlService;assembly=XamlService"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+             xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              xmlns:utils="clr-namespace:XamlViewer.Utils"
              prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
@@ -37,32 +38,51 @@
             <Button Width="35" ToolTip="Swap Panes"
                     Command="{Binding SwapCommand}"
                     Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-                <Path RenderOptions.EdgeMode="Aliased" 
-                      Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
-                      Data="M0,4 H5 V3 H0 M1,3 H4 V2 H1 M2,2 H3 V1 H2 M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 H11 V8 H6 M7,8 H10 V9 H7 M8,9 H9 V10 H8 z"/>
+                <controls:DpiElement Width="11" Height="11">
+                    <controls:DpiElement.NormalDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
+                                         Geometry="M0,4 H5 V3 H0 M1,3 H4 V2 H1 M2,2 H3 V1 H2 M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 H11 V8 H6 M7,8 H10 V9 H7 M8,9 H9 V10 H8 z" />
+                    </controls:DpiElement.NormalDrawing>
+                    <controls:DpiElement.HDPIDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
+                                         Geometry="M0,4 L2.5,1 5,4z M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 L8.5,10 11,7z" />
+                    </controls:DpiElement.HDPIDrawing>
+                </controls:DpiElement>
             </Button>
 
             <RadioButton Grid.Column="2" Width="35" ToolTip="Vertical Split"
                          Command="{Binding VerSplitCommand}"
                          Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
-                <Path RenderOptions.EdgeMode="Aliased" 
-                      Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                      Data="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z">
-                    <Path.LayoutTransform>
+                <controls:DpiElement Width="13" Height="13">
+                    <controls:DpiElement.LayoutTransform>
                         <RotateTransform Angle="{Binding VerSplitAngle}"/>
-                    </Path.LayoutTransform>
-                </Path>
+                    </controls:DpiElement.LayoutTransform>
+                    <controls:DpiElement.NormalDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                         Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                    </controls:DpiElement.NormalDrawing>
+                    <controls:DpiElement.HDPIDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                         Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                    </controls:DpiElement.HDPIDrawing>
+                </controls:DpiElement>
             </RadioButton>
             <RadioButton Grid.Column="3" Width="35" ToolTip="Horizontal Split" IsChecked="True"
                          Command="{Binding HorSplitCommand}"
                          Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
-                <Path RenderOptions.EdgeMode="Aliased" 
-                      Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                      Data="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z">
-                    <Path.LayoutTransform>
+                <controls:DpiElement Width="13" Height="13">
+                    <controls:DpiElement.LayoutTransform>
                         <RotateTransform Angle="{Binding HorSplitAngle}"/>
-                    </Path.LayoutTransform>
-                </Path>
+                    </controls:DpiElement.LayoutTransform>
+                    <controls:DpiElement.NormalDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                         Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                    </controls:DpiElement.NormalDrawing>
+                    <controls:DpiElement.HDPIDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                         Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                    </controls:DpiElement.HDPIDrawing>
+                </controls:DpiElement>
             </RadioButton>
         </Grid>
         <!--Editor-->

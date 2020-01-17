@@ -51,9 +51,16 @@
             <Button Grid.Column="3" ToolTip="Help" Width="37"
                     Command="{Binding AppCommands.HelpCommand}"
                     Style="{StaticResource {x:Static themes:ResourceKeys.TitlebarButtonStyleKey}}">
-                <Path VerticalAlignment="Center" HorizontalAlignment="Center"
-                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" 
-                      RenderOptions.EdgeMode="Aliased" Data="M1,0 H5V1 H6V5 H5V6 H4V7 H2V5 H3V4 H4V2 H2V4 H0V1 H1 M2,8 H4V10 H2z"/>
+                <controls:DpiElement Width="6" Height="10">
+                    <controls:DpiElement.NormalDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                         Geometry="M1,0 H5V1 H6V5 H5V6 H4V7 H2V5 H3V4 H4V2 H2V4 H0V1 H1 M2,8 H4V10 H2z" />
+                    </controls:DpiElement.NormalDrawing>
+                    <controls:DpiElement.HDPIDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                         Geometry="M0.11866834,4.2522464 L1.8049657,4.2569221 C1.388299,3.5902555 1.458125,2.55525 1.8883161,2.1054232 2.392598,1.448111 4.208125,1.337 4.59875,2.289625 4.91125,2.80575 4.8175,3.587 4.5675,4.133375 3.9529337,4.9511261 2.801875,5.540125 2.424566,6.4184232 2.4109517,6.4501147 2.408941,6.9491732 2.4091324,7.3194221 L4.3726911,7.3085482 C4.388316,7.1527982 4.376973,6.698111 4.3800214,6.5013307 4.3825953,6.3351778 4.9820661,6.1054232 5.7214798,5.3714095 6.7460168,3.9340482 6.3743974,2.1389081 5.9918812,1.4072938 5.76575,0.9747873 5.422,0.6461623 4.9716323,0.39874929 4.3595,0.17526151 3.84875,-0.094416004 2.7112157,0.032632119 0.71861567,0.16528894 -0.37730895,1.6532982 0.11866834,4.2522464 z M2.3674657,10.048589 L4.3674657,10.048589 4.3674657,8.0485887 2.3674657,8.0485887 z" />
+                    </controls:DpiElement.HDPIDrawing>
+                </controls:DpiElement>
             </Button>
         </Grid>
     </controls:UserWindow.CaptionContent>

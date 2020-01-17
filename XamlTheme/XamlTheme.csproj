@@ -59,6 +59,7 @@
     <Compile Include="Adorners\MousePanelAdorner.cs" />
     <Compile Include="Behaviors\DragItemsPositionBehavior.cs" />
     <Compile Include="Controls\CompletionWindowEx.cs" />
+    <Compile Include="Controls\DpiElement.cs" />
     <Compile Include="Controls\Hyperlink.xaml.cs">
       <DependentUpon>Hyperlink.xaml</DependentUpon>
     </Compile>
