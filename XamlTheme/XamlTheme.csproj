@@ -92,6 +92,7 @@
     <Compile Include="Datas\TextBoxValueChangedEventArgs.cs" />
     <Compile Include="ResourceKeys.cs" />
     <Compile Include="Utils\ColorUtil.cs" />
+    <Compile Include="Utils\Common.cs" />
     <Compile Include="Utils\Converters.cs" />
     <Compile Include="Utils\DpiUtil.cs" />
     <Compile Include="Utils\GridSplitterUtil.cs" />

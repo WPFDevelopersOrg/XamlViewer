@@ -20,7 +20,6 @@ namespace XamlEditor.ViewModels
     {
         private string _fileGuid = null;
         private bool _isReseting = false;
-        private bool _isLoadedFile = false;
 
         private XsdParser _xsdParser = null;
         private TextEditorEx _textEditor = null;
@@ -103,19 +102,11 @@ namespace XamlEditor.ViewModels
                 if (SetProperty(ref _isSelected, value))
                 {
                     if (_isSelected)
-                    {
-                        if (_eventAggregator != null && !_isLoadedFile)
-                        {
-                            _eventAggregator.GetEvent<RequestSettingEvent>().Publish(_fileGuid);
-                            _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo {Guid = _fileGuid});
-                        }
-                        else
-                        {
-                            if (_textEditor != null)
-                                _textEditor.Focus();
+                    { 
+                        if (_textEditor != null)
+                            _textEditor.Focus();
 
-                            CaretPosChanged();
-                        }
+                        CaretPosChanged();
                     }
                 }
             }
@@ -276,7 +267,12 @@ namespace XamlEditor.ViewModels
             if(selectInfo!=null)
             {
                 _fileGuid = selectInfo.Guid;
-                IsActive = IsSelected = selectInfo.IsSelected;
+
+                IsActive = selectInfo.IsSelected;
+                IsSelected = selectInfo.IsSelected;
+
+                _eventAggregator.GetEvent<RequestSettingEvent>().Publish(_fileGuid);
+                _eventAggregator.GetEvent<RequestTextEvent>().Publish(new TabInfo { Guid = _fileGuid });
             }
         }
 
@@ -377,8 +373,6 @@ namespace XamlEditor.ViewModels
             if (tabInfo.Guid != _fileGuid || _textEditor == null)
                 return;
 
-            _isLoadedFile = true;
-
             Reset(() =>
             {
                 _fileGuid = tabInfo.Guid;
@@ -412,7 +406,8 @@ namespace XamlEditor.ViewModels
             if (info.Guid != _fileGuid)
                 return;
 
-            IsActive = IsSelected = info.IsSelected;
+            IsActive = info.IsSelected;
+            IsSelected = info.IsSelected;
         }
 
         #endregion

@@ -180,6 +180,10 @@ namespace XamlTheme.Behaviors
             if (AssociatedObject.Children == null || AssociatedObject.Children.Count == 0)
                 return;
 
+            var button = Utils.Common.FindVisualParent<Button>(e.OriginalSource as DependencyObject);
+            if (button != null)
+                return;
+
             foreach (UIElement child in AssociatedObject.Children)
             {
                 _cacheMouseDownToChildPos = e.GetPosition(child);

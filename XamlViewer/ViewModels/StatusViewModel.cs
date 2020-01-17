@@ -1,5 +1,6 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XamlService.Events;
@@ -12,6 +13,7 @@ namespace XamlViewer.ViewModels
     {
         private IEventAggregator _eventAggregator = null;
         private HashSet<ProcessStatus> _processStatuses = null;
+        private readonly object _statusLock = new object();
 
         public StatusViewModel(IEventAggregator eventAggregator)
         {
@@ -48,32 +50,46 @@ namespace XamlViewer.ViewModels
             switch (info.status)
             {
                 case ProcessStatus.FinishCompile:
-                    _processStatuses.Remove(ProcessStatus.Compile);
+                    LockAction(() => _processStatuses.Remove(ProcessStatus.Compile));
                     break;
 
                 case ProcessStatus.FinishSave:
-                    _processStatuses.Remove(ProcessStatus.Save);
+                    LockAction(() => _processStatuses.Remove(ProcessStatus.Save));
                     break;
 
                 case ProcessStatus.FinishLoadFonts:
-                    _processStatuses.Remove(ProcessStatus.LoadFonts);
+                    LockAction(() => _processStatuses.Remove(ProcessStatus.LoadFonts));
                     break;
 
                 default:
-                    _processStatuses.Add(info.status);
+                    LockAction(() => _processStatuses.Add(info.status));
                     break;
             }
 
-            if (_processStatuses.Count == 0)
-                CurrentStatus = "Ready";
-            else
-                CurrentStatus = ResourcesMap.ProcessStatusDic[_processStatuses.Min()];
+            LockAction(() =>
+            {
+                if (_processStatuses.Count == 0)
+                    CurrentStatus = "Ready";
+                else
+                    CurrentStatus = ResourcesMap.ProcessStatusDic[_processStatuses.Min()];
+            });
         }
 
         private void OnCaretPosition(CaretPosition pos)
         {
             CaretLine = pos.Line;
             CaretColumn = pos.Column;
+        }
+
+        private void LockAction(Action action)
+        {
+            if (action == null)
+                return;
+
+            lock(_statusLock)
+            {
+                action();
+            }
         }
     }
 }

@@ -436,8 +436,11 @@ namespace XamlViewer.ViewModels
         {
             UnsubscribeEventAndCommands();
 
-            _regionManager.Regions[RegionNames.WorkName].Remove(_workControl);
-            _workControl = null;
+            if(_workControl!=null)
+            {
+                _regionManager.Regions[RegionNames.WorkName].Remove(_workControl);
+                _workControl = null;
+            }
         }
 
         #endregion

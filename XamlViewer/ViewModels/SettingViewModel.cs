@@ -19,7 +19,8 @@ using XamlUtil.Common;
 using XamlViewer.Models;
 using XamlViewer.Utils;
 using SWF = System.Windows.Forms;
-using Common = XamlViewer.Utils.Common;
+using UCommon = XamlViewer.Utils.Common;
+using TCommon = XamlTheme.Utils.Common;
 
 namespace XamlViewer.ViewModels
 {
@@ -276,7 +277,7 @@ namespace XamlViewer.ViewModels
             var listBox = e.Source as ListBox;
             if (listBox != null)
             {
-                var svChild = Common.FindVisualChild<ScrollViewer>(listBox);
+                var svChild = TCommon.FindVisualChild<ScrollViewer>(listBox);
                 if (svChild != null && DoubleUtil.GreaterThan(svChild.ScrollableHeight, 0))
                     return;
             }
@@ -284,7 +285,7 @@ namespace XamlViewer.ViewModels
             var sv = e.Source as ScrollViewer;
             if (sv == null)
             {
-                sv = Common.FindLogicParent<ScrollViewer>(e.Source as DependencyObject);
+                sv = TCommon.FindLogicParent<ScrollViewer>(e.Source as DependencyObject);
                 if (sv == null)
                     return;
             }
@@ -314,7 +315,7 @@ namespace XamlViewer.ViewModels
 
         private void ApplyEditorConfig()
         {
-            _eventAggregator.GetEvent<SettingChangedEvent>().Publish(Common.GetCurrentSettings(_appData.Config));
+            _eventAggregator.GetEvent<SettingChangedEvent>().Publish(UCommon.GetCurrentSettings(_appData.Config));
         }
 
         #endregion
