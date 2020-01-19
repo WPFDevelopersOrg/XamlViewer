@@ -31,14 +31,14 @@
             <controls:DpiElement Width="16" Height="16">
                 <controls:DpiElement.NormalDrawing>
                     <DrawingGroup>
-                        <GeometryDrawing Brush="#E27713" Geometry="M9,1 H16V16 H3V15 H2V13 H1V11 H0V7 H1V8 H2V9 H5V8 H6V7 H13V11 H14V14 H15V2 H9 M10,3 H13V4 H10" />
-                        <GeometryDrawing Brush="#005198" Geometry="M4,0 H6V1 H7V2 H8V4 H7V5 H6V6 H4V5 H5V4 H2V6 H3V7 H4V8 H2V7 H1V6 H0V3 H1V2 H5V1 H4" />
+                        <GeometryDrawing Brush="#005198" Geometry="M9,1 H16V16 H3V15 H2V13 H1V11 H0V7 H1V8 H2V9 H5V8 H6V7 H13V11 H14V14 H15V2 H9 M10,3 H13V4 H10" />
+                        <GeometryDrawing Brush="#FF5400" Geometry="M4,0 H6V1 H7V2 H8V4 H7V5 H6V6 H4V5 H5V4 H2V6 H3V7 H4V8 H2V7 H1V6 H0V3 H1V2 H5V1 H4" />
                     </DrawingGroup>
                 </controls:DpiElement.NormalDrawing>
                 <controls:DpiElement.HDPIDrawing>
                     <DrawingGroup>
-                        <GeometryDrawing Brush="#E27713" Geometry="M9,1 H16V16 H3V15 L0,9 H5 L6,7 H11 L14,14 H15V2 H9 M10,3 H13V4 H10" />
-                        <GeometryDrawing Brush="#005198" Geometry="M3.965131,0 L7.965131,3 3.965131,6 3.965131,4 C0.59520723,4.1666667 2.965131,6.45 3.965131,8 2.6640172,7.6579617 1.1458614,6.125 0.81048457,5.7875 0.19586141,4.925 -1.7241539,2.2 3.965131,2" />
+                        <GeometryDrawing Brush="#005198" Geometry="M9,1 H16V16 H3V15 L0,9 H5 L6,7 H11 L14,14 H15V2 H9 M10,3 H13V4 H10" />
+                        <GeometryDrawing Brush="#FF5400" Geometry="M3.965131,0 L7.965131,3 3.965131,6 3.965131,4 C0.59520723,4.1666667 2.965131,6.45 3.965131,8 2.6640172,7.6579617 1.1458614,6.125 0.81048457,5.7875 0.19586141,4.925 -1.7241539,2.2 3.965131,2" />
                     </DrawingGroup>
                 </controls:DpiElement.HDPIDrawing>
             </controls:DpiElement>
