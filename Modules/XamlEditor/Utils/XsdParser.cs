@@ -81,20 +81,50 @@ namespace XamlEditor.Utils
         {
             var results = new List<string>();
 
-            var element = GetElement(parentElementName);
-            GetChildElements(element, results);
+            if (parentElementName.Contains("."))
+            {
+                var element = GetElement(parentElementName.Split('.')[0]);
+
+                var elements = new List<XmlSchemaElement>();
+                GetAttributesFromElements(element, elements);
+
+                element = elements.FirstOrDefault(e => e.Name == parentElementName);
+                if (element != null)
+                {
+                    var complexType = element.ElementSchemaType as XmlSchemaComplexType;
+                    if (complexType != null)
+                    {
+                        var choice = complexType.Particle as XmlSchemaChoice;
+                        GetChildElements(choice, results);
+                    }
+                }
+            }
+            else
+            {
+                var element = GetElement(parentElementName);
+                GetChildElements(element, results);
+            }
 
             return results.OrderBy(s => s).ToList();
         }
 
         public List<string> GetAttributes(string elementName)
         {
-            var results = new List<XmlSchemaAttribute>();
-
             var element = GetElement(elementName);
-            GetAttributes(element, results);
 
-            return results.Select(a => a.Name.Contains(".") ? a.Name.Split('.')[0] : a.Name).Distinct().OrderBy(n => n).ToList();
+            var attributes = new List<XmlSchemaAttribute>();
+            GetAttributes(element, attributes);
+
+            var elements = new List<XmlSchemaElement>();
+            GetAttributesFromElements(element, elements);
+
+            if (elements.Count == 0)
+                return attributes.Select(a => a.Name.Contains(".") ? a.Name.Split('.')[1] : a.Name).Distinct().OrderBy(n => n).ToList();
+
+            var resultsFromElemts = elements.Select(a => a.Name.Contains(".") ? a.Name.Split('.')[1] : a.Name).ToList();
+            resultsFromElemts.AddRange(attributes.Select(a => a.Name.Contains(".") ? a.Name.Split('.')[1] : a.Name));
+
+            return resultsFromElemts.Distinct().OrderBy(n => n).ToList();
         }
 
         //x:...
@@ -160,12 +190,12 @@ namespace XamlEditor.Utils
                 if (xse != null)
                 {
                     var name = xse.RefName.Name;
-                    if(!string.IsNullOrEmpty(name))
+                    if (!string.IsNullOrEmpty(name))
                     {
-                    	if(char.IsUpper(name, 0))
-                    		resultElements.Add(name);
-                    	else if(name.StartsWith("sg"))
-                    		resultElements.Add(name.Substring(2));
+                        if (char.IsUpper(name, 0))
+                            resultElements.Add(name);
+                        else if (name.StartsWith("sg"))
+                            resultElements.Add(name.Substring(2));
                     }
 
                     continue;
@@ -228,16 +258,52 @@ namespace XamlEditor.Utils
             return results.FirstOrDefault(a => a.Name == attributeName);
         }
 
+        private void GetAttributesFromElements(XmlSchemaElement element, List<XmlSchemaElement> resultAttributes)
+        {
+            if (element == null)
+                return;
+
+            var complexType = element.ElementSchemaType as XmlSchemaComplexType;
+            if (complexType == null)
+                return;
+
+            //just for Sequence
+            var sequence = complexType.Particle as XmlSchemaSequence;
+            if (sequence != null)
+            {
+                //just parse first peXXXX
+                foreach (var item in sequence.Items)
+                {
+                    var group = item as XmlSchemaGroupRef;
+                    if (group == null || !group.RefName.Name.StartsWith("pe"))
+                        continue;
+
+                    var choice = group.Particle as XmlSchemaChoice;
+                    if (choice == null)
+                        break;
+
+                    foreach (var c in choice.Items)
+                    {
+                        var xse = c as XmlSchemaElement;
+                        if (xse != null && !string.IsNullOrEmpty(xse.Name))
+                            resultAttributes.Add(xse);
+                    }
+
+                    break;
+                }
+            }
+        }
+
         private void GetAttributes(XmlSchemaElement element, List<XmlSchemaAttribute> resultAttributes)
         {
             if (element == null)
                 return;
 
             var complexType = element.ElementSchemaType as XmlSchemaComplexType;
-            if (complexType != null)
-            {
-                GetAttributes(complexType.Attributes, resultAttributes);
-            }
+            if (complexType == null)
+                return;
+
+            GetAttributes(complexType.Attributes, resultAttributes);
         }
 
         private void GetAttributes(string attributeGroupName, List<XmlSchemaAttribute> resultAttributes)

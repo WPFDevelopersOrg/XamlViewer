@@ -264,13 +264,13 @@ namespace XamlTheme.Controls
                         break;
                     }
             }
-        } 
+        }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            UnsubscribeEvents(); 
+            UnsubscribeEvents();
 
             _partTextEditor = GetTemplateChild(TextEditorTemplateName) as TextEditor;
 
@@ -376,15 +376,13 @@ namespace XamlTheme.Controls
                     {
                         var parentOffset = -1;
                         var parentElement = GetParentElement(offset - 2, ref parentOffset);
-                        if (!parentElement.Contains("."))
+
+                        var elements = GenerateCompletionData(parentElement, null, null);
+                        if (elements.Count > 0)
                         {
-                            var elements = GenerateCompletionData(parentElement, null, null);
-                            if (elements.Count > 0)
-                            {
-                                elements.Insert(0, @"!--");
-                                elements.Insert(1, @"![CDATA[");
-                                ShowCompletionWindow(elements);
-                            }
+                            elements.Insert(0, @"!--");
+                            elements.Insert(1, @"![CDATA[");
+                            ShowCompletionWindow(elements);
                         }
 
                         break;
@@ -907,7 +905,7 @@ namespace XamlTheme.Controls
             EventHandler handler = null;
             handler = (s, e) =>
             {
-                AfterCloseCompletionWindow(handler); 
+                AfterCloseCompletionWindow(handler);
             };
 
             _completionWindow.Closed -= handler;
