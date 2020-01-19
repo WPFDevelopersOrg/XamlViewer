@@ -9,6 +9,7 @@ using XamlService.Payloads;
 using Prism.Commands;
 using XamlDesigner.Views;
 using Prism.Regions;
+using System.Windows.Media;
 
 namespace XamlDesigner.ViewModels
 {
@@ -43,7 +44,7 @@ namespace XamlDesigner.ViewModels
 
             var selectInfo = (TabSelectInfo)(RegionContext.GetObservableContext(designerControl).Value);
             if (selectInfo != null)
-                _fileGuid = selectInfo.Guid; 
+                _fileGuid = selectInfo.Guid;
         }
 
         private void OnRefreshDesigner(TabInfo tabInfo)
@@ -55,24 +56,43 @@ namespace XamlDesigner.ViewModels
 
             try
             {
-                Element = XamlReader.Parse(tabInfo.FileContent) as FrameworkElement;
+                var obj = XamlReader.Parse(tabInfo.FileContent);
+
+                var window = obj as Window;
+                if (window != null)
+                {
+                    ShowLocalText("Window", 15);
+
+                    window.Owner = Application.Current.MainWindow;
+                    window.Show();
+                }
+                else
+                {
+                    Element = obj as FrameworkElement;
+                }
             }
             catch (Exception ex)
             {
-                Element = new TextBlock
-                {
-                    Text = "Error: " + ex.Message,
-                    Margin = new Thickness(5),
-                    FontSize = 14,
-                    FontWeight = FontWeights.Medium,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                };
+                ShowLocalText("Error: " + ex.Message);
             }
             finally
             {
                 _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.FinishCompile, Guid = _fileGuid });
             }
+        }
+
+        private void ShowLocalText(string text, double fontSize = 14d)
+        {
+            Element = new TextBlock
+            {
+                Text = text,
+                Margin = new Thickness(5),
+                FontSize = fontSize,
+                Foreground = Brushes.DarkSlateGray,
+                FontWeight = FontWeights.Medium,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
         }
 
         public void Dispose()
