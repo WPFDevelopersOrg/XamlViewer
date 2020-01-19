@@ -203,14 +203,7 @@ namespace XamlEditor.ViewModels
         public bool AutoCompile
         {
             get { return _autoCompile; }
-            set
-            {
-                if (SetProperty(ref _autoCompile, value))
-                {
-                    if (_autoCompile)
-                        Compile();
-                }
-            }
+            set { SetProperty(ref _autoCompile, value); }
         }
 
         private double _autoCompileDelay = 1d;
@@ -389,7 +382,8 @@ namespace XamlEditor.ViewModels
                 _textEditor.Focus();
                 CaretPosChanged();
 
-                Compile(tabInfo.FileContent);
+                if (AutoCompile || IsReadOnly)
+                    Compile(tabInfo.FileContent);
             }
         }
 
