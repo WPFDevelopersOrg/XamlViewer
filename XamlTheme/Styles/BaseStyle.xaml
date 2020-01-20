@@ -33,7 +33,6 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="#C2C2C4"/>
                 <Setter Property="Opacity" Value="0.3"/>
             </Trigger>
         </Style.Triggers>
