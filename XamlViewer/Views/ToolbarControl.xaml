@@ -10,62 +10,62 @@
         <Button Width="30" ToolTip="New (Ctrl+N)" 
                 Command="{Binding ApplicationCommands.NewCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <controls:DpiElement Width="14" Height="16">
-                <controls:DpiElement.NormalDrawing>
+            <controls:DrawingIcon Width="14" Height="16">
+                <controls:DrawingIcon.NormalDrawing>
                     <DrawingGroup>
                         <GeometryDrawing Brush="#005198" Geometry="M0,0 H10V1 H11V2 H12V3 H13V4 H14V16 H0V0 M1,1 H9V5 H13V15 H1" />
                         <GeometryDrawing Brush="#FF5400" Geometry="M6,6 H7V13 H6 M3,9 H6V10 H3 M7,9 H10V10 H7" />
                     </DrawingGroup>
-                </controls:DpiElement.NormalDrawing>
-                <controls:DpiElement.HDPIDrawing>
+                </controls:DrawingIcon.NormalDrawing>
+                <controls:DrawingIcon.HDPIDrawing>
                     <DrawingGroup>
                         <GeometryDrawing Brush="#005198" Geometry="M0,0 H10 L14,4 V16 H0V0 M1,1 H9V5 H13V15 H1" />
                         <GeometryDrawing Brush="#FF5400" Geometry="M6,6 H7V13 H6 M3,9 H6V10 H3 M7,9 H10V10 H7" />
                     </DrawingGroup>
-                </controls:DpiElement.HDPIDrawing>
-            </controls:DpiElement>
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
         </Button> 
         <Button Width="30" ToolTip="Open (Ctrl+O)"
                 Command="{Binding ApplicationCommands.OpenCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <controls:DpiElement Width="16" Height="16">
-                <controls:DpiElement.NormalDrawing>
+            <controls:DrawingIcon Width="16" Height="16">
+                <controls:DrawingIcon.NormalDrawing>
                     <DrawingGroup>
                         <GeometryDrawing Brush="#005198" Geometry="M9,1 H16V16 H3V15 H2V13 H1V11 H0V7 H1V8 H2V9 H5V8 H6V7 H13V11 H14V14 H15V2 H9 M10,3 H13V4 H10" />
                         <GeometryDrawing Brush="#FF5400" Geometry="M4,0 H6V1 H7V2 H8V4 H7V5 H6V6 H4V5 H5V4 H2V6 H3V7 H4V8 H2V7 H1V6 H0V3 H1V2 H5V1 H4" />
                     </DrawingGroup>
-                </controls:DpiElement.NormalDrawing>
-                <controls:DpiElement.HDPIDrawing>
+                </controls:DrawingIcon.NormalDrawing>
+                <controls:DrawingIcon.HDPIDrawing>
                     <DrawingGroup>
                         <GeometryDrawing Brush="#005198" Geometry="M9,1 H16V16 H3V15 L0,9 H5 L6,7 H11 L14,14 H15V2 H9 M10,3 H13V4 H10" />
                         <GeometryDrawing Brush="#FF5400" Geometry="M3.965131,0 L7.965131,3 3.965131,6 3.965131,4 C0.59520723,4.1666667 2.965131,6.45 3.965131,8 2.6640172,7.6579617 1.1458614,6.125 0.81048457,5.7875 0.19586141,4.925 -1.7241539,2.2 3.965131,2" />
                     </DrawingGroup>
-                </controls:DpiElement.HDPIDrawing>
-            </controls:DpiElement>
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
         </Button>
         <Button Width="30" ToolTip="Save (Ctrl+S)"
                 Command="{Binding ApplicationCommands.SaveCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <controls:DpiElement Width="16" Height="16">
-                <controls:DpiElement.NormalDrawing>
+            <controls:DrawingIcon Width="16" Height="16">
+                <controls:DrawingIcon.NormalDrawing>
                     <GeometryDrawing Brush="#812DAB" Geometry="M0,0 H3V8 H13V1 H14V2 H15V3 H16V16 H0 M8,0 H11V6 H8" />
-                </controls:DpiElement.NormalDrawing>
-                <controls:DpiElement.HDPIDrawing>
+                </controls:DrawingIcon.NormalDrawing>
+                <controls:DrawingIcon.HDPIDrawing>
                     <GeometryDrawing Brush="#812DAB" Geometry="M0,0 H3V8 H13V1 L16,3 V16 H0 M8,0 H11V6 H8" />
-                </controls:DpiElement.HDPIDrawing>
-            </controls:DpiElement>
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
         </Button>
         <Button Width="30" ToolTip="Save All (Ctrl+Shift+S)"
                 Command="{Binding ApplicationCommands.SaveAllCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <controls:DpiElement Width="16" Height="16">
-                <controls:DpiElement.NormalDrawing>
+            <controls:DrawingIcon Width="16" Height="16">
+                <controls:DrawingIcon.NormalDrawing>
                     <GeometryDrawing Brush="#812DAB" Geometry="M0,1 V16 H15V14 H2V1 M3,0 H5V6 H14V1 H15V2 H16V13 H3 M10,0 H12V4 H10Z" />
-                </controls:DpiElement.NormalDrawing>
-                <controls:DpiElement.HDPIDrawing>
+                </controls:DrawingIcon.NormalDrawing>
+                <controls:DrawingIcon.HDPIDrawing>
                     <GeometryDrawing Brush="#812DAB" Geometry="M0,1 V16 H15V14 H2V1 M3,0 H5V6 H14V1 L16,2 V13 H3 M10,0 H12V4 H10Z" />
-                </controls:DpiElement.HDPIDrawing>
-            </controls:DpiElement>
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
         </Button>
 
         <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3,5"/>

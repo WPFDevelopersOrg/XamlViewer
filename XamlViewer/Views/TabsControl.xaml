@@ -41,28 +41,28 @@
         <controls:StatusToggle x:Name="ActiveFilesButton" Grid.Column="1" Width="35" ToolTip="Active Files"
                                IsChecked="{Binding IsOpenActiveFiles,Mode=TwoWay}">
             <controls:StatusToggle.CheckedContent>
-                <controls:DpiElement Width="9" Height="10">
-                    <controls:DpiElement.NormalDrawing>
+                <controls:DrawingIcon Width="9" Height="10">
+                    <controls:DrawingIcon.NormalDrawing>
                         <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
                                          Geometry="M0,0 H9V2 H0 M0,4 H9V6 H8V7 H7V8 H6V9 H5V10 H4V9 H3V8 H2V7 H1V6 H0z" />
-                    </controls:DpiElement.NormalDrawing>
-                    <controls:DpiElement.HDPIDrawing>
+                    </controls:DrawingIcon.NormalDrawing>
+                    <controls:DrawingIcon.HDPIDrawing>
                         <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
                                          Geometry="M0,0 H9V2 H0 M0,4 H9V5 L4.5,10 0,5z" />
-                    </controls:DpiElement.HDPIDrawing>
-                </controls:DpiElement>
+                    </controls:DrawingIcon.HDPIDrawing>
+                </controls:DrawingIcon>
             </controls:StatusToggle.CheckedContent>
             <controls:StatusToggle.UnCheckedContent>
-                <controls:DpiElement Width="9" Height="10">
-                    <controls:DpiElement.NormalDrawing>
+                <controls:DrawingIcon Width="9" Height="10">
+                    <controls:DrawingIcon.NormalDrawing>
                         <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
                                          Geometry="M0,0 H9V2 H0 M0,4 H9V6 H8V7 H7V8 H6V9 H5V10 H4V9 H3V8 H2V7 H1V6 H0z" />
-                    </controls:DpiElement.NormalDrawing>
-                    <controls:DpiElement.HDPIDrawing>
+                    </controls:DrawingIcon.NormalDrawing>
+                    <controls:DrawingIcon.HDPIDrawing>
                         <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
                                          Geometry="M0,0 H9V2 H0 M0,4 H9V5 L4.5,10 0,5z" />
-                    </controls:DpiElement.HDPIDrawing>
-                </controls:DpiElement>
+                    </controls:DrawingIcon.HDPIDrawing>
+                </controls:DrawingIcon>
             </controls:StatusToggle.UnCheckedContent>
         </controls:StatusToggle>
         <Path Grid.ColumnSpan="2" Stretch="Fill" Height="2" Stroke="#007ACC" StrokeThickness="2" Data="M0,0 1,0" VerticalAlignment="Bottom"/>

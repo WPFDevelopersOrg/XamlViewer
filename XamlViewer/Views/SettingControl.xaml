@@ -126,11 +126,6 @@
                                     <Path RenderOptions.EdgeMode="Aliased" Fill="#005198" Data="M0,0 H7V7 H0 M0,9 H7V16 H0 M9,9 H16V16 H9"/>
                                     <Path RenderOptions.EdgeMode="Aliased" Fill="#FF5400" Data="M12,0 H13V7 H12 M9,3 H12V4 H9 M13,3 H16V4 H13"/>	
                                 </Grid>
-                                <!--
-                                <Path RenderOptions.EdgeMode="Aliased" 
-                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                                      Data="M0,0 H7V7 H0 M0,9 H7V16 H0 M9,9 H16V16 H9 M12,0 H13V7 H12 M9,3 H12V4 H9 M13,3 H16V4 H13"/>
-                                 -->
                             </Button>
 
                             <Button Width="30" ToolTip="Remove" Margin="0,5,0,0"

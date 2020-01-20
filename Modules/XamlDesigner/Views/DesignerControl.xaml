@@ -21,22 +21,30 @@
                                      Value="{Binding Scale,ElementName=zoomBox, Mode=TwoWay}"/>
                 <ToggleButton x:Name="RulerSwitch" Width="25" Margin="4,0,0,0" ToolTip="Ruler"
                               Style="{StaticResource {x:Static themes:ResourceKeys.NormalToggleButtonStyleKey}}">
-                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}"
-                          Data="M0,0 H17 V12 H0 M1,1 V11 H2V6 H3V11 H4V3 H5V11 H6V6 H7V11 H8V3 H9V11 H10V6 H11V11 H12V3 H13V11 H14V6 H15V11 H16V1"/>
+                    <controls:DrawingIcon Width="17" Height="12">
+                        <controls:DrawingIcon.NormalDrawing>
+                            <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}"
+                                             Geometry="M0,0 H17 V12 H0 M1,1 V11 H2V6 H3V11 H4V3 H5V11 H6V6 H7V11 H8V3 H9V11 H10V6 H11V11 H12V3 H13V11 H14V6 H15V11 H16V1" />
+                        </controls:DrawingIcon.NormalDrawing>
+                        <controls:DrawingIcon.HDPIDrawing>
+                            <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}"
+                                             Geometry="M0,0 H17 V12 H0 M1,1 V11 H2V6 H3V11 H4V3 H5V11 H6V6 H7V11 H8V3 H9V11 H10V6 H11V11 H12V3 H13V11 H14V6 H15V11 H16V1" />
+                        </controls:DrawingIcon.HDPIDrawing>
+                    </controls:DrawingIcon>
                 </ToggleButton>
                 <Button Width="25" ToolTip="Snapshot to File"
                         Command="{Binding SnapshotCommand}"
                         Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-                    <controls:DpiElement Width="17" Height="12">
-                        <controls:DpiElement.NormalDrawing>
+                    <controls:DrawingIcon Width="17" Height="12">
+                        <controls:DrawingIcon.NormalDrawing>
                             <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
                                              Geometry="M0,0 H17 V12 H0 M1,1 H16V11 H1V1 M3,2 H6V5 H3V2 M4,3 H5V4 H4V3 M5,9 H6V8 H7V7 H8V6 H9V5 H10V4 H12V5 H13V6 H14V7 H15V8 H13V7 H12V6 H10V7 H9V8 H8V9 H7V10 H5z" />
-                        </controls:DpiElement.NormalDrawing>
-                        <controls:DpiElement.HDPIDrawing>
+                        </controls:DrawingIcon.NormalDrawing>
+                        <controls:DrawingIcon.HDPIDrawing>
                             <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
                                              Geometry="M10.96875,4 L12,5 13,6 14,7 15,8 13,8 12,7 10.96875,6 10,7 9,8 8,9 7,10 5,10 6,9 7,8 8,7 9,6 10,5 z M4.5,2.75 C4.0857865,2.75 3.75,3.0857863 3.75,3.5 3.75,3.9142134 4.0857865,4.25 4.5,4.25 4.9142135,4.25 5.25,3.9142134 5.25,3.5 5.25,3.0857863 4.9142135,2.75 4.5,2.75 z M4.5,2 C5.3284271,2 6,2.6715727 6,3.5 6,4.328427 5.3284271,5 4.5,5 3.6715729,5 3,4.328427 3,3.5 3,2.6715727 3.6715729,2 4.5,2 z M1,1 L1,11 16,11 16,1 z M0,0 L17,0 17,12 0,12 z" />
-                        </controls:DpiElement.HDPIDrawing>
-                    </controls:DpiElement>
+                        </controls:DrawingIcon.HDPIDrawing>
+                    </controls:DrawingIcon>
                 </Button>
             </StackPanel>
         </controls:ZoomBox.Ribbon>
