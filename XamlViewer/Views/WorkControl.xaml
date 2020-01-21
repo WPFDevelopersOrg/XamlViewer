@@ -5,6 +5,7 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
              xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
+             xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore"
              xmlns:utils="clr-namespace:XamlViewer.Utils"
              prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
@@ -38,13 +39,13 @@
             <Button Width="35" ToolTip="Swap Panes"
                     Command="{Binding SwapCommand}"
                     Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-                <controls:DrawingIcon Width="11" Height="11">
-                    <controls:DrawingIcon.NormalDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
+                <controls:DrawingIcon>
+                    <controls:DrawingIcon.Drawing>
+                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button},FallbackValue={x:Static swm:Brushes.Transparent}}"
                                          Geometry="M0,4 H5 V3 H0 M1,3 H4 V2 H1 M2,2 H3 V1 H2 M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 H11 V8 H6 M7,8 H10 V9 H7 M8,9 H9 V10 H8 z" />
-                    </controls:DrawingIcon.NormalDrawing>
+                    </controls:DrawingIcon.Drawing>
                     <controls:DrawingIcon.HDPIDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"
+                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button},FallbackValue={x:Static swm:Brushes.Transparent}}"
                                          Geometry="M0,4 L2.5,1 5,4z M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 L8.5,10 11,7z" />
                     </controls:DrawingIcon.HDPIDrawing>
                 </controls:DrawingIcon>
@@ -53,36 +54,41 @@
             <RadioButton Grid.Column="2" Width="35" ToolTip="Vertical Split"
                          Command="{Binding VerSplitCommand}"
                          Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
-                <controls:DrawingIcon Width="13" Height="13">
-                    <controls:DrawingIcon.LayoutTransform>
+                <Border>
+                    <Border.LayoutTransform>
                         <RotateTransform Angle="{Binding VerSplitAngle}"/>
-                    </controls:DrawingIcon.LayoutTransform>
-                    <controls:DrawingIcon.NormalDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                         Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
-                    </controls:DrawingIcon.NormalDrawing>
-                    <controls:DrawingIcon.HDPIDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                         Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
-                    </controls:DrawingIcon.HDPIDrawing>
-                </controls:DrawingIcon>
+                    </Border.LayoutTransform>
+                    <controls:DrawingIcon>
+                        <controls:DrawingIcon.Drawing>
+                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                             Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                        </controls:DrawingIcon.Drawing>
+                        <controls:DrawingIcon.HDPIDrawing>
+                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                             Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                        </controls:DrawingIcon.HDPIDrawing>
+                    </controls:DrawingIcon>
+                </Border>
+                
             </RadioButton>
             <RadioButton Grid.Column="3" Width="35" ToolTip="Horizontal Split" IsChecked="True"
                          Command="{Binding HorSplitCommand}"
                          Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
-                <controls:DrawingIcon Width="13" Height="13">
-                    <controls:DrawingIcon.LayoutTransform>
+                <Border>
+                    <Border.LayoutTransform>
                         <RotateTransform Angle="{Binding HorSplitAngle}"/>
-                    </controls:DrawingIcon.LayoutTransform>
-                    <controls:DrawingIcon.NormalDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                         Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
-                    </controls:DrawingIcon.NormalDrawing>
-                    <controls:DrawingIcon.HDPIDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                         Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
-                    </controls:DrawingIcon.HDPIDrawing>
-                </controls:DrawingIcon>
+                    </Border.LayoutTransform>
+                    <controls:DrawingIcon>
+                        <controls:DrawingIcon.Drawing>
+                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                             Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                        </controls:DrawingIcon.Drawing>
+                        <controls:DrawingIcon.HDPIDrawing>
+                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                             Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                        </controls:DrawingIcon.HDPIDrawing>
+                    </controls:DrawingIcon>
+                </Border>
             </RadioButton>
         </Grid>
         <!--Editor-->

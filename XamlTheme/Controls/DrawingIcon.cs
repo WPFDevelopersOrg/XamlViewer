@@ -6,16 +6,21 @@ using XamlUtil.Common;
 
 namespace XamlTheme.Controls
 {
-    public class DrawingIcon : FrameworkElement
+    public class DrawingIcon : UIElement
     {
         private Point? _dpi;
         
-        public static readonly DependencyProperty NormalDrawingProperty = DependencyProperty.Register("NormalDrawing", typeof(Drawing), typeof(DrawingIcon),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
-        public Drawing NormalDrawing
+        static DrawingIcon()
         {
-            get { return (Drawing)GetValue(NormalDrawingProperty); }
-            set { SetValue(NormalDrawingProperty, value); }
+            IsHitTestVisibleProperty.OverrideMetadata(typeof(DrawingIcon), new FrameworkPropertyMetadata(false));
+        }
+        
+        public static readonly DependencyProperty DrawingProperty = DependencyProperty.Register("Drawing", typeof(Drawing), typeof(DrawingIcon),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
+        public Drawing Drawing
+        {
+            get { return (Drawing)GetValue(DrawingProperty); }
+            set { SetValue(DrawingProperty, value); }
         }
 
         public static readonly DependencyProperty HDPIDrawingProperty = DependencyProperty.Register("HDPIDrawing", typeof(Drawing), typeof(DrawingIcon),
@@ -26,19 +31,19 @@ namespace XamlTheme.Controls
             set { SetValue(HDPIDrawingProperty, value); }
         }
 
-        protected virtual Size MeasureOverride(Size availableSize)
+        protected override Size MeasureCore(Size availableSize)
         {
             if(!_dpi.HasValue)
                 _dpi = DpiUtil.GetDpi(this);
             
-            var drawing = DoubleUtil.LessThanOrClose(_dpi.Value.X, 96) ? NormalDrawing : HDPIDrawing;
+            var drawing = (DoubleUtil.LessThanOrClose(_dpi.Value.X, 96) || HDPIDrawing == null) ? Drawing : HDPIDrawing;
             if (drawing != null && !drawing.Bounds.IsEmpty)
             {
                 var bounds = drawing.Bounds;
                 return new Size(Math.Min(availableSize.Width, bounds.Width), Math.Min(availableSize.Height, bounds.Height));
             }
             
-            return base.MeasureOverride(availableSize);
+            return base.MeasureCore(availableSize);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -46,16 +51,16 @@ namespace XamlTheme.Controls
             if(!_dpi.HasValue)
                 _dpi = DpiUtil.GetDpi(this);
             
-            if (NormalDrawing == null || HDPIDrawing == null)
+            if (Drawing == null || HDPIDrawing == null)
             {
                 drawingContext.DrawDrawing(null);
                 return;
             } 
             
-            if (DoubleUtil.LessThanOrClose(_dpi.Value.X, 96))
+            if (DoubleUtil.LessThanOrClose(_dpi.Value.X, 96) || HDPIDrawing == null)
             {
                 RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
-                drawingContext.DrawDrawing(NormalDrawing);
+                drawingContext.DrawDrawing(Drawing);
             }
             else
             {

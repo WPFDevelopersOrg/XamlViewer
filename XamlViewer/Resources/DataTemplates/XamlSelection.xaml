@@ -24,10 +24,10 @@
                               Style="{DynamicResource {x:Static themes:ResourceKeys.MenuItemStyleKey}}">
                         <MenuItem.Icon>
                             <Viewbox Width="12" Height="12">
-                                <controls:DrawingIcon Width="16" Height="16">
-                                    <controls:DrawingIcon.NormalDrawing>
+                                <controls:DrawingIcon>
+                                    <controls:DrawingIcon.Drawing>
                                         <GeometryDrawing Brush="#812DAB" Geometry="M0,0 H3V8 H13V1 H14V2 H15V3 H16V16 H0 M8,0 H11V6 H8" />
-                                    </controls:DrawingIcon.NormalDrawing>
+                                    </controls:DrawingIcon.Drawing>
                                     <controls:DrawingIcon.HDPIDrawing>
                                         <GeometryDrawing Brush="#812DAB" Geometry="M0,0 H3V8 H13V1 L16,3 V16 H0 M8,0 H11V6 H8" />
                                     </controls:DrawingIcon.HDPIDrawing>
@@ -119,16 +119,17 @@
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <controls:DrawingIcon Width="14" Height="16" Margin="0,0,10,0">
-                <controls:DrawingIcon.NormalDrawing>
+            <controls:DrawingIcon>
+                <controls:DrawingIcon.Drawing>
                     <DrawingGroup>
                         <GeometryDrawing Brush="#005198" Geometry="M1,0 H10V1 H11V2 H12V3 H13V4 H14V16 H12V15 H13V5 H9V1 H2V9 H1" />
                         <GeometryDrawing Brush="#FF5400" Geometry="M2,10 V11 H1V12 H0V14 H1V15 H2V16 H3V14 H2V12 H3V10 M7,11 V12 H6V13 H5V14 H4V15 H5V14 H6V13 H7V12 H8V11 M9,10 V12 H10V14 H9V16 H10V15 H11V14 H12V12 H11V11 H10V10" />
                     </DrawingGroup>
-                </controls:DrawingIcon.NormalDrawing>
+                </controls:DrawingIcon.Drawing>
                 <controls:DrawingIcon.HDPIDrawing>
                     <DrawingGroup>
                         <GeometryDrawing Brush="#005198" Geometry="M1,0 H10 L14,4 V16 H12V15 H13V5 H9V1 H2V9 H1" />
@@ -136,7 +137,7 @@
                     </DrawingGroup>
                 </controls:DrawingIcon.HDPIDrawing>
             </controls:DrawingIcon>
-            <TextBlock Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+            <TextBlock Grid.Column="2" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                        Text="{Binding Title}">
                 <TextBlock.ToolTip>
                     <MultiBinding Converter="{StaticResource xamlTabToolTipMultiConverter}">
@@ -146,7 +147,7 @@
                 </TextBlock.ToolTip>
             </TextBlock>
 
-            <Border Grid.Column="2" Margin="5,0,0,0" Background="Transparent" ToolTip="Read Only">
+            <Border Grid.Column="3" Margin="5,0,0,0" Background="Transparent" ToolTip="Read Only">
                 <Path Fill="#005198" 
                       VerticalAlignment="Center" HorizontalAlignment="Center"
                       Data="M2,0 H6V1 H2 M1,1 H2V4 H1 M6,1 H7V4 H6 M0,4 H8V9 H0z" 

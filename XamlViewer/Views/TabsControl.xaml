@@ -7,6 +7,7 @@
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
              xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
              xmlns:behaviors="clr-namespace:XamlTheme.Behaviors;assembly=XamlTheme"
+             xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore"
              prism:ViewModelLocator.AutoWireViewModel="True"> 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -41,25 +42,25 @@
         <controls:StatusToggle x:Name="ActiveFilesButton" Grid.Column="1" Width="35" ToolTip="Active Files"
                                IsChecked="{Binding IsOpenActiveFiles,Mode=TwoWay}">
             <controls:StatusToggle.CheckedContent>
-                <controls:DrawingIcon Width="9" Height="10">
-                    <controls:DrawingIcon.NormalDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
+                <controls:DrawingIcon>
+                    <controls:DrawingIcon.Drawing>
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle},FallbackValue={x:Static swm:Brushes.Transparent}}"
                                          Geometry="M0,0 H9V2 H0 M0,4 H9V6 H8V7 H7V8 H6V9 H5V10 H4V9 H3V8 H2V7 H1V6 H0z" />
-                    </controls:DrawingIcon.NormalDrawing>
+                    </controls:DrawingIcon.Drawing>
                     <controls:DrawingIcon.HDPIDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle},FallbackValue={x:Static swm:Brushes.Transparent}}"
                                          Geometry="M0,0 H9V2 H0 M0,4 H9V5 L4.5,10 0,5z" />
                     </controls:DrawingIcon.HDPIDrawing>
                 </controls:DrawingIcon>
             </controls:StatusToggle.CheckedContent>
             <controls:StatusToggle.UnCheckedContent>
-                <controls:DrawingIcon Width="9" Height="10">
-                    <controls:DrawingIcon.NormalDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
+                <controls:DrawingIcon>
+                    <controls:DrawingIcon.Drawing>
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle},FallbackValue={x:Static swm:Brushes.Transparent}}"
                                          Geometry="M0,0 H9V2 H0 M0,4 H9V6 H8V7 H7V8 H6V9 H5V10 H4V9 H3V8 H2V7 H1V6 H0z" />
-                    </controls:DrawingIcon.NormalDrawing>
+                    </controls:DrawingIcon.Drawing>
                     <controls:DrawingIcon.HDPIDrawing>
-                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle}}"
+                        <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle},FallbackValue={x:Static swm:Brushes.Transparent}}"
                                          Geometry="M0,0 H9V2 H0 M0,4 H9V5 L4.5,10 0,5z" />
                     </controls:DrawingIcon.HDPIDrawing>
                 </controls:DrawingIcon>
