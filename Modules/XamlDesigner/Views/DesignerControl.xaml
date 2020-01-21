@@ -33,7 +33,7 @@
                         </controls:DrawingIcon.HDPIDrawing>
                     </controls:DrawingIcon>
                 </ToggleButton>
-                <Button Width="25" ToolTip="Snapshot to File"
+                <Button Width="25" ToolTip="Snapshot to File" BorderThickness="1" BorderBrush="Transparent"
                         Command="{Binding SnapshotCommand}"
                         Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
                     <controls:DrawingIcon>
