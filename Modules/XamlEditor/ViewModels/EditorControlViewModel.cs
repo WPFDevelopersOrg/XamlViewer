@@ -14,6 +14,7 @@ using XamlService.Payloads;
 using XamlTheme.Controls;
 using XamlEditor.Views;
 using XamlService.Utils;
+using Prism.Ioc;
 
 namespace XamlEditor.ViewModels
 {
@@ -23,6 +24,7 @@ namespace XamlEditor.ViewModels
         private bool _isReseting = false;
 
         private TextEditorEx _textEditor = null;
+        private XsdParser _xsdParser = null;
 
         private IEventAggregator _eventAggregator = null;
         private IApplicationCommands _appCommands = null;
@@ -41,14 +43,14 @@ namespace XamlEditor.ViewModels
         public DelegateCommand RedoCommand { get; private set; }
         public DelegateCommand UndoCommand { get; private set; }
 
-        public EditorControlViewModel(IEventAggregator eventAggregator, IApplicationCommands appCommands)
+        public EditorControlViewModel(IContainerExtension container, IEventAggregator eventAggregator, IApplicationCommands appCommands)
         {
+            _xsdParser = container.Resolve<XsdParser>();
             _eventAggregator = eventAggregator;
             _appCommands = appCommands;
 
             InitEvent();
             InitCommand();
-            InitCodeCompletionParser();
         }
 
         #region Init
@@ -213,11 +215,11 @@ namespace XamlEditor.ViewModels
             set { SetProperty(ref _autoCompileDelay, value); }
         }
 
-        private bool _isCodeCompletion = true;
-        public bool IsCodeCompletion
+        private bool _codeCompletion = false;
+        public bool CodeCompletion
         {
-            get { return _isCodeCompletion; }
-            set { SetProperty(ref _isCodeCompletion, value); }
+            get { return _codeCompletion; }
+            set { SetProperty(ref _codeCompletion, value); }
         }
 
         private Func<string, string, string, List<string>> _generateCompletionDataFunc = null;
@@ -228,18 +230,21 @@ namespace XamlEditor.ViewModels
                 if (_generateCompletionDataFunc == null)
                     _generateCompletionDataFunc = (parentElement, element, attribute) =>
                     {
+                        if (_xsdParser == null || !CodeCompletion)
+                            return null;
+
                         if (!string.IsNullOrWhiteSpace(parentElement))
-                            return XsdParser.Instance().GetChildElements(parentElement);
+                            return _xsdParser.GetChildElements(parentElement);
 
                         if (!string.IsNullOrWhiteSpace(element))
                         {
                             if (!string.IsNullOrWhiteSpace(attribute))
-                                return XsdParser.Instance().GetValues(element, attribute);
+                                return _xsdParser.GetValues(element, attribute);
 
-                            return XsdParser.Instance().GetAttributes(element);
+                            return _xsdParser.GetAttributes(element);
                         }
 
-                        return XsdParser.Instance().GetElements();
+                        return _xsdParser.GetElements();
                     };
 
                 return _generateCompletionDataFunc;
@@ -356,6 +361,7 @@ namespace XamlEditor.ViewModels
             FontSize = valueWithGuid.Value.FontSize;
             ShowLineNumber = valueWithGuid.Value.ShowLineNumber;
             WordWrap = valueWithGuid.Value.WordWrap;
+            CodeCompletion = valueWithGuid.Value.CodeCompletion;
 
             AutoCompile = valueWithGuid.Value.AutoCompile;
             AutoCompileDelay = valueWithGuid.Value.AutoCompileDelay;
@@ -454,13 +460,15 @@ namespace XamlEditor.ViewModels
             _appCommands.SaveCommand.UnregisterCommand(SaveCommand);
             _appCommands.CompileCommand.UnregisterCommand(CompileCommand);
             _appCommands.RedoCommand.UnregisterCommand(RedoCommand);
-            _appCommands.UndoCommand.UnregisterCommand(UndoCommand); 
+            _appCommands.UndoCommand.UnregisterCommand(UndoCommand);
 
             if (_textEditor != null)
             {
                 _textEditor.Dispose();
                 _textEditor = null;
             }
+
+            _xsdParser = null;
         }
 
         #endregion
@@ -489,11 +497,6 @@ namespace XamlEditor.ViewModels
         {
             if (_eventAggregator != null && IsActive)
                 _eventAggregator.GetEvent<CaretPositionEvent>().Publish(new CaretPosition() { Line = CaretLine, Column = CaretColumn });
-        }
-
-        private void InitCodeCompletionParser()
-        {
-            Task.Run(() => IsCodeCompletion = XsdParser.Instance().TryParse());
         }
 
         #endregion

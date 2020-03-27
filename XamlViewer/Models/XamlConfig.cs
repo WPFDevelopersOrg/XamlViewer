@@ -12,6 +12,7 @@ namespace XamlViewer.Models
 
             WordWrap = false;
             ShowLineNumber = true;
+            CodeCompletion = true;
 
             AutoCompile = true;
             AutoCompileDelay = 2d;

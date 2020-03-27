@@ -12,6 +12,7 @@ using Prism.Regions;
 using Utils.IO;
 using XamlService.Commands;
 using XamlService.Events;
+using XamlService.Utils;
 using XamlViewer.Dialogs;
 using XamlViewer.Models;
 using XamlViewer.Regions;
@@ -61,6 +62,9 @@ namespace XamlViewer
 
             //Work Area
             containerRegistry.Register<WorkControl>();
+
+            //Code Completion
+            containerRegistry.RegisterInstance(new XsdParser());
 
             //Config
             var localConfig = FileHelper.LoadFromJsonFile<XamlConfig>(ResourcesMap.LocationDic[Location.GlobalConfigFile]);

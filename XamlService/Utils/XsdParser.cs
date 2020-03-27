@@ -14,26 +14,19 @@ namespace XamlService.Utils
         private readonly string _fileName = null;
         private readonly List<XmlSchemaSimpleType> _simpleTypes = null;
 
-        private static XsdParser _instance = null;
-
-        public static XsdParser Instance()
-        {
-            return _instance;
-        }
-
-        static XsdParser()
-        {
-            _instance = new XsdParser();
-        }
-
-        private XsdParser()
+        public XsdParser()
         {
             _fileName = AppDomain.CurrentDomain.BaseDirectory + "Assets\\XamlPresentation2006.xsd";
             _simpleTypes = new List<XmlSchemaSimpleType>();
+
+            Init();
         }
 
-        public bool TryParse()
+        private bool Init()
         {
+            if (_schema != null)
+                return true;
+
             if (!File.Exists(_fileName))
                 return false;
 
@@ -58,6 +51,8 @@ namespace XamlService.Utils
             catch
             {
                 _schema = null;
+                _schemaSet = null;
+
                 return false;
             }
         }

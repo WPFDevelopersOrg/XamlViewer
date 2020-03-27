@@ -14,7 +14,7 @@
     <Grid Background="White">
         <controls:TextEditorEx x:Name="XamlTextEditorEx"
                                Margin="6,0,0,0"
-                               IsCodeCompletion="{Binding IsCodeCompletion}"
+                               IsCodeCompletion="{Binding CodeCompletion}"
                                IsReadOnly="{Binding IsReadOnly}"
                                LineNumber="{Binding CaretLine, Mode=TwoWay}"
                                LinePosition="{Binding CaretColumn, Mode=TwoWay}"

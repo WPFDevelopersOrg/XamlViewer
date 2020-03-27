@@ -127,6 +127,21 @@ namespace XamlViewer.ViewModels
             }
         }
 
+        public bool CodeCompletion
+        {
+            get { return _appData.Config.CodeCompletion; }
+            set
+            {
+                if (_appData.Config.CodeCompletion == value)
+                    return;
+
+                _appData.Config.CodeCompletion = value;
+
+                RaisePropertyChanged();
+                ApplyEditorConfig();
+            }
+        }
+
         public bool AutoCompile
         {
             get { return _appData.Config.AutoCompile; }

@@ -66,9 +66,9 @@
                     <CheckBox Grid.Row="2" Content="Word Wrap" 
                               Style="{StaticResource {x:Static themes:ResourceKeys.NormalCheckBoxStyleKey}}"
                               IsChecked="{Binding WordWrap,Mode=TwoWay}"/>
-                    <CheckBox Grid.Row="4" Content="Line Number" 
+                    <CheckBox Grid.Row="4" Content="Code Completion" 
                               Style="{StaticResource {x:Static themes:ResourceKeys.NormalCheckBoxStyleKey}}"
-                              IsChecked="{Binding ShowLineNumber,Mode=TwoWay}"/>
+                              IsChecked="{Binding CodeCompletion,Mode=TwoWay}"/>
                     <TextBlock Grid.Row="6" Text="Editor" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
 

@@ -347,15 +347,19 @@ namespace XamlTheme.Controls
 
         private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
-            if (IsReadOnly || !IsCodeCompletion || GenerateCompletionData == null)
+            if (IsReadOnly)
                 return;
 
+            var codeCompletion = IsCodeCompletion && GenerateCompletionData != null;
             var offset = _partTextEditor.TextArea.Caret.Offset;
 
             switch (e.Text)
             {
                 case ".": //get attributes
                     {
+                        if(!codeCompletion)
+                            break;
+
                         var element = GetElementInFrontOfSymbol(offset - 1);
                         if (!string.IsNullOrEmpty(element))
                             ShowCompletionWindow(GenerateCompletionData(null, element, null));
@@ -365,6 +369,9 @@ namespace XamlTheme.Controls
 
                 case " ": //get attributes
                     {
+                        if (!codeCompletion)
+                            break;
+
                         var element = GetElement(offset - 1);
                         if (!string.IsNullOrEmpty(element))
                             ShowCompletionWindow(GenerateCompletionData(null, element, null));
@@ -374,6 +381,9 @@ namespace XamlTheme.Controls
 
                 case "<": //get child elements
                     {
+                        if (!codeCompletion)
+                            break;
+
                         var parentOffset = -1;
                         var parentElement = GetParentElement(offset - 2, ref parentOffset);
 
@@ -390,6 +400,9 @@ namespace XamlTheme.Controls
 
                 case "{":
                     {
+                        if (!codeCompletion)
+                            break;
+
                         InsertText("}");
                         ShowCompletionWindow(new List<string> { "Binding", "DynamicResource", "StaticResource", "x:Null", "x:Static" });
 
@@ -403,6 +416,9 @@ namespace XamlTheme.Controls
 
                         InsertText("\"\"");
 
+                        if (!codeCompletion)
+                            break;
+
                         var element = GetElementAndAttributeInFrontOfSymbol(offset - 2);
 
                         if (element != null && !string.IsNullOrEmpty(element.Item1) && !string.IsNullOrEmpty(element.Item2))
@@ -414,6 +430,9 @@ namespace XamlTheme.Controls
                 case "\"": //get values
                     {
                         InsertText("\"");
+
+                        if (!codeCompletion)
+                            break;
 
                         if (offset > 1 && FindPreviousNonSpaceChars(offset - 1, 2) == "=\"")
                         {
@@ -443,6 +462,9 @@ namespace XamlTheme.Controls
 
                 case "/":
                     {
+                        if (!codeCompletion)
+                            break;
+
                         if (FindPreviousNonSpaceChars(offset - 1, 2) == "</")
                         {
                             var parentOffset = -1;

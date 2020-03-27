@@ -41,6 +41,7 @@ namespace XamlViewer.Utils
 
                     WordWrap = config.WordWrap,
                     ShowLineNumber = config.ShowLineNumber,
+                    CodeCompletion = config.CodeCompletion,
 
                     AutoCompile = config.AutoCompile,
                     AutoCompileDelay = config.AutoCompileDelay
