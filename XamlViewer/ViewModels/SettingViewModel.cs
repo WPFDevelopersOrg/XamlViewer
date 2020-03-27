@@ -42,7 +42,7 @@ namespace XamlViewer.ViewModels
         {
             _appData = container.Resolve<AppData>();
             _eventAggregator = eventAggregator;
-            _dialogService = dialogService; 
+            _dialogService = dialogService;
 
             AddRefCommand = new DelegateCommand(AddReference);
             RemoveRefCommand = new DelegateCommand(RemoveReference, CanRemoveReference);
@@ -72,9 +72,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.FontFamily; }
             set
             {
-                if(_appData.Config.FontFamily == value)
+                if (_appData.Config.FontFamily == value)
                     return;
-                    
+
                 _appData.Config.FontFamily = value;
 
                 RaisePropertyChanged();
@@ -87,9 +87,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.FontSize; }
             set
             {
-                if(_appData.Config.FontSize == value)
+                if (_appData.Config.FontSize == value)
                     return;
-                    
+
                 _appData.Config.FontSize = value;
 
                 RaisePropertyChanged();
@@ -102,9 +102,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.WordWrap; }
             set
             {
-                if(_appData.Config.WordWrap == value)
+                if (_appData.Config.WordWrap == value)
                     return;
-                    
+
                 _appData.Config.WordWrap = value;
 
                 RaisePropertyChanged();
@@ -117,9 +117,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.ShowLineNumber; }
             set
             {
-                if(_appData.Config.ShowLineNumber == value)
+                if (_appData.Config.ShowLineNumber == value)
                     return;
-                    
+
                 _appData.Config.ShowLineNumber = value;
 
                 RaisePropertyChanged();
@@ -147,9 +147,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.AutoCompile; }
             set
             {
-                if(_appData.Config.AutoCompile == value)
+                if (_appData.Config.AutoCompile == value)
                     return;
-                    
+
                 _appData.Config.AutoCompile = value;
 
                 RaisePropertyChanged();
@@ -162,9 +162,9 @@ namespace XamlViewer.ViewModels
             get { return _appData.Config.AutoCompileDelay; }
             set
             {
-                if(_appData.Config.AutoCompileDelay == value)
+                if (_appData.Config.AutoCompileDelay == value)
                     return;
-                    
+
                 _appData.Config.AutoCompileDelay = value;
 
                 RaisePropertyChanged();
@@ -203,6 +203,7 @@ namespace XamlViewer.ViewModels
                 foreach (var selectedName in ofd.FileNames)
                 {
                     var fileName = Path.GetFileName(selectedName);
+                    var targetFileName = AppDomain.CurrentDomain.BaseDirectory + fileName;
 
                     var reference = References.FirstOrDefault(r => string.Equals(r.FileName, fileName, StringComparison.OrdinalIgnoreCase));
                     if (reference != null)
@@ -217,12 +218,16 @@ namespace XamlViewer.ViewModels
                         if (result != ButtonResult.Yes)
                             continue;
 
+                        if (File.Exists(targetFileName))
+                            File.Delete(targetFileName);
+
                         References.Remove(reference);
+                        _appData.Config.References.Remove(fileName);
                     }
 
                     try
                     {
-                        File.Copy(ofd.FileName, AppDomain.CurrentDomain.BaseDirectory + fileName);
+                        File.Copy(selectedName, targetFileName, true);
 
                         References.Add(new ReferenceViewModel(fileName));
                         _appData.Config.References.Add(fileName);
@@ -313,7 +318,7 @@ namespace XamlViewer.ViewModels
             e.Handled = true;
         }
 
-        #endregion 
+        #endregion
 
         #region Func
 
@@ -326,7 +331,7 @@ namespace XamlViewer.ViewModels
                 FontFamilies = Fonts.SystemFontFamilies.Select(f => f.Source).OrderBy(f => f).ToList();
                 _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.FinishLoadFonts });
             });
-        } 
+        }
 
         private void ApplyEditorConfig()
         {
