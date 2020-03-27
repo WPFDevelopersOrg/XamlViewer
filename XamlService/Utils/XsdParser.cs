@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Xml.Schema;
 
-namespace XamlEditor.Utils
+namespace XamlService.Utils
 {
-    internal class XsdParser
+    public class XsdParser
     {
         private XmlSchema _schema = null;
         private XmlSchemaSet _schemaSet = null;
@@ -14,9 +14,21 @@ namespace XamlEditor.Utils
         private readonly string _fileName = null;
         private readonly List<XmlSchemaSimpleType> _simpleTypes = null;
 
-        public XsdParser()
+        private static XsdParser _instance = null;
+
+        public static XsdParser Instance()
         {
-            _fileName = AppDomain.CurrentDomain.BaseDirectory + "Modules\\Assets\\XamlPresentation2006.xsd";
+            return _instance;
+        }
+
+        static XsdParser()
+        {
+            _instance = new XsdParser();
+        }
+
+        private XsdParser()
+        {
+            _fileName = AppDomain.CurrentDomain.BaseDirectory + "Assets\\XamlPresentation2006.xsd";
             _simpleTypes = new List<XmlSchemaSimpleType>();
         }
 

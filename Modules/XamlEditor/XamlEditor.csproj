@@ -64,7 +64,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\XsdParser.cs" />
     <Compile Include="ViewModels\EditorControlViewModel.cs" />
     <Compile Include="Views\EditorControl.xaml.cs">
       <DependentUpon>EditorControl.xaml</DependentUpon>
@@ -74,14 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Assets\Xaml2006.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\XamlPresentation2006.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

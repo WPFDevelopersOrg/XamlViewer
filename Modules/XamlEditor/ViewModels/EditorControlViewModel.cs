@@ -1,18 +1,19 @@
-﻿using Prism.Mvvm;
-using System;
-using Prism.Commands;
+﻿using System;
+using System.Windows;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Prism;
+using Prism.Mvvm;
 using Prism.Events;
+using Prism.Regions;
+using Prism.Commands;
 using XamlService.Events;
 using XamlService.Commands;
 using XamlService.Payloads;
-using System.Windows;
 using XamlTheme.Controls;
-using System.Collections.Generic;
-using XamlEditor.Utils;
-using System.Threading.Tasks;
-using Prism.Regions;
 using XamlEditor.Views;
-using Prism;
+using XamlService.Utils;
 
 namespace XamlEditor.ViewModels
 {
@@ -21,7 +22,6 @@ namespace XamlEditor.ViewModels
         private string _fileGuid = null;
         private bool _isReseting = false;
 
-        private XsdParser _xsdParser = null;
         private TextEditorEx _textEditor = null;
 
         private IEventAggregator _eventAggregator = null;
@@ -102,7 +102,7 @@ namespace XamlEditor.ViewModels
                 if (SetProperty(ref _isSelected, value))
                 {
                     if (_isSelected)
-                    { 
+                    {
                         if (_textEditor != null)
                             _textEditor.Focus();
 
@@ -229,17 +229,17 @@ namespace XamlEditor.ViewModels
                     _generateCompletionDataFunc = (parentElement, element, attribute) =>
                     {
                         if (!string.IsNullOrWhiteSpace(parentElement))
-                            return _xsdParser.GetChildElements(parentElement);
+                            return XsdParser.Instance().GetChildElements(parentElement);
 
                         if (!string.IsNullOrWhiteSpace(element))
                         {
                             if (!string.IsNullOrWhiteSpace(attribute))
-                                return _xsdParser.GetValues(element, attribute);
+                                return XsdParser.Instance().GetValues(element, attribute);
 
-                            return _xsdParser.GetAttributes(element);
+                            return XsdParser.Instance().GetAttributes(element);
                         }
 
-                        return _xsdParser.GetElements();
+                        return XsdParser.Instance().GetElements();
                     };
 
                 return _generateCompletionDataFunc;
@@ -257,7 +257,7 @@ namespace XamlEditor.ViewModels
             _textEditor = editorControl.XamlTextEditorEx;
 
             var selectInfo = (TabSelectInfo)(RegionContext.GetObservableContext(editorControl).Value);
-            if(selectInfo!=null)
+            if (selectInfo != null)
             {
                 _fileGuid = selectInfo.Guid;
 
@@ -435,7 +435,7 @@ namespace XamlEditor.ViewModels
             UndoCommand.RaiseCanExecuteChanged();
 
             if (IsActiveChanged != null)
-                IsActiveChanged.Invoke(this, new EventArgs()); 
+                IsActiveChanged.Invoke(this, new EventArgs());
         }
 
         #endregion
@@ -454,13 +454,7 @@ namespace XamlEditor.ViewModels
             _appCommands.SaveCommand.UnregisterCommand(SaveCommand);
             _appCommands.CompileCommand.UnregisterCommand(CompileCommand);
             _appCommands.RedoCommand.UnregisterCommand(RedoCommand);
-            _appCommands.UndoCommand.UnregisterCommand(UndoCommand);
-
-            if (_xsdParser != null)
-            {
-                _xsdParser.Dispose();
-                _xsdParser = null;
-            }
+            _appCommands.UndoCommand.UnregisterCommand(UndoCommand); 
 
             if (_textEditor != null)
             {
@@ -499,9 +493,7 @@ namespace XamlEditor.ViewModels
 
         private void InitCodeCompletionParser()
         {
-            _xsdParser = new XsdParser();
-
-            Task.Run(() => IsCodeCompletion = _xsdParser.TryParse());
+            Task.Run(() => IsCodeCompletion = XsdParser.Instance().TryParse());
         }
 
         #endregion

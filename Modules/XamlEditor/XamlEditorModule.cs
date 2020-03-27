@@ -1,7 +1,7 @@
-﻿using XamlService;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using XamlService;
 using XamlEditor.Views;
 
 namespace XamlEditor
