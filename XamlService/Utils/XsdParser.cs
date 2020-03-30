@@ -208,6 +208,16 @@ namespace XamlService.Utils
                     continue;
                 }
 
+                var group = c as XmlSchemaGroupRef;
+                if (group != null && !group.RefName.Name.StartsWith("gMarkup"))
+                {
+                    var groupChoice = group.Particle as XmlSchemaChoice;
+                    if (groupChoice != null)
+                        GetChildElements(groupChoice, resultElements);
+
+                    continue;
+                }
+
                 var xsgr = c as XmlSchemaChoice;
                 if (xsgr != null)
                     GetChildElements(xsgr, resultElements);

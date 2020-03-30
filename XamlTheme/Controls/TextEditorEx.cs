@@ -372,6 +372,9 @@ namespace XamlTheme.Controls
                         if (!codeCompletion)
                             break;
 
+                        if (!IsEvenQuoteInElement(offset - 2))
+                            return;
+
                         var element = GetElement(offset - 1);
                         if (!string.IsNullOrEmpty(element))
                             ShowCompletionWindow(GenerateCompletionData(null, element, null));
