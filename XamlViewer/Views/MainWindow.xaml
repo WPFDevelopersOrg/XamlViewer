@@ -26,6 +26,7 @@
         <KeyBinding Command="{Binding AppCommands.SaveCommand}" Gesture="Ctrl+S"/>
         <KeyBinding Command="{Binding AppCommands.SaveAllCommand}" Gesture="Ctrl+Shift+S"/>
         <KeyBinding Command="{Binding AppCommands.CompileCommand}" Gesture="F5"/>
+        <KeyBinding Command="{Binding AppCommands.HelpCommand}" Gesture="F1"/>
     </controls:UserWindow.InputBindings>
     <controls:UserWindow.CaptionContent>
         <Grid>
