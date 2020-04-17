@@ -13,9 +13,9 @@
             <RotateTransform Angle="{Binding GridAngle}"/>
         </Grid.LayoutTransform>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" MinHeight="50"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*" MinHeight="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{Binding SplitterRowHeight}"/>
+            <RowDefinition Height="{Binding EditorRowHeight}"/>
         </Grid.RowDefinitions>
 
         <!--Designer-->

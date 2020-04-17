@@ -6,7 +6,11 @@
              xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+             xmlns:themeUtils="clr-namespace:XamlTheme.Utils;assembly=XamlTheme"
              prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <themeUtils:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" TrueVisibility="Collapsed" FalseVisibility="Visible"/>
+    </UserControl.Resources>
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Loaded">
             <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="true"/>
@@ -21,7 +25,8 @@
                                      TextAlignment="Center" BorderThickness="1" BorderBrush="LightGray" ToolTip="Zoom (Ctrl+Wheel)"
                                      Value="{Binding Scale,ElementName=zoomBox, Mode=TwoWay}"/>
                 <ToggleButton x:Name="RulerSwitch" Width="25" Margin="4,0,0,0" ToolTip="Ruler"
-                              Style="{StaticResource {x:Static themes:ResourceKeys.NormalToggleButtonStyleKey}}">
+                              Style="{StaticResource {x:Static themes:ResourceKeys.NormalToggleButtonStyleKey}}"
+                              Visibility="{Binding IsReadOnly,Converter={StaticResource boolToVisibilityConverter}}">
                     <controls:DrawingIcon>
                         <controls:DrawingIcon.Drawing>
                             <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
@@ -35,7 +40,8 @@
                 </ToggleButton>
                 <Button Width="25" ToolTip="Snapshot to File" BorderThickness="1" BorderBrush="Transparent"
                         Command="{Binding SnapshotCommand}"
-                        Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+                        Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}"
+                        Visibility="{Binding IsReadOnly,Converter={StaticResource boolToVisibilityConverter}}">
                     <controls:DrawingIcon>
                         <controls:DrawingIcon.Drawing>
                             <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button},FallbackValue={x:Static swm:Brushes.Transparent}}"

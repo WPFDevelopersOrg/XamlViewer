@@ -20,7 +20,7 @@ namespace XamlDesigner.ViewModels
     {
         private string _fileGuid = null;
         private bool _canSnapshot = false;
-        
+
         private IEventAggregator _eventAggregator = null;
         private RefreshDesignerEvent _refreshDesignerEvent = null;
 
@@ -36,6 +36,13 @@ namespace XamlDesigner.ViewModels
 
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
             SnapshotCommand = new DelegateCommand(OnSnapshot, CanSnapshot);
+        }
+
+        private bool _isReadOnly = false;
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set { SetProperty(ref _isReadOnly, value); }
         }
 
         private FrameworkElement _element;
@@ -64,13 +71,13 @@ namespace XamlDesigner.ViewModels
             var sfd = new SWF.SaveFileDialog { Filter = "PNG|*.png", FileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") };
             if (sfd.ShowDialog() != SWF.DialogResult.OK)
                 return;
-            
+
             using (var fs = new FileStream(sfd.FileName, FileMode.Create, FileAccess.ReadWrite))
             {
                 var drawingVisual = new DrawingVisual();
                 var width = Element.ActualWidth;
                 var height = Element.ActualHeight;
-                    
+
                 using (var context = drawingVisual.RenderOpen())
                 {
                     var contentBounds = VisualTreeHelper.GetDescendantBounds(Element);
@@ -78,32 +85,33 @@ namespace XamlDesigner.ViewModels
                 }
 
                 var rtb = new RenderTargetBitmap((int)width, (int)height, 96, 96, PixelFormats.Default);
-                rtb.Render(drawingVisual); 
+                rtb.Render(drawingVisual);
 
                 var encoder = new PngBitmapEncoder();
 
                 encoder.Frames.Add(BitmapFrame.Create(rtb));
                 encoder.Save(fs);
             }
-        }        
+        }
 
         private void OnRefreshDesigner(TabInfo tabInfo)
         {
             if (tabInfo.Guid != _fileGuid)
                 return;
 
+            IsReadOnly = tabInfo.IsReadOnly;
             _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.Compile, Guid = _fileGuid });
 
             try
             {
                 RefreshSnapshotStatus(false);
-                
+
                 var obj = XamlReader.Parse(tabInfo.FileContent);
                 var window = obj as Window;
                 if (window != null)
                 {
                     ShowLocalText("Window", 15);
-                    
+
                     window.Owner = Application.Current.MainWindow;
                     window.Show();
                 }

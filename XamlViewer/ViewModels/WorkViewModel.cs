@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using System.Windows;
+using Prism.Commands;
 using Prism.Mvvm;
 using XamlService.Payloads;
 
@@ -20,7 +21,28 @@ namespace XamlViewer.ViewModels
         {
             get { return _selectInfo; }
             set { SetProperty(ref _selectInfo, value); }
-        } 
+        }
+
+        private bool _isReadOnly;
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set
+            {
+                if (value)
+                {
+                    SplitterRowHeight = new GridLength(0);
+                    EditorRowHeight = new GridLength(0);
+                }
+                else
+                {
+                    SplitterRowHeight = GridLength.Auto;
+                    EditorRowHeight = new GridLength(1, GridUnitType.Star);
+                }
+
+                SetProperty(ref _isReadOnly, value);
+            }
+        }
 
         #region Init
 
@@ -70,6 +92,20 @@ namespace XamlViewer.ViewModels
         #endregion
 
         #region Layout
+
+        private GridLength _splitterRowHeight = GridLength.Auto;
+        public GridLength SplitterRowHeight
+        {
+            get { return _splitterRowHeight; }
+            set { SetProperty(ref _splitterRowHeight, value); }
+        }
+
+        private GridLength _editorRowHeight = new GridLength(1, GridUnitType.Star);
+        public GridLength EditorRowHeight
+        {
+            get { return _editorRowHeight; }
+            set { SetProperty(ref _editorRowHeight, value); }
+        }
 
         private int _designerRow = 0;
         public int DesignerRow

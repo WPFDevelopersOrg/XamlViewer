@@ -336,7 +336,7 @@ namespace XamlViewer.ViewModels
             if (!_regionManager.Regions.ContainsRegionWithName(RegionNames.WorkName))
                 return;
 
-            _workControl = _container.Resolve<WorkControl>(new ValueTuple<Type, object>(typeof(string), _guid), new ValueTuple<Type, object>(typeof(bool), IsSelected));
+            _workControl = _container.Resolve<WorkControl>(new ValueTuple<Type, object>(typeof(string), _guid), new ValueTuple<Type, object>(typeof(bool), IsSelected), new ValueTuple<Type, object>(typeof(bool), IsReadOnly));
             _workControl.Visibility = IsSelected ? Visibility.Visible : Visibility.Hidden;
 
             _regionManager.Regions[RegionNames.WorkName].Add(_workControl, null, true);

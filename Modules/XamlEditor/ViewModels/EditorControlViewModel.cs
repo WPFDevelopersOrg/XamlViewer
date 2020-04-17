@@ -478,7 +478,7 @@ namespace XamlEditor.ViewModels
         private void Compile(string content)
         {
             if (_eventAggregator != null && _textEditor != null)
-                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = string.IsNullOrEmpty(content) ? _textEditor.Text : content });
+                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(new TabInfo { Guid = _fileGuid, IsReadOnly = IsReadOnly, FileContent = string.IsNullOrEmpty(content) ? _textEditor.Text : content });
         }
 
         private void Reset(Action reset = null)
