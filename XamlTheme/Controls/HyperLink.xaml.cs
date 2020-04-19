@@ -45,6 +45,9 @@ namespace XamlTheme.Controls
 
         private void LocalHyperlink_Click(object sender, RoutedEventArgs e)
         {
+            if (LocalHyperlink.NavigateUri == null || string.IsNullOrWhiteSpace(LocalHyperlink.NavigateUri.ToString()))
+                return;
+
             Process.Start(new ProcessStartInfo(LocalHyperlink.NavigateUri.AbsoluteUri));
         }
     }
