@@ -36,7 +36,7 @@
                                    Text="2. Support quick selection of opened files in active files drop-down list"/>     
                     </StackPanel>
                 </Border>
-                <Border Background="#F3F3F3" Padding="10,13" Margin="0,15,0,0">
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0">
                     <StackPanel>
                         <TextBlock Text="Automitic Compilation"/>
                         <TextBlock Margin="0,5,0,0" Foreground="#717171" 
@@ -45,7 +45,7 @@
                                    Text="2. Auto-Compile Delay, compile automatically after a specified time without any input"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#F3F3F3" Padding="10,13" Margin="0,15,0,0">
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0">
                     <StackPanel>
                         <TextBlock Text="Reference"/>
                         <TextBlock Margin="0,5,0,0" Foreground="#717171" 
@@ -80,7 +80,7 @@
                                    Text="A lightweight xaml editing and preview tool"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#F3F3F3" Padding="10,13" Margin="0,15,0,0">
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0">
                     <StackPanel>
                         <TextBlock Text="Verson"/>
                         <TextBlock Margin="0,5,0,0" Foreground="#717171" 
