@@ -1,18 +1,24 @@
 ﻿using System.Windows;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
+using XamlService.Commands;
 using XamlService.Payloads;
 
 namespace XamlViewer.ViewModels
 {
     public class WorkViewModel : BindableBase
     {
+        private IApplicationCommands _appCommands = null;
+
         public DelegateCommand SwapCommand { get; private set; }
         public DelegateCommand HorSplitCommand { get; private set; }
         public DelegateCommand VerSplitCommand { get; private set; }
 
-        public WorkViewModel()
+        public WorkViewModel(IContainerExtension container)
         {
+            _appCommands = container.Resolve<IApplicationCommands>();
+
             InitCommand();
         }
 
@@ -55,6 +61,11 @@ namespace XamlViewer.ViewModels
 
         #endregion
 
+        public void Example(int type)
+        {
+            _appCommands.ExampleCommand.Execute(type);
+        }
+
         #region Command
 
         private void Swap()
@@ -87,7 +98,7 @@ namespace XamlViewer.ViewModels
             HorSplitAngle = 90d;
             VerSplitAngle = 0d;
             CursorSource = @"./Assets/Cursors/Splitter_lr.cur";
-        }
+        } 
 
         #endregion
 

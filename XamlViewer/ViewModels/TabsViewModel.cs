@@ -38,6 +38,7 @@ namespace XamlViewer.ViewModels
         public DelegateCommand<bool?> SaveAllCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
         public DelegateCommand HelpCommand { get; private set; }
+        public DelegateCommand<int?> ExampleCommand { get; private set; }
 
         public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
         public DelegateCommand<SizeChangedEventArgs> SizeChangedCommand { get; private set; }
@@ -107,6 +108,9 @@ namespace XamlViewer.ViewModels
 
             HelpCommand = new DelegateCommand(Help);
             _appCommands.HelpCommand.RegisterCommand(HelpCommand);
+
+            ExampleCommand=new DelegateCommand<int?>(Example);
+            _appCommands.ExampleCommand.RegisterCommand(ExampleCommand);
 
             SizeChangedCommand = new DelegateCommand<SizeChangedEventArgs>(SizeChanged);
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
@@ -283,6 +287,11 @@ namespace XamlViewer.ViewModels
                 helpTab.IsSelected = true;
                 MoveToVisible(helpTab);
             }
+        }
+
+        private void Example(int? type)
+        {
+            
         }
 
         private void SizeChanged(SizeChangedEventArgs e)

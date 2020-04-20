@@ -16,6 +16,7 @@
         <![CDATA[<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
+      xmlns:models="clr-namespace:XamlViewer.Models"
       Background="White">
     <Border Margin="60,30" TextBlock.Foreground="#616161">
         <Grid>
@@ -62,11 +63,10 @@
                 
                 <TextBlock Text="Examples" FontSize="20" Margin="0,30,0,0"/>
                 <StackPanel Margin="0,15,0,0">
-                    <controls:Hyperlink Text="Image"/>
-                    <controls:Hyperlink Text="Style" Margin="0,10,0,0"/>
-                    <controls:Hyperlink Text="Window" Margin="0,10,0,0"/>
-                    <controls:Hyperlink Text="Storyboard" Margin="0,10,0,0"/>
-                    <controls:Hyperlink Text="Third-Party Controls" Margin="0,10,0,0"/>
+                    <controls:Hyperlink Text="Style" Margin="0,10,0,0" Tag="0"/>
+                    <controls:Hyperlink Text="Window" Margin="0,10,0,0" Tag="1"/>
+                    <controls:Hyperlink Text="Storyboard" Margin="0,10,0,0" Tag="2"/>
+                    <controls:Hyperlink Text="Third-Party Controls" Margin="0,10,0,0" Tag="3"/>
                 </StackPanel>
                 
             </StackPanel>

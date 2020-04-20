@@ -1,20 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using XamlService.Payloads;
-using XamlViewer.Utils;
 using XamlViewer.ViewModels;
 
 namespace XamlViewer.Views
@@ -24,6 +11,7 @@ namespace XamlViewer.Views
     /// </summary>
     public partial class WorkControl : UserControl
     {
+        private WorkViewModel _workViewModel = null;
         public WorkControl()
         {
             InitializeComponent();
@@ -32,12 +20,24 @@ namespace XamlViewer.Views
         public WorkControl(string tabGuid, bool isSelected, bool isReadOnly)
             : this()
         {
-            var viewModel = DataContext as WorkViewModel;
-            if (viewModel != null)
+            _workViewModel = DataContext as WorkViewModel;
+            if (_workViewModel != null)
             {
-                viewModel.SelectInfo = new TabSelectInfo { Guid = tabGuid, IsSelected = isSelected };
-                viewModel.IsReadOnly = isReadOnly;
+                _workViewModel.SelectInfo = new TabSelectInfo { Guid = tabGuid, IsSelected = isSelected };
+                _workViewModel.IsReadOnly = isReadOnly;
             }
+        }
+
+        private void Hyperlink_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_workViewModel == null)
+                return;
+
+            var hyperlink = e.OriginalSource as Hyperlink;
+            if (hyperlink == null || hyperlink.Tag == null)
+                return;
+
+            _workViewModel.Example(int.Parse(hyperlink.Tag.ToString()));
         }
     }
 }

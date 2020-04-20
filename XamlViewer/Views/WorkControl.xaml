@@ -21,7 +21,8 @@
         <!--Designer-->
         <ContentControl Grid.Row="{Binding DesignerRow}"
                         prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}"
-                        prism:RegionManager.RegionContext="{Binding SelectInfo}">
+                        prism:RegionManager.RegionContext="{Binding SelectInfo}"
+                        Hyperlink.Click="Hyperlink_OnClick">
             <ContentControl.LayoutTransform>
                 <RotateTransform Angle="{Binding PaneAngle}"/>
             </ContentControl.LayoutTransform>

@@ -6,7 +6,7 @@ namespace XamlService.Commands
     {
         //Toolbar
         CompositeCommand NewCommand { get; }
-        CompositeCommand OpenCommand { get; } 
+        CompositeCommand OpenCommand { get; }
         CompositeCommand SaveCommand { get; }
         CompositeCommand SaveAllCommand { get; }
 
@@ -14,6 +14,9 @@ namespace XamlService.Commands
         CompositeCommand RedoCommand { get; }
 
         CompositeCommand CompileCommand { get; }
+
+        //Example
+        CompositeCommand ExampleCommand { get; }
 
         //
         CompositeCommand RefreshCommand { get; }
@@ -34,7 +37,7 @@ namespace XamlService.Commands
         public CompositeCommand OpenCommand
         {
             get { return _openCommand; }
-        } 
+        }
 
         private CompositeCommand _saveCommand = new CompositeCommand();
         public CompositeCommand SaveCommand
@@ -53,7 +56,7 @@ namespace XamlService.Commands
         {
             get { return _undoCommand; }
         }
-		
+
         private CompositeCommand _redoCommand = new CompositeCommand(true);
         public CompositeCommand RedoCommand
         {
@@ -64,6 +67,12 @@ namespace XamlService.Commands
         public CompositeCommand CompileCommand
         {
             get { return _compileCommand; }
+        }
+
+        private CompositeCommand _exampleCommand = new CompositeCommand();
+        public CompositeCommand ExampleCommand
+        {
+            get { return _exampleCommand; }
         }
 
         private CompositeCommand _refreshCommand = new CompositeCommand();
