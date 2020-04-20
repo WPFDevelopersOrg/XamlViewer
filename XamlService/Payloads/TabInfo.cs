@@ -5,6 +5,7 @@ namespace XamlService.Payloads
     {
         public string Guid { get; set; }
         public bool IsReadOnly { get; set; }
+        public bool IsShowEditor { get; set; }
     }
 
     public class TabInfo : TabFlag

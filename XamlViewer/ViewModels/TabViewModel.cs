@@ -47,9 +47,11 @@ namespace XamlViewer.ViewModels
         private RequestTextEvent _requestTextEvent = null;
         private SaveTextEvent _saveTextEvent = null;
 
-        public TabViewModel(string fileName, TabStatus status, Action<TabViewModel, bool> closeAction)
+        public TabViewModel(string fileName, TabStatus status, Action<TabViewModel, bool> closeAction, bool isShowEditor = true)
         {
             FileName = fileName;
+            IsShowEditor = isShowEditor;
+
             _closeAction = closeAction;
             _guid = Guid.NewGuid().ToString();
 
@@ -115,6 +117,13 @@ namespace XamlViewer.ViewModels
 
         public string FileGuid { get { return _guid; } }
         public bool IsReadOnly { get { return (Status & TabStatus.Locked) == TabStatus.Locked; } }
+
+        private bool _isShowEditor = true;
+        public bool IsShowEditor
+        {
+            get { return _isShowEditor; }
+            private set { SetProperty(ref _isShowEditor, value); }
+        }
 
         private string _fileName = null;
         public string FileName
@@ -292,7 +301,7 @@ namespace XamlViewer.ViewModels
             if (tabInfo.Guid != _guid)
                 return;
 
-            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = IsReadOnly });
+            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = IsReadOnly, IsShowEditor = IsShowEditor });
         }
 
         private void OnSaveText(TabInfo tabInfo)
@@ -336,7 +345,7 @@ namespace XamlViewer.ViewModels
             if (!_regionManager.Regions.ContainsRegionWithName(RegionNames.WorkName))
                 return;
 
-            _workControl = _container.Resolve<WorkControl>(new ValueTuple<Type, object>(typeof(string), _guid), new ValueTuple<Type, object>(typeof(bool), IsSelected), new ValueTuple<Type, object>(typeof(bool), IsReadOnly));
+            _workControl = _container.Resolve<WorkControl>(new ValueTuple<Type, object>(typeof(string), _guid), new ValueTuple<Type, object>(typeof(bool), IsSelected), new ValueTuple<Type, object>(typeof(bool), IsShowEditor));
             _workControl.Visibility = IsSelected ? Visibility.Visible : Visibility.Hidden;
 
             _regionManager.Regions[RegionNames.WorkName].Add(_workControl, null, true);
@@ -363,7 +372,7 @@ namespace XamlViewer.ViewModels
             if (_eventAggregator == null)
                 return;
 
-            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = IsReadOnly });
+            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = IsReadOnly, IsShowEditor = IsShowEditor });
         }
 
         public void UpdateTextToEditor()
@@ -371,7 +380,7 @@ namespace XamlViewer.ViewModels
             if (_eventAggregator == null)
                 return;
 
-            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = IsReadOnly });
+            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = IsReadOnly, IsShowEditor = IsShowEditor });
         }
 
         public void UpdateSelectInfo()
@@ -412,7 +421,7 @@ namespace XamlViewer.ViewModels
             else
             {
                 Title = FileName;
-                FileContent = (status & TabStatus.Inner) == TabStatus.Inner ? Application.Current.Resources["HelpContentTemplate"] as string : Application.Current.Resources["FileContentTemplate"] as string;
+                FileContent = Application.Current.Resources[(status & TabStatus.Inner) == TabStatus.Inner ? ResourcesMap.NameToContentKeyDic[FileName] : InternalConstStrings.NormalFileContentKey] as string;
             } 
 
             CopyOrOpenPathCommand.RaiseCanExecuteChanged(); 

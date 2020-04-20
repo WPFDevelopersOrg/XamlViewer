@@ -114,6 +114,19 @@ namespace XamlEditor.ViewModels
             }
         }
 
+        private bool _isShowEditor = false;
+        public bool IsShowEditor
+        {
+            get { return _isShowEditor; }
+            set
+            {
+                if (SetProperty(ref _isShowEditor, value))
+                {
+                    CompileCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         private bool _isReadOnly = false;
         public bool IsReadOnly
         {
@@ -122,7 +135,6 @@ namespace XamlEditor.ViewModels
             {
                 if (SetProperty(ref _isReadOnly, value))
                 {
-                    CompileCommand.RaiseCanExecuteChanged();
                     SaveCommand.RaiseCanExecuteChanged();
                 }
             }
@@ -318,7 +330,7 @@ namespace XamlEditor.ViewModels
 
         private bool CanCompile()
         {
-            return !IsReadOnly;
+            return IsShowEditor;
         }
 
         private void Compile()
@@ -374,8 +386,10 @@ namespace XamlEditor.ViewModels
 
             Reset(() =>
             {
-                _fileGuid = tabInfo.Guid;
                 IsReadOnly = tabInfo.IsReadOnly;
+                IsShowEditor = tabInfo.IsShowEditor;
+
+                _fileGuid = tabInfo.Guid;
                 _textEditor.Text = tabInfo.FileContent;
             });
 
@@ -399,6 +413,7 @@ namespace XamlEditor.ViewModels
                 return;
 
             IsReadOnly = tabFlag.IsReadOnly;
+            IsShowEditor = tabFlag.IsShowEditor;
         }
 
         private void OnSelectTab(TabSelectInfo info)
@@ -478,7 +493,7 @@ namespace XamlEditor.ViewModels
         private void Compile(string content)
         {
             if (_eventAggregator != null && _textEditor != null)
-                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(new TabInfo { Guid = _fileGuid, IsReadOnly = IsReadOnly, FileContent = string.IsNullOrEmpty(content) ? _textEditor.Text : content });
+                _eventAggregator.GetEvent<RefreshDesignerEvent>().Publish(new TabInfo { Guid = _fileGuid, IsReadOnly = IsReadOnly, IsShowEditor = IsShowEditor, FileContent = string.IsNullOrEmpty(content) ? _textEditor.Text : content });
         }
 
         private void Reset(Action reset = null)

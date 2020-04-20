@@ -29,24 +29,24 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _selectInfo, value); }
         }
 
-        private bool _isReadOnly;
-        public bool IsReadOnly
+        private bool _isShowEditor = true;
+        public bool IsShowEditor
         {
-            get { return _isReadOnly; }
+            get { return _isShowEditor; }
             set
             {
                 if (value)
                 {
-                    SplitterRowHeight = new GridLength(0);
-                    EditorRowHeight = new GridLength(0);
-                }
-                else
-                {
                     SplitterRowHeight = GridLength.Auto;
                     EditorRowHeight = new GridLength(1, GridUnitType.Star);
                 }
+                else
+                {
+                    SplitterRowHeight = new GridLength(0);
+                    EditorRowHeight = new GridLength(0);
+                }
 
-                SetProperty(ref _isReadOnly, value);
+                SetProperty(ref _isShowEditor, value);
             }
         }
 

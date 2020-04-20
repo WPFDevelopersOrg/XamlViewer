@@ -90,6 +90,7 @@
     </Compile>
     <Compile Include="Models\AppData.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\InternalConstStrings.cs" />
     <Compile Include="Models\XamlConfig.cs" />
     <Compile Include="Regions\GridRegionAdapter.cs" />
     <Compile Include="Utils\Common.cs" />
@@ -128,6 +129,10 @@
     <Page Include="Dialogs\MessageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Examples.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Converters.xaml">
       <SubType>Designer</SubType>

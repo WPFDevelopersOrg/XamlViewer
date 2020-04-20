@@ -17,5 +17,22 @@ namespace XamlViewer.Models
             {ProcessStatus.Save,          "Saving..."},
             {ProcessStatus.LoadFonts,     "Loading system fonts..."},
         };
+
+        public static Dictionary<int, string> ExampleFileNameDic = new Dictionary<int, string>
+        {
+            {0,       InternalConstStrings.StyleExampleFileName},
+            {1,       InternalConstStrings.WindowExampleFileName},
+            {2,       InternalConstStrings.AnimationExampleFileName},
+            {3,       InternalConstStrings.CustomControlExampleFileName},
+        };
+
+        public static Dictionary<string, string> NameToContentKeyDic = new Dictionary<string, string>
+        {
+            {InternalConstStrings.HelpFileName,                         InternalConstStrings.HelpFileContentKey},
+            {InternalConstStrings.StyleExampleFileName,                 InternalConstStrings.StyleExampleFileContentKey},
+            {InternalConstStrings.WindowExampleFileName,                InternalConstStrings.WindowExampleFileContentKey},
+            {InternalConstStrings.AnimationExampleFileName,             InternalConstStrings.AnimationExampleFileContentKey},
+            {InternalConstStrings.CustomControlExampleFileName,         InternalConstStrings.CustomControlExampleFileContentKey},
+        };
     }
 }

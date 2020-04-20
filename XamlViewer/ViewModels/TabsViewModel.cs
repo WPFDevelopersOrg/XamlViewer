@@ -273,11 +273,11 @@ namespace XamlViewer.ViewModels
         }
 
         private void Help()
-        {
-            var helpTab = XamlTabs.FirstOrDefault(tab => (tab.Status & TabStatus.Inner) == TabStatus.Inner);
+        {  
+            var helpTab = XamlTabs.FirstOrDefault(tab => (tab.Status & TabStatus.Inner) == TabStatus.Inner && tab.FileName == InternalConstStrings.HelpFileName);
             if (helpTab == null)
             {
-                helpTab = new TabViewModel("Help.xaml", TabStatus.Inner, CloseXamlTab);
+                helpTab = new TabViewModel(InternalConstStrings.HelpFileName, TabStatus.Inner, CloseXamlTab, false);
                 XamlTabs.Insert(0, helpTab);
 
                 helpTab.IsSelected = true;
@@ -291,7 +291,24 @@ namespace XamlViewer.ViewModels
 
         private void Example(int? type)
         {
-            
+            if (type == null || !ResourcesMap.ExampleFileNameDic.ContainsKey(type.Value))
+                return;
+
+            var fileName = ResourcesMap.ExampleFileNameDic[type.Value];
+
+            var exampleTab = XamlTabs.FirstOrDefault(tab => (tab.Status & TabStatus.Inner) == TabStatus.Inner && tab.FileName == fileName);
+            if (exampleTab == null)
+            {
+                exampleTab = new TabViewModel(fileName, TabStatus.Inner, CloseXamlTab);
+                XamlTabs.Insert(0, exampleTab);
+
+                exampleTab.IsSelected = true;
+            }
+            else
+            {
+                exampleTab.IsSelected = true;
+                MoveToVisible(exampleTab);
+            }
         }
 
         private void SizeChanged(SizeChangedEventArgs e)

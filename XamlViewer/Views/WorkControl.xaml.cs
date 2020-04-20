@@ -17,14 +17,14 @@ namespace XamlViewer.Views
             InitializeComponent();
         }
 
-        public WorkControl(string tabGuid, bool isSelected, bool isReadOnly)
+        public WorkControl(string tabGuid, bool isSelected, bool isShowEditor = true)
             : this()
         {
             _workViewModel = DataContext as WorkViewModel;
             if (_workViewModel != null)
             {
                 _workViewModel.SelectInfo = new TabSelectInfo { Guid = tabGuid, IsSelected = isSelected };
-                _workViewModel.IsReadOnly = isReadOnly;
+                _workViewModel.IsShowEditor = isShowEditor;
             }
         }
 
