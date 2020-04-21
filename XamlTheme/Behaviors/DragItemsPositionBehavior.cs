@@ -13,8 +13,8 @@ namespace XamlTheme.Behaviors
 {
     public class DragItemsPositionBehavior : Behavior<Panel>
     {
+        private Point? _cacheMouseDownToPanelPos = null;
         private Point _cacheMouseDownToChildPos;
-        private Point _cacheMouseDownToPanelPos;
         private Point _cacheChildToPanelPos;
         private UIElement _dragedChild = null;
 
@@ -135,46 +135,6 @@ namespace XamlTheme.Behaviors
 
         #region Event
 
-        private void OnQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
-        {
-            _panelAdorner.Update();
-            MoveChild(_dragedChild);
-        }
-
-        private void OnMouseMove(object sender, MouseEventArgs e)
-        {
-            var curPos = e.GetPosition(AssociatedObject);
-            var xMoveDis = curPos.X - _cacheMouseDownToPanelPos.X;
-            var yMoveDis = curPos.Y - _cacheMouseDownToPanelPos.Y;
-            
-            var canXMove = DoubleUtil.GreaterThanOrClose(Math.Abs(xMoveDis), SystemParameters.MinimumHorizontalDragDistance);
-            var canYMove = DoubleUtil.GreaterThanOrClose(Math.Abs(yMoveDis), SystemParameters.MinimumVerticalDragDistance);
-            
-            if (DisabledYPosition)
-            {
-                if(!canXMove)
-                    return;
-                
-                //adjust
-                _cacheMouseDownToChildPos.X += xMoveDis;
-                _cacheChildToPanelPos.X += xMoveDis;
-            }
-            else
-            {
-                if(!canXMove && !canYMove)
-                    return;
-                
-                //adjust
-                _cacheMouseDownToChildPos.X += xMoveDis;
-                _cacheChildToPanelPos.X += xMoveDis;
-                
-                _cacheMouseDownToChildPos.Y += yMoveDis;
-                _cacheChildToPanelPos.Y += yMoveDis;
-            }
-            
-            StartDrag();
-        }
-
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (AssociatedObject.Children == null || AssociatedObject.Children.Count == 0)
@@ -183,6 +143,8 @@ namespace XamlTheme.Behaviors
             var button = Utils.Common.FindVisualParent<Button>(e.OriginalSource as DependencyObject);
             if (button != null)
                 return;
+
+            _dragedChild = null;
 
             foreach (UIElement child in AssociatedObject.Children)
             {
@@ -194,17 +156,91 @@ namespace XamlTheme.Behaviors
                     _cacheMouseDownToPanelPos = e.GetPosition(AssociatedObject);
                     _cacheChildToPanelPos = child.TranslatePoint(new Point(), AssociatedObject);
                     _dragedChild = child;
-					
-                    AssociatedObject.PreviewMouseMove += OnMouseMove;
 
+                    RegisterEvents();
                     break;
                 }
             }
         }
 
+        private void OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            _dragedChild = null;
+            UnregisterEvents();
+        } 
+
+        private void OnQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+        {
+            _panelAdorner.Update();
+            MoveChild(_dragedChild);
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_dragedChild == null)
+            {
+                UnregisterEvents();
+                return;
+            }
+
+            if (Mouse.LeftButton != MouseButtonState.Pressed)
+            {
+                _dragedChild = null;
+
+                UnregisterEvents();
+                return;
+            }
+
+            var curPos = e.GetPosition(AssociatedObject);
+            var xMoveDis = curPos.X - _cacheMouseDownToPanelPos.Value.X;
+            var yMoveDis = curPos.Y - _cacheMouseDownToPanelPos.Value.Y;
+
+            var canXMove = DoubleUtil.GreaterThanOrClose(Math.Abs(xMoveDis), SystemParameters.MinimumHorizontalDragDistance);
+            var canYMove = DoubleUtil.GreaterThanOrClose(Math.Abs(yMoveDis), SystemParameters.MinimumVerticalDragDistance);
+
+            if (DisabledYPosition)
+            {
+                if (!canXMove)
+                    return;
+
+                //adjust
+                _cacheMouseDownToChildPos.X += xMoveDis;
+                _cacheChildToPanelPos.X += xMoveDis;
+            }
+            else
+            {
+                if (!canXMove && !canYMove)
+                    return;
+
+                //adjust
+                _cacheMouseDownToChildPos.X += xMoveDis;
+                _cacheChildToPanelPos.X += xMoveDis;
+
+                _cacheMouseDownToChildPos.Y += yMoveDis;
+                _cacheChildToPanelPos.Y += yMoveDis;
+            }
+
+            StartDrag();
+        }
+
         #endregion
 
         #region Func
+
+        private void UnregisterEvents()
+        {
+            AssociatedObject.PreviewMouseMove -= OnMouseMove;
+            AssociatedObject.MouseLeave -= OnMouseLeave;
+        }
+
+        private void RegisterEvents()
+        {
+            AssociatedObject.PreviewMouseMove -= OnMouseMove;
+            AssociatedObject.PreviewMouseMove += OnMouseMove;
+
+            AssociatedObject.MouseLeave -= OnMouseLeave;
+            AssociatedObject.MouseLeave += OnMouseLeave;
+        }
 
         private MousePanelAdorner ConstructMousePanelAdorner(UIElement panel, UIElement draggedChild)
         {
@@ -212,15 +248,17 @@ namespace XamlTheme.Behaviors
                 return null;
 
             return new MousePanelAdorner(panel, draggedChild as FrameworkElement, _cacheMouseDownToChildPos, _cacheChildToPanelPos, DisabledYPosition);
-        } 
+        }
 
         private void StartDrag()
         {
             if (_panelAdorner != null || _dragedChild == null)
                 return;
 
+            UnregisterEvents();
+
             RootAdornerLayer.Add(GetPanelAdorner(AssociatedObject, _dragedChild));
-            _dragedChild.Opacity = 0; 
+            _dragedChild.Opacity = 0;
 
             DragDrop.AddQueryContinueDragHandler(AssociatedObject, OnQueryContinueDrag);
             DragDrop.DoDragDrop(AssociatedObject, _dragedChild, DragDropEffects.Move);
@@ -231,8 +269,6 @@ namespace XamlTheme.Behaviors
 
         private void EndDrag()
         { 
-            AssociatedObject.PreviewMouseMove -= OnMouseMove;
-
             RootAdornerLayer.Remove(_panelAdorner);
             _panelAdorner = null;
 
@@ -241,14 +277,14 @@ namespace XamlTheme.Behaviors
         }
 
         private void MoveChild(UIElement dragedChild)
-        { 
+        {
             var screenPos = new Win32.POINT();
             if (!Win32.GetCursorPos(ref screenPos))
-            	return;
-            
-            var posToPanel = AssociatedObject.PointFromScreen(new Point(screenPos.X, screenPos.Y)); 
+                return;
+
+            var posToPanel = AssociatedObject.PointFromScreen(new Point(screenPos.X, screenPos.Y));
             var dragedElement = dragedChild as FrameworkElement;
-			
+
             var childRect = new Rect(posToPanel.X - _cacheMouseDownToChildPos.X, DisabledYPosition ? _cacheChildToPanelPos.Y : (posToPanel.Y - _cacheMouseDownToChildPos.Y), dragedElement.ActualWidth, dragedElement.ActualHeight);
 
             //find the child which has max overlapping area with dragedChild
