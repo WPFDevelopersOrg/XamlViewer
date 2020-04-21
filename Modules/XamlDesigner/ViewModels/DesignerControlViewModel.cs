@@ -45,6 +45,13 @@ namespace XamlDesigner.ViewModels
             set { SetProperty(ref _isReadOnly, value); }
         }
 
+        private string version = "1.0.0";
+        public string Version
+        {
+            get { return version; }
+            set { SetProperty(ref version, value); }
+        }
+
         private FrameworkElement _element;
         public FrameworkElement Element
         {
@@ -59,6 +66,9 @@ namespace XamlDesigner.ViewModels
             var selectInfo = (TabSelectInfo)(RegionContext.GetObservableContext(designerControl).Value);
             if (selectInfo != null)
                 _fileGuid = selectInfo.Guid;
+
+            var version = Application.ResourceAssembly.GetName().Version;
+            Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
         private bool CanSnapshot()
