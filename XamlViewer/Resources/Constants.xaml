@@ -17,13 +17,18 @@
         <![CDATA[<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
-      xmlns:models="clr-namespace:XamlViewer.Models"
+      Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=ContentPresenter}}"
       Background="White">
+    <Grid.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+    </Grid.Resources> 
     <Border Margin="60,30" TextBlock.Foreground="#616161">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
@@ -63,8 +68,8 @@
                 </Border>
                 
                 <TextBlock Text="Examples" FontSize="20" Margin="0,30,0,0"/>
-                <StackPanel Margin="0,15,0,0">
-                    <controls:Hyperlink Text="Style" Margin="0,10,0,0" Tag="0"/>
+                <StackPanel>
+                    <controls:Hyperlink Text="Style" Margin="0,15,0,0" Tag="0"/>
                     <controls:Hyperlink Text="Window" Margin="0,10,0,0" Tag="1"/>
                     <controls:Hyperlink Text="Animation" Margin="0,10,0,0" Tag="2"/>
                     <controls:Hyperlink Text="Third-Party Controls" Margin="0,10,0,0" Tag="3"/>
@@ -91,24 +96,24 @@
                 <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0">
                     <StackPanel>
                         <TextBlock Text="Source Code"/>
-                        <StackPanel Margin="0,5,0,0" Orientation="Horizontal" TextBlock.Foreground="#717171">
-                            <TextBlock Text="From "/>
-                            <controls:Hyperlink Text="huangjia2107"
+                        <WrapPanel Orientation="Horizontal" TextBlock.Foreground="#717171">
+                            <TextBlock Text="From " Margin="0,5,0,0"/>
+                            <controls:Hyperlink Text="huangjia2107" Margin="0,5,0,0"
                                                 NavigateUri="https://github.com/huangjia2107"
                                                 ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
-                            <TextBlock Text=".  Hosted on "/>
-                            <controls:Hyperlink Text="GitHub"
+                            <TextBlock Text=".  Hosted on " Margin="0,5,0,0"/>
+                            <controls:Hyperlink Text="GitHub" Margin="0,5,0,0"
                                                 NavigateUri="https://github.com/huangjia2107/XamlViewer"
                                                 ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
-                            <TextBlock Text=".  Under the "/>
-                            <controls:Hyperlink Text="MIT"
+                            <TextBlock Text=".  Under the " Margin="0,5,0,0"/>
+                            <controls:Hyperlink Text="MIT" Margin="0,5,0,0"
                                                 NavigateUri="https://github.com/huangjia2107/XamlViewer/blob/master/LICENSE"
                                                 ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
-                            <TextBlock Text=".  Feel free to "/>
-                            <controls:Hyperlink Text="Feedback"
+                            <TextBlock Text=".  Feel free to " Margin="0,5,0,0"/>
+                            <controls:Hyperlink Text="Feedback" Margin="0,5,0,0"
                                                 NavigateUri="https://github.com/huangjia2107/XamlViewer/issues"
                                                 ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>           
-                        </StackPanel>           
+                        </WrapPanel>           
                     </StackPanel>
                 </Border>
                 
