@@ -7,5 +7,7 @@ namespace XamlViewer.Models
     {
         public XamlConfig Config { get; set; }
         public Func<Task> DealExistedFileAction { get; set; }
+
+        public string Version { get; set; }
     }
 }

@@ -1,27 +1,65 @@
-﻿using Prism.Events;
+﻿using Prism.Commands;
+using Prism.Events;
+using Prism.Ioc;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using XamlService.Events;
 using XamlService.Payloads;
+using XamlUtil.Common;
 using XamlViewer.Models;
+using XamlViewer.Utils;
 
 namespace XamlViewer.ViewModels
 {
     public class StatusViewModel : BindableBase
     {
+        private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
+
         private HashSet<ProcessStatus> _processStatuses = null;
         private readonly object _statusLock = new object();
 
-        public StatusViewModel(IEventAggregator eventAggregator)
+        public DelegateCommand DownloadCommand { get; private set; }
+
+        public StatusViewModel(IContainerExtension container, IEventAggregator eventAggregator)
         {
+            _appData = container.Resolve<AppData>();
             _eventAggregator = eventAggregator;
+
+            DownloadCommand = new DelegateCommand(Download);
+
             _processStatuses = new HashSet<ProcessStatus>();
 
             _eventAggregator.GetEvent<ProcessStatusEvent>().Subscribe(OnProcessStatus, ThreadOption.BackgroundThread);
             _eventAggregator.GetEvent<CaretPositionEvent>().Subscribe(OnCaretPosition, ThreadOption.BackgroundThread);
+
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    var reponseStr = HttpUtil.GetString(@"https://api.github.com/repos/huangjia2107/xamlviewer/releases/latest").Result;
+                    if (!string.IsNullOrEmpty(reponseStr))
+                        ReleaseVersion = JsonUtil.DeserializeObject<ReleaseInfo>(reponseStr);
+                }
+                catch { }
+            });
+        }
+
+        private ReleaseInfo _releaseVersion;
+        public ReleaseInfo ReleaseVersion
+        {
+            get { return _releaseVersion; }
+            set { SetProperty(ref _releaseVersion, value); }
+        }
+
+        public string CurrentVersion
+        {
+            get { return _appData.Version; } 
         }
 
         private string _currentStatus = "Ready";
@@ -43,6 +81,11 @@ namespace XamlViewer.ViewModels
         {
             get { return _caretColumn; }
             set { SetProperty(ref _caretColumn, value); }
+        }
+
+        private void Download()
+        {
+            Process.Start(new ProcessStartInfo(@"https://github.com/huangjia2107/XamlViewer/releases"));
         }
 
         private void OnProcessStatus(ProcessInfo info)

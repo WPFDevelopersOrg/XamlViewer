@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
     <Compile Include="Common\DoubleUtil.cs" />
+    <Compile Include="Common\JsonUtil.cs" />
     <Compile Include="Functions\DeferRefresh.cs" />
     <Compile Include="IO\FileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

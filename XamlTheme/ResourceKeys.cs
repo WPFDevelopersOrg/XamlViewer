@@ -24,6 +24,12 @@ namespace XamlTheme
             get { return new ComponentResourceKey(typeof(ResourceKeys), NormalButtonStyle); }
         }
 
+        public const string StatusbarButtonStyle = "StatusbarButtonStyle";
+        public static ComponentResourceKey StatusbarButtonStyleKey
+        {
+            get { return new ComponentResourceKey(typeof(ResourceKeys), StatusbarButtonStyle); }
+        }
+
         public const string TitlebarButtonStyle = "TitlebarButtonStyle";
         public static ComponentResourceKey TitlebarButtonStyleKey
         {

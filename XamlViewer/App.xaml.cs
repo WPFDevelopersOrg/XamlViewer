@@ -65,7 +65,7 @@ namespace XamlViewer
 
             //Code Completion
             containerRegistry.RegisterInstance(new XsdParser());
-
+             
             //Config
             var localConfig = FileHelper.LoadFromJsonFile<XamlConfig>(ResourcesMap.LocationDic[Location.GlobalConfigFile]);
             if (localConfig != null)
@@ -83,7 +83,10 @@ namespace XamlViewer
                     localConfig.References.RemoveAll(f => !File.Exists(AppDomain.CurrentDomain.BaseDirectory + f) || Path.GetExtension(f).ToLower() != ".dll");
             }
 
-            containerRegistry.RegisterInstance(new AppData { Config = localConfig ?? new XamlConfig() });
+            //version
+            var version = ResourceAssembly.GetName().Version;
+
+            containerRegistry.RegisterInstance(new AppData { Config = localConfig ?? new XamlConfig(), Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build) });
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

@@ -26,6 +26,20 @@ namespace XamlViewer.Utils
         }
     }
 
+    public class StringToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var str = (string)value;
+            return string.IsNullOrWhiteSpace(str) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class FlagEnumToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -189,6 +203,25 @@ namespace XamlViewer.Utils
                 return DoubleUtil.IsZero(offset) ? Visibility.Collapsed : Visibility.Visible;
             
             return DoubleUtil.AreClose(offset, Length) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class VersionInfoMultiConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Contains(null) || values.Contains(DependencyProperty.UnsetValue))
+                return null;
+
+            var releaseVersion = (ReleaseInfo)values[0];
+            var currentVersion = (string)values[1];
+
+            return Version.Parse(releaseVersion.name) > Version.Parse(currentVersion) ? new { Info = "New Release", Version = releaseVersion.name, Note = releaseVersion.body } : null;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
