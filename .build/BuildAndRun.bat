@@ -5,7 +5,7 @@ set solutionname=XamlViewer
 set platform=Any CPU
 set configuration=Release
 
-set runapp=..\outputs\Release\Xaml Viewer.exe
+set runapp=..\outputs\Release\XAML Viewer.exe
  
 cd %~dp0
   

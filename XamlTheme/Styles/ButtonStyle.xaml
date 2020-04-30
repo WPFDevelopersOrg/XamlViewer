@@ -55,7 +55,7 @@
                 <Setter Property="Background" Value="#3395D6"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#3395D6"/>
+                <Setter Property="Background" Value="#22000000"/>
             </Trigger>
         </Style.Triggers>
     </Style>
