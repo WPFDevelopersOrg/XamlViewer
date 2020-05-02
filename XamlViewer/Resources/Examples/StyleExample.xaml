@@ -1,0 +1,268 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:models="clr-namespace:XamlViewer.Models">
+
+    <sys:String x:Key="{x:Static models:InternalConstStrings.StyleExampleFileContentKey}" xml:space="preserve">
+        <![CDATA[<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#FAFBFC">
+    <Grid.Resources>
+        <!--Github TabControl Style-->
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="Foreground" Value="#424242"/>
+            <Setter Property="Padding" Value="4,4,4,4"/>
+            <Setter Property="BorderThickness" Value="0,1,0,0"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="ColumnDefinition0"/>
+                                <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                                <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TabPanel x:Name="HeaderPanel" Grid.Column="0" Grid.Row="0" Margin="2,0,2,-1" IsItemsHost="true" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                            <Border x:Name="ContentPanel" Grid.Column="0" Grid.Row="1"
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    Background="{TemplateBinding Background}"  
+                                    KeyboardNavigation.DirectionalNavigation="Contained"  
+                                    KeyboardNavigation.TabIndex="2" 
+                                    KeyboardNavigation.TabNavigation="Local">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" 
+                                                  ContentSource="SelectedContent"  
+                                                  Margin="{TemplateBinding Padding}" 
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="TabStripPlacement" Value="Bottom">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="1"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Left">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                                <Setter Property="Margin" TargetName="HeaderPanel" Value="0,2"/>
+                            </Trigger>
+    
+                            <Trigger Property="TabStripPlacement" Value="Right">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
+                                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                                <Setter Property="Margin" TargetName="HeaderPanel" Value="0,2"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Foreground" Value="#586069"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Height" Value="37"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid SnapsToDevicePixels="true">
+                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1,0" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter x:Name="Content"
+                                                  ContentSource="Header"  
+                                                  RecognizesAccessKey="True" 
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                                  HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
+                                                  VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                            </Border>
+                            <Rectangle x:Name="SelectedBar" Height="3" Fill="#E36209" Visibility="Hidden" VerticalAlignment="Top"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Panel.ZIndex" Value="1"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="BorderBrush" Value="LightGray"/>
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Visibility" TargetName="SelectedBar" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Bottom">
+                                <Setter Property="VerticalAlignment" TargetName="SelectedBar" Value="Bottom"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Left">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="0,1"/>
+                                <Setter Property="VerticalAlignment" TargetName="SelectedBar" Value="Stretch"/>
+                                <Setter Property="HorizontalAlignment" TargetName="SelectedBar" Value="Left"/>
+                                <Setter Property="Width" TargetName="SelectedBar" Value="3"/>
+                                <Setter Property="Height" TargetName="SelectedBar" Value="auto"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Right">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="0,1"/>
+                                <Setter Property="VerticalAlignment" TargetName="SelectedBar" Value="Stretch"/>
+                                <Setter Property="HorizontalAlignment" TargetName="SelectedBar" Value="Right"/>
+                                <Setter Property="Width" TargetName="SelectedBar" Value="3"/>
+                                <Setter Property="Height" TargetName="SelectedBar" Value="auto"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="false"/>
+                                    <Condition Property="IsMouseOver" Value="true"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Top"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="0,0,0,-1"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Bottom"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="0,-2,0,0"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Left"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="0,0,-1,0"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="TabStripPlacement" Value="Right"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" Value="-1,0,0,0"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Grid.Resources>  
+    <TabControl Margin="20" Padding="10,12,10,10">
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=TabItem}}" Stretch="Fill" Width="16" Height="10" 
+                          Data="M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z"/>
+                    <TextBlock Text="Code" VerticalAlignment="Center" Margin="5,1,0,0" FontSize="14"/>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid> 
+                <TextBlock Grid.Column="0" Text="Code" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/> 
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=TabItem}}" Stretch="Fill" Width="16" Height="16" 
+                          Data="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z"/>
+                    <TextBlock Text="Issues" VerticalAlignment="Center" Margin="5,1,0,0" FontSize="14"/>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid> 
+                <TextBlock Grid.Column="0" Text="Issues" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/> 
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=TabItem}}" Stretch="Fill" Width="17" Height="17" 
+                          Data="M6,3A3,3 0 0,1 9,6C9,7.31 8.17,8.42 7,8.83V15.17C8.17,15.58 9,16.69 9,18A3,3 0 0,1 6,21A3,3 0 0,1 3,18C3,16.69 3.83,15.58 5,15.17V8.83C3.83,8.42 3,7.31 3,6A3,3 0 0,1 6,3M6,5A1,1 0 0,0 5,6A1,1 0 0,0 6,7A1,1 0 0,0 7,6A1,1 0 0,0 6,5M6,17A1,1 0 0,0 5,18A1,1 0 0,0 6,19A1,1 0 0,0 7,18A1,1 0 0,0 6,17M21,18A3,3 0 0,1 18,21A3,3 0 0,1 15,18C15,16.69 15.83,15.58 17,15.17V7H15V10.25L10.75,6L15,1.75V5H17A2,2 0 0,1 19,7V15.17C20.17,15.58 21,16.69 21,18M18,17A1,1 0 0,0 17,18A1,1 0 0,0 18,19A1,1 0 0,0 19,18A1,1 0 0,0 18,17Z"/>
+                    <TextBlock Text="Pull requests" VerticalAlignment="Center" Margin="5,1,0,0" FontSize="14"/>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid> 
+                <TextBlock Grid.Column="0" Text="Pull requests" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/> 
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=TabItem}}" Stretch="Fill" Width="16" Height="16" 
+                          Data="M10,16.5V7.5L16,12M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                    <TextBlock Text="Actions" VerticalAlignment="Center" Margin="5,1,0,0" FontSize="14"/>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid> 
+                <TextBlock Grid.Column="0" Text="Actions" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/> 
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=TabItem}}" Stretch="Fill" Width="16" Height="16" 
+                          Data="M280 752h80c4.4 0 8-3.6 8-8V280c0-4.4-3.6-8-8-8h-80c-4.4 0-8 3.6-8 8v464c0 4.4 3.6 8 8 8z m192-280h80c4.4 0 8-3.6 8-8V280c0-4.4-3.6-8-8-8h-80c-4.4 0-8 3.6-8 8v184c0 4.4 3.6 8 8 8z m192 72h80c4.4 0 8-3.6 8-8V280c0-4.4-3.6-8-8-8h-80c-4.4 0-8 3.6-8 8v256c0 4.4 3.6 8 8 8z m216-432H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32z m-40 728H184V184h656v656z"/>
+                    <TextBlock Text="Projects" VerticalAlignment="Center" Margin="5,1,0,0" FontSize="14"/>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid> 
+                <TextBlock Grid.Column="0" Text="Projects" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/> 
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=TabItem}}" Stretch="Fill" Width="15" Height="17" 
+                          Data="M21,11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1L21,5V11M12,21C15.75,20 19,15.54 19,11.22V6.3L12,3.18V21Z"/>
+                    <TextBlock Text="Security" VerticalAlignment="Center" Margin="5,1,0,0" FontSize="14"/>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid> 
+                <TextBlock Grid.Column="0" Text="Security" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/> 
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Path Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=TabItem}}" Stretch="Fill" Width="16" Height="16" 
+                          Data="M22,21H2V3H4V19H6V10H10V19H12V6H16V19H18V14H22V21Z"/>
+                    <TextBlock Text="Insignts" VerticalAlignment="Center" Margin="5,1,0,0" FontSize="14"/>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid> 
+                <TextBlock Grid.Column="0" Text="Insignts" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/> 
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Grid>]]>
+    </sys:String>
+
+</ResourceDictionary>
