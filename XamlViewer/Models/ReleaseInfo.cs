@@ -8,6 +8,7 @@ namespace XamlViewer.Models
 {
     public class asset
     {
+        public int download_count { get; set; }
         public string browser_download_url { get; set; }
     }
 

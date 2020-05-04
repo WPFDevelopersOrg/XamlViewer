@@ -221,7 +221,7 @@ namespace XamlViewer.Utils
             var releaseVersion = (ReleaseInfo)values[0];
             var currentVersion = (string)values[1];
 
-            return Version.Parse(releaseVersion.name) > Version.Parse(currentVersion) ? new { Info = "New Release", Version = releaseVersion.name, Note = releaseVersion.body } : null;
+            return Version.Parse(releaseVersion.name) > Version.Parse(currentVersion) ? new { Info = "New Release", Version = releaseVersion.name, Downloads= releaseVersion.assets[0].download_count, Note = releaseVersion.body } : null;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
