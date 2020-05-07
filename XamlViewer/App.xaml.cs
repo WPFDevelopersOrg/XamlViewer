@@ -15,6 +15,7 @@ using Utils.IO;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Utils;
+using XamlUtil.Common;
 using XamlViewer.Dialogs;
 using XamlViewer.Models;
 using XamlViewer.Regions;
@@ -28,30 +29,42 @@ namespace XamlViewer
     /// </summary>
     public partial class App : PrismApplication
     {
-        #region Exception
-
-        protected override void OnStartup(StartupEventArgs e)
+        public App()
+            : base()
         {
-            base.OnStartup(e);
-
-            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
+        #region Exception
+
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+            var msg = "[ UnhandledException ] UI Dispatcher, " + Common.GetExceptionStringFormat(e.Exception);
+            var time = " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss,fff") + "]";
+
+            MessageBox.Show(msg, "Exception" + time, MessageBoxButton.OK, MessageBoxImage.Error);
+
             e.Handled = true;
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
+            var msg = "[ UnhandledException ] Task, " + e.Exception.Message;
+            var time = " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss,fff") + "]";
+
+            MessageBox.Show(msg, "Exception" + time, MessageBoxButton.OK, MessageBoxImage.Error);
+
             e.SetObserved();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            
+            var msg = "[ UnhandledException ] Current Domain, " + Common.GetExceptionStringFormat(e.ExceptionObject as Exception);
+            var time = " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss,fff") + "]";
+
+            MessageBox.Show(msg, "Exception" + time, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         #endregion
@@ -82,7 +95,7 @@ namespace XamlViewer
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
-        {  
+        {
             //Dialog
             containerRegistry.RegisterDialogWindow<DialogWindow>();
             containerRegistry.RegisterDialog<MessageDialog, MessageDialogViewModel>();
@@ -95,7 +108,7 @@ namespace XamlViewer
 
             //Code Completion
             containerRegistry.RegisterInstance(new XsdParser());
-             
+
             //Config
             var localConfig = FileHelper.LoadFromJsonFile<XamlConfig>(ResourcesMap.LocationDic[Location.GlobalConfigFile]);
             if (localConfig != null)
@@ -125,7 +138,7 @@ namespace XamlViewer
         }
 
         protected override void OnInitialized()
-        { 
+        {
             base.OnInitialized();
 
             var eventAggregator = Container.Resolve<IEventAggregator>();
