@@ -36,6 +36,7 @@ namespace XamlViewer.ViewModels
         public DelegateCommand NewCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
         public DelegateCommand<bool?> SaveAllCommand { get; private set; }
+        public DelegateCommand<string[]> DropCommand { get; private set; }
         public DelegateCommand RefreshCommand { get; private set; }
         public DelegateCommand HelpCommand { get; private set; }
         public DelegateCommand<int?> ExampleCommand { get; private set; }
@@ -101,7 +102,10 @@ namespace XamlViewer.ViewModels
             _appCommands.OpenCommand.RegisterCommand(OpenCommand);
 
             SaveAllCommand = new DelegateCommand<bool?>(SaveAll, CanSaveAll);
-            _appCommands.SaveAllCommand.RegisterCommand(SaveAllCommand); 
+            _appCommands.SaveAllCommand.RegisterCommand(SaveAllCommand);
+
+            DropCommand = new DelegateCommand<string[]>(Drop, CanDrop);
+            _appCommands.DropCommand.RegisterCommand(DropCommand);
 
             RefreshCommand = new DelegateCommand(Refresh);
             _appCommands.RefreshCommand.RegisterCommand(RefreshCommand);
@@ -159,30 +163,9 @@ namespace XamlViewer.ViewModels
             var ofd = new SWF.OpenFileDialog { Filter = "XAML|*.xaml", Multiselect = true };
             if (ofd.ShowDialog() == SWF.DialogResult.OK)
             {
-                var length = ofd.FileNames.Length;
-                for (int i = 0; i < length; i++)
-                {
-                    var fileName = ofd.FileNames[i];
-                    var tab = XamlTabs.FirstOrDefault(t => t.FileName == fileName);
-                    if (tab != null)
-                    {
-                        if (i == length - 1)
-                        {
-                            tab.IsSelected = true;
-                            MoveToVisible(tab);
-                        }
-                    }
-                    else
-                    {
-                        tab = new TabViewModel(fileName, CloseXamlTab);
-                        XamlTabs.Insert(0, tab);
-
-                        if (i == length - 1)
-                            tab.IsSelected = true;
-                    }
-                }
+                Open(ofd.FileNames);
             }
-        }
+        } 
 
         private bool CanSaveAll(bool? ignoreUnsavedTab)
         {
@@ -203,6 +186,16 @@ namespace XamlViewer.ViewModels
 
                 curTab.Save();
             }
+        }
+
+        private bool CanDrop(string[] files)
+        {
+            return !_isWorkAreaIniting;
+        }
+
+        private void Drop(string[] files)
+        {
+            Open(files);
         }
 
         private void Refresh()
@@ -382,6 +375,32 @@ namespace XamlViewer.ViewModels
         #endregion
 
         #region Func
+
+        private void Open(string[] files)
+        {
+            var length = files.Length;
+            for (int i = 0; i < length; i++)
+            {
+                var fileName = files[i];
+                var tab = XamlTabs.FirstOrDefault(t => t.FileName == fileName);
+                if (tab != null)
+                {
+                    if (i == length - 1)
+                    {
+                        tab.IsSelected = true;
+                        MoveToVisible(tab);
+                    }
+                }
+                else
+                {
+                    tab = new TabViewModel(fileName, CloseXamlTab);
+                    XamlTabs.Insert(0, tab);
+
+                    if (i == length - 1)
+                        tab.IsSelected = true;
+                }
+            }
+        }
 
         private void MoveToVisible(TabViewModel curTab)
         {

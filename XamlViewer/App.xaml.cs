@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -29,6 +30,8 @@ namespace XamlViewer
     /// </summary>
     public partial class App : PrismApplication
     {
+        private string[] _xamlFiles = null;
+
         public App()
             : base()
         {
@@ -45,8 +48,6 @@ namespace XamlViewer
             var time = " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss,fff") + "]";
 
             MessageBox.Show(msg, "Exception" + time, MessageBoxButton.OK, MessageBoxImage.Error);
-
-            e.Handled = true;
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
@@ -68,6 +69,21 @@ namespace XamlViewer
         }
 
         #endregion
+
+        protected override void OnStartup(StartupEventArgs e)
+        { 
+            if(e.Args.Length > 0)
+            {
+                _xamlFiles = e.Args.Where(f => Path.GetExtension(f).ToLower() == ".xaml").ToArray();
+                if (_xamlFiles == null || _xamlFiles.Length == 0)
+                {
+                    Environment.Exit(0);
+                    return;
+                }
+            } 
+
+            base.OnStartup(e);
+        }
 
         protected override void ConfigureViewModelLocator()
         {
@@ -128,19 +144,23 @@ namespace XamlViewer
 
             //version
             var version = ResourceAssembly.GetName().Version;
+            var appData = new AppData { Config = localConfig ?? new XamlConfig(), Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build) };
 
-            containerRegistry.RegisterInstance(new AppData { Config = localConfig ?? new XamlConfig(), Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build) });
+            if (_xamlFiles != null && _xamlFiles.Length > 0)
+                appData.Config.Files.InsertRange(0, _xamlFiles);
+
+            containerRegistry.RegisterInstance(appData);
         }
 
         protected override IModuleCatalog CreateModuleCatalog()
         {
-            return new DirectoryModuleCatalog() { ModulePath = @".\Modules" };
+            return new DirectoryModuleCatalog() { ModulePath = ResourcesMap.LocationDic[Location.ModulePath] };
         }
 
         protected override void OnInitialized()
-        {
+        { 
             base.OnInitialized();
-
+           
             var eventAggregator = Container.Resolve<IEventAggregator>();
             if (eventAggregator != null)
                 eventAggregator.GetEvent<InitWorkAreaEvent>().Publish();

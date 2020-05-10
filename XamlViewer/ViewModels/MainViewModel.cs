@@ -6,7 +6,8 @@ using System.Windows;
 using Utils.IO;
 using XamlViewer.Models;
 using XamlService.Commands;
-using System;
+using System.Linq;
+using System.IO;
 
 namespace XamlViewer.ViewModels
 {
@@ -16,6 +17,7 @@ namespace XamlViewer.ViewModels
 
         public DelegateCommand ExpandOrCollapseCommand { get; private set; }
         public DelegateCommand ActivatedCommand { get; private set; }
+        public DelegateCommand<DragEventArgs> DropCommand { get; private set; }
         public DelegateCommand<CancelEventArgs> ClosingCommand { get; private set; } 
 
         public MainViewModel(IContainerExtension container, IApplicationCommands appCommands)
@@ -32,6 +34,7 @@ namespace XamlViewer.ViewModels
         {
             ExpandOrCollapseCommand = new DelegateCommand(ExpandOrCollapse);
             ActivatedCommand = new DelegateCommand(Activated);
+            DropCommand = new DelegateCommand<DragEventArgs>(Drop);
             ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing); 
         }
 
@@ -50,6 +53,18 @@ namespace XamlViewer.ViewModels
                 return;
 
             _appCommands.RefreshCommand.Execute(null);
+        }
+
+        private void Drop(DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+                return;
+
+            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            var xamlFiles = files.Where(f => Path.GetExtension(f).ToLower() == ".xaml").ToArray();
+
+            if (xamlFiles != null && xamlFiles.Length > 0)
+                _appCommands.DropCommand.Execute(xamlFiles);
         }
 
         private async void Closing(CancelEventArgs e)

@@ -19,6 +19,7 @@ namespace XamlService.Commands
         CompositeCommand ExampleCommand { get; }
 
         //
+        CompositeCommand DropCommand { get; }
         CompositeCommand RefreshCommand { get; }
         CompositeCommand HelpCommand { get; }
         CompositeCommand CloseAllCommand { get; }
@@ -73,6 +74,12 @@ namespace XamlService.Commands
         public CompositeCommand ExampleCommand
         {
             get { return _exampleCommand; }
+        }
+
+        private CompositeCommand _dropCommand = new CompositeCommand();
+        public CompositeCommand DropCommand
+        {
+            get { return _dropCommand; }
         }
 
         private CompositeCommand _refreshCommand = new CompositeCommand();

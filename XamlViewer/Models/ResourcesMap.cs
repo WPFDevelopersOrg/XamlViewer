@@ -8,7 +8,8 @@ namespace XamlViewer.Models
     {
         public static Dictionary<Location, string> LocationDic = new Dictionary<Location, string>
         {
-            {Location.GlobalConfigFile,    AppDomain.CurrentDomain.BaseDirectory + "Config\\GlobalConfig.json" }
+            {Location.GlobalConfigFile,    AppDomain.CurrentDomain.BaseDirectory + "Config\\GlobalConfig.json" },
+            {Location.ModulePath,          AppDomain.CurrentDomain.BaseDirectory + "Modules" }
         };
 
         public static Dictionary<ProcessStatus, string> ProcessStatusDic = new Dictionary<ProcessStatus, string>

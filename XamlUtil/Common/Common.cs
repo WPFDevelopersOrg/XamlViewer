@@ -44,8 +44,7 @@ namespace XamlUtil.Common
             if (ex == null)
                 return string.Empty;
 
-            int HResult = (int)(ex.GetType().GetProperty("HResult", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(ex, null));
-            return string.Format("ErrorCode = {0} [ 0x{1:X} ]\nMessage = {2}\nStackTrace = {3}\n\r", HResult, HResult, RemoveLineBreak(ex.Message), ex.StackTrace) + GetAllInnerException(ex);
+            return string.Format("Message = {0}\nStackTrace = {1}\n\r", RemoveLineBreak(ex.Message), ex.StackTrace) + GetAllInnerException(ex);
         }
 
         public static Exception GetLastInnerException(Exception ex)

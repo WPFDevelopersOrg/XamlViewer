@@ -3,7 +3,8 @@ namespace XamlViewer.Models
 {
     public enum Location
     {
-        GlobalConfigFile
+        GlobalConfigFile,
+        ModulePath,
     }
 
     public enum TabStatus
