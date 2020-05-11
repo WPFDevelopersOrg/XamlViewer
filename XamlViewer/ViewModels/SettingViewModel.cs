@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Prism.Services.Dialogs;
+using Utils.IO;
 using XamlService.Events;
 using XamlService.Payloads;
 using XamlUtil.Common;
@@ -218,7 +219,7 @@ namespace XamlViewer.ViewModels
                         if (result != ButtonResult.Yes)
                             continue;
 
-                        if (File.Exists(targetFileName))
+                        if (FileHelper.Exists(targetFileName))
                             File.Delete(targetFileName);
 
                         References.Remove(reference);
@@ -259,7 +260,7 @@ namespace XamlViewer.ViewModels
                     _appData.Config.References.RemoveAll(rf => rf == r.FileName);
 
                     var filePath = AppDomain.CurrentDomain.BaseDirectory + r.FileName;
-                    if (File.Exists(filePath))
+                    if (FileHelper.Exists(filePath))
                         File.Delete(filePath);
 
                     i--;

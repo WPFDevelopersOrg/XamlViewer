@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Xml.Schema;
+using Utils.IO;
 
 namespace XamlService.Utils
 {
@@ -27,7 +27,7 @@ namespace XamlService.Utils
             if (_schema != null)
                 return true;
 
-            if (!File.Exists(_fileName))
+            if (!FileHelper.Exists(_fileName))
                 return false;
 
             try

@@ -133,13 +133,13 @@ namespace XamlViewer
                 if (localConfig.Files == null)
                     localConfig.Files = new List<string>();
                 else
-                    localConfig.Files.RemoveAll(f => !File.Exists(f) || Path.GetExtension(f).ToLower() != ".xaml");
+                    localConfig.Files.RemoveAll(f => !FileHelper.Exists(f) || Path.GetExtension(f).ToLower() != ".xaml");
 
                 //check reference file
                 if (localConfig.References == null)
                     localConfig.References = new List<string>();
                 else
-                    localConfig.References.RemoveAll(f => !File.Exists(AppDomain.CurrentDomain.BaseDirectory + f) || Path.GetExtension(f).ToLower() != ".dll");
+                    localConfig.References.RemoveAll(f => !FileHelper.Exists(AppDomain.CurrentDomain.BaseDirectory + f) || Path.GetExtension(f).ToLower() != ".dll");
             }
 
             //version

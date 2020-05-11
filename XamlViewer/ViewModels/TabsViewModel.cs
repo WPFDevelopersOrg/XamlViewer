@@ -181,7 +181,7 @@ namespace XamlViewer.ViewModels
                 if ((curTab.Status & TabStatus.NoSave) != TabStatus.NoSave)
                     continue;
 
-                if (!File.Exists(curTab.FileName) && ignore)
+                if (!FileHelper.Exists(curTab.FileName) && ignore)
                     continue;
 
                 curTab.Save();
@@ -203,7 +203,7 @@ namespace XamlViewer.ViewModels
             for (int i = 0; i < XamlTabs.Count; i++)
             {
                 var curTab = XamlTabs[i];
-                if (File.Exists(curTab.FileName))
+                if (FileHelper.Exists(curTab.FileName))
                 {
                     var fileContent = string.Empty;
                     var md5Code = string.Empty;
@@ -420,7 +420,7 @@ namespace XamlViewer.ViewModels
 
         private async Task DealExistedFile()
         {
-            var validTabs = XamlTabs.Where(tab => File.Exists(tab.FileName));
+            var validTabs = XamlTabs.Where(tab => FileHelper.Exists(tab.FileName));
             var noSavedTabs = validTabs.Where(tab => (tab.Status & TabStatus.NoSave) == TabStatus.NoSave).ToList();
 
             if (noSavedTabs.Count > 0)
@@ -443,7 +443,7 @@ namespace XamlViewer.ViewModels
         {
             if (!ignoreSaving && (tab.Status & TabStatus.Inner) != TabStatus.Inner)
             {
-                if (!File.Exists(tab.FileName))
+                if (!FileHelper.Exists(tab.FileName))
                 {
                     _dialogService.ShowMessage(string.Format("Save file \"{0}\"?", tab.FileName), MessageButton.YesNo, MessageType.Question, r =>
                     {

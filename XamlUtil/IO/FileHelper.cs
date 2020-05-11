@@ -39,7 +39,7 @@ namespace Utils.IO
         {
             try
             {
-                if (!File.Exists(filePath) || new FileInfo(filePath).Length == 0)
+                if (!Exists(filePath) || new FileInfo(filePath).Length == 0)
                     return default(T);
 
                 using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
@@ -56,9 +56,22 @@ namespace Utils.IO
             }
         }
 
+        //When dragging the file to the exe to open, File.Exists will go wrong in some cases.
+        //FileHelper.Exists(xxxxx.xaml) == true
+        public static bool Exists(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return false;
+
+            if (string.IsNullOrEmpty(Path.GetDirectoryName(fileName)) || String.Equals(Path.GetFileName(fileName), fileName, StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            return File.Exists(fileName);
+        }
+
         public static string ComputeMD5(string fileName)
         {
-            if (!File.Exists(fileName))
+            if (!Exists(fileName))
                 return null;
 
             using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))

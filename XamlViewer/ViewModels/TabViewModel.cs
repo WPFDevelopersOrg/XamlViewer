@@ -33,7 +33,7 @@ namespace XamlViewer.ViewModels
         private readonly string _guid = null;
         private bool _closeAfterSaving = false;
         private Action<TabViewModel, bool> _closeAction = null;
-        private WorkControl _workControl = null; 
+        private WorkControl _workControl = null;
 
         public DelegateCommand<bool?> CloseCommand { get; private set; }
         public DelegateCommand CloseAllCommand { get; private set; }
@@ -97,7 +97,7 @@ namespace XamlViewer.ViewModels
         }
 
         private void InitCommand()
-        { 
+        {
             CloseCommand = new DelegateCommand<bool?>(Close);
             _appCommands.CloseAllCommand.RegisterCommand(CloseCommand);
 
@@ -158,7 +158,7 @@ namespace XamlViewer.ViewModels
                         InitWorkArea();
                 }
             }
-        } 
+        }
 
         private TabStatus _status = TabStatus.None;
         public TabStatus Status
@@ -174,7 +174,7 @@ namespace XamlViewer.ViewModels
 
         #endregion
 
-        #region Command 
+        #region Command
 
         private void CloseAll()
         {
@@ -209,7 +209,7 @@ namespace XamlViewer.ViewModels
                 if (!isContinue)
                     return;
 
-                if (!File.Exists(FileName))
+                if (!FileHelper.Exists(FileName))
                 {
                     var fileName = Common.ShowSaveFileDialog(FileName);
                     if (string.IsNullOrEmpty(fileName))
@@ -238,7 +238,7 @@ namespace XamlViewer.ViewModels
 
         public void Save()
         {
-            if (!File.Exists(FileName))
+            if (!FileHelper.Exists(FileName))
             {
                 var fileName = Common.ShowSaveFileDialog(FileName);
                 if (string.IsNullOrEmpty(fileName))
@@ -253,7 +253,7 @@ namespace XamlViewer.ViewModels
 
         private bool CanCopyOrOpenPath(bool? isOpen)
         {
-            return File.Exists(FileName);
+            return FileHelper.Exists(FileName);
         }
 
         private void CopyOrOpenPath(bool? isOpen)
@@ -288,11 +288,11 @@ namespace XamlViewer.ViewModels
             if (info.Guid != _guid)
                 return;
 
-            if (info.IsModified || !File.Exists(FileName))
+            if (info.IsModified || !FileHelper.Exists(FileName))
                 Status |= TabStatus.NoSave;
             else
                 Status &= ~(TabStatus.NoSave);
-                
+
             SaveCommand.RaiseCanExecuteChanged();
         }
 
@@ -309,7 +309,7 @@ namespace XamlViewer.ViewModels
             if (tabInfo.Guid != _guid || !CanSave())
                 return; ;
 
-            //Note:Do not call File.Exists(FileName), It is possible that FileName has not been created.
+            //Note:Do not call FileHelper.Exists(FileName), It is possible that FileName has not been created.
             if (!string.Equals(Path.GetFullPath(FileName), FileName, StringComparison.OrdinalIgnoreCase))
             {
                 var fileName = Common.ShowSaveFileDialog(FileName);
@@ -363,7 +363,7 @@ namespace XamlViewer.ViewModels
 
             MD5Code = FileHelper.ComputeMD5(FileName);
             Status &= ~(TabStatus.NoSave);
-            
+
             SaveCommand.RaiseCanExecuteChanged();
         }
 
@@ -403,7 +403,7 @@ namespace XamlViewer.ViewModels
         {
             Status = status;
 
-            if (File.Exists(FileName))
+            if (FileHelper.Exists(FileName))
             {
                 Title = Path.GetFileName(FileName);
 
@@ -422,9 +422,9 @@ namespace XamlViewer.ViewModels
             {
                 Title = FileName;
                 FileContent = Application.Current.Resources[(status & TabStatus.Inner) == TabStatus.Inner ? ResourcesMap.NameToContentKeyDic[FileName] : InternalConstStrings.NormalFileContentKey] as string;
-            } 
+            }
 
-            CopyOrOpenPathCommand.RaiseCanExecuteChanged(); 
+            CopyOrOpenPathCommand.RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -445,7 +445,7 @@ namespace XamlViewer.ViewModels
         {
             UnsubscribeEventAndCommands();
 
-            if(_workControl!=null)
+            if (_workControl != null)
             {
                 _regionManager.Regions[RegionNames.WorkName].Remove(_workControl);
                 _workControl = null;
