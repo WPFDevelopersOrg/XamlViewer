@@ -9,32 +9,32 @@
       Background="White">
     <Grid.Resources>
 
-        <BackEase EasingMode="EaseInOut" x:Key="EasingFunc"/>
+        <PowerEase EasingMode="EaseInOut" x:Key="EasingFunc"/>
 
         <Storyboard x:Key="Storyboard1" RepeatBehavior="Forever">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Left)" Storyboard.TargetName="RedEllipase">
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="200" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="200"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:5" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:6" Value="0" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="200" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2.5" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="0" EasingFunction="{StaticResource EasingFunc}"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Left)" Storyboard.TargetName="GreenEllipase">
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="200" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="200"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:3" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="0" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:5" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:6" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="200" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2.5" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="100"/>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Left)" Storyboard.TargetName="BlueEllipase">
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Left)" Storyboard.TargetName="OrangeEllipase">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="100"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:5" Value="200" EasingFunction="{StaticResource EasingFunc}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:6" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2.5" Value="100" EasingFunction="{StaticResource EasingFunc}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="200" EasingFunction="{StaticResource EasingFunc}"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Grid.Resources>
@@ -46,7 +46,7 @@
     <Canvas Width="240" Height="40">
         <Ellipse x:Name="RedEllipase" Canvas.Left="0" Height="40" Width="40" Fill="Red"/>
         <Ellipse x:Name="GreenEllipase" Canvas.Left="100" Height="40" Width="40" Fill="Green"/>
-        <Ellipse x:Name="BlueEllipase" Canvas.Left="200" Height="40" Width="40" Fill="Blue"/>
+        <Ellipse x:Name="OrangeEllipase" Canvas.Left="200" Height="40" Width="40" Fill="Orange"/>
     </Canvas>
 </Grid>]]>
     </sys:String>
