@@ -4,11 +4,8 @@
         "**/*.user": true,
         "**/*.code-workspace": true,
         "**/*.DotSettings": true,
-        "**/.git": true,  
-		"**/.nuget":true,
+        "**/.git": true,
         "**/bin": true,  
         "**/obj": true,
-        "**/packages":true,
-		"**/outputs":true,
     }  
 }
