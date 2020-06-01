@@ -1,10 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Xml.Serialization;
+
+#if NETFRAMEWORK
+using Newtonsoft.Json;
+#endif
 
 namespace Utils.IO
 {
@@ -115,7 +119,11 @@ namespace Utils.IO
         {
             return SaveToFile(filePath, sw =>
             {
+#if NETFRAMEWORK
                 sw.Write(JsonConvert.SerializeObject(instance));
+#else
+                sw.Write(JsonSerializer.Serialize(instance));
+#endif
             });
         }
 
@@ -123,13 +131,14 @@ namespace Utils.IO
         {
             return LoadFromFile(filePath, sr =>
             {
-                return JsonConvert.DeserializeObject<T>(sr.ReadToEnd(), new JsonSerializerSettings
-                {
-                    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
-                });
+#if NETFRAMEWORK
+                return JsonConvert.DeserializeObject<T>(sr.ReadToEnd());
+#else
+                return JsonSerializer.Deserialize<T>(sr.ReadToEnd());
+#endif
             });
         }
 
-        #endregion
+#endregion
     }
 }

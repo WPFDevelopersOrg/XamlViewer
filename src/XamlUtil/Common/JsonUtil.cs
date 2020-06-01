@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿#if NETFRAMEWORK
+using Newtonsoft.Json;
+#endif
+
+using System.Text.Json;
 
 namespace XamlUtil.Common
 {
@@ -9,7 +13,12 @@ namespace XamlUtil.Common
             if (string.IsNullOrWhiteSpace(json))
                 return default(T);
 
+#if NETFRAMEWORK
             return JsonConvert.DeserializeObject<T>(json);
+#else
+            return JsonSerializer.Deserialize<T>(json);
+#endif
+
         }
     }
 }
