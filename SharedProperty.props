@@ -2,7 +2,7 @@
     <PropertyGroup> 
       <TargetFrameworks>netcoreapp3.1;net45</TargetFrameworks>
       <Version>1.2.0</Version>
-	    <FileVersion>1.2.0</FileVersion>
-	    <Copyright>Copyright © 2020</Copyright>
+      <FileVersion>1.2.0</FileVersion>
+      <Copyright>Copyright © 2020</Copyright>
     </PropertyGroup> 
 </Project>

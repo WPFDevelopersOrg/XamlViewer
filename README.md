@@ -49,7 +49,7 @@ xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 Library|Version|License
 --|:--:|--:
 [Prism](https://github.com/PrismLibrary/Prism)|7.2.0.1422|[MIT](https://github.com/PrismLibrary/Prism/blob/master/LICENSE)
-[Microsoft.Xaml.Behaviors](https://github.com/microsoft/XamlBehaviorsWpf)|1.1.3|[MIT](https://github.com/microsoft/XamlBehaviorsWpf/blob/master/LICENSE)
-[AvalonEdit](https://github.com/icsharpcode/AvalonEdit)|6.0|[MIT](https://github.com/icsharpcode/AvalonEdit/blob/master/LICENSE)
+[Microsoft.Xaml.Behaviors](https://github.com/microsoft/XamlBehaviorsWpf)|1.1.19|[MIT](https://github.com/microsoft/XamlBehaviorsWpf/blob/master/LICENSE)
+[AvalonEdit](https://github.com/icsharpcode/AvalonEdit)|6.0.1|[MIT](https://github.com/icsharpcode/AvalonEdit/blob/master/LICENSE)
 [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)|12.0.3|[MIT](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)
                    
