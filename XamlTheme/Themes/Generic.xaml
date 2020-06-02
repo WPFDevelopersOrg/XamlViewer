@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ButtonStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/RepeatButtonStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ToggleButtonStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/RadioButtonStyle.xaml"/>
+
+        <ResourceDictionary Source="/XamlTheme;component/Styles/CheckBoxStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ComboBoxStyle.xaml"/>
+        
+        <ResourceDictionary Source="/XamlTheme;component/Styles/SeparatorStyle.xaml"/>
+
+        <ResourceDictionary Source="/XamlTheme;component/Styles/MenuItemStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ListBoxStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/SliderStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/GridSplitterStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/TabControlStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ScrollViewerStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/TextBoxStyle.xaml"/>
+
+        <ResourceDictionary Source="/XamlTheme;component/Styles/StatusToggleStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ColorPickerStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/NumericBoxStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/RestrictTextBoxStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/UserWindowStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/CodeCompletionStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/SearchPanelStyle.xaml"/>
+        <ResourceDictionary Source="/XamlTheme;component/Styles/TextEditorExStyle.xaml"/>
+
+        <ResourceDictionary Source="/XamlTheme;component/Styles/ZoomBoxStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

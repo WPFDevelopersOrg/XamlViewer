@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:utils="clr-namespace:XamlViewer.Utils">
+
+    <utils:AnyBoolToVisibilityMultiConverter x:Key="anyBoolToVisibilityMultiConverter"/>
+    <utils:FlagEnumToVisibilityConverter x:Key="flagEnumToVisibilityConverter"/>
+    
+    <utils:ScrollOffsetToVisibilityMultiConverter x:Key="scrollOffsetToVisibilityMultiConverter"/>
+    <utils:StringToVisibilityConverter x:Key="stringToVisibilityConverter"/>
+
+    <utils:XamlTabToolTipMultiConverter x:Key="xamlTabToolTipMultiConverter"/>
+    <utils:VersionInfoMultiConverter x:Key="versionInfoMultiConverter"/>
+
+</ResourceDictionary>

@@ -1,0 +1,253 @@
+﻿<UserControl x:Class="XamlViewer.Views.SettingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme" 
+             xmlns:utils="clr-namespace:XamlViewer.Utils" 
+             xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             prism:ViewModelLocator.AutoWireViewModel="True" Background="#FDFDFD">
+    <Grid >
+        <ScrollViewer x:Name="RootScrollViewer" Background="Transparent" Margin="5" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="PreviewMouseWheel">
+                    <behaviors:InvokeCommandAction Command="{Binding MouseWheelCommand}" PassEventArgsToCommand="true"/>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+            <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*" MinHeight="10"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Width="120" 
+                                  Style="{StaticResource {x:Static themes:ResourceKeys.NormalComboBoxStyleKey}}"
+                                  ItemContainerStyle="{StaticResource {x:Static themes:ResourceKeys.NormalComboBoxItemStyleKey}}"
+                                  ItemsSource="{Binding FontFamilies}"
+                                  SelectedValue="{Binding FontFamily,Mode=TwoWay}"/>
+                        <ComboBox Grid.Column="1" Width="60" Margin="5,0,0,0" 
+                                  Style="{StaticResource {x:Static themes:ResourceKeys.NormalComboBoxStyleKey}}"
+                                  ItemContainerStyle="{StaticResource {x:Static themes:ResourceKeys.NormalComboBoxItemStyleKey}}"
+                                  SelectedValue="{Binding FontSize,Mode=TwoWay}">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="sys:Double">
+                                    <sys:Double>8</sys:Double>
+                                    <sys:Double>9</sys:Double>
+                                    <sys:Double>10</sys:Double>
+                                    <sys:Double>11</sys:Double>
+                                    <sys:Double>12</sys:Double>
+                                    <sys:Double>13</sys:Double>
+                                    <sys:Double>14</sys:Double>
+                                    <sys:Double>15</sys:Double>
+                                    <sys:Double>16</sys:Double>
+                                    <sys:Double>17</sys:Double>
+                                    <sys:Double>18</sys:Double>
+                                    <sys:Double>20</sys:Double>
+                                    <sys:Double>22</sys:Double>
+                                    <sys:Double>24</sys:Double>
+                                    <sys:Double>28</sys:Double>
+                                    <sys:Double>32</sys:Double>
+                                    <sys:Double>36</sys:Double>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                    </Grid>
+                    <CheckBox Grid.Row="2" Content="Word Wrap" 
+                              Style="{StaticResource {x:Static themes:ResourceKeys.NormalCheckBoxStyleKey}}"
+                              IsChecked="{Binding WordWrap,Mode=TwoWay}"/>
+                    <CheckBox Grid.Row="4" Content="Code Completion" 
+                              Style="{StaticResource {x:Static themes:ResourceKeys.NormalCheckBoxStyleKey}}"
+                              IsChecked="{Binding CodeCompletion,Mode=TwoWay}"/>
+                    <TextBlock Grid.Row="6" Text="Editor" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+
+                <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*" MinHeight="10"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox x:Name="CompileCheckBox" Content="Auto-Compile"
+                              Style="{StaticResource {x:Static themes:ResourceKeys.NormalCheckBoxStyleKey}}"
+                              IsChecked="{Binding AutoCompile,Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="2" VerticalAlignment="Center" Text="Auto-Compile Delay"
+                               Opacity="{Binding Opacity,ElementName=DelaySlider}"/>
+                    <StackPanel Grid.Row="3" Orientation="Horizontal"  
+                                IsEnabled="{Binding IsChecked,ElementName=CompileCheckBox}">
+                        <Slider x:Name="DelaySlider" Width="150" Minimum="1" Maximum="5" 
+                                Value="{Binding AutoCompileDelay,Mode=TwoWay}" 
+                                VerticalAlignment="Center"
+                                IsSelectionRangeEnabled="True" 
+                                SelectionEnd="{Binding Value,RelativeSource={RelativeSource Self}}" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" TickFrequency="0.1"
+                                Style="{StaticResource {x:Static themes:ResourceKeys.NormalSliderStyleKey}}"/>
+                        <TextBlock Margin="5,0,0,0" VerticalAlignment="Center"
+                                   Opacity="{Binding Opacity,ElementName=DelaySlider}"
+                                   Text="{Binding Value,ElementName=DelaySlider,StringFormat={}{0:N1}s}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="5" Text="Compilation" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+
+                <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
+		
+		         <Grid MinWidth="200">
+                    <Grid.RowDefinitions> 
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="-7,0,4,0">
+                            <Button Width="30" ToolTip="Add"
+                                    Command="{Binding AddRefCommand}"
+                                    Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+                                <Grid Width="16" Height="16">
+                                    <Path RenderOptions.EdgeMode="Aliased" Fill="#005198" Data="M0,0 H7V7 H0 M0,9 H7V16 H0 M9,9 H16V16 H9"/>
+                                    <Path RenderOptions.EdgeMode="Aliased" Fill="#FF5400" Data="M12,0 H13V7 H12 M9,3 H12V4 H9 M13,3 H16V4 H13"/>	
+                                </Grid>
+                            </Button>
+
+                            <Button Width="30" ToolTip="Remove" Margin="0,5,0,0"
+                                    Command="{Binding RemoveRefCommand}"
+                                    Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+                                <Path RenderOptions.EdgeMode="Aliased" 
+                                      Fill="#005198"
+                                      Data="M0,2 H6V0 H8V2 H14V4 H13V16 H1V4 H0 M2,4 H12V14 H2 M3,5 H4V13 H3 M6,5 H8V13 H6 M10,5 H11V13 H10"/>
+                            </Button>
+                        </StackPanel>
+
+                        <ListBox Grid.Column="1" SelectionMode="Extended"
+                                 ItemsSource="{Binding References}"
+                                 ItemTemplate="{StaticResource RefSelectionTemplate}"
+                                 ItemContainerStyle="{StaticResource RefSelectionItemStyle}"
+                                 Style="{StaticResource {x:Static themes:ResourceKeys.NormalListBoxStyleKey}}">
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="SelectionChanged">
+                                    <behaviors:InvokeCommandAction Command="{Binding RefSelectionChangedCommand}"/>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+                        </ListBox>
+                    </Grid>
+
+                    <TextBlock Grid.Row="2" Text="Reference" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+
+                <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3,0,15,0"/>
+         
+                <controls:ColorPicker Width="145" SelectedColor="{Binding SelectedColor}"/>  
+
+                <Grid Margin="15,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="75"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="R" VerticalAlignment="Center"/>
+                    <controls:NumericBox Grid.Row="0" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0">
+                        <controls:NumericBox.Value>
+                            <Binding Path="SelectedColor" Mode="TwoWay">
+                                <Binding.Converter>
+                                    <utils:ColorToRedConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </controls:NumericBox.Value>
+                    </controls:NumericBox>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="G" VerticalAlignment="Center"/>
+                    <controls:NumericBox Grid.Row="2" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0">
+                        <controls:NumericBox.Value>
+                            <Binding Path="SelectedColor" Mode="TwoWay">
+                                <Binding.Converter>
+                                    <utils:ColorToGreenConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </controls:NumericBox.Value>
+                    </controls:NumericBox>
+            
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="B" VerticalAlignment="Center"/>
+                    <controls:NumericBox Grid.Row="4" Grid.Column="2" Minimum="0" Maximum="255" MinHeight="22" Height="22" UpDownButtonsWidth="0">
+                        <controls:NumericBox.Value>
+                            <Binding Path="SelectedColor" Mode="TwoWay">
+                                <Binding.Converter>
+                                    <utils:ColorToBlueConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </controls:NumericBox.Value>
+                    </controls:NumericBox>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Color" VerticalAlignment="Center"/>
+                    <controls:RestrictTextBox Grid.Row="6" Grid.Column="2" MinHeight="22" Height="22" Pattern="^#[\da-fA-F]{6,8}$" TextCase="Upper">
+                        <controls:RestrictTextBox.Text>
+                            <Binding Path="SelectedColor" Mode="TwoWay">
+                                <Binding.Converter>
+                                    <utils:ColorToStringConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </controls:RestrictTextBox.Text>
+                    </controls:RestrictTextBox>
+                </Grid>
+
+                <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
+            </StackPanel>  
+        </ScrollViewer>
+        <RepeatButton Width="20" HorizontalAlignment="Left"
+		              Command="{Binding ScrollToLeftCommand}"
+                      CommandParameter="{Binding ElementName=RootScrollViewer}"
+                      Style="{StaticResource {x:Static themes:ResourceKeys.ScrollRepeatButtonStyleKey}}">
+            <RepeatButton.Visibility>
+                <MultiBinding Converter="{StaticResource scrollOffsetToVisibilityMultiConverter}">
+                    <Binding Path="HorizontalOffset" ElementName="RootScrollViewer"/>
+                    <Binding Path="ScrollableWidth" ElementName="RootScrollViewer"/>
+                </MultiBinding>
+            </RepeatButton.Visibility>
+            <Path RenderOptions.EdgeMode="Aliased" 
+                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RepeatButton}}"
+                  Data="M8,0 L0,8 8,16 V14 L2,8 8,2 Z"/>
+        </RepeatButton>
+
+        <RepeatButton Width="20" HorizontalAlignment="Right"
+                      Command="{Binding ScrollToRightCommand}"
+                      CommandParameter="{Binding ElementName=RootScrollViewer}"
+                      Style="{StaticResource {x:Static themes:ResourceKeys.ScrollRepeatButtonStyleKey}}">
+            <RepeatButton.Visibility>
+                <MultiBinding Converter="{StaticResource scrollOffsetToVisibilityMultiConverter}" ConverterParameter="1">
+                    <Binding Path="HorizontalOffset" ElementName="RootScrollViewer"/>
+                    <Binding Path="ScrollableWidth" ElementName="RootScrollViewer"/>
+                </MultiBinding>
+            </RepeatButton.Visibility>
+            <Path RenderOptions.EdgeMode="Aliased" 
+                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RepeatButton}}"
+                  Data="M0,0 L8,8 0,16 V14 L6,8 0,2 Z"/>
+        </RepeatButton>
+    </Grid>
+</UserControl>

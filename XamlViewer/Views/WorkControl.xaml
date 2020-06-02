@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="XamlViewer.Views.WorkControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ms="clr-namespace:XamlService;assembly=XamlService"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+             xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
+             xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore"
+             xmlns:utils="clr-namespace:XamlViewer.Utils"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <Grid.LayoutTransform>
+            <RotateTransform Angle="{Binding GridAngle}"/>
+        </Grid.LayoutTransform>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{Binding SplitterRowHeight}"/>
+            <RowDefinition Height="{Binding EditorRowHeight}"/>
+        </Grid.RowDefinitions>
+
+        <!--Designer-->
+        <ContentControl Grid.Row="{Binding DesignerRow}"
+                        prism:RegionManager.RegionName="{x:Static ms:RegionNames.DesignerName}"
+                        prism:RegionManager.RegionContext="{Binding SelectInfo}"
+                        Hyperlink.Click="Hyperlink_OnClick">
+            <ContentControl.LayoutTransform>
+                <RotateTransform Angle="{Binding PaneAngle}"/>
+            </ContentControl.LayoutTransform>
+        </ContentControl>
+        <GridSplitter Grid.Row="1" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                      Style="{StaticResource {x:Static themes:ResourceKeys.NormalGridSplitterStyleKey}}"
+                      utils:CursorUtil.Source="{Binding CursorSource}"/>
+        <Grid Grid.Row="1" Margin="2,1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Width="35" ToolTip="Swap Panes"
+                    Command="{Binding SwapCommand}"
+                    Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+                <controls:DrawingIcon>
+                    <controls:DrawingIcon.Drawing>
+                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                         Geometry="M0,4 H5 V3 H0 M1,3 H4 V2 H1 M2,2 H3 V1 H2 M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 H11 V8 H6 M7,8 H10 V9 H7 M8,9 H9 V10 H8 z" />
+                    </controls:DrawingIcon.Drawing>
+                    <controls:DrawingIcon.HDPIDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                         Geometry="M0,4 L2.5,1 5,4z M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 L8.5,10 11,7z" />
+                    </controls:DrawingIcon.HDPIDrawing>
+                </controls:DrawingIcon>
+            </Button>
+
+            <RadioButton Grid.Column="2" Width="35" ToolTip="Vertical Split"
+                         Command="{Binding VerSplitCommand}"
+                         Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
+                <Border>
+                    <Border.LayoutTransform>
+                        <RotateTransform Angle="{Binding VerSplitAngle}"/>
+                    </Border.LayoutTransform>
+                    <controls:DrawingIcon>
+                        <controls:DrawingIcon.Drawing>
+                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                             Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                        </controls:DrawingIcon.Drawing>
+                        <controls:DrawingIcon.HDPIDrawing>
+                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                             Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                        </controls:DrawingIcon.HDPIDrawing>
+                    </controls:DrawingIcon>
+                </Border>
+                
+            </RadioButton>
+            <RadioButton Grid.Column="3" Width="35" ToolTip="Horizontal Split" IsChecked="True"
+                         Command="{Binding HorSplitCommand}"
+                         Style="{StaticResource {x:Static themes:ResourceKeys.NormalRadioButtonStyleKey}}">
+                <Border>
+                    <Border.LayoutTransform>
+                        <RotateTransform Angle="{Binding HorSplitAngle}"/>
+                    </Border.LayoutTransform>
+                    <controls:DrawingIcon>
+                        <controls:DrawingIcon.Drawing>
+                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                             Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                        </controls:DrawingIcon.Drawing>
+                        <controls:DrawingIcon.HDPIDrawing>
+                            <GeometryDrawing Brush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                             Geometry="M0,0 V13 H13 V0 H0 M1,1 V12 H12 V1 H1 M2,6 V7 H11 V6z" />
+                        </controls:DrawingIcon.HDPIDrawing>
+                    </controls:DrawingIcon>
+                </Border>
+            </RadioButton>
+        </Grid>
+        <!--Editor-->
+        <ContentControl Grid.Row="{Binding EditorRow}" 
+                        prism:RegionManager.RegionName="{x:Static ms:RegionNames.EditorName}"
+                        prism:RegionManager.RegionContext="{Binding SelectInfo}">
+            <ContentControl.LayoutTransform>
+                <RotateTransform Angle="{Binding PaneAngle}"/>
+            </ContentControl.LayoutTransform>
+        </ContentControl>
+    </Grid>
+</UserControl>

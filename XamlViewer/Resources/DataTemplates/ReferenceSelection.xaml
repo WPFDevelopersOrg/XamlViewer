@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"> 
+
+    <Style x:Key="RefSelectionItemStyle" 
+           BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalListBoxItemStyleKey}}"
+           TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Padding" Value="2,3"/>
+        <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}"/>
+        <Style.Triggers> 
+            <Trigger Property="IsSelected" Value="true">
+                <Setter Property="Background" Value="#1C97EA"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <DataTemplate x:Key="RefSelectionTemplate">
+        <TextBlock VerticalAlignment="Center" FontSize="12" Text="{Binding FileName}"/>
+    </DataTemplate>
+    
+</ResourceDictionary>

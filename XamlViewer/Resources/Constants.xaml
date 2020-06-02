@@ -1,0 +1,211 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:models="clr-namespace:XamlViewer.Models">
+
+    <sys:Boolean x:Key="TrueKey">true</sys:Boolean>
+
+    <sys:String x:Key="{x:Static models:InternalConstStrings.NormalFileContentKey}" xml:space="preserve">
+        <![CDATA[<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="White">
+    
+</Grid>]]>
+    </sys:String>
+
+    <sys:String x:Key="{x:Static models:InternalConstStrings.HelpFileContentKey}" xml:space="preserve">
+        <![CDATA[<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+      Background="White">
+    <Grid.Resources>
+        
+        <sys:String x:Key="NetFrameworkVersion" xml:space="preserve">,  Based on .Net Framework 4.5</sys:String>
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+    </Grid.Resources> 
+    <Border Margin="60,30" TextBlock.Foreground="#616161">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Introduction" FontSize="20"/>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,15,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Document Manager"/>
+                        <TextBlock Margin="0,5,0,0" Foreground="#717171" 
+                                   Text="1. Support new, open, save, close and drag"/>
+                        <TextBlock Margin="0,5,0,0" Foreground="#717171"
+                                   Text="2. Support quick selection of opened files in active files drop-down list"/>     
+                    </StackPanel>
+                </Border>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Automitic Compilation"/>
+                        <TextBlock Margin="0,5,0,0" Foreground="#717171" 
+                                   Text="1. Auto-Compile, enable or disable the automatic compilation function"/>
+                        <TextBlock Margin="0,5,0,0" Foreground="#717171"
+                                   Text="2. Auto-Compile Delay, compile automatically after a specified time without any input"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Reference"/>
+                        <TextBlock Margin="0,5,0,0" Foreground="#717171" 
+                                   Text="1. Support control library based on .Net Framework 4.0 or above"/>
+                        <TextBlock Margin="0,5,0,0" Foreground="#717171" 
+                                   Text="2. Declare the namespace as follows:"/>
+                        <TextBlock  Margin="0,10,0,0" TextWrapping="Wrap">
+                            <Span Foreground="#8C038C">xmlns:</Span>
+                            <Span Foreground="#FF3737">controls</Span>
+                            <Span Foreground="#4747FF">=&quot;clr-namespace:MyControl.Controls;assembly=MyControl&quot;</Span>
+                        </TextBlock>        
+                    </StackPanel>
+                </Border>
+                
+                <TextBlock Text="Examples" FontSize="20" Margin="0,30,0,0"/>
+                <StackPanel>
+                    <controls:Hyperlink Text="Style" Margin="0,15,0,0" Tag="0"/>
+                    <controls:Hyperlink Text="Window" Margin="0,10,0,0" Tag="1"/>
+                    <controls:Hyperlink Text="Animation" Margin="0,10,0,0" Tag="2"/>
+                    <controls:Hyperlink Text="Third-Party Controls" Margin="0,10,0,0" Tag="3"/>
+                </StackPanel>
+                
+            </StackPanel>
+            
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="About" FontSize="20"/>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,15,0,0">
+                    <StackPanel>
+                        <TextBlock Text="XAML Viewer"/>
+                        <TextBlock Margin="0,5,0,0" Foreground="#717171" 
+                                   Text="A lightweight xaml editing and preview tool"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Verson"/>
+                        <TextBlock Margin="0,5,0,0" Foreground="#717171">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="v{0}{1}">
+                                    <Binding Path="DataContext.Version" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                                    <Binding Source="{StaticResource NetFrameworkVersion}"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Source Code"/>
+                        <WrapPanel Orientation="Horizontal" TextBlock.Foreground="#717171">
+                            <TextBlock Text="From " Margin="0,5,0,0"/>
+                            <controls:Hyperlink Text="huangjia2107" Margin="0,5,0,0"
+                                                NavigateUri="https://github.com/huangjia2107"
+                                                ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
+                            <TextBlock Text=".  " Margin="0,5,0,0"/>
+                            <TextBlock Text="Hosted on " Margin="0,5,0,0"/>
+                            <controls:Hyperlink Text="GitHub" Margin="0,5,0,0"
+                                                NavigateUri="https://github.com/huangjia2107/XamlViewer"
+                                                ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
+                            <TextBlock Text=".  " Margin="0,5,0,0"/>
+                            <TextBlock Text="Under the " Margin="0,5,0,0"/>
+                            <controls:Hyperlink Text="MIT" Margin="0,5,0,0"
+                                                NavigateUri="https://github.com/huangjia2107/XamlViewer/blob/master/LICENSE"
+                                                ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
+                            <TextBlock Text=".  " Margin="0,5,0,0"/>
+                            <TextBlock Text="Feel free to " Margin="0,5,0,0"/>
+                            <controls:Hyperlink Text="Feedback" Margin="0,5,0,0"
+                                                NavigateUri="https://github.com/huangjia2107/XamlViewer/issues"
+                                                ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>           
+                        </WrapPanel>           
+                    </StackPanel>
+                </Border>
+                
+                <TextBlock Text="Third-Party Notices" FontSize="20" Margin="0,30,0,0"/>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,15,0,0"
+                        ToolTip="Prism is a framework for building loosely coupled, maintainable, and testable XAML applications in WPF, and Xamarin Forms.">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions> 
+                        <controls:Hyperlink Grid.Column="0" Text="Prism"
+                                            NavigateUri="https://github.com/PrismLibrary/Prism"
+                                            ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
+                        <TextBlock Text="7.2.0.1422" Grid.Column="1" HorizontalAlignment="Right"/>                    
+                        <controls:Hyperlink Grid.Column="3" Text="MIT"
+                                            NavigateUri="https://github.com/PrismLibrary/Prism/blob/master/LICENSE"
+                                            ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>    
+                    </Grid>   
+                </Border>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0"
+                        ToolTip="XAML Behaviors is an easy-to-use means of adding common and reusable interactivity to your WPF applications with minimal code.">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions> 
+                        <controls:Hyperlink Grid.Column="0" Text="Microsoft.Xaml.Behaviors"
+                                            NavigateUri="https://github.com/microsoft/XamlBehaviorsWpf"
+                                            ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
+                        <TextBlock Text="1.1.3" Grid.Column="1" HorizontalAlignment="Right"/>                    
+                        <controls:Hyperlink Grid.Column="3" Text="MIT"
+                                            NavigateUri="https://github.com/microsoft/XamlBehaviorsWpf/blob/master/LICENSE"
+                                            ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>    
+                    </Grid>   
+                </Border>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0"
+                        ToolTip="AvalonEdit is the name of the WPF-based text editor in SharpDevelop 4.x &quot;Mirador&quot; and beyond. It is also being used in ILSpy and many other projects.">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions> 
+                        <controls:Hyperlink Grid.Column="0" Text="AvalonEdit"
+                                            NavigateUri="https://github.com/icsharpcode/AvalonEdit"
+                                            ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
+                        <TextBlock Text="6.0" Grid.Column="1" HorizontalAlignment="Right"/>                    
+                        <controls:Hyperlink Grid.Column="3" Text="MIT"
+                                            NavigateUri="https://github.com/icsharpcode/AvalonEdit/blob/master/LICENSE"
+                                            ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>    
+                    </Grid>   
+                </Border>
+                <Border Background="#F3F3F3" Padding="10,13" Margin="0,10,0,0"
+                        ToolTip="Json.NET is a popular high-performance JSON framework for .NET">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions> 
+                        <controls:Hyperlink Grid.Column="0" Text="Json.NET"
+                                            NavigateUri="https://github.com/JamesNK/Newtonsoft.Json"
+                                            ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
+                        <TextBlock Text="12.0.3" Grid.Column="1" HorizontalAlignment="Right"/>                    
+                        <controls:Hyperlink Grid.Column="3" Text="MIT"
+                                            NavigateUri="https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md"
+                                            ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>    
+                    </Grid>   
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Grid>]]>
+    </sys:String>
+</ResourceDictionary>

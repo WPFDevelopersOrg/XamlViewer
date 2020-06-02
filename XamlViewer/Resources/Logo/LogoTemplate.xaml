@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <DataTemplate x:Key="LogoDataTemplate">
+        <Grid HorizontalAlignment="Left" Height="30" Margin="41.272,58.354,0,0" VerticalAlignment="Top" Width="30">
+            <Ellipse Margin="0" Stroke="White" StrokeThickness="0">
+                <Ellipse.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFBDDCF3" Offset="0"/>
+                        <GradientStop Color="#FFA0C7E7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Path Data="M15,2.9999998 C8.3725834,3 3,8.3725834 2.9999998,15 3,21.627417 8.3725834,27 15,27 21.627417,27 27,21.627417 27,15 27,8.3725834 21.627417,3 15,2.9999998 z M15,0 C23.284271,0 30,6.7157288 30,15 L30,30 15,30 C6.7157288,30 0,23.284271 0,15 0,6.7157288 6.7157288,0 15,0 z" Margin="0" Stretch="Fill" Stroke="White" StrokeThickness="0">
+                <Path.Fill>
+                    <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                        <GradientStop Color="#FF35C4F0" Offset="0"/>
+                        <GradientStop Color="#FF3F549F" Offset="0.7"/>
+                    </LinearGradientBrush>
+                </Path.Fill>
+            </Path>
+            <Path Data="M1.3221781,1.3993894 C0.66760474,2.0942218 0.25000003,2.9680956 0.25,2.8977897 0.25000006,1.5226008 1.3445194,0.39151621 2.7471077,0.25550252 2.7471077,0.25550252 1.9479568,0.7351226 1.3221781,1.3993894 z" HorizontalAlignment="Left" Height="3.635" Margin="7.303,6.646,0,0" Stretch="Fill" StrokeThickness="0" VerticalAlignment="Top" Width="3.693" Fill="White"/>
+            <Path Data="M724.079,654.85597 L724.192,747.776 960,512 724.192,276.192 724.079,366.6721 871.06,512 z M299.704,362.16381 L299.808,276.192 64,512 299.808,747.808 299.704,661.09822 152.64833,512 z M540.03733,276.15278 L607.12067,276.15399 478.49567,748.39538 409.66233,748.3708 540.03733,276.15278 z" Fill="#FFF1632A" Margin="0" RenderTransformOrigin="0.5,0.5" Stretch="Fill" VerticalAlignment="Center" Height="10" StrokeThickness="0" Width="20" HorizontalAlignment="Center" />
+        </Grid>
+    </DataTemplate>
+    
+</ResourceDictionary>
