@@ -132,8 +132,7 @@ namespace XamlTheme.Controls
                 _hueSlider.RemoveHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(OnAlphaSliderMouseLeftButtonUp));
             }
 
-            if (_colorCanvas != null)
-                _colorCanvas.RemoveHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnColorCanvasMouseLeftButtonDown));
+            _colorCanvas?.RemoveHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnColorCanvasMouseLeftButtonDown));
 
             base.OnApplyTemplate();
 
@@ -156,8 +155,7 @@ namespace XamlTheme.Controls
                 _hueSlider.AddHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(OnHueSliderMouseLeftButtonUp), true);
             }
 
-            if (_colorCanvas != null)
-                _colorCanvas.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnColorCanvasMouseLeftButtonDown), false);
+            _colorCanvas?.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnColorCanvasMouseLeftButtonDown), false);
         }
 
         protected override Size ArrangeOverride(Size finalSize)

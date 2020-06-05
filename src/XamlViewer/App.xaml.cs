@@ -165,8 +165,7 @@ namespace XamlViewer
             base.OnInitialized();
            
             var eventAggregator = Container.Resolve<IEventAggregator>();
-            if (eventAggregator != null)
-                eventAggregator.GetEvent<InitWorkAreaEvent>().Publish();
+            eventAggregator?.GetEvent<InitWorkAreaEvent>().Publish();
         }
     }
 }

@@ -69,8 +69,7 @@ namespace XamlViewer.ViewModels
 
         private async void Closing(CancelEventArgs e)
         {
-            if (_appData.DealExistedFileAction != null)
-                await _appData.DealExistedFileAction();
+            await _appData.DealExistedFileAction?.Invoke();
 
             FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _appData.Config);
         } 

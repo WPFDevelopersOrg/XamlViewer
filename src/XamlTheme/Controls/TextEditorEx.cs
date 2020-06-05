@@ -845,18 +845,12 @@ namespace XamlTheme.Controls
 
         public void Redo()
         {
-            if (_partTextEditor == null)
-                return;
-
-            _partTextEditor.Redo();
+            _partTextEditor?.Redo();
         }
 
         public void Undo()
         {
-            if (_partTextEditor == null)
-                return;
-
-            _partTextEditor.Undo();
+            _partTextEditor?.Undo();
         }
 
         public void Dispose()
@@ -868,8 +862,7 @@ namespace XamlTheme.Controls
                 _timer = null;
             }
 
-            if (_completionWindow != null)
-                _completionWindow.Close();
+            _completionWindow?.Close();
 
             UnsubscribeEvents();
         }

@@ -362,8 +362,7 @@ namespace XamlViewer.ViewModels
 
             //Work Area
             var selectedTab = XamlTabs.FirstOrDefault(tab => tab.IsSelected);
-            if (selectedTab != null)
-                selectedTab.InitWorkArea();
+            selectedTab?.InitWorkArea();
 
             _isWorkAreaIniting = false;
 

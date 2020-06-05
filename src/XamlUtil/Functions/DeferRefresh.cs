@@ -13,11 +13,8 @@ namespace XamlUtil.Functions
 
         public void Dispose()
         {
-            if (_endDefer != null)
-            {
-                _endDefer();
-                _endDefer = null;
-            }
+            _endDefer?.Invoke();
+            _endDefer = null;
 
             GC.SuppressFinalize(this);
         }

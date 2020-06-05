@@ -82,11 +82,8 @@ namespace XamlViewer.Regions
             var disposableView = view as IDisposable;
             var disposableViewModel = view.DataContext as IDisposable; 
 
-            if(disposableView != null)
-                disposableView.Dispose();
-
-            if (disposableViewModel != null)
-                disposableViewModel.Dispose();
+            disposableView?.Dispose();
+            disposableViewModel?.Dispose();
         }
     }
 }

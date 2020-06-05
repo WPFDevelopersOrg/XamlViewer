@@ -107,8 +107,7 @@ namespace XamlViewer.ViewModels
 
         private void CloseDialog(ButtonResult result)
         {
-            if (RequestClose != null)
-                RequestClose.Invoke(new DialogResult(result));
+            RequestClose?.Invoke(new DialogResult(result));
         }
 
         #endregion

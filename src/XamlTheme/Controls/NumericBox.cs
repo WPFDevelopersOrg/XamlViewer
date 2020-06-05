@@ -460,14 +460,12 @@ namespace XamlTheme.Controls
 
         private void Focused()
         {
-            if (_valueTextBox != null)
-                _valueTextBox.Focus();
+            _valueTextBox?.Focus();
         }
 
         private void SelectAll()
         {
-            if (_valueTextBox != null)
-                _valueTextBox.SelectAll();
+            _valueTextBox?.SelectAll();
         }
 
         private void DealInputText(string inputText)
@@ -510,8 +508,7 @@ namespace XamlTheme.Controls
             var request = new TraversalRequest((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift ? FocusNavigationDirection.Previous : FocusNavigationDirection.Next);
             var elementWithFocus = Keyboard.FocusedElement as UIElement;
 
-            if (elementWithFocus != null)
-                elementWithFocus.MoveFocus(request);
+            elementWithFocus?.MoveFocus(request);
         }
 
         private void ToggleReadOnlyMode(bool isReadOnly)

@@ -31,8 +31,7 @@ namespace XamlTheme.Utils
                 win.Top = previosTopYPosition + (previosHeight - win.ActualHeight) / 2;
                 win.WindowStartupLocation = previousWindowStartupLocation;
 
-                if (action != null)
-                    action();
+                action?.Invoke();
             }));
         } 
     }

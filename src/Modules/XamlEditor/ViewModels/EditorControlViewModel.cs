@@ -105,9 +105,7 @@ namespace XamlEditor.ViewModels
                 {
                     if (_isSelected)
                     {
-                        if (_textEditor != null)
-                            _textEditor.Focus();
-
+                        _textEditor?.Focus();
                         CaretPosChanged();
                     }
                 }
@@ -316,14 +314,12 @@ namespace XamlEditor.ViewModels
                 {
                     _textEditor.Dispatcher.BeginInvoke((Action)(() =>
                     {
-                        if (_eventAggregator != null)
-                            _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = _textEditor.Text });
+                        _eventAggregator?.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = _textEditor.Text });
                     }));
                 }
                 else
                 {
-                    if (_eventAggregator != null)
-                        _eventAggregator.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = _textEditor.Text });
+                    _eventAggregator?.GetEvent<SaveTextEvent>().Publish(new TabInfo { Guid = _fileGuid, FileContent = _textEditor.Text });
                 }
             }
         }
@@ -345,8 +341,7 @@ namespace XamlEditor.ViewModels
 
         private void Redo()
         {
-            if (_textEditor != null)
-                _textEditor.Redo();
+            _textEditor?.Redo();
         }
 
         private bool CanUndo()
@@ -356,8 +351,7 @@ namespace XamlEditor.ViewModels
 
         private void Undo()
         {
-            if (_textEditor != null)
-                _textEditor.Undo();
+            _textEditor?.Undo();
         }
 
         #endregion
@@ -455,8 +449,7 @@ namespace XamlEditor.ViewModels
             UndoCommand.IsActive = IsActive;
             UndoCommand.RaiseCanExecuteChanged();
 
-            if (IsActiveChanged != null)
-                IsActiveChanged.Invoke(this, new EventArgs());
+            IsActiveChanged?.Invoke(this, new EventArgs());
         }
 
         #endregion
@@ -477,11 +470,8 @@ namespace XamlEditor.ViewModels
             _appCommands.RedoCommand.UnregisterCommand(RedoCommand);
             _appCommands.UndoCommand.UnregisterCommand(UndoCommand);
 
-            if (_textEditor != null)
-            {
-                _textEditor.Dispose();
-                _textEditor = null;
-            }
+            _textEditor?.Dispose();
+            _textEditor = null;
 
             _xsdParser = null;
         }
@@ -500,8 +490,7 @@ namespace XamlEditor.ViewModels
         {
             _isReseting = true;
 
-            if (reset != null)
-                reset();
+            reset?.Invoke();
 
             IsModified = false;
 

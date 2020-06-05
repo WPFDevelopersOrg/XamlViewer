@@ -96,7 +96,7 @@ namespace XamlDesigner.ViewModels
                 TargetFramework = targetFw.FrameworkName.Replace(",Version=v", " ");
 
             var version = Application.ResourceAssembly.GetName().Version;
-            Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
+            Version = $"{version.Major}.{version.Minor}.{version.Build}";
         }
 
         private bool CanSnapshot()

@@ -219,14 +219,12 @@ namespace XamlTheme.Controls
 
         private void Focused()
         {
-            if (_valueTextBox != null)
-                _valueTextBox.Focus();
+            _valueTextBox?.Focus();
         }
 
         private void SelectAll()
         {
-            if (_valueTextBox != null)
-                _valueTextBox.SelectAll();
+            _valueTextBox?.SelectAll();
         }
 
         private void ToggleReadOnlyMode(bool isReadOnly)

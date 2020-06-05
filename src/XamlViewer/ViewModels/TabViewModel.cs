@@ -198,8 +198,7 @@ namespace XamlViewer.ViewModels
                 {
                     if (r.Result != ButtonResult.Yes)
                     {
-                        if (_closeAction != null)
-                            _closeAction(this, true);
+                        _closeAction?.Invoke(this, true);
 
                         Dispose();
                         isContinue = false;
@@ -224,9 +223,7 @@ namespace XamlViewer.ViewModels
             }
             else
             {
-                if (_closeAction != null)
-                    _closeAction(this, false);
-
+                _closeAction?.Invoke(this, false);
                 Dispose();
             }
         }
@@ -325,9 +322,7 @@ namespace XamlViewer.ViewModels
             if (_closeAfterSaving)
             {
                 _closeAfterSaving = false;
-
-                if (_closeAction != null)
-                    _closeAction(this, true);
+                _closeAction?.Invoke(this, true);
 
                 Dispose();
             }
@@ -369,26 +364,17 @@ namespace XamlViewer.ViewModels
 
         private void UpdateStatusToEditor()
         {
-            if (_eventAggregator == null)
-                return;
-
-            _eventAggregator.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = IsReadOnly, IsShowEditor = IsShowEditor });
+            _eventAggregator?.GetEvent<UpdateTabStatusEvent>().Publish(new TabFlag { IsReadOnly = IsReadOnly, IsShowEditor = IsShowEditor });
         }
 
         public void UpdateTextToEditor()
         {
-            if (_eventAggregator == null)
-                return;
-
-            _eventAggregator.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = IsReadOnly, IsShowEditor = IsShowEditor });
+            _eventAggregator?.GetEvent<LoadTextEvent>().Publish(new TabInfo { Guid = _guid, FileContent = FileContent, IsReadOnly = IsReadOnly, IsShowEditor = IsShowEditor });
         }
 
         public void UpdateSelectInfo()
         {
-            if (_eventAggregator == null)
-                return;
-
-            _eventAggregator.GetEvent<SelectTabEvent>().Publish(new TabSelectInfo { Guid = _guid, IsSelected = IsSelected });
+            _eventAggregator?.GetEvent<SelectTabEvent>().Publish(new TabSelectInfo { Guid = _guid, IsSelected = IsSelected });
         }
 
         public void UpdateFileName(string fileName)
