@@ -1,8 +1,8 @@
 ﻿#if NETFRAMEWORK
 using Newtonsoft.Json;
-#endif
-
+#else
 using System.Text.Json;
+#endif
 
 namespace XamlUtil.Common
 {

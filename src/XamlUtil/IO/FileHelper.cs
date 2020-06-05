@@ -3,11 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
 using System.Xml.Serialization;
 
 #if NETFRAMEWORK
 using Newtonsoft.Json;
+#else
+using System.Text.Json;
 #endif
 
 namespace Utils.IO
