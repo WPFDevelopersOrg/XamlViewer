@@ -59,6 +59,24 @@ namespace XamlViewer.Utils
         }
     }
 
+    public class XamlTabFontStyleConverter : IValueConverter
+    { 
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null || value == DependencyProperty.UnsetValue)
+                return FontStyles.Normal;
+
+            var status = (TabStatus)value;
+
+            return (status & TabStatus.NoSave) == TabStatus.NoSave ? FontStyles.Oblique : FontStyles.Normal;
+        }  
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class XamlTabToolTipMultiConverter : IMultiValueConverter
     { 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -69,8 +87,22 @@ namespace XamlViewer.Utils
             var fileName = (string)values[0];
             var status = (TabStatus)values[1];
 
-            if ((status & TabStatus.Locked) == TabStatus.Locked)
+#if NETCOREAPP
+            switch(status)
+            {
+                case var s when (s & TabStatus.Locked) == TabStatus.Locked:
+                    return fileName + " [Read Only]";
+
+                case var s when (s & TabStatus.NoSave) == TabStatus.NoSave:
+                    return fileName + " [Unsaved]";
+            }
+#else
+            if((status & TabStatus.Locked) == TabStatus.Locked)
                 return fileName + " [Read Only]";
+
+            if((status & TabStatus.NoSave) == TabStatus.NoSave)
+                return fileName + " [Unsaved]";
+#endif
 
             return fileName;
         }  

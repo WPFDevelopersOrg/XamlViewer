@@ -8,6 +8,7 @@
     <utils:ScrollOffsetToVisibilityMultiConverter x:Key="scrollOffsetToVisibilityMultiConverter"/>
     <utils:StringToVisibilityConverter x:Key="stringToVisibilityConverter"/>
 
+    <utils:XamlTabFontStyleConverter x:Key="xamlTabFontStyleConverter"/>
     <utils:XamlTabToolTipMultiConverter x:Key="xamlTabToolTipMultiConverter"/>
     <utils:VersionInfoMultiConverter x:Key="versionInfoMultiConverter"/>
 
