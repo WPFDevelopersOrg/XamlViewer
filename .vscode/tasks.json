@@ -4,13 +4,30 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build_release",
             "command": "dotnet",
             "type": "shell",
             "args": [
                 "build",
                 // Ask dotnet build to generate full paths for file names.
-                "/property:GenerateFullPaths=true,configuration=Release",
+                "/property:GenerateFullPaths=true,configuration=release",
+                // Do not generate summary otherwise it leads to duplicate errors in Problems panel
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_debug",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                // Ask dotnet build to generate full paths for file names.
+                "/property:GenerateFullPaths=true,configuration=debug",
                 // Do not generate summary otherwise it leads to duplicate errors in Problems panel
                 "/consoleloggerparameters:NoSummary"
             ],
