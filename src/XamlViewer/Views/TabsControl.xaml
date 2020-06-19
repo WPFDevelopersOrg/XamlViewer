@@ -75,6 +75,7 @@
                 <Border BorderThickness="1" BorderBrush="LightGray" Background="#E7E8EC" Width="230">
                     <ListBox x:Name="ActiveFilesListBox"
                              Foreground="Black"
+                             Grid.IsSharedSizeScope="true"
                              ItemsSource="{Binding XamlTabs}"
                              ItemTemplate="{StaticResource ActiveFilesTemplate}"
                              ItemContainerStyle="{StaticResource ActiveFilesItemStyle}"

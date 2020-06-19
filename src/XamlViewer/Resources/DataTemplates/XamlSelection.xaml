@@ -123,7 +123,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="StatusColumn"/>
             </Grid.ColumnDefinitions>
             <controls:DrawingIcon>
                 <controls:DrawingIcon.Drawing>
@@ -152,14 +152,12 @@
 
             <Border Grid.Column="3" Margin="5,0,0,0" Background="Transparent" ToolTip="Read Only"
                     Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.Locked}}">
-                <Path Fill="#005198" 
-                      VerticalAlignment="Center"
+                <Path Fill="#005198" VerticalAlignment="Center" HorizontalAlignment="Center"
                       Data="M2,0 H6V1 H2 M1,1 H2V4 H1 M6,1 H7V4 H6 M0,4 H8V9 H0z"/>
             </Border>
             <Border Grid.Column="3" Margin="5,0,0,0" Background="Transparent" ToolTip="Unsaved"
                     Visibility="{Binding Status,Converter={StaticResource flagEnumToVisibilityConverter},ConverterParameter={x:Static models:TabStatus.NoSave}}">
-                <Path Fill="#005198" 
-                      VerticalAlignment="Center" Stretch="Fill" Width="6" Height="6"
+                <Path Fill="#005198" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Fill" Width="6" Height="6"
                       Data="M3.4101563,5.4331779 L4.8251953,5.4331779 L4.5791016,8.3072014 L7.0576172,7.3579826 L7.4882813,8.6236076 L4.8867188,9.1333733 L6.7060547,11.40974 L5.5810547,12.183178 L4.1220703,9.6695061 L2.6455078,12.183178 L1.5205078,11.40974 L3.3310547,9.1333733 L0.71191406,8.6236076 L1.1689453,7.3579826 L3.6474609,8.3072014 z"/>
             </Border>
         </Grid>
