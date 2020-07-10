@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using XamlTheme.Adorners;
 using XamlUtil.Common; 
 
 namespace XamlTheme.Controls
@@ -36,7 +38,10 @@ namespace XamlTheme.Controls
         {
             public Point PointToScrollContent { get; set; }
             public Point PointToViewport { get; set; }
-        } 
+        }
+
+        private AdornerLayer _adornerLayer = null;
+        private RulerIndicatorAdorner _rulerIndicatorAdorner = null;
 
         static ZoomBox()
         {
@@ -86,6 +91,17 @@ namespace XamlTheme.Controls
             get { return (bool)GetValue(IsShowRulerProperty); }
             set { SetValue(IsShowRulerProperty, value); }
         } 
+
+        private static void OnIsShowRulerPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var zoomBox = sender as ZoomBox;
+            var isShow = (bool)e.NewValue;
+
+            if (isShow)
+                zoomBox.AddAdorner();
+            else
+                zoomBox.RemoveAdorner();
+        }
 
         public static readonly DependencyProperty ScaleProperty =
             DependencyProperty.Register("Scale", typeof(double), _typeofSelf, new PropertyMetadata(1d, OnScalePropertyChanged, CoerceScale));
@@ -176,6 +192,15 @@ namespace XamlTheme.Controls
                     HorizontalRulerTemplateName, VerticalRulerTemplateName, ScrollContentPresenterTemplateName));
             }
 
+            _partScrollContentPresenter.PreviewMouseMove -= OnPreviewMouseMove;
+            _partScrollContentPresenter.PreviewMouseMove += OnPreviewMouseMove;
+
+            _partScrollContentPresenter.MouseLeave -= OnMouseLeave;
+            _partScrollContentPresenter.MouseLeave += OnMouseLeave;
+
+            _adornerLayer = AdornerLayer.GetAdornerLayer(this);
+            _rulerIndicatorAdorner = new RulerIndicatorAdorner(this, 20);
+
             InitContent();
             UpdateScaleTransform();
             UpdateRulerParams();
@@ -184,6 +209,16 @@ namespace XamlTheme.Controls
         #endregion
 
         #region Event
+
+        private void OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            RemoveAdorner();
+        }
+
+        private void OnPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            AddAdorner();
+        }
 
         protected override void OnScrollChanged(ScrollChangedEventArgs e)
         {
@@ -215,11 +250,32 @@ namespace XamlTheme.Controls
 
                 e.Handled = true;
             }
-        } 
+        }
 
         #endregion
 
         #region Func
+
+        private void AddAdorner()
+        {
+            if (!IsShowRuler || _adornerLayer == null || _rulerIndicatorAdorner == null)
+                return;
+
+            var adorners = _adornerLayer.GetAdorners(this);
+
+            if (adorners == null || adorners.Length == 0)
+                _adornerLayer.Add(_rulerIndicatorAdorner);
+
+            _adornerLayer.Update();
+        }
+
+        private void RemoveAdorner()
+        {
+            if (_adornerLayer != null && _rulerIndicatorAdorner != null)
+                _adornerLayer.Remove(_rulerIndicatorAdorner);
+
+            _adornerLayer.Update();
+        }
 
         private void InitContent()
         {
