@@ -284,14 +284,15 @@ namespace XamlTheme.Controls
 
             if (Content != null)
             {
-                if (!(Content is FrameworkElement))
+                var element = Content as FrameworkElement;
+                if (element == null)
                 {
                     _elementContent = new TextBlock { Text = Content.ToString() };
                     _isStringContent = true;
                 }
                 else
                 {
-                    _elementContent = (FrameworkElement)Content;
+                    _elementContent = element;
                     _isStringContent = false;
                 }
             }
