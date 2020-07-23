@@ -25,7 +25,7 @@ _Notice：Only local doc files could be saved when closing the software. Please 
 ## Reference
 1. [Setting] >> [Reference] >> [Add]: To add custom control library, which could be called directly in XAML;
 2. Please declare namespace as the following form:</br>
-``` xml
+``` csharp
 xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 ```
 
