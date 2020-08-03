@@ -4,5 +4,10 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.exclude": {
+			"**/bin/": true,
+			"**/obj/": true
+		}
+	}
 }
