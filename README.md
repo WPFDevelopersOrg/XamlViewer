@@ -10,7 +10,7 @@ When you are learning or trying out some XAML effects, it's a pretty good choice
 2. [Visual Studio Code or Visual Studio 2019](https://visualstudio.microsoft.com/);
 3. Windows 7 SP1/8/8.1/10
 
-_Notice：You can adjust the TargetFrameworks in the SharedProperty.props file according to your needs._
+_Notice：You can adjust the TargetFrameworks in the Directory.Build.props file according to your needs._
 
 ## Document Manager
 1. Support operations: new, save, open, close, drag and etc.;
