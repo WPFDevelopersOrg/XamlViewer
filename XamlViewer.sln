@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamlEditor", "src\Modules\X
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{63DB7294-D904-4C50-A536-801EB0C86758}"
 	ProjectSection(SolutionItems) = preProject
-		SharedProperty.props = SharedProperty.props
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Global
