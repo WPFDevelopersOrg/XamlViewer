@@ -34,7 +34,7 @@ namespace XamlUtil.Net
             using (var httpClient = new HttpClient())
 #endif
             {
-                return await httpClient.GetString(urlString);
+                return await httpClient.GetString(urlString).ConfigureAwait(false);
             }
         }
     }
