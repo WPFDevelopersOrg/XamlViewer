@@ -12,6 +12,7 @@ namespace XamlTheme.Controls
 {
     [TemplatePart(Name = HorizontalRulerTemplateName, Type = typeof(Ruler))]
     [TemplatePart(Name = VerticalRulerTemplateName, Type = typeof(Ruler))]
+    [TemplatePart(Name = ContentBorderTemplateName, Type =typeof(Border))]
     [TemplatePart(Name = ScrollContentPresenterTemplateName, Type = typeof(ScrollContentPresenter))]
     public class ZoomBox : ScrollViewer
     {
@@ -19,6 +20,7 @@ namespace XamlTheme.Controls
 
         private const string HorizontalRulerTemplateName = "PART_HorizontalRuler";
         private const string VerticalRulerTemplateName = "PART_VerticalRuler";
+        private const string ContentBorderTemplateName = "PART_ContentBorder";
         private const string ScrollContentPresenterTemplateName = "PART_ScrollContentPresenter";
 
         private const double MiniScale = 0.01d;
@@ -27,6 +29,7 @@ namespace XamlTheme.Controls
 
         private Ruler _partHorizontalRuler;
         private Ruler _partVerticalRuler;
+        private Border _partContentBorder;
         private ScrollContentPresenter _partScrollContentPresenter;
 
         private ScaleTransform _partScaleTransform;
@@ -183,20 +186,19 @@ namespace XamlTheme.Controls
 
             _partHorizontalRuler = GetTemplateChild(HorizontalRulerTemplateName) as Ruler;
             _partVerticalRuler = GetTemplateChild(VerticalRulerTemplateName) as Ruler;
-
+            _partContentBorder = GetTemplateChild(ContentBorderTemplateName) as Border;
             _partScrollContentPresenter = GetTemplateChild(ScrollContentPresenterTemplateName) as ScrollContentPresenter;
 
-            if (_partHorizontalRuler == null || _partVerticalRuler == null || _partScrollContentPresenter == null)
+            if (_partHorizontalRuler == null || _partVerticalRuler == null || _partContentBorder == null || _partScrollContentPresenter == null)
             {
-                throw new NullReferenceException(string.Format("You have missed to specify {0}, {1} or {2} in your template",
-                    HorizontalRulerTemplateName, VerticalRulerTemplateName, ScrollContentPresenterTemplateName));
+                throw new NullReferenceException($"You have missed to specify {HorizontalRulerTemplateName}, {VerticalRulerTemplateName}, {ContentBorderTemplateName} or {ScrollContentPresenterTemplateName} in your template");
             }
 
-            _partScrollContentPresenter.PreviewMouseMove -= OnPreviewMouseMove;
-            _partScrollContentPresenter.PreviewMouseMove += OnPreviewMouseMove;
+            _partContentBorder.PreviewMouseMove -= OnPreviewMouseMove;
+            _partContentBorder.PreviewMouseMove += OnPreviewMouseMove;
 
-            _partScrollContentPresenter.MouseLeave -= OnMouseLeave;
-            _partScrollContentPresenter.MouseLeave += OnMouseLeave;
+            _partContentBorder.MouseLeave -= OnMouseLeave;
+            _partContentBorder.MouseLeave += OnMouseLeave;
 
             _adornerLayer = AdornerLayer.GetAdornerLayer(this);
             _rulerIndicatorAdorner = new RulerIndicatorAdorner(this, 20);

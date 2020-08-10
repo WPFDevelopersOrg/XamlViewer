@@ -31,11 +31,12 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <!-- ScrollContentPresenter -->
-                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                                    Grid.Column="1" Grid.Row="1"
-                                                    ContentTemplate="{TemplateBinding ContentTemplate}" 
-                                                    CanContentScroll="{TemplateBinding CanContentScroll}"/>
+                            <Border x:Name="PART_ContentBorder" Grid.Column="1" Grid.Row="1" Background="Transparent">
+                                <!-- ScrollContentPresenter -->
+                                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                        ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                        CanContentScroll="{TemplateBinding CanContentScroll}"/>
+                            </Border>
 
                             <Path Grid.Row="0" Grid.Column="0" Height="20"  Data="M0,0 H5 V-5" Stroke="Black" Stretch="Fill" StrokeThickness="1" RenderOptions.EdgeMode="Aliased"/> 
                             <Path Grid.Row="0" Grid.Column="0" Height="20" Data="M3,0 V-6 M0,-3 H6" Stroke="Black" Stretch="Fill" StrokeThickness="1" RenderOptions.EdgeMode="Aliased" StrokeDashArray="1,1"/>
@@ -85,6 +86,7 @@
                                            Grid.Column="1"
                                            x:Name="PART_HorizontalScrollBar"  
                                            Orientation="Horizontal" 
+                                           Background="Transparent"
                                            Value="{Binding Path=HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                            ViewportSize="{TemplateBinding ViewportWidth}" 
                                            Minimum="0" 

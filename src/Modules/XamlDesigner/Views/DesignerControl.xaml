@@ -12,7 +12,7 @@
             <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="true"/>
         </behaviors:EventTrigger>
     </behaviors:Interaction.Triggers>
-    <controls:ZoomBox x:Name="zoomBox" ScrollBarBackground="#EFEFF2" Background="#EFEFF2" VerticalScrollBarVisibility="Auto"
+    <controls:ZoomBox x:Name="zoomBox" ScrollBarBackground="#F5F5F5" Background="#F5F5F5" VerticalScrollBarVisibility="Auto"
                       IsShowRuler="{Binding IsChecked,ElementName=RulerSwitch}" 
                       Content="{Binding Element}"> 
         <controls:ZoomBox.Ribbon>

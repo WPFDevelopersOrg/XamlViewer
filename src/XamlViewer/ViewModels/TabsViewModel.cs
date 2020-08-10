@@ -68,6 +68,21 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _isOpenActiveFiles, value); }
         }
 
+        public bool IsOpenDataSource
+        {
+            get { return _appData.Config.EnableDataSource; }
+            set 
+            {
+                if (_appData.Config.EnableDataSource == value)
+                    return;
+
+                _appData.Config.EnableDataSource = value;
+                RaisePropertyChanged();
+
+                _eventAggregator.GetEvent<OpenDataSourceEvent>().Publish(value);
+            }
+        }
+
         private Action<int, int> _moveTabPosAction = null;
         public Action<int, int> MoveTabPosAction
         {

@@ -8,12 +8,15 @@ using XamlViewer.Models;
 using XamlService.Commands;
 using System.Linq;
 using System.IO;
+using Prism.Events;
+using XamlService.Events;
 
 namespace XamlViewer.ViewModels
 {
     public class MainViewModel : BindableBase
     {
         private AppData _appData = null;
+        private IEventAggregator _eventAggregator = null;
 
         public DelegateCommand ExpandOrCollapseCommand { get; private set; }
         public DelegateCommand ActivatedCommand { get; private set; }
@@ -23,12 +26,20 @@ namespace XamlViewer.ViewModels
         public MainViewModel(IContainerExtension container, IApplicationCommands appCommands)
         {
             _appData = container.Resolve<AppData>();
+            _eventAggregator = container.Resolve<IEventAggregator>();
+
             AppCommands = appCommands;
 
+            InitEvent();
             InitCommand();
         }
 
         #region Init
+
+        private void InitEvent()
+        {
+            _eventAggregator.GetEvent<OpenDataSourceEvent>().Subscribe(OnOpenDataSource);
+        }
 
         private void InitCommand()
         {
@@ -36,6 +47,24 @@ namespace XamlViewer.ViewModels
             ActivatedCommand = new DelegateCommand(Activated);
             DropCommand = new DelegateCommand<DragEventArgs>(Drop);
             ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing); 
+        }
+
+        #endregion
+
+        #region Event
+
+        private void OnOpenDataSource(bool isOpen)
+        {
+            if (isOpen)
+            {
+                GridSplitterColumnWidth = GridLength.Auto;
+                DataSourceColumnWidth = new GridLength(1, GridUnitType.Star);
+            }
+            else
+            {
+                GridSplitterColumnWidth = new GridLength(0);
+                DataSourceColumnWidth = new GridLength(0);
+            }
         }
 
         #endregion
@@ -102,7 +131,21 @@ namespace XamlViewer.ViewModels
         {
             get { return _settingRowHeight; }
             set { SetProperty(ref _settingRowHeight, value); }
-        } 
+        }
+
+        private GridLength _gridSplitterColumnWidth = new GridLength(0);
+        public GridLength GridSplitterColumnWidth
+        {
+            get { return _gridSplitterColumnWidth; }
+            set { SetProperty(ref _gridSplitterColumnWidth, value); }
+        }
+
+        private GridLength _dataSourceColumnWidth = new GridLength(0);
+        public GridLength DataSourceColumnWidth
+        {
+            get { return _dataSourceColumnWidth; }
+            set { SetProperty(ref _dataSourceColumnWidth, value); }
+        }
 
         #region Func
 

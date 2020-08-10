@@ -81,18 +81,16 @@
 	    <views:SettingControl Height="120" Margin="6,0"/>
 		<Grid Grid.Row="1" Margin="0,6,0,0">
 		    <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="3*" MinWidth="300"/>
+                <ColumnDefinition Width="{Binding GridSplitterColumnWidth}"/>
+                <ColumnDefinition Width="{Binding DataSourceColumnWidth}"/>
             </Grid.ColumnDefinitions>
 		    <!--Data-->
-		    <views:DataControl Grid.Column="0"/>
-			<GridSplitter Grid.Column="1" Width="25"
+            <views:DataControl Grid.Column="2" BorderBrush="#CCCEDB" BorderThickness="1"/>
+			<GridSplitter Grid.Column="1" Width="10" Background="Transparent"
 			              HorizontalAlignment="Center" VerticalAlignment="Stretch"
-			              themeUtils:GridSplitterUtil.Orientation="Vertical"
-						  Style="{StaticResource {x:Static themes:ResourceKeys.NormalGridSplitterStyleKey}}"
 						  utils:CursorUtil.Source="/XamlViewer;component/Assets/Cursors/Splitter_lr.cur"/>
-		    <Grid Grid.Column="2">
+		    <Grid Grid.Column="0">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="*"/> 

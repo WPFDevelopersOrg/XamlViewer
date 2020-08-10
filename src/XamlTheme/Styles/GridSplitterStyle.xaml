@@ -29,7 +29,7 @@
 
     <Style x:Key="{x:Static themes:ResourceKeys.NormalGridSplitterStyleKey}" 
            TargetType="{x:Type GridSplitter}">
-        <Setter Property="Background" Value="#E8E8EC"/>
+        <Setter Property="Background" Value="#EFEFF2"/>
         <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
         <Setter Property="PreviewStyle" Value="{StaticResource GridSplitterPreviewStyle}"/>
         <Setter Property="Template">

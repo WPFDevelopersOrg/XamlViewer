@@ -13,6 +13,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <ListBox Height="24" AllowDrop="True"
                  ItemsSource="{Binding XamlTabs}"
@@ -66,7 +67,20 @@
                 </controls:DrawingIcon>
             </controls:StatusToggle.UnCheckedContent>
         </controls:StatusToggle>
-        <Path Grid.ColumnSpan="2" Stretch="Fill" Height="2" Stroke="#007ACC" StrokeThickness="2" Data="M0,0 1,0" VerticalAlignment="Bottom"/>
+        <controls:StatusToggle Grid.Column="2" Width="35" ToolTip="Data Source"
+                               IsChecked="{Binding IsOpenDataSource,Mode=TwoWay}">
+            <controls:StatusToggle.CheckedContent>
+                <Path Width="10" Height="10" Stretch="Fill"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                      Data="M546.88 29.312l428.8 199.68c35.2 17.664 46.976 52.864 29.376 82.24-11.776 5.888-23.488 17.664-35.2 23.488L540.928 540.352c-17.6 11.712-46.976 11.712-64.64 0L53.44 334.72c-35.2-11.712-46.976-52.864-29.376-76.352 5.888-11.712 17.664-23.488 29.44-23.488l428.8-205.568c17.6-11.776 41.088-11.776 64.576 0zM505.728 763.52c-11.712 0-17.6 0-23.488-5.824L59.328 552.064C29.952 540.352 18.176 505.088 29.952 475.712c11.776-29.376 46.976-41.088 76.352-29.376l399.424 193.856 399.424-193.856c29.44-11.712 64.64 0 76.416 29.44 11.712 29.312 0 64.576-29.44 76.288L529.28 757.76c-5.824 5.824-11.712 11.712-23.488 5.824z m0 235.008c-11.712 0-17.6 0-23.488-5.888L59.328 787.008c-29.376-11.712-41.152-46.976-29.376-76.352 11.776-29.376 46.976-41.088 76.352-29.376l399.424 193.92 399.424-193.92c29.44-11.712 64.64 0 76.416 29.44 11.712 29.312 0 64.576-29.44 76.288L529.28 992.64c-5.824 5.888-11.712 11.712-23.488 5.888z"/>
+            </controls:StatusToggle.CheckedContent>
+            <controls:StatusToggle.UnCheckedContent>
+                <Path Width="10" Height="10" Stretch="Fill"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:StatusToggle},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                      Data="M546.88 29.312l428.8 199.68c35.2 17.664 46.976 52.864 29.376 82.24-11.776 5.888-23.488 17.664-35.2 23.488L540.928 540.352c-17.6 11.712-46.976 11.712-64.64 0L53.44 334.72c-35.2-11.712-46.976-52.864-29.376-76.352 5.888-11.712 17.664-23.488 29.44-23.488l428.8-205.568c17.6-11.776 41.088-11.776 64.576 0zM505.728 763.52c-11.712 0-17.6 0-23.488-5.824L59.328 552.064C29.952 540.352 18.176 505.088 29.952 475.712c11.776-29.376 46.976-41.088 76.352-29.376l399.424 193.856 399.424-193.856c29.44-11.712 64.64 0 76.416 29.44 11.712 29.312 0 64.576-29.44 76.288L529.28 757.76c-5.824 5.824-11.712 11.712-23.488 5.824z m0 235.008c-11.712 0-17.6 0-23.488-5.888L59.328 787.008c-29.376-11.712-41.152-46.976-29.376-76.352 11.776-29.376 46.976-41.088 76.352-29.376l399.424 193.92 399.424-193.92c29.44-11.712 64.64 0 76.416 29.44 11.712 29.312 0 64.576-29.44 76.288L529.28 992.64c-5.824 5.888-11.712 11.712-23.488 5.888z"/>
+            </controls:StatusToggle.UnCheckedContent>
+        </controls:StatusToggle>
+        <Path Grid.ColumnSpan="3" Stretch="Fill" Height="2" Stroke="#007ACC" StrokeThickness="2" Data="M0,0 1,0" VerticalAlignment="Bottom"/>
         <Popup Placement="Bottom" StaysOpen="False" AllowsTransparency="True"
                IsOpen="{Binding IsOpenActiveFiles,Mode=TwoWay}"
                PlacementTarget="{Binding ElementName=ActiveFilesButton}"
