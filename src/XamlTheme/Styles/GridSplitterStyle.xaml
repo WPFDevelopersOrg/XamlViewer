@@ -17,7 +17,7 @@
         <Border BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 Background="{TemplateBinding Background}">
-            <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="true"
+            <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="true" Orientation="Horizontal"
                         VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Rectangle Width="1" Height="50" Fill="White"/>
                 <Rectangle Width="1" Height="50" Fill="#A0A0A0"/>

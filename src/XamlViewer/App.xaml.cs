@@ -92,6 +92,7 @@ namespace XamlViewer
             ViewModelLocationProvider.Register<MainWindow, MainViewModel>();
             ViewModelLocationProvider.Register<ToolbarControl, ToolbarViewModel>();
             ViewModelLocationProvider.Register<SettingControl, SettingViewModel>();
+            ViewModelLocationProvider.Register<DataControl, DataViewModel>();
             ViewModelLocationProvider.Register<TabsControl, TabsViewModel>();
             ViewModelLocationProvider.Register<WorkControl, WorkViewModel>();
             ViewModelLocationProvider.Register<StatusControl, StatusViewModel>();

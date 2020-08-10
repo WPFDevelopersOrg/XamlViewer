@@ -7,7 +7,9 @@
                      xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore"
                      xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
                      xmlns:prism="http://prismlibrary.com/"
-                     xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme" 
+                     xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+                     xmlns:themeUtils="clr-namespace:XamlTheme.Utils;assembly=XamlTheme"
+                     xmlns:utils="clr-namespace:XamlViewer.Utils"
                      prism:ViewModelLocator.AutoWireViewModel="True"
                      Style="{StaticResource {x:Static themes:ResourceKeys.NormalUserWindowStyleKey}}"
                      Title="{Binding Title}" HideOriginalTitle="True" AllowDrop="True"
@@ -70,19 +72,38 @@
         </Grid>
     </controls:UserWindow.CaptionContent>
     <Grid>
-        <Grid.RowDefinitions>
+	    <Grid.RowDefinitions>
             <RowDefinition Height="{Binding SettingRowHeight}"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/> 
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <!--Config-->
-        <views:SettingControl Height="120" Margin="6,0"/>
-        <!--Tab-->
-        <views:TabsControl Grid.Row="1" Margin="0,6,0,0"/>
-        <!--Work Area-->
-        <Grid Grid.Row="2" prism:RegionManager.RegionName="{x:Static ms:RegionNames.WorkName}"/>
-        <!--Status-->
-        <views:StatusControl Grid.Row="3" Height="25" Background="#007ACC"/>
+	    <!--Setting-->
+	    <views:SettingControl Height="120" Margin="6,0"/>
+		<Grid Grid.Row="1" Margin="0,6,0,0">
+		    <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3*" MinWidth="300"/>
+            </Grid.ColumnDefinitions>
+		    <!--Data-->
+		    <views:DataControl Grid.Column="0"/>
+			<GridSplitter Grid.Column="1" Width="25"
+			              HorizontalAlignment="Center" VerticalAlignment="Stretch"
+			              themeUtils:GridSplitterUtil.Orientation="Vertical"
+						  Style="{StaticResource {x:Static themes:ResourceKeys.NormalGridSplitterStyleKey}}"
+						  utils:CursorUtil.Source="/XamlViewer;component/Assets/Cursors/Splitter_lr.cur"/>
+		    <Grid Grid.Column="2">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/> 
+				</Grid.RowDefinitions>
+				<!--Tab-->
+				<views:TabsControl Grid.Row="0"/>
+				<!--Work Area-->
+				<Grid Grid.Row="1" prism:RegionManager.RegionName="{x:Static ms:RegionNames.WorkName}"/>
+			</Grid>
+		</Grid>
+		<!--Status-->
+	    <views:StatusControl Grid.Row="2" Height="25" Background="#007ACC"/>
     </Grid>
 </controls:UserWindow>

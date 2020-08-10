@@ -21,6 +21,8 @@ namespace XamlViewer.Models
             References = new List<string>();
         }
 
+        public bool EnableDataSource { get; set; } 
+
         public List<string> Files { get; set; } 
         public List<string> References { get; set; }
     }

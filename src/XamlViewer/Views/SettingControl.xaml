@@ -106,6 +106,21 @@
                 </Grid>
 
                 <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*" MinHeight="10"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Content="Data Source"
+                              Style="{StaticResource {x:Static themes:ResourceKeys.NormalCheckBoxStyleKey}}"
+                              IsChecked="{Binding EnableDataSource,Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="2" Text="Data" FontSize="13" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+
+                <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
 		
 		         <Grid MinWidth="200">
                     <Grid.RowDefinitions> 
