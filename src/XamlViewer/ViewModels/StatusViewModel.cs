@@ -38,22 +38,22 @@ namespace XamlViewer.ViewModels
             _eventAggregator.GetEvent<CaretPositionEvent>().Subscribe(OnCaretPosition, ThreadOption.BackgroundThread);
 
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 try
                 {
                     var urlString = @"https://api.github.com/repos/huangjia2107/xamlviewer/releases/latest";
 #if NETFRAMEWORK
-                    var reponseStr = HttpUtil.GetString(urlString).Result;
+                    var responseStr = await HttpUtil.GetString(urlString);
 #else
-                    var reponseStr = HttpUtil.Instance.GetString(urlString).Result;
+                    var responseStr = await HttpUtil.Instance.GetString(urlString);
 #endif
-                    if (!string.IsNullOrEmpty(reponseStr))
-                        ReleaseVersion = JsonUtil.DeserializeObject<ReleaseInfo>(reponseStr);
+                    if (!string.IsNullOrEmpty(responseStr))
+                        ReleaseVersion = JsonUtil.DeserializeObject<ReleaseInfo>(responseStr);
                 }
                 catch(Exception ex) 
                 {
-                    Trace.TraceError(Common.GetExceptionStringFormat(ex));
+                    Trace.TraceError("[ Http GetString ] " + Common.GetExceptionStringFormat(ex));
                 }
             });
         }
@@ -93,7 +93,12 @@ namespace XamlViewer.ViewModels
 
         private void Download()
         {
-            Process.Start(new ProcessStartInfo(@"https://github.com/huangjia2107/XamlViewer/releases"));
+            Process.Start(new ProcessStartInfo("cmd", "/c start https://github.com/huangjia2107/XamlViewer/releases")
+            {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            });
         }
 
         private void OnProcessStatus(ProcessInfo info)

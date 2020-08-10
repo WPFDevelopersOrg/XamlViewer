@@ -34,7 +34,7 @@ namespace XamlUtil.Net
             using (var httpClient = new HttpClient())
 #endif
             {
-                return await httpClient.GetString(urlString).ConfigureAwait(false);
+                return await httpClient.GetString(urlString);
             }
         }
     }
@@ -48,13 +48,7 @@ namespace XamlUtil.Net
             httpClient.DefaultRequestHeaders.Add("accept", "*/*");
             httpClient.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.9 Safari/537.36");
 
-            using (var response = await httpClient.GetAsync(urlString).ConfigureAwait(false))
-            {
-                if (response.IsSuccessStatusCode)
-                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                return null;
-            }
+            return await httpClient.GetStringAsync(urlString);
         }
     }
 }
