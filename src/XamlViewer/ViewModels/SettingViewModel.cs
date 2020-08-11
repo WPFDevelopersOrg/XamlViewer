@@ -143,20 +143,6 @@ namespace XamlViewer.ViewModels
             }
         }
 
-        public bool EnableDataSource
-        {
-            get { return _appData.Config.EnableDataSource; }
-            set
-            {
-                if (_appData.Config.EnableDataSource == value)
-                    return;
-
-                _appData.Config.EnableDataSource = value;
-
-                RaisePropertyChanged();
-            }
-        }
-
         public bool AutoCompile
         {
             get { return _appData.Config.AutoCompile; }

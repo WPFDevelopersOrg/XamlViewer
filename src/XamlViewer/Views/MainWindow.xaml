@@ -83,23 +83,24 @@
 		    <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" MinWidth="300"/>
                 <ColumnDefinition Width="{Binding GridSplitterColumnWidth}"/>
-                <ColumnDefinition Width="{Binding DataSourceColumnWidth}"/>
+                <ColumnDefinition Width="{Binding DataSourceColumnWidth, Mode=TwoWay}" 
+                                  MinWidth="{Binding DataSourceMinColumnWidth}"/>
             </Grid.ColumnDefinitions>
-		    <!--Data-->
-            <views:DataControl Grid.Column="2" BorderBrush="#CCCEDB" BorderThickness="1"/>
-			<GridSplitter Grid.Column="1" Width="10" Background="Transparent"
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--Tab-->
+                <views:TabsControl Grid.Row="0"/>
+                <!--Work Area-->
+                <Grid Grid.Row="1" prism:RegionManager.RegionName="{x:Static ms:RegionNames.WorkName}"/>
+            </Grid>
+            <GridSplitter Grid.Column="1" Width="10" Background="Transparent"
 			              HorizontalAlignment="Center" VerticalAlignment="Stretch"
 						  utils:CursorUtil.Source="/XamlViewer;component/Assets/Cursors/Splitter_lr.cur"/>
-		    <Grid Grid.Column="0">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="*"/> 
-				</Grid.RowDefinitions>
-				<!--Tab-->
-				<views:TabsControl Grid.Row="0"/>
-				<!--Work Area-->
-				<Grid Grid.Row="1" prism:RegionManager.RegionName="{x:Static ms:RegionNames.WorkName}"/>
-			</Grid>
+            <!--Data-->
+            <views:DataControl Grid.Column="2" Margin="0,0,5,5"/>
 		</Grid>
 		<!--Status-->
 	    <views:StatusControl Grid.Row="2" Height="25" Background="#007ACC"/>

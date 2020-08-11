@@ -68,17 +68,13 @@ namespace XamlViewer.ViewModels
             set { SetProperty(ref _isOpenActiveFiles, value); }
         }
 
+        private bool _isOpenDataSource;
         public bool IsOpenDataSource
         {
-            get { return _appData.Config.EnableDataSource; }
+            get { return _isOpenDataSource; }
             set 
             {
-                if (_appData.Config.EnableDataSource == value)
-                    return;
-
-                _appData.Config.EnableDataSource = value;
-                RaisePropertyChanged();
-
+                SetProperty(ref _isOpenDataSource, value);
                 _eventAggregator.GetEvent<OpenDataSourceEvent>().Publish(value);
             }
         }

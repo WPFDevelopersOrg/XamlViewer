@@ -18,10 +18,12 @@ namespace XamlViewer.ViewModels
         private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
 
+        private GridLength _lastDataSourceColumnWidth = new GridLength(1, GridUnitType.Star);
+
         public DelegateCommand ExpandOrCollapseCommand { get; private set; }
         public DelegateCommand ActivatedCommand { get; private set; }
         public DelegateCommand<DragEventArgs> DropCommand { get; private set; }
-        public DelegateCommand<CancelEventArgs> ClosingCommand { get; private set; } 
+        public DelegateCommand<CancelEventArgs> ClosingCommand { get; private set; }
 
         public MainViewModel(IContainerExtension container, IApplicationCommands appCommands)
         {
@@ -46,7 +48,7 @@ namespace XamlViewer.ViewModels
             ExpandOrCollapseCommand = new DelegateCommand(ExpandOrCollapse);
             ActivatedCommand = new DelegateCommand(Activated);
             DropCommand = new DelegateCommand<DragEventArgs>(Drop);
-            ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing); 
+            ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing);
         }
 
         #endregion
@@ -57,13 +59,20 @@ namespace XamlViewer.ViewModels
         {
             if (isOpen)
             {
+                DataSourceMinColumnWidth = 50d;
+                DataSourceColumnWidth = _lastDataSourceColumnWidth;
+
                 GridSplitterColumnWidth = GridLength.Auto;
-                DataSourceColumnWidth = new GridLength(1, GridUnitType.Star);
             }
             else
             {
-                GridSplitterColumnWidth = new GridLength(0);
+                //backup
+                _lastDataSourceColumnWidth = DataSourceColumnWidth;
+
+                DataSourceMinColumnWidth = 0d;
                 DataSourceColumnWidth = new GridLength(0);
+
+                GridSplitterColumnWidth = new GridLength(0);
             }
         }
 
@@ -101,7 +110,7 @@ namespace XamlViewer.ViewModels
             await _appData.DealExistedFileAction?.Invoke();
 
             FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _appData.Config);
-        } 
+        }
 
         #endregion
 
@@ -145,6 +154,13 @@ namespace XamlViewer.ViewModels
         {
             get { return _dataSourceColumnWidth; }
             set { SetProperty(ref _dataSourceColumnWidth, value); }
+        }
+
+        private double _dataSourceMinColumnWidth;
+        public double DataSourceMinColumnWidth
+        {
+            get { return _dataSourceMinColumnWidth; }
+            set { SetProperty(ref _dataSourceMinColumnWidth, value); }
         }
 
         #region Func
