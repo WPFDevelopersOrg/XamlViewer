@@ -391,7 +391,7 @@ namespace XamlTheme.Controls
                         var parentElement = GetParentElement(offset - 2, ref parentOffset);
 
                         var elements = GenerateCompletionData(parentElement, null, null);
-                        if (elements.Count > 0)
+                        if (elements != null && elements.Count > 0)
                         {
                             elements.Insert(0, @"!--");
                             elements.Insert(1, @"![CDATA[");

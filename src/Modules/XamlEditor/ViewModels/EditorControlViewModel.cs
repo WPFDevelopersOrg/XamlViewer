@@ -243,18 +243,25 @@ namespace XamlEditor.ViewModels
                         if (_xsdParser == null || !CodeCompletion)
                             return null;
 
-                        if (!string.IsNullOrWhiteSpace(parentElement))
-                            return _xsdParser.GetChildElements(parentElement);
+						try
+						{
+							if (!string.IsNullOrWhiteSpace(parentElement))
+								return _xsdParser.GetChildElements(parentElement);
 
-                        if (!string.IsNullOrWhiteSpace(element))
-                        {
-                            if (!string.IsNullOrWhiteSpace(attribute))
-                                return _xsdParser.GetValues(element, attribute);
+							if (!string.IsNullOrWhiteSpace(element))
+							{
+								if (!string.IsNullOrWhiteSpace(attribute))
+									return _xsdParser.GetValues(element, attribute);
 
-                            return _xsdParser.GetAttributes(element);
-                        }
+								return _xsdParser.GetAttributes(element);
+							}
 
-                        return _xsdParser.GetElements();
+							return _xsdParser.GetElements();	
+						}
+						catch(Exception ex)
+						{
+							return null;
+						}
                     };
 
                 return _generateCompletionDataFunc;
