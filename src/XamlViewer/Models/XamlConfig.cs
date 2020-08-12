@@ -21,6 +21,10 @@ namespace XamlViewer.Models
             References = new List<string>();
         }
 
+        public bool IsOpenDataSource { get; set; }
+        public bool IsSyncDataSource { get; set; }
+        public string DataSourceJsonString { get; set; }
+
         public List<string> Files { get; set; } 
         public List<string> References { get; set; }
     }

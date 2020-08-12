@@ -34,6 +34,7 @@ namespace XamlViewer.ViewModels
 
             InitEvent();
             InitCommand();
+            InitStatus();
         }
 
         #region Init
@@ -49,6 +50,12 @@ namespace XamlViewer.ViewModels
             ActivatedCommand = new DelegateCommand(Activated);
             DropCommand = new DelegateCommand<DragEventArgs>(Drop);
             ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing);
+        }
+
+        private void InitStatus()
+        {
+            if(_appData.Config.IsOpenDataSource)
+                OnOpenDataSource(true);
         }
 
         #endregion

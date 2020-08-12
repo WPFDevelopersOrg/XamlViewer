@@ -15,6 +15,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using SWF = System.Windows.Forms;
+using XamlUtil.Common;
 
 namespace XamlDesigner.ViewModels
 {
@@ -22,9 +23,11 @@ namespace XamlDesigner.ViewModels
     {
         private string _fileGuid = null;
         private bool _canSnapshot = false;
+        private Window _window = null;
 
         private IEventAggregator _eventAggregator = null;
         private RefreshDesignerEvent _refreshDesignerEvent = null;
+        private SyncDataSourceEvent _syncDataSourceEvent = null;
 
         public DelegateCommand<RoutedEventArgs> LoadedCommand { get; private set; }
         public DelegateCommand SnapshotCommand { get; private set; }
@@ -35,6 +38,9 @@ namespace XamlDesigner.ViewModels
 
             _refreshDesignerEvent = _eventAggregator.GetEvent<RefreshDesignerEvent>();
             _refreshDesignerEvent.Subscribe(OnRefreshDesigner, ThreadOption.UIThread, false, tab => tab.Guid == _fileGuid);
+
+            _syncDataSourceEvent = _eventAggregator.GetEvent<SyncDataSourceEvent>();
+            _syncDataSourceEvent.Subscribe(OnSyncDataSource, ThreadOption.UIThread, false);
 
             LoadedCommand = new DelegateCommand<RoutedEventArgs>(OnLoaded);
             SnapshotCommand = new DelegateCommand(OnSnapshot, CanSnapshot);
@@ -145,19 +151,27 @@ namespace XamlDesigner.ViewModels
                 RefreshSnapshotStatus(false);
 
                 var obj = XamlReader.Parse(tabInfo.FileContent);
-                var window = obj as Window;
-                if (window != null)
+                var backupDataSource = (_window?.DataContext) ?? (Element?.DataContext);
+
+                _window = obj as Window;
+                if (_window != null)
                 {
                     ShowLocalText("Window", 15);
 
-                    window.Owner = Application.Current.MainWindow;
-                    window.Show();
+                    _window.DataContext = backupDataSource;
+                    _window.Owner = Application.Current.MainWindow;
+                    _window.Show();
                 }
                 else
                 {
+                    _window = null;
                     Element = obj as FrameworkElement;
+                    Element.DataContext = backupDataSource;
+
                     RefreshSnapshotStatus(Element != null);
                 }
+
+                backupDataSource = null;
             }
             catch (Exception ex)
             {
@@ -167,6 +181,22 @@ namespace XamlDesigner.ViewModels
             {
                 _eventAggregator.GetEvent<ProcessStatusEvent>().Publish(new ProcessInfo { status = ProcessStatus.FinishCompile, Guid = _fileGuid });
             }
+        }
+
+        private void OnSyncDataSource(string jsonString)
+        {
+            if (IsReadOnly || (Element == null && _window == null))
+                return;
+
+            var dataSource = string.IsNullOrWhiteSpace(jsonString) ? null : JsonUtil.DeserializeObject(jsonString);
+            if (_window != null)
+            {
+                _window.DataContext = dataSource;
+                return;
+            }
+
+            if (Element != null)
+                Element.DataContext = dataSource;
         }
 
         private void ShowLocalText(string text, double fontSize = 14d)
@@ -191,7 +221,11 @@ namespace XamlDesigner.ViewModels
 
         public void Dispose()
         {
+            Element = null;
+
+            _window = null;
             _refreshDesignerEvent.Unsubscribe(OnRefreshDesigner);
+            _syncDataSourceEvent.Unsubscribe(OnSyncDataSource);
         }
     }
 }

@@ -25,7 +25,12 @@ namespace XamlUtil.Net
             get { return _instance; }
         }
 
-        public async Task<string> GetString(string urlString)
+        public static async Task<string> GetString(string urlString)
+        {
+            return await _instance.GetStringInternal(urlString);
+        }
+
+        private async Task<string> GetStringInternal(string urlString)
         {
             using (var httpClient = _httpClientFactory.CreateClient())
 #else
