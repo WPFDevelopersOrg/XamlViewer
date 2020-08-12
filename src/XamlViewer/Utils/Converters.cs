@@ -31,7 +31,9 @@ namespace XamlViewer.Utils
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var str = (string)value;
-            return string.IsNullOrWhiteSpace(str) ? Visibility.Collapsed : Visibility.Visible;
+            var defaultVisibility = (Visibility)(parameter ?? Visibility.Collapsed);
+            
+            return string.IsNullOrWhiteSpace(str) ? defaultVisibility : (defaultVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
