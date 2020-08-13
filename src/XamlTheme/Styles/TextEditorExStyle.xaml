@@ -14,10 +14,10 @@
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             BorderBrush="{TemplateBinding BorderBrush}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <avalonedit:TextEditor x:Name="PART_TextEditor" Background="Transparent" 
+                        <avalonedit:TextEditor x:Name="PART_TextEditor" Background="Transparent"
                                                HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                                VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" 
-                                               SyntaxHighlighting="XML"
+                                               SyntaxHighlighting="{TemplateBinding SyntaxHighlighting}"
                                                LineNumbersForeground="#2B91AF"
                                                IsReadOnly="{TemplateBinding IsReadOnly}"
                                                IsModified="{Binding IsModified,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"

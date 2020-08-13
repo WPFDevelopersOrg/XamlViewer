@@ -11,6 +11,8 @@ using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Search;
+using ICSharpCode.AvalonEdit.Highlighting;
+using System.ComponentModel;
 
 namespace XamlTheme.Controls
 {
@@ -22,8 +24,10 @@ namespace XamlTheme.Controls
         private const string TextEditorTemplateName = "PART_TextEditor";
 
         private TextEditor _partTextEditor = null;
+
         private FoldingManager _foldingManager = null;
         private XmlFoldingStrategy _foldingStrategy = null;
+
         private CompletionWindow _completionWindow = null;
         private SearchPanel _searchPanel = null;
 
@@ -91,6 +95,53 @@ namespace XamlTheme.Controls
         #endregion
 
         #region Properties
+
+        public static readonly DependencyProperty SyntaxHighlightingProperty = DependencyProperty.Register("SyntaxHighlighting", typeof(IHighlightingDefinition), _typeofSelf);
+        [TypeConverter(typeof(HighlightingDefinitionTypeConverter))]
+        public IHighlightingDefinition SyntaxHighlighting
+        {
+            get { return (IHighlightingDefinition)GetValue(SyntaxHighlightingProperty); }
+            set { SetValue(SyntaxHighlightingProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowSearchProperty = DependencyProperty.Register("AllowSearch", typeof(bool), _typeofSelf, new PropertyMetadata(OnAllowSearchPropertyChanged));
+        public bool AllowSearch
+        {
+            get { return (bool)GetValue(AllowSearchProperty); }
+            set { SetValue(AllowSearchProperty, value); }
+        }
+
+        private static void OnAllowSearchPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var ctrl = d as TextEditorEx;
+            var allowSearch = (bool)e.NewValue;
+
+            if (allowSearch)
+            {
+                ctrl.InstallSearchPanel();
+                ctrl.InitSearchPanel();
+            }
+            else
+                ctrl.UninstallSearchPanel();
+        }
+
+        public static readonly DependencyProperty AllowFoldingProperty = DependencyProperty.Register("AllowFolding", typeof(bool), _typeofSelf, new PropertyMetadata(true, OnAllowFoldingPropertyChanged));
+        public bool AllowFolding
+        {
+            get { return (bool)GetValue(AllowFoldingProperty); }
+            set { SetValue(AllowFoldingProperty, value); }
+        }
+
+        private static void OnAllowFoldingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var ctrl = d as TextEditorEx;
+            var allowFolding = (bool)e.NewValue;
+
+            if (allowFolding)
+                ctrl.InstallFolding();
+            else
+                ctrl.UninstallFolding();
+        }
 
         public static readonly DependencyProperty LinePositionProperty = DependencyProperty.Register("LinePosition", typeof(int), _typeofSelf, new PropertyMetadata(OnLinePositionPropertyChanged));
         public int LinePosition
@@ -287,18 +338,11 @@ namespace XamlTheme.Controls
                 _partTextEditor.TextArea.SelectionBorder = null;
                 _partTextEditor.TextArea.SelectionForeground = null;
 
-                _searchPanel = SearchPanel.Install(_partTextEditor.TextArea);
+                if (AllowSearch)
+                    InstallSearchPanel();
             }
 
-            if (_searchPanel != null)
-            {
-                IsMatchCase = _searchPanel.MatchCase;
-                IsWholeWords = _searchPanel.WholeWords;
-                UseRegex = _searchPanel.UseRegex;
-
-                _searchPanel.MarkerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F6B94D"));
-                _searchPanel.SearchOptionsChanged += _searchPanel_SearchOptionsChanged;
-            }
+            InitSearchPanel();
         }
 
         #endregion
@@ -357,7 +401,7 @@ namespace XamlTheme.Controls
             {
                 case ".": //get attributes
                     {
-                        if(!codeCompletion)
+                        if (!codeCompletion)
                             break;
 
                         var element = GetElementInFrontOfSymbol(offset - 1);
@@ -450,6 +494,9 @@ namespace XamlTheme.Controls
 
                 case ">":  // auto add </XXX>
                     {
+                        if (!codeCompletion)
+                            break;
+
                         if (FindPreviousNonSpaceChars(offset - 1, 2) == "/>")
                             break;
 
@@ -480,7 +527,12 @@ namespace XamlTheme.Controls
                     }
 
                 case "\n":  // auto align or insert one space line
-                    DealBreak();
+                    {
+                        if (!codeCompletion)
+                            break;
+
+                        DealBreak();
+                    }
                     break;
             }
         }
@@ -503,6 +555,9 @@ namespace XamlTheme.Controls
 
         private void CompletionList_InsertionRequested(object sender, EventArgs e)
         {
+            if (!IsCodeCompletion)
+                return;
+
             var offset = _partTextEditor.TextArea.Caret.Offset;
 
             if (FindPreviousNonSpaceChars(offset - 1, 3) == "!--")
@@ -864,7 +919,36 @@ namespace XamlTheme.Controls
 
             _completionWindow?.Close();
 
+            UninstallFolding();
+            UninstallSearchPanel();
             UnsubscribeEvents();
+        }
+
+        private void InstallSearchPanel()
+        {
+            if (_partTextEditor == null || _searchPanel != null)
+                return;
+
+            _searchPanel = SearchPanel.Install(_partTextEditor.TextArea);
+        }
+
+        private void UninstallSearchPanel()
+        {
+            _searchPanel?.Uninstall();
+            _searchPanel = null;
+        }
+
+        private void InitSearchPanel()
+        {
+            if (_searchPanel != null)
+            {
+                IsMatchCase = _searchPanel.MatchCase;
+                IsWholeWords = _searchPanel.WholeWords;
+                UseRegex = _searchPanel.UseRegex;
+
+                _searchPanel.MarkerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F6B94D"));
+                _searchPanel.SearchOptionsChanged += _searchPanel_SearchOptionsChanged;
+            }
         }
 
         private void UnsubscribeEvents()
@@ -933,13 +1017,29 @@ namespace XamlTheme.Controls
 
         private void RefreshFoldings()
         {
-            if (_partTextEditor == null)
+            if (_partTextEditor == null || !AllowFolding)
                 return;
 
-            if (_foldingManager == null)
-                _foldingManager = FoldingManager.Install(_partTextEditor.TextArea);
+            InstallFolding();
 
             _foldingStrategy.UpdateFoldings(_foldingManager, _partTextEditor.Document);
+        }
+
+        private void InstallFolding()
+        {
+            if (_foldingManager != null || _partTextEditor == null)
+                return;
+
+            _foldingManager = FoldingManager.Install(_partTextEditor.TextArea);
+        }
+
+        private void UninstallFolding()
+        {
+            if (_foldingManager != null)
+            {
+                FoldingManager.Uninstall(_foldingManager);
+                _foldingManager = null;
+            }
         }
 
         #endregion

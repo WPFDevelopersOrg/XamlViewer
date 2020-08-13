@@ -14,6 +14,8 @@
     <Grid Background="White">
         <controls:TextEditorEx x:Name="XamlTextEditorEx"
                                Margin="6,0,0,0"
+                               AllowSearch="true"
+                               SyntaxHighlighting="XML"
                                IsCodeCompletion="{Binding CodeCompletion}"
                                IsReadOnly="{Binding IsReadOnly}"
                                LineNumber="{Binding CaretLine, Mode=TwoWay}"
