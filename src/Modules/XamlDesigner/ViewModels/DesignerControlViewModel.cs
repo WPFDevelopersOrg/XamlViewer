@@ -24,6 +24,7 @@ namespace XamlDesigner.ViewModels
         private string _fileGuid = null;
         private bool _canSnapshot = false;
         private Window _window = null;
+		private object _dataSource = null;
 
         private IEventAggregator _eventAggregator = null;
         private RefreshDesignerEvent _refreshDesignerEvent = null;
@@ -151,14 +152,13 @@ namespace XamlDesigner.ViewModels
                 RefreshSnapshotStatus(false);
 
                 var obj = XamlReader.Parse(tabInfo.FileContent);
-                var backupDataSource = (_window?.DataContext) ?? (Element?.DataContext);
-
                 _window = obj as Window;
+				
                 if (_window != null)
                 {
                     ShowLocalText("Window", 15);
 
-                    _window.DataContext = backupDataSource;
+                    _window.DataContext = _dataSource;
                     _window.Owner = Application.Current.MainWindow;
                     _window.Show();
                 }
@@ -166,12 +166,10 @@ namespace XamlDesigner.ViewModels
                 {
                     _window = null;
                     Element = obj as FrameworkElement;
-                    Element.DataContext = backupDataSource;
+                    Element.DataContext = _dataSource;
 
                     RefreshSnapshotStatus(Element != null);
                 }
-
-                backupDataSource = null;
             }
             catch (Exception ex)
             {
@@ -185,18 +183,22 @@ namespace XamlDesigner.ViewModels
 
         private void OnSyncDataSource(string jsonString)
         {
-            if (IsReadOnly || (Element == null && _window == null))
+			if(IsReadOnly)
+				return;
+			
+			_dataSource = string.IsNullOrWhiteSpace(jsonString) ? null : JsonUtil.DeserializeObject(jsonString);
+			
+            if (Element == null && _window == null)
                 return;
 
-            var dataSource = string.IsNullOrWhiteSpace(jsonString) ? null : JsonUtil.DeserializeObject(jsonString);
             if (_window != null)
             {
-                _window.DataContext = dataSource;
+                _window.DataContext = _dataSource;
                 return;
             }
 
             if (Element != null)
-                Element.DataContext = dataSource;
+                Element.DataContext = _dataSource;
         }
 
         private void ShowLocalText(string text, double fontSize = 14d)
@@ -221,11 +223,13 @@ namespace XamlDesigner.ViewModels
 
         public void Dispose()
         {
-            Element = null;
-
-            _window = null;
-            _refreshDesignerEvent.Unsubscribe(OnRefreshDesigner);
+			_refreshDesignerEvent.Unsubscribe(OnRefreshDesigner);
             _syncDataSourceEvent.Unsubscribe(OnSyncDataSource);
+			
+			_dataSource = null;
+			
+            Element = null;
+            _window = null;
         }
     }
 }

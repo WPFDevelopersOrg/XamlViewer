@@ -166,6 +166,8 @@ namespace XamlViewer.ViewModels
 
             XamlTabs.Insert(0, newTab);
             newTab.IsSelected = true;
+			
+			SyncDataSource();
         }
 
         private bool CanOpen()
@@ -513,6 +515,12 @@ namespace XamlViewer.ViewModels
 
             _appData.Config.Files.RemoveAll(f => f == tab.FileName);
         }
+
+        private void SyncDataSource()
+		{
+            if(_appData.Config.IsSyncDataSource)
+			    _eventAggregator?.GetEvent<SyncDataSourceEvent>().Publish(_appData.Config.DataSourceJsonString?.Trim());
+		}
 
         #endregion
     }

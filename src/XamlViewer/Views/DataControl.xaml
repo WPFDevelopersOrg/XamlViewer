@@ -17,7 +17,7 @@
 		<Grid Grid.Row="0" Background="#FDFDFD">
 			<TextBlock Text="Rest API" Foreground="DarkGray" IsHitTestVisible="false" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Center"
 					   Visibility="{Binding Text,ElementName=RestApiTextBox,Converter={StaticResource stringToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}"/>
-		    <TextBox x:Name="RestApiTextBox" TextWrapping="Wrap" BorderBrush="DarkGray" Padding="0,3" AcceptsReturn="true" AcceptsTab="true"
+		    <TextBox x:Name="RestApiTextBox" TextWrapping="Wrap" BorderBrush="DarkGray" Padding="0,3" AcceptsReturn="true"
 		             Style="{StaticResource {x:Static themes:ResourceKeys.NormalTextBoxStyleKey}}"
                      Text="{Binding RestApi,Mode=TwoWay}"/>
 		</Grid>
@@ -32,11 +32,23 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <ToggleButton Grid.Column="0" Width="30"
+            <ToggleButton Grid.Column="0" Width="30" ToolTip="Bind"
                           IsChecked="{Binding IsSyncDataSource,Mode=TwoWay}"
                           Style="{StaticResource {x:Static themes:ResourceKeys.NormalToggleButtonStyleKey}}">
+			    <!--
                 <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}"
-                      Data="M1,9 L1,10 5,10 5,9 z M0,8 L11,8 11,11 0,11 z M1,5 L1,6 5,6 5,5 z M0,4 L11,4 11,7 0,7 z M1,1 L1,2 5,2 5,1 z M0,0 L11,0 11,3 0,3 z"/>
+                      Data="M0,9 H2V8 H1V1 H7V8 H5V9 H8V0 H0z M9,2 H11V11 H3V2 H6V3 H4V10 H10V3 H9z"/>
+			    -->
+				<controls:DrawingIcon>
+                    <controls:DrawingIcon.Drawing>
+                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                         Geometry="M0,3 H1V2 H8V0 H9V1 H10V2 H11V3 H10V4 H9V5 H8V3 H2V4 H1V5 H0z M0,8 H1V7 H2V6 H3V8 H9V7 H10V6 H11V8 H10V9 H3V11 H2V10 H1V9 H0z" />
+                    </controls:DrawingIcon.Drawing>
+                    <controls:DrawingIcon.HDPIDrawing>
+                        <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
+                                         Geometry="M2.984375,2 L8,2 8,0 11,2.5 8,5 8,3 3.0104167,3 C1.625,3.09375 0.984375,4.125 1.015625,5.34375 L0,5.34375 C0.13827006,3.648764 0.609375,2.328125 2.984375,2 z M0,8.5 L3,6 3,8 8.046875,8 C8.46875,7.984375 9.890625,8 10,5.609375 10,5.59375 11,5.59375 11,5.609375 10.986784,6.6750401 10.729167,9 8.0572917,9 L3,9 3,11 z" />
+                    </controls:DrawingIcon.HDPIDrawing>
+                </controls:DrawingIcon>
             </ToggleButton>
             <Button Grid.Column="3" Width="30" ToolTip="Fetch"
                     Command="{Binding RequestCommand}"
@@ -45,11 +57,11 @@
                 <controls:DrawingIcon>
                     <controls:DrawingIcon.Drawing>
                         <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button},FallbackValue={x:Static swm:Brushes.Transparent}}"
-                                         Geometry="M0,4 H5 V3 H0 M1,3 H4 V2 H1 M2,2 H3 V1 H2 M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 H11 V8 H6 M7,8 H10 V9 H7 M8,9 H9 V10 H8 z" />
+                                         Geometry="M0,2 H1V10 H10V2 H11V11 H0z M5,0 H6V5 H8V6 H7V7 H6V8 H5V7 H4V6 H3V5 H5z" />
                     </controls:DrawingIcon.Drawing>
                     <controls:DrawingIcon.HDPIDrawing>
                         <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button},FallbackValue={x:Static swm:Brushes.Transparent}}"
-                                         Geometry="M0,4 L2.5,1 5,4z M2,4 H3 V11 H2 M8,0 H9 V7 H8 M6,7 L8.5,10 11,7z" />
+                                         Geometry="M0,2 L1,2 1,10 10,10 10,2 11,2 11,11 0,11 z M5,0 L6,0 6,5 8,5 5.5,8 3,5 5,5 z" />
                     </controls:DrawingIcon.HDPIDrawing>
                 </controls:DrawingIcon>
             </Button>
@@ -58,7 +70,7 @@
         <Grid Grid.Row="2" Background="#FDFDFD">
 			<TextBlock Text="Json Object" Foreground="DarkGray" IsHitTestVisible="false" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Center"
 					   Visibility="{Binding Text,ElementName=JsonObjTextBox,Converter={StaticResource stringToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}"/>
-		    <TextBox x:Name="JsonObjTextBox" TextWrapping="Wrap" BorderBrush="DarkGray" Padding="0,3" AcceptsReturn="true" AcceptsTab="true"
+		    <TextBox x:Name="JsonObjTextBox" TextWrapping="Wrap" BorderBrush="DarkGray" Padding="0,3" AcceptsReturn="true"
 		             Style="{StaticResource {x:Static themes:ResourceKeys.NormalTextBoxStyleKey}}"
                      Text="{Binding JsonString,Mode=TwoWay,UpdateSourceTrigger=LostFocus}"/>
 		</Grid>

@@ -66,13 +66,17 @@ namespace XamlViewer.ViewModels
 
         #endregion
 
-        private bool _isSyncDataSource;
         public bool IsSyncDataSource
         {
-            get { return _isSyncDataSource; }
+            get { return _appData.Config.IsSyncDataSource; }
             set
             {
-                SetProperty(ref _isSyncDataSource, value);
+                if(_appData.Config.IsSyncDataSource == value)
+                    return;
+            
+                _appData.Config.IsSyncDataSource = value;
+                
+                RaisePropertyChanged();
                 UpdateDataSource(value);
             }
         }

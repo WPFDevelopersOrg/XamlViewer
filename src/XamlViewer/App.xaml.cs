@@ -166,7 +166,12 @@ namespace XamlViewer
             base.OnInitialized();
            
             var eventAggregator = Container.Resolve<IEventAggregator>();
+			var appData = Container.Resolve<AppData>();
+			
             eventAggregator?.GetEvent<InitWorkAreaEvent>().Publish();
+			
+			if(appData.Config.IsSyncDataSource)
+			    eventAggregator?.GetEvent<SyncDataSourceEvent>().Publish(appData.Config.DataSourceJsonString?.Trim());
         }
     }
 }
