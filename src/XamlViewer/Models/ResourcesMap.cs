@@ -24,7 +24,8 @@ namespace XamlViewer.Models
             [0] = InternalConstStrings.StyleExampleFileName,
             [1] = InternalConstStrings.WindowExampleFileName,
             [2] = InternalConstStrings.AnimationExampleFileName,
-            [3] = InternalConstStrings.CustomControlExampleFileName,
+            [3] = InternalConstStrings.DataSourceExampleFileName,
+            [4] = InternalConstStrings.CustomControlExampleFileName,
         };
 
         public static Dictionary<string, string> NameToContentKeyDic = new Dictionary<string, string>
@@ -33,6 +34,7 @@ namespace XamlViewer.Models
             [InternalConstStrings.StyleExampleFileName] = InternalConstStrings.StyleExampleFileContentKey,
             [InternalConstStrings.WindowExampleFileName] = InternalConstStrings.WindowExampleFileContentKey,
             [InternalConstStrings.AnimationExampleFileName] = InternalConstStrings.AnimationExampleFileContentKey,
+            [InternalConstStrings.DataSourceExampleFileName] = InternalConstStrings.DataSourceExampleFileContentKey,
             [InternalConstStrings.CustomControlExampleFileName] = InternalConstStrings.CustomControlExampleFileContentKey,
         };
     }

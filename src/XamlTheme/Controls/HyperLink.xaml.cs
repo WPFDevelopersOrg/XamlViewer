@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input; 
+using System.ComponentModel;
 
 namespace XamlTheme.Controls
 {
@@ -18,6 +19,7 @@ namespace XamlTheme.Controls
 
         public static readonly DependencyProperty NavigateUriProperty =
             DependencyProperty.Register("NavigateUri", typeof(Uri), typeof(Hyperlink), new PropertyMetadata(null, OnNavigateUriPropertyChanged));
+        [TypeConverter(typeof(UriTypeConverter))]
         public Uri NavigateUri
         {
             get { return (Uri)GetValue(NavigateUriProperty); }

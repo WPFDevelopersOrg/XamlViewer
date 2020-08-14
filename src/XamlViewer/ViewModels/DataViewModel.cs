@@ -40,7 +40,6 @@ namespace XamlViewer.ViewModels
 
             InitEvent();
             InitCommand();
-            InitStatus();
         }
 
         #region Init
@@ -57,12 +56,6 @@ namespace XamlViewer.ViewModels
 			
 			ClearCommand = new DelegateCommand(Clear);
             RequestCommand = new DelegateCommand(Request);
-        }
-
-        private void InitStatus()
-        { 
-            if (IsSyncDataSource)
-                UpdateDataSource(true);
         }
 
         #endregion
@@ -89,6 +82,11 @@ namespace XamlViewer.ViewModels
 				_textEditor.LoadSyntaxHighlighting(AppDomain.CurrentDomain.BaseDirectory + "Assets\\Json.xshd");
 				_textEditor.Text = 	JsonString;
 			}
+
+            UpdateByJsonString();
+            
+            if (IsSyncDataSource)
+                UpdateDataSource(true);
         }
 
         private void DelayArrived()

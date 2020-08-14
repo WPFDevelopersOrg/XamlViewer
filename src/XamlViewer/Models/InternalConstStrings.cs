@@ -27,6 +27,10 @@ namespace XamlViewer.Models
         public static string AnimationExampleFileName { get { return "AnimationExample.xaml"; } }
         public static string AnimationExampleFileContentKey { get { return "AnimationExampleFileContentKey"; } }
 
+        //data source example
+        public static string DataSourceExampleFileName { get { return "DataSourceExample.xaml"; } }
+        public static string DataSourceExampleFileContentKey { get { return "DataSourceExampleFileContentKey"; } }
+
         //custom control example
         public static string CustomControlExampleFileName { get { return "CustomControlExample.xaml"; } }
         public static string CustomControlExampleFileContentKey { get { return "CustomControlExampleFileContentKey"; } }

@@ -183,9 +183,6 @@ namespace XamlDesigner.ViewModels
 
         private void OnSyncDataSource(string jsonString)
         {
-            if(IsReadOnly)
-                return;
-            
 			try
 			{
                 _dataSource = string.IsNullOrWhiteSpace(jsonString) ? null : JsonUtil.DeserializeObject(jsonString);

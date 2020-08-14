@@ -45,6 +45,24 @@ namespace XamlTheme.Utils
         }
     }
 
+    public class NullToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+			var result = (Visibility)(parameter ?? Visibility.Visible);
+			
+            if(value == null || value == DependencyProperty.UnsetValue)
+				return result;
+			 
+            return result == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+	
     public class DoubleToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
