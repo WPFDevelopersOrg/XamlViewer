@@ -40,9 +40,11 @@ xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 ![DataSource](images/DataSource_Array.png)
 ``` xml
 <ItemsControl ItemsSource="{Binding .}">
-    <ItemsControl.DataTemplate>
-        <TextBlock Text="{Binding tag_name}"/>
-    </ItemsControl.DataTemplate>
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+            <TextBlock Text="{Binding tag_name}"/>
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
 </ItemsControl>
 ```
 ## Third-Party Notices
