@@ -28,7 +28,23 @@ _Notice：Only local doc files could be saved when closing the software. Please 
 ``` csharp
 xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 ```
+## Data Source
+### 1. Property
 
+![DataSource](images/DataSource.png)
+``` csharp
+<TextBlock Text="{Binding owner.login}"/>
+```
+### 2. Array
+
+![DataSource](images/DataSource_Array.png)
+``` csharp
+<ItemsControl ItemsSource="{Binding .}">
+    <ItemsControl.DataTemplate>
+        <TextBlock Text="{Binding tag_name}"/>
+    </ItemsControl.DataTemplate>
+</ItemsControl>
+```
 ## Third-Party Notices
 Library|Version|License
 --|:--:|--:
