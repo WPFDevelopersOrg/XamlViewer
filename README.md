@@ -29,16 +29,16 @@ _Notice：Only local doc files could be saved when closing the software. Please 
 xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 ```
 ## Data Source
-### 1. Property
+### 1. Object
 
 ![DataSource](images/DataSource.png)
-``` csharp
+``` xml
 <TextBlock Text="{Binding owner.login}"/>
 ```
 ### 2. Array
 
 ![DataSource](images/DataSource_Array.png)
-``` csharp
+``` xml
 <ItemsControl ItemsSource="{Binding .}">
     <ItemsControl.DataTemplate>
         <TextBlock Text="{Binding tag_name}"/>
