@@ -9,27 +9,27 @@
       xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
       xmlns:utils="clr-namespace:XamlTheme.Utils;assembly=XamlTheme"
       xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
-	  Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+      Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
       Background="#282C34" 
       TextBlock.Foreground="#CCCCCC" 
-      TextBlock.FontFamily="YaHei Consolas HyBrid"> 
-    
+      TextBlock.FontFamily="YaHei Consolas HyBrid,Consolas"> 
+      
     <!--Welcome-->
-    <mwt:SystemDropShadowChrome HorizontalAlignment="Center" VerticalAlignment="Center">
-        <mwt:SystemDropShadowChrome.Visibility>
-            <Binding Path="DataContext" ElementName="ReleaseItemsControl">
-                <Binding.Converter>
-                    <utils:NullToVisibilityConverter/>
-                </Binding.Converter>
-            </Binding>
-        </mwt:SystemDropShadowChrome.Visibility>
+    <mwt:SystemDropShadowChrome HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Visibility="{Binding DataContext,ElementName=ReleaseItemsControl,Converter={StaticResource nullToVisibilityConverter}}">
         <Border Background="#21252B" Padding="30" CornerRadius="5">
             <StackPanel TextBlock.FontSize="14">
                 <TextBlock Text="Welcome" HorizontalAlignment="Center" FontSize="20"/>
                 <TextBlock Margin="0,20,0,0" Text=">  Open [ "><Run Foreground="#E37A39">Data Source</Run> ] panel;</TextBlock>
-                <TextBlock Margin="0,10,0,0" Text=">  Copy and paste follow api into [ "><Run Foreground="#E37A39">Rest API</Run> ] text box;</TextBlock>
-                <TextBox Height="25" Foreground="Gray" Background="Transparent" IsReadOnly="True" FontSize="14" BorderThickness="0" Margin="22,10,0,0"
+                <TextBlock Margin="0,10,0,0" Text=">  Copy and paste github api into [ "><Run Foreground="#E37A39">Rest API</Run> ] text box;</TextBlock>
+                <TextBox Foreground="Gray" Background="Transparent" IsReadOnly="True" FontSize="14" BorderThickness="0" Margin="0,10,0,0"
                          Text="https://api.github.com/repos/huangjia2107/xamlviewer/releases"/>
+                <TextBox Foreground="Gray" Background="Transparent" IsReadOnly="True" FontSize="14" BorderThickness="0" Margin="0,5,0,0"
+                         Text="https://api.github.com/repos/icsharpcode/avalonedit/releases"/>
+                <TextBox Foreground="Gray" Background="Transparent" IsReadOnly="True" FontSize="14" BorderThickness="0" Margin="0,5,0,0"
+                         Text="https://api.github.com/repos/prismlibrary/prism/releases"/>         
+                <TextBox Foreground="Gray" Background="Transparent" IsReadOnly="True" FontSize="14" BorderThickness="0" Margin="0,5,0,0"
+                         Text="..."/>
                 <TextBlock Margin="0,10,0,0" Text=">  Click [ "><Run Foreground="#E37A39">Fetch</Run> ] button;</TextBlock>
                 <TextBlock Margin="0,10,0,0" Text=">  Turn on [ "><Run Foreground="#E37A39">Bind</Run> ] switch.</TextBlock>
             </StackPanel>
@@ -37,21 +37,14 @@
     </mwt:SystemDropShadowChrome>
     
     <!--Release Note-->
-    <Grid>
-        <Grid.Visibility>
-            <Binding Path="DataContext" ElementName="ReleaseItemsControl"
-                     ConverterParameter="{x:Static Visibility.Collapsed}">
-                <Binding.Converter>
-                    <utils:NullToVisibilityConverter/>
-                </Binding.Converter>
-            </Binding>
-        </Grid.Visibility>
+    <Grid MinWidth="500"
+          Visibility="{Binding DataContext,ElementName=ReleaseItemsControl,Converter={StaticResource nullToVisibilityConverter},ConverterParameter={x:Static Visibility.Collapsed}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Release History" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <ItemsControl Grid.Row="1" x:Name="ReleaseItemsControl" Margin="100,0" ItemsSource="{Binding .}">
+        <ItemsControl Grid.Row="1" x:Name="ReleaseItemsControl" Margin="50,0" ItemsSource="{Binding .}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <mwt:SystemDropShadowChrome Margin="0,0,0,30">
@@ -64,32 +57,46 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Ellipse Height="15" Width="15" Fill="Green" Margin="0,0,10,0"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding name,StringFormat=v{0}}" VerticalAlignment="Center"/>
+                                    <Ellipse Height="14" Width="14" Fill="Green" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <Ellipse Height="14" Width="14" Fill="Yellow" Margin="0,0,10,0" ToolTip="Preview" VerticalAlignment="Center"
+                                             Visibility="{Binding prerelease.Value,FallbackValue={x:Static Visibility.Collapsed},Converter={StaticResource boolToVisibilityConverter}}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding name}" VerticalAlignment="Center"/>
                                     <TextBlock Grid.Column="3" Text="{Binding published_at,StringFormat={}{0:yyyy-MM-dd&#x0020;HH:mm:ss}}" VerticalAlignment="Center"/>
                                 </Grid>
                                 <Path RenderOptions.EdgeMode="Aliased" Stroke="#27313A" StrokeThickness="1" Data="M0,0 H10" Stretch="Fill" Margin="0,10,0,0"/>
-                                <ItemsControl ItemsSource="{Binding assets}" Grid.IsSharedSizeScope="true">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="0,15,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto" SharedSizeGroup="NameColumn"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="{Binding name,StringFormat={}{0}}" VerticalAlignment="Center"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding download_count,StringFormat={}{0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                                <controls:Hyperlink Grid.Column="2" Text="Download"
-                                                                    VerticalAlignment="Center"
-                                                                    NavigateUri="{Binding browser_download_url}"
-                                                                    ToolTip="{Binding NavigateUri,RelativeSource={RelativeSource Self}}"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                <Grid>
+                                    <TextBlock Text="No Assets" Margin="0,15,0,0" FontStyle="Oblique" Opacity="0.5"
+                                               Visibility="{Binding Items.Count,ElementName=AssetsItemsControl, Converter={StaticResource zeroToVisibilityConverter}}"/>
+                                    <ItemsControl x:Name="AssetsItemsControl"
+                                                  ItemsSource="{Binding assets}"
+                                                  Grid.IsSharedSizeScope="true"
+                                                  VirtualizingStackPanel.IsVirtualizing="true"
+                                                  VirtualizingStackPanel.VirtualizationMode="Standard">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,15,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" SharedSizeGroup="NameColumn"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding name,StringFormat={}{0}}" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding download_count,StringFormat={}{0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                    <controls:Hyperlink Grid.Column="2" Text="Download"
+                                                                        VerticalAlignment="Center"
+                                                                        NavigateUri="{Binding browser_download_url.Value}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
                                 <Path RenderOptions.EdgeMode="Aliased" Stroke="#27313A" StrokeThickness="1" Data="M0,0 H10" Stretch="Fill" Margin="0,15"/>
-                                <TextBlock Text="{Binding body}" LineHeight="20" Foreground="#91A7BE"/>
+                                <Grid>
+                                    <TextBlock Text="No Description" FontStyle="Oblique" Opacity="0.5"
+                                               Visibility="{Binding body.Value,Converter={StaticResource stringToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}"/>
+                                    <TextBlock Text="{Binding body}" LineHeight="20" MaxHeight="300" Foreground="#91A7BE" TextTrimming="CharacterEllipsis"/>           
+                                </Grid>
+                                
                             </StackPanel>
                         </Border>
                     </mwt:SystemDropShadowChrome>

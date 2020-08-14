@@ -56,6 +56,22 @@ namespace XamlViewer.Utils
         }
     }
 
+    public class ZeroToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var zero = (int)value;
+            var defaultVisibility = (Visibility)(parameter ?? Visibility.Visible);
+
+            return zero == 0 ? defaultVisibility : (defaultVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class FlagEnumToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -33,7 +33,9 @@ xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 
 ![DataSource](images/DataSource.png)
 ``` xml
-<TextBlock Text="{Binding owner.login}"/>
+<TextBlock Tag="{Binding id}"
+           IsEnabled="{Binding private}"
+           Text="{Binding owner.login}"/>
 ```
 ### 2. Array
 
