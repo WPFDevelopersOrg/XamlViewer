@@ -9,6 +9,7 @@
       xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
       xmlns:utils="clr-namespace:XamlTheme.Utils;assembly=XamlTheme"
       xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+	  Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
       Background="#282C34" 
       TextBlock.Foreground="#CCCCCC" 
       TextBlock.FontFamily="YaHei Consolas HyBrid"> 
