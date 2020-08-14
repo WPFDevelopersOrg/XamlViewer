@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Schema;
-using Utils.IO;
+using XamlUtil.IO;
 
 namespace XamlService.Utils
 {

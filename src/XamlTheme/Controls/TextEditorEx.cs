@@ -6,13 +6,18 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.ComponentModel;
+using System.IO;
+using System.Xml;
+
+using XamlUtil.IO;
 using XamlTheme.Datas;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Search;
 using ICSharpCode.AvalonEdit.Highlighting;
-using System.ComponentModel;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
 namespace XamlTheme.Controls
 {
@@ -527,12 +532,7 @@ namespace XamlTheme.Controls
                     }
 
                 case "\n":  // auto align or insert one space line
-                    {
-                        if (!codeCompletion)
-                            break;
-
-                        DealBreak();
-                    }
+                    DealBreak();
                     break;
             }
         }
@@ -897,6 +897,20 @@ namespace XamlTheme.Controls
         #endregion
 
         #region Func
+
+        public void LoadSyntaxHighlighting(string fileName)
+		{
+			if(!FileHelper.Exists(fileName) || _partTextEditor == null)
+				return;
+			
+			using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = new XmlTextReader(fs))
+                {
+                    _partTextEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                }
+            }
+		}
 
         public void Redo()
         {

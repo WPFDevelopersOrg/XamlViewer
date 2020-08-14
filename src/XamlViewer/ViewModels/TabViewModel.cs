@@ -10,7 +10,7 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
-using Utils.IO;
+using XamlUtil.IO;
 using XamlService;
 using XamlService.Commands;
 using XamlService.Events;

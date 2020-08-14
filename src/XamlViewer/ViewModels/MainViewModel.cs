@@ -3,7 +3,7 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using System.ComponentModel;
 using System.Windows;
-using Utils.IO;
+using XamlUtil.IO;
 using XamlViewer.Models;
 using XamlService.Commands;
 using System.Linq;
@@ -66,7 +66,7 @@ namespace XamlViewer.ViewModels
         {
             if (isOpen)
             {
-                DataSourceMinColumnWidth = 50d;
+                DataSourceMinColumnWidth = 100d;
                 DataSourceColumnWidth = _lastDataSourceColumnWidth;
 
                 GridSplitterColumnWidth = GridLength.Auto;

@@ -1,13 +1,17 @@
-﻿using Prism.Commands;
+﻿using System;
+using System.Windows;
+using System.Text.RegularExpressions;
+
+using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
-using System;
-using System.Text.RegularExpressions;
 using XamlService.Events;
+using XamlService.Payloads;
 using XamlUtil.Common;
 using XamlUtil.Net;
+using XamlTheme.Controls;
 using XamlViewer.Models;
 using XamlViewer.Utils;
 
@@ -18,7 +22,13 @@ namespace XamlViewer.ViewModels
         private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
         private IDialogService _dialogService = null;
+		
+		private TextEditorEx _textEditor = null;
 
+        public DelegateCommand<TextEditorEx> LoadedCommand { get; private set; }
+		public DelegateCommand DelayArrivedCommand { get; private set; }
+		
+		public DelegateCommand ClearCommand { get; private set; }
         public DelegateCommand RequestCommand { get; private set; }
 
         public DataViewModel(IContainerExtension container, IEventAggregator eventAggregator)
@@ -28,26 +38,69 @@ namespace XamlViewer.ViewModels
             _eventAggregator = eventAggregator;
             _dialogService = container.Resolve<IDialogService>();
 
+            InitEvent();
             InitCommand();
             InitStatus();
         }
 
         #region Init
 
+        private void InitEvent()
+		{
+            _eventAggregator.GetEvent<SettingChangedEvent>().Subscribe(OnSettingChanged, ThreadOption.PublisherThread, false);
+		}
+
         private void InitCommand()
         {
+			LoadedCommand = new DelegateCommand<TextEditorEx>(Loaded);
+            DelayArrivedCommand = new DelegateCommand(DelayArrived);
+			
+			ClearCommand = new DelegateCommand(Clear);
             RequestCommand = new DelegateCommand(Request);
         }
 
         private void InitStatus()
-        {
+        { 
             if (IsSyncDataSource)
                 UpdateDataSource(true);
         }
 
         #endregion
 
+		#region Event
+
+        private void OnSettingChanged(ValueWithGuid<EditorSetting> valueWithGuid)
+        {
+            FontFamily = valueWithGuid.Value.FontFamily;
+            FontSize = valueWithGuid.Value.FontSize;
+            WordWrap = valueWithGuid.Value.WordWrap;
+        }
+		
+		#endregion
+
         #region Command
+		
+		private void Loaded(TextEditorEx textEditor)
+        {
+            _textEditor = textEditor;
+			
+			if(_textEditor != null)
+			{
+				_textEditor.LoadSyntaxHighlighting(AppDomain.CurrentDomain.BaseDirectory + "Assets\\Json.xshd");
+				_textEditor.Text = 	JsonString;
+			}
+        }
+
+        private void DelayArrived()
+        {
+			JsonString = _textEditor?.Text;
+			UpdateByJsonString();
+        }
+		
+        private void Clear()
+		{
+			_textEditor.Text = JsonString = string.Empty;
+		}
 
         private async void Request()
         {
@@ -59,13 +112,41 @@ namespace XamlViewer.ViewModels
                     return;
                 }
 
-                JsonString = await HttpUtil.GetString(RestApi);
+                CanFetch = false;
+				
+				JsonString = await HttpUtil.GetString(RestApi);
+                _textEditor.Text = JsonString;
+				
+				CanFetch = true;
+				
+				UpdateByJsonString();
             }
             catch { }
         }
 
         #endregion
 
+        private string _fontFamily = "Calibri";
+        public string FontFamily
+        {
+            get { return _fontFamily; }
+            set { SetProperty(ref _fontFamily, value); }
+        }
+
+        private double _fontSize = 12d;
+        public double FontSize
+        {
+            get { return _fontSize; }
+            set { SetProperty(ref _fontSize, value); }
+        }
+
+        private bool _wordWrap = false;
+        public bool WordWrap
+        {
+            get { return _wordWrap; }
+            set { SetProperty(ref _wordWrap, value); }
+        }
+		
         public bool IsSyncDataSource
         {
             get { return _appData.Config.IsSyncDataSource; }
@@ -81,11 +162,29 @@ namespace XamlViewer.ViewModels
             }
         }
 
+        private bool _canClear = true;
+        public bool CanClear
+        {
+            get { return _canClear; }
+            set { SetProperty(ref _canClear, value); }
+        }
+
+        private bool _canFetch;
+        public bool CanFetch
+        {
+            get { return _canFetch; }
+            set { SetProperty(ref _canFetch, value); }
+        }
+
         private string _restApi;
         public string RestApi
         {
             get { return _restApi; }
-            set { SetProperty(ref _restApi, value); }
+            set 
+			{ 
+			    SetProperty(ref _restApi, value); 
+				CanFetch = !string.IsNullOrWhiteSpace(_restApi);
+			}
         }
 
         public string JsonString
@@ -97,15 +196,27 @@ namespace XamlViewer.ViewModels
                     return;
 
                 _appData.Config.DataSourceJsonString = value;
-
-                RaisePropertyChanged();
+                 
                 UpdateDataSource(IsSyncDataSource);
             }
+        }
+
+        private Visibility _jsonTipVisibility = Visibility.Visible;
+        public Visibility JsonTipVisibility
+        {
+            get { return _jsonTipVisibility; }
+            set { SetProperty(ref _jsonTipVisibility, value); }
         }
 
         private void UpdateDataSource(bool isSync)
         {
             _eventAggregator.GetEvent<SyncDataSourceEvent>().Publish(isSync ? JsonString?.Trim() : null);
         }
+		
+		private void UpdateByJsonString()
+		{ 
+			CanClear = !string.IsNullOrEmpty(JsonString);
+            JsonTipVisibility =  CanClear ? Visibility.Collapsed : Visibility.Visible;
+		}
     }
 }

@@ -9,7 +9,7 @@ using Prism.Commands;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
-using Utils.IO;
+using XamlUtil.IO;
 using XamlService.Commands;
 using XamlUtil.Common;
 using XamlViewer.Models;

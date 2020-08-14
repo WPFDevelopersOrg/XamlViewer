@@ -12,7 +12,7 @@ using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Regions;
-using Utils.IO;
+using XamlUtil.IO;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Utils;

@@ -16,5 +16,11 @@
   <ItemGroup>
     <ProjectReference Include="..\XamlUtil\XamlUtil.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Assets\Json.xshd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
