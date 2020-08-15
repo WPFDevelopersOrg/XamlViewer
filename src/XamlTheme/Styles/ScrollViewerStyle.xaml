@@ -2,6 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:themes="clr-namespace:XamlTheme">
 
+    <SolidColorBrush x:Key="ScrollBarLineButton_ArrowFill" Color="#868999"/>
+    <SolidColorBrush x:Key="ScrollBarLineButton_MouseOverFill" Color="#1C97EA"/>
+    <SolidColorBrush x:Key="ScrollBarLineButton_PressedFill" Color="#007ACC"/>
+
+    <SolidColorBrush x:Key="ScrollBarThumb_Background" Color="#C2C3C9"/>
+    <SolidColorBrush x:Key="ScrollBarThumb_MouseOverBackground" Color="#686868"/>
+    <SolidColorBrush x:Key="ScrollBarThumb_DraggingBackground" Color="#5B5B5B"/>
+
+    <SolidColorBrush x:Key="ScrollBar_Background" Color="#EFEFF2"/>
+
     <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -11,15 +21,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
                     <Border Margin="1" CornerRadius="2" BorderThickness="1" Background="{TemplateBinding Background}">
-                        <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#868999"
+                        <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              Fill="{StaticResource ScrollBarLineButton_ArrowFill}"
                               Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Arrow" Property="Fill" Value="#1C97EA"/>
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ScrollBarLineButton_MouseOverFill}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Arrow" Property="Fill" Value="#007ACC"/>
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ScrollBarLineButton_PressedFill}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -46,7 +57,7 @@
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="IsTabStop" Value="false" />
         <Setter Property="Focusable" Value="false" />
-        <Setter Property="Background" Value="#C2C3C9"/>
+        <Setter Property="Background" Value="{StaticResource ScrollBarThumb_Background}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
@@ -57,10 +68,10 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
-                <Setter Property="Background" Value="#686868"/>
+                <Setter Property="Background" Value="{StaticResource ScrollBarThumb_MouseOverBackground}"/>
             </Trigger>
             <Trigger Property="IsDragging" Value="true">
-                <Setter Property="Background" Value="#5B5B5B"/>
+                <Setter Property="Background" Value="{StaticResource ScrollBarThumb_DraggingBackground}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -116,7 +127,7 @@
     </ControlTemplate>
 
     <Style x:Key="{x:Static themes:ResourceKeys.NormalScrollBarStyleKey}"  TargetType="{x:Type ScrollBar}">
-        <Setter Property="Background" Value="#EFEFF2"/>
+        <Setter Property="Background" Value="{StaticResource ScrollBar_Background}"/>
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Style.Triggers>
@@ -168,7 +179,7 @@
                                    ViewportSize="{TemplateBinding ViewportWidth}"
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                                    Style="{StaticResource {x:Static themes:ResourceKeys.NormalScrollBarStyleKey}}"/>
-                        <Rectangle Grid.Row="1" Grid.Column="1" Fill="#EFEFF2"/>
+                        <Rectangle Grid.Row="1" Grid.Column="1" Fill="{StaticResource ScrollBar_Background}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -92,13 +92,12 @@ namespace XamlViewer.ViewModels
         private void DelayArrived()
         {
 			JsonString = _textEditor?.Text;
-			UpdateByJsonString();
         }
 		
         private void Clear()
 		{
 			_textEditor.Text = JsonString = string.Empty;
-		}
+        }
 
         private async void Request()
         {
@@ -116,8 +115,6 @@ namespace XamlViewer.ViewModels
                 _textEditor.Text = JsonString;
 				
 				CanFetch = true;
-				
-				UpdateByJsonString();
             }
             catch { }
         }
@@ -194,7 +191,8 @@ namespace XamlViewer.ViewModels
                     return;
 
                 _appData.Config.DataSourceJsonString = value;
-                 
+
+                UpdateByJsonString();
                 UpdateDataSource(IsSyncDataSource);
             }
         }

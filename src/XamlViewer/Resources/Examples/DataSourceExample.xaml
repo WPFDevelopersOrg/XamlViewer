@@ -8,6 +8,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
       xmlns:utils="clr-namespace:XamlTheme.Utils;assembly=XamlTheme"
+      xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
       xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
       Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
       Background="#282C34" 
@@ -20,7 +21,9 @@
         <Border Background="#21252B" Padding="30" CornerRadius="5">
             <StackPanel TextBlock.FontSize="14">
                 <TextBlock Text="Welcome" HorizontalAlignment="Center" FontSize="20"/>
-                <TextBlock Margin="0,20,0,0" Text=">  Open [ "><Run Foreground="#E37A39">Data Source</Run> ] panel;</TextBlock>
+                <TextBlock Margin="0,20,0,0" Text=">  Open [ ">
+                    <Path ToolTip="DataSource" Data="M1,9 L1,10 5,10 5,9 z M0,8 L11,8 11,11 0,11 z M1,5 L1,6 5,6 5,5 z M0,4 L11,4 11,7 0,7 z M1,1 L1,2 5,2 5,1 z M0,0 L11,0 11,3 0,3 z" Fill="#E37A39"/>
+                    ] panel;</TextBlock>
                 <TextBlock Margin="0,10,0,0" Text=">  Copy and paste github api into [ "><Run Foreground="#E37A39">Rest API</Run> ] text box;</TextBlock>
                 <TextBox Foreground="Gray" Background="Transparent" IsReadOnly="True" FontSize="14" BorderThickness="0" Margin="0,10,0,0"
                          Text="https://api.github.com/repos/huangjia2107/xamlviewer/releases"/>
@@ -30,8 +33,12 @@
                          Text="https://api.github.com/repos/prismlibrary/prism/releases"/>         
                 <TextBox Foreground="Gray" Background="Transparent" IsReadOnly="True" FontSize="14" BorderThickness="0" Margin="0,5,0,0"
                          Text="..."/>
-                <TextBlock Margin="0,10,0,0" Text=">  Click [ "><Run Foreground="#E37A39">Fetch</Run> ] button;</TextBlock>
-                <TextBlock Margin="0,10,0,0" Text=">  Turn on [ "><Run Foreground="#E37A39">Bind</Run> ] switch.</TextBlock>
+                <TextBlock Margin="0,10,0,0" Text=">  Click [ ">
+                    <Path ToolTip="Fetch" Data="M0,9 L0,11 11,11 11,9 10,9 10,10 1,10 1,9 z M4,0 L7,0 7,4 10,4 5.5,9 1,4 4,4 z" Fill="#E37A39"/>
+                    ] button;</TextBlock>
+                <TextBlock Margin="0,10,0,0" Text=">  Turn on [ ">
+                    <Path ToolTip="Bind" Data="M2.984375,2 L8,2 8,0 11,2.5 8,5 8,3 3.0104167,3 C1.625,3.09375 0.984375,4.125 1.015625,5.34375 L0,5.34375 C0.13827006,3.648764 0.609375,2.328125 2.984375,2 z M0,8.5 L3,6 3,8 8.046875,8 C8.46875,7.984375 9.890625,8 10,5.609375 10,5.59375 11,5.59375 11,5.609375 10.986784,6.6750401 10.729167,9 8.0572917,9 L3,9 3,11 z" Fill="#E37A39"/>
+                    ] switch.</TextBlock>
             </StackPanel>
         </Border>
     </mwt:SystemDropShadowChrome>
@@ -56,12 +63,29 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
+                                    <!--
                                     <Ellipse Height="14" Width="14" Fill="Green" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                     <Ellipse Height="14" Width="14" Fill="Yellow" Margin="0,0,10,0" ToolTip="Preview" VerticalAlignment="Center"
                                              Visibility="{Binding prerelease.Value,FallbackValue={x:Static Visibility.Collapsed},Converter={StaticResource boolToVisibilityConverter}}"/>
+                                    -->
+                                    <Border BorderBrush="Green" BorderThickness="1" VerticalAlignment="Center" Padding="2,3" Margin="0,0,5,0"
+                                            Visibility="{Binding prerelease.Value,Converter={StaticResource collapsedBoolToVisibilityConverter}}">
+                                        <TextBlock Text="Official" Foreground="Green"/>
+                                    </Border>
+                                    <Border BorderBrush="Yellow" BorderThickness="1" VerticalAlignment="Center" Padding="2,3" Margin="0,0,5,0"
+                                            Visibility="{Binding prerelease.Value,FallbackValue={x:Static Visibility.Collapsed},Converter={StaticResource boolToVisibilityConverter}}">
+                                        <TextBlock Text="Preview" Foreground="Yellow"/>
+                                    </Border>
                                     <TextBlock Grid.Column="1" Text="{Binding name}" VerticalAlignment="Center"/>
-                                    <TextBlock Grid.Column="3" Text="{Binding published_at,StringFormat={}{0:yyyy-MM-dd&#x0020;HH:mm:ss}}" VerticalAlignment="Center"/>
+                                    <controls:Hyperlink Grid.Column="3" Text="{Binding author.login}" 
+                                                        VerticalAlignment="Center"
+                                                        NavigateUri="{Binding author.html_url.Value}"/>
+                                    <TextBlock Grid.Column="4" Text=" published at " VerticalAlignment="Center"/>                    
+                                    <TextBlock Grid.Column="5" VerticalAlignment="Center" Foreground="#E37A39"
+                                               Text="{Binding published_at.Value,StringFormat={}{0:yyyy-MM-dd&#x0020;HH:mm:ss},Converter={StaticResource utcToLocalDateConverter}}"/>
                                 </Grid>
                                 <Path RenderOptions.EdgeMode="Aliased" Stroke="#27313A" StrokeThickness="1" Data="M0,0 H10" Stretch="Fill" Margin="0,10,0,0"/>
                                 <Grid>
@@ -78,11 +102,16 @@
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="auto" SharedSizeGroup="NameColumn"/>
                                                         <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="auto" SharedSizeGroup="SizeColumn"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="auto" SharedSizeGroup="CountColumn"/>
+                                                        <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="auto"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding name,StringFormat={}{0}}" VerticalAlignment="Center"/>
-                                                    <TextBlock Grid.Column="1" Text="{Binding download_count,StringFormat={}{0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                                    <controls:Hyperlink Grid.Column="2" Text="Download"
+                                                    <TextBlock Text="{Binding name}" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="2" Margin="30,0,0,0" Text="{Binding size.Value,Converter={StaticResource byteSizeConverter}}" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="4" Text="{Binding download_count,StringFormat={}{0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                    <controls:Hyperlink Grid.Column="6" Text="Download"
                                                                         VerticalAlignment="Center"
                                                                         NavigateUri="{Binding browser_download_url.Value}"/>
                                                 </Grid>
@@ -94,7 +123,9 @@
                                 <Grid>
                                     <TextBlock Text="No Description" FontStyle="Oblique" Opacity="0.5"
                                                Visibility="{Binding body.Value,Converter={StaticResource stringToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}"/>
-                                    <TextBlock Text="{Binding body}" LineHeight="20" MaxHeight="300" Foreground="#91A7BE" TextTrimming="CharacterEllipsis"/>           
+                                    <TextBox Text="{Binding body}" MaxHeight="300" Foreground="#91A7BE"
+                                             TextBlock.LineHeight="20"
+                                             BorderThickness="0" Background="Transparent" IsReadOnly="True"/>
                                 </Grid>
                                 
                             </StackPanel>

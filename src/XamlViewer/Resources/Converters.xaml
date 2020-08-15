@@ -4,9 +4,12 @@
                     xmlns:themeUtils="clr-namespace:XamlTheme.Utils;assembly=XamlTheme">
 
     <utils:AnyBoolToVisibilityMultiConverter x:Key="anyBoolToVisibilityMultiConverter"/>
+    <themeUtils:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <themeUtils:BoolToVisibilityConverter x:Key="collapsedBoolToVisibilityConverter" TrueVisibility="Collapsed" FalseVisibility="Visible"/>
+    
+    <utils:ByteSizeConverter x:Key="byteSizeConverter"/>
     <utils:FlagEnumToVisibilityConverter x:Key="flagEnumToVisibilityConverter"/>
 
-    <themeUtils:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <themeUtils:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
     
     <utils:ScrollOffsetToVisibilityMultiConverter x:Key="scrollOffsetToVisibilityMultiConverter"/>
@@ -15,6 +18,8 @@
 
     <utils:XamlTabFontStyleConverter x:Key="xamlTabFontStyleConverter"/>
     <utils:XamlTabToolTipMultiConverter x:Key="xamlTabToolTipMultiConverter"/>
+
+    <utils:UTCToLocalDateConverter x:Key="utcToLocalDateConverter"/>
     <utils:VersionInfoMultiConverter x:Key="versionInfoMultiConverter"/>
 
     <utils:ZeroToVisibilityConverter x:Key="zeroToVisibilityConverter"/>
