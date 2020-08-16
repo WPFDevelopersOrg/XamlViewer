@@ -336,6 +336,8 @@ namespace XamlTheme.Controls
                 _partTextEditor.TextArea.TextEntering += TextArea_TextEntering;
                 _partTextEditor.TextArea.TextEntered += TextArea_TextEntered;
                 _partTextEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
+                DataObject.AddPastingHandler(_partTextEditor, _partTextEditor_Pasting);
+
 
                 _partTextEditor.Options = new TextEditorOptions { ConvertTabsToSpaces = true };
                 _partTextEditor.TextArea.SelectionCornerRadius = 0;
@@ -383,6 +385,12 @@ namespace XamlTheme.Controls
                 _timer.Stop();
                 _timer.Start();
             }
+        }
+
+        private void _partTextEditor_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            //for invoke DelayArrivedEvent
+            _disabledTimer = false;
         }
 
         private void Caret_PositionChanged(object sender, EventArgs e)
@@ -979,6 +987,7 @@ namespace XamlTheme.Controls
                 _partTextEditor.TextArea.TextEntering -= TextArea_TextEntering;
                 _partTextEditor.TextArea.TextEntered -= TextArea_TextEntered;
                 _partTextEditor.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
+                DataObject.RemovePastingHandler(_partTextEditor, _partTextEditor_Pasting);
             }
         }
 
