@@ -7,7 +7,9 @@
 	"settings": {
 		"files.exclude": {
 			"**/bin/": true,
-			"**/obj/": true
+			"**/obj/": true,
+			"**/.vs/":true,
+			"**/*.user":true
 		}
 	}
 }
