@@ -34,8 +34,8 @@ xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 ![DataSource](images/DataSource.png)
 ``` xml
 <TextBlock Tag="{Binding id}"
-           IsEnabled="{Binding private}"
-           Text="{Binding owner.login}"/>
+           IsEnabled="{Binding enabled}"
+           Text="{Binding child.name}"/>
 ```
 ### 2. Array
 
@@ -44,7 +44,9 @@ xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
 <ItemsControl ItemsSource="{Binding .}">
     <ItemsControl.ItemTemplate>
         <DataTemplate>
-            <TextBlock Text="{Binding tag_name}"/>
+            <TextBlock Tag="{Binding id}"
+			           IsEnabled="{Binding enabled}"
+			           Text="{Binding name}"/>
         </DataTemplate>
     </ItemsControl.ItemTemplate>
 </ItemsControl>
