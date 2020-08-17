@@ -116,7 +116,10 @@ namespace XamlViewer.ViewModels
 				
 				CanFetch = true;
             }
-            catch { }
+            catch(Exception ex) 
+            {
+                System.Diagnostics.Trace.TraceError("[ Http GetString ] " + XamlUtil.Common.Common.GetExceptionStringFormat(ex));
+            }
         }
 
         #endregion
