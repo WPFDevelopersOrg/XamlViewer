@@ -45,8 +45,8 @@ xmlns:controls="clr-namespace:MyControl.Controls;assembly=MyControl"
     <ItemsControl.ItemTemplate>
         <DataTemplate>
             <TextBlock Tag="{Binding id}"
-			           IsEnabled="{Binding enabled}"
-			           Text="{Binding name}"/>
+		       IsEnabled="{Binding enabled}"
+		       Text="{Binding name}"/>
         </DataTemplate>
     </ItemsControl.ItemTemplate>
 </ItemsControl>
