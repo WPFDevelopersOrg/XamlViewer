@@ -14,6 +14,8 @@ using XamlUtil.Net;
 using XamlTheme.Controls;
 using XamlViewer.Models;
 using XamlViewer.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace XamlViewer.ViewModels
 {
@@ -29,6 +31,7 @@ namespace XamlViewer.ViewModels
 		public DelegateCommand DelayArrivedCommand { get; private set; }
 		
 		public DelegateCommand ClearCommand { get; private set; }
+		public DelegateCommand FormatCommand { get; private set; }
         public DelegateCommand RequestCommand { get; private set; }
 
         public DataViewModel(IContainerExtension container, IEventAggregator eventAggregator)
@@ -55,6 +58,7 @@ namespace XamlViewer.ViewModels
             DelayArrivedCommand = new DelegateCommand(DelayArrived);
 			
 			ClearCommand = new DelegateCommand(Clear);
+			FormatCommand = new DelegateCommand(Format);
             RequestCommand = new DelegateCommand(Request);
         }
 
@@ -99,6 +103,16 @@ namespace XamlViewer.ViewModels
 			_textEditor.Text = JsonString = string.Empty;
         }
 
+        private void Format()
+		{
+			var text = _textEditor.Text;
+			if(string.IsNullOrWhiteSpace(text))
+				return;
+			
+			JsonString = JToken.Parse(text).ToString(Formatting.Indented);
+            _textEditor.Text = JsonString;
+		}
+
         private async void Request()
         {
             try
@@ -111,7 +125,11 @@ namespace XamlViewer.ViewModels
 
                 CanFetch = false;
 				
-				JsonString = await HttpUtil.GetString(RestApi);
+				var json = await HttpUtil.GetString(RestApi);
+				if(!string.IsNullOrWhiteSpace(json))
+					json = JToken.Parse(json).ToString(Formatting.Indented);
+				
+				JsonString = json;
                 _textEditor.Text = JsonString;
 				
 				CanFetch = true;
@@ -120,6 +138,10 @@ namespace XamlViewer.ViewModels
             {
                 System.Diagnostics.Trace.TraceError("[ Http GetString ] " + XamlUtil.Common.Common.GetExceptionStringFormat(ex));
             }
+			finally
+			{
+				CanFetch = true;
+			}
         }
 
         #endregion
