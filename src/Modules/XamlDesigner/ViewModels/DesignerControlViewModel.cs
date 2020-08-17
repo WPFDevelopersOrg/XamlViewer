@@ -7,14 +7,15 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Runtime.Versioning;
-using XamlDesigner.Views;
-using XamlService.Events;
-using XamlService.Payloads;
+using SWF = System.Windows.Forms;
+
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using SWF = System.Windows.Forms;
+using XamlDesigner.Views;
+using XamlService.Events;
+using XamlService.Payloads;
 using XamlUtil.Common;
 
 namespace XamlDesigner.ViewModels
@@ -119,6 +120,7 @@ namespace XamlDesigner.ViewModels
 
             using (var fs = new FileStream(sfd.FileName, FileMode.Create, FileAccess.ReadWrite))
             {
+                /*
                 var drawingVisual = new DrawingVisual();
                 var width = Element.ActualWidth;
                 var height = Element.ActualHeight;
@@ -128,14 +130,23 @@ namespace XamlDesigner.ViewModels
                     var contentBounds = VisualTreeHelper.GetDescendantBounds(Element);
                     context.DrawRectangle(new VisualBrush(Element) { Stretch = Stretch.Fill, Viewbox = new Rect(0, 0, width / contentBounds.Width, height / contentBounds.Height) }, null, new Rect(0, 0, width, height));
                 }
+                */
+                var renderSize = Element.RenderSize;
 
-                var rtb = new RenderTargetBitmap((int)width, (int)height, 96, 96, PixelFormats.Default);
-                rtb.Render(drawingVisual);
+                Element.Measure(renderSize);
+                Element.Arrange(new Rect(renderSize));
+
+                var rtb = new RenderTargetBitmap((int)renderSize.Width, (int)renderSize.Height, 96, 96, PixelFormats.Default);
+                rtb.Render(Element);
 
                 var encoder = new PngBitmapEncoder();
-
                 encoder.Frames.Add(BitmapFrame.Create(rtb));
                 encoder.Save(fs);
+
+                //restore
+                var parent = VisualTreeHelper.GetParent(Element as DependencyObject) as UIElement;
+                Element.Measure(parent.RenderSize);
+                Element.Arrange(new Rect(parent.RenderSize));
             }
         }
 
