@@ -82,6 +82,13 @@ namespace XamlViewer.ViewModels
                 _eventAggregator.GetEvent<OpenDataSourceEvent>().Publish(value);
             }
         }
+		
+		private bool _isSyncDataSource;
+		public bool IsSyncDataSource
+        {
+            get { return _isSyncDataSource; }
+            private set { SetProperty(ref _isSyncDataSource, value); }
+        }
 
         private Action<int, int> _moveTabPosAction = null;
         public Action<int, int> MoveTabPosAction
@@ -106,6 +113,7 @@ namespace XamlViewer.ViewModels
         private void InitEvent()
         {
             _eventAggregator.GetEvent<InitWorkAreaEvent>().Subscribe(OnInitWorkArea);
+			_eventAggregator.GetEvent<SyncDataSourceEvent>().Subscribe(OnSyncDataSource);
         }
 
         private void InitCommand()
@@ -139,6 +147,7 @@ namespace XamlViewer.ViewModels
         private void InitData()
         {
             _appData.DealExistedFileAction = DealExistedFile;
+			IsSyncDataSource = _appData.Config.IsSyncDataSource;
 
             XamlTabs = new ObservableCollection<TabViewModel>(_appData.Config.Files.Select(f => new TabViewModel(f, CloseXamlTab)));
             if (XamlTabs.Count == 0)
@@ -387,6 +396,11 @@ namespace XamlViewer.ViewModels
             OpenCommand.RaiseCanExecuteChanged();
             SaveAllCommand.RaiseCanExecuteChanged();
         }
+
+        private void OnSyncDataSource(string jsonString)
+		{
+			IsSyncDataSource = !string.IsNullOrWhiteSpace(jsonString);
+		}
 
         #endregion
 
