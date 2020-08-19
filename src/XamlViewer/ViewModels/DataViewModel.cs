@@ -137,6 +137,7 @@ namespace XamlViewer.ViewModels
             catch(Exception ex) 
             {
                 System.Diagnostics.Trace.TraceError("[ Http GetString ] " + XamlUtil.Common.Common.GetExceptionStringFormat(ex));
+				_dialogService.ShowMessage(ex.Message, MessageButton.OK, MessageType.Error);
             }
 			finally
 			{
