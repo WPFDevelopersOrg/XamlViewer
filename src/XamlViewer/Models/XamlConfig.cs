@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using XamlService.Payloads;
 
 namespace XamlViewer.Models
@@ -23,6 +24,7 @@ namespace XamlViewer.Models
 
         public bool IsOpenDataSource { get; set; }
         public bool IsSyncDataSource { get; set; }
+        [JsonIgnore]
         public string DataSourceJsonString { get; set; }
 
         public List<string> Files { get; set; } 

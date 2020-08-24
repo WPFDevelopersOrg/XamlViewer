@@ -116,6 +116,16 @@ namespace XamlViewer.ViewModels
         {
             await _appData.DealExistedFileAction?.Invoke();
 
+            var dataSourceFile = ResourcesMap.LocationDic[Location.DataSourceFile];
+			
+			if(!string.IsNullOrWhiteSpace(_appData.Config.DataSourceJsonString))
+                FileHelper.SaveToFile(dataSourceFile, _appData.Config.DataSourceJsonString);
+			else
+			{
+				if(FileHelper.Exists(dataSourceFile))
+					File.Delete(dataSourceFile);
+			}
+			
             FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _appData.Config);
         }
 

@@ -4,6 +4,7 @@ namespace XamlViewer.Models
     public enum Location
     {
         GlobalConfigFile,
+		DataSourceFile,
         ModulePath,
     }
 

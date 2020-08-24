@@ -149,11 +149,16 @@ namespace XamlViewer
             var version = ResourceAssembly.GetName().Version;
             var appData = new AppData { Config = localConfig ?? new XamlConfig(), Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build) };
 
+            //Files
             if (_xamlFiles != null && _xamlFiles.Length > 0)
             {
                 appData.Config.Files.RemoveAll(f => _xamlFiles.Any(xf => Path.GetFullPath(xf).ToLower() == Path.GetFullPath(f).ToLower()));
                 appData.Config.Files.InsertRange(0, _xamlFiles);
             }
+			
+			//Data Source
+			if(FileHelper.Exists(ResourcesMap.LocationDic[Location.DataSourceFile]))
+			    appData.Config.DataSourceJsonString = FileHelper.LoadFromFile(ResourcesMap.LocationDic[Location.DataSourceFile]);
 
             containerRegistry.RegisterInstance(appData);
         }

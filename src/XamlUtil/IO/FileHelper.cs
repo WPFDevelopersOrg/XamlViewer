@@ -128,5 +128,25 @@ namespace XamlUtil.IO
         }
 
         #endregion
+		
+		#region String
+
+        public static bool SaveToFile(string filePath, string content)
+        {
+            return SaveToFile(filePath, sw =>
+            {
+                sw.Write(content);
+            });
+        }
+
+        public static string LoadFromFile(string filePath)
+        {
+            return LoadFromFile(filePath, sr =>
+            {
+                return sr.ReadToEnd();
+            });
+        }
+
+        #endregion
     }
 }
