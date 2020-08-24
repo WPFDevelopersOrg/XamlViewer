@@ -28,6 +28,7 @@
         <Button Width="30" ToolTip="Open (Ctrl+O)"
                 Command="{Binding ApplicationCommands.OpenCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+				<!--
             <controls:DrawingIcon>
                 <controls:DrawingIcon.Drawing>
                     <DrawingGroup>
@@ -39,6 +40,21 @@
                     <DrawingGroup>
                         <GeometryDrawing Brush="#005198" Geometry="M9,1 H16V16 H3V15 L0,9 H5 L6,7 H11 L14,14 H15V2 H9 M10,3 H13V4 H10" />
                         <GeometryDrawing Brush="#FF5400" Geometry="M3.965131,0 L7.965131,3 3.965131,6 3.965131,4 C0.59520723,4.1666667 2.965131,6.45 3.965131,8 2.6640172,7.6579617 1.1458614,6.125 0.81048457,5.7875 0.19586141,4.925 -1.7241539,2.2 3.965131,2" />
+                    </DrawingGroup>
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
+			-->
+			<controls:DrawingIcon>
+                <controls:DrawingIcon.Drawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="#005198" Geometry="M7,3 L8,3 8,4 7,4 z M2,3 L5,3 5,4 2,4 z M6,2 L7,2 7,3 6,3 z M0,1 L6,1 6,2 1,2 1,5 11,5 11,6 1,6 1,15 15,15 15,6 14,6 14,5 16,5 16,16 0,16 z" />
+                        <GeometryDrawing Brush="#FF5400" Geometry="M12,0 L13,0 13,1 14,1 14,2 15,2 15,3 16,3 16,4 13,4 13,11 7,11 7,10 12,10 12,4 9,4 9,3 10,3 10,2 11,2 11,1 12,1 z" />
+                    </DrawingGroup>
+                </controls:DrawingIcon.Drawing>
+                <controls:DrawingIcon.HDPIDrawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="#005198" Geometry="M2,3 L5,3 5,4 2,4 z M5.9673467,1 L6,1 8.328125,3.2290835 7.587875,4 5.5393248,2 1,2 1,5 11,5 11,6 1,6 1,15 15,15 15,6 14,6 14,5 16,5 16,16 0,16 0,1 z" />
+                        <GeometryDrawing Brush="#FF5400" Geometry="M12.5,0 L16,4 13,4 13,11 7,11 7,10 12,10 12,4 9,4" />
                     </DrawingGroup>
                 </controls:DrawingIcon.HDPIDrawing>
             </controls:DrawingIcon>
