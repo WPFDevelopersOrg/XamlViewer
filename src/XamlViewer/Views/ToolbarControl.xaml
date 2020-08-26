@@ -62,6 +62,7 @@
         <Button Width="30" ToolTip="Save (Ctrl+S)"
                 Command="{Binding ApplicationCommands.SaveCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+		    <!--
             <controls:DrawingIcon>
                 <controls:DrawingIcon.Drawing>
                     <GeometryDrawing Brush="#812DAB" Geometry="M0,0 H3V8 H13V1 H14V2 H15V3 H16V16 H0 M8,0 H11V6 H8" />
@@ -70,16 +71,47 @@
                     <GeometryDrawing Brush="#812DAB" Geometry="M0,0 H3V8 H13V1 L16,3 V16 H0 M8,0 H11V6 H8" />
                 </controls:DrawingIcon.HDPIDrawing>
             </controls:DrawingIcon>
+			-->
+			<controls:DrawingIcon>
+                <controls:DrawingIcon.Drawing>
+				    <DrawingGroup>
+                        <GeometryDrawing Brush="#005198" Geometry="M14,2 L15,2 15,3 14,3 z M0,0 L8,0 8,1 4,1 4,5 12,5 12,1 10,1 10,0 13,0 13,1 14,1 14,2 13,2 13,6 3,6 3,1 1,1 1,15 15,15 15,3 16,3 16,16 0,16 z" />
+                        <GeometryDrawing Brush="#FF5400" Geometry="M3,12 L8,12 8,13 3,13 z M3,10 L13,10 13,11 3,11 z M3,8 L13,8 13,9 3,9 z M8,0 L10,0 10,4 8,4 z" />
+                    </DrawingGroup>
+                </controls:DrawingIcon.Drawing>
+                <controls:DrawingIcon.HDPIDrawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="#005198" Geometry="M1,1 L1,15 15,15 15,3.5 13,1.5 13,6 3,6 3,1 z M0,0 L8,0 8,1 4,1 4,5 12,5 12,1 10,1 10,0 13,0 16,3 16,16 0,16 z" />
+                        <GeometryDrawing Brush="#FF5400" Geometry="M3,12 L8,12 8,13 3,13 z M3,10 L13,10 13,11 3,11 z M3,8 L13,8 13,9 3,9 z M8,0 L10,0 10,4 8,4 z" />
+                    </DrawingGroup>
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
         </Button>
         <Button Width="30" ToolTip="Save All (Ctrl+Shift+S)"
                 Command="{Binding ApplicationCommands.SaveAllCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
+			<!--
             <controls:DrawingIcon>
                 <controls:DrawingIcon.Drawing>
                     <GeometryDrawing Brush="#812DAB" Geometry="M0,1 V16 H15V14 H2V1 M3,0 H5V6 H14V1 H15V2 H16V13 H3 M10,0 H12V4 H10Z" />
                 </controls:DrawingIcon.Drawing>
                 <controls:DrawingIcon.HDPIDrawing>
                     <GeometryDrawing Brush="#812DAB" Geometry="M0,1 V16 H15V14 H2V1 M3,0 H5V6 H14V1 L16,2 V13 H3 M10,0 H12V4 H10Z" />
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
+			-->
+			<controls:DrawingIcon>
+                <controls:DrawingIcon.Drawing>
+				    <DrawingGroup>
+                        <GeometryDrawing Brush="#005198" Geometry="M0,2 L1,2 1,15 14,15 14,16 0,16 z M14,1 L15,1 15,2 14,2 z M2,0 L9,0 9,1 6,1 6,5 12,5 12,1 11,1 11,0 14,0 14,1 13,1 13,6 5,6 5,1 3,1 3,13 15,13 15,2 16,2 16,14 2,14 z" />
+                        <GeometryDrawing Brush="#FF5400" Geometry="M5,10 L10,10 10,11 5,11 z M5,8 L13,8 13,9 5,9 z M9,0 L11,0 11,4 9,4 z" />
+                    </DrawingGroup>
+                </controls:DrawingIcon.Drawing>
+                <controls:DrawingIcon.HDPIDrawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="#005198" Geometry="M0,2 L1,2 1,15 14,15 14,16 0,16 z M3,1 L3,13 15,13 15,2.4 13.6,1 13,1 13,6 5,6 5,1 z M2,0 L9,0 9,1 6,1 6,5 12,5 12,1 11,1 11,0 14,0 16,2 16,14 2,14 z" />
+                        <GeometryDrawing Brush="#FF5400" Geometry="M5,10 L10,10 10,11 5,11 z M5,8 L13,8 13,9 5,9 z M9,0 L11,0 11,4 9,4 z" />
+                    </DrawingGroup>
                 </controls:DrawingIcon.HDPIDrawing>
             </controls:DrawingIcon>
         </Button>
@@ -89,14 +121,29 @@
         <Button Width="30" ToolTip="Undo (Ctrl+Z)"
                 Command="{Binding ApplicationCommands.UndoCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Width="15" Height="16" Stretch="Fill" Fill="#005198"
-                  Data="M5.3228061,0.00021910667 C5.4403496,0.00461483 5.525836,0.074941635 5.5258362,0.19550169 L5.5258362,1.7386731 10.121581,1.7386731 C14.49848,1.7386731 18,3.8605336 18,6.4324856 18,9.0044379 14.49848,11.061999 10.121581,11.061999 L5.963526,11.061999 C5.3069909,11.061999 4.869301,10.804805 4.8693011,10.419012 4.869301,10.033219 5.3069909,9.7760239 5.963526,9.7760239 L10.121581,9.7760239 C13.185411,9.7760239 15.81155,8.2971511 15.81155,6.4324856 15.81155,4.5678205 13.185411,3.0246491 10.012158,3.0246491 L5.4164135,3.0246491 5.4164135,4.9536133 C5.4164135,5.1465096 5.1975684,5.2108085 4.9787234,5.082211 L0.16413379,2.767454 C-0.054711342,2.7031551 -0.054711342,2.5102587 0.16413379,2.3816611 L5.088146,0.066904068 C5.1702127,0.018680096 5.2522798,-0.0024180412 5.3228061,0.00021910667 z"/>
+			<controls:DrawingIcon>
+                <controls:DrawingIcon.Drawing>
+                    <GeometryDrawing Brush="#005198" Geometry="M0,3 H1V2 H2V1 H3V0 H4V3 H10V4 H11V5 H12V6 H13V11 H12V12 H11V13 H10V14 H5V13 H10V12 H11V11 H12V6 H11V5 H10V4 H4V7 H3V6 H2V5 H1V4 H0z" />
+                </controls:DrawingIcon.Drawing>
+                <controls:DrawingIcon.HDPIDrawing>
+                    <GeometryDrawing Brush="#005198" Geometry="M47.59,22.08 L36.44,22.01 36.42,36.27 19.01,19.68 36.42,3.94 36.42,17.56 47.59,17.47 C62.97,17.47 75.49,28 75.49,41.9 75.49,55.81 62.97,67.05 47.59,67.05 L40.77,67.05 40.77,62.45 47.59,62.45 C59.4,62.45 71,52.4 71,41.9 71,31.41 59.4,22.08 47.59,22.08 z" />
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
         </Button>
         <Button Width="30" ToolTip="Redo (Ctrl+Y)"
                 Command="{Binding ApplicationCommands.RedoCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Width="15" Height="16" Stretch="Fill" Fill="#005198"
-                  Data="M661.333333 341.333333h-179.2C358.4 341.333333 256 443.733333 256 567.466667s102.4 221.866667 221.866667 221.866666H640c25.6 0 42.666667 17.066667 42.666667 42.666667s-17.066667 42.666667-42.666667 42.666667h-162.133333c-170.666667 0-307.2-136.533333-307.2-307.2S307.2 256 477.866667 256h179.2V153.6c0-12.8 8.533333-17.066667 17.066666-8.533333L866.133333 298.666667c8.533333 8.533333 8.533333 21.333333 0 25.6l-187.733333 153.6c-8.533333 8.533333-17.066667 4.266667-17.066667-8.533334V341.333333z"/>
+			<Button.LayoutTransform>
+				<ScaleTransform ScaleX="-1"/>
+			</Button.LayoutTransform>
+			<controls:DrawingIcon>
+                <controls:DrawingIcon.Drawing>
+                    <GeometryDrawing Brush="#005198" Geometry="M0,3 H1V2 H2V1 H3V0 H4V3 H10V4 H11V5 H12V6 H13V11 H12V12 H11V13 H10V14 H5V13 H10V12 H11V11 H12V6 H11V5 H10V4 H4V7 H3V6 H2V5 H1V4 H0z" />
+                </controls:DrawingIcon.Drawing>
+                <controls:DrawingIcon.HDPIDrawing>
+                    <GeometryDrawing Brush="#005198" Geometry="M47.59,22.08 L36.44,22.01 36.42,36.27 19.01,19.68 36.42,3.94 36.42,17.56 47.59,17.47 C62.97,17.47 75.49,28 75.49,41.9 75.49,55.81 62.97,67.05 47.59,67.05 L40.77,67.05 40.77,62.45 47.59,62.45 C59.4,62.45 71,52.4 71,41.9 71,31.41 59.4,22.08 47.59,22.08 z" />
+                </controls:DrawingIcon.HDPIDrawing>
+            </controls:DrawingIcon>
         </Button>
 
         <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="3,5"/>
@@ -104,7 +151,7 @@
         <Button Width="30" ToolTip="Compile (F5)"
                 Command="{Binding ApplicationCommands.CompileCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Fill="Green" Data="M0,0 L12,8 0,16 z"/>
+            <Path Fill="Green" Data="M0,0 L10,7 0,14 z"/>
         </Button>
     </StackPanel>
 </UserControl>
