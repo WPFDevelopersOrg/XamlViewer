@@ -151,7 +151,7 @@
         <Button Width="30" ToolTip="Compile (F5)"
                 Command="{Binding ApplicationCommands.CompileCommand}"
                 Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
-            <Path Fill="Green" Data="M0,0 L10,7 0,14 z"/>
+            <Path Fill="#1CC220" Data="M0,0 L10,7 0,14 z"/>
         </Button>
     </StackPanel>
 </UserControl>
