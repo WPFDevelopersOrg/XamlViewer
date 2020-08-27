@@ -126,7 +126,7 @@
                     <GeometryDrawing Brush="#005198" Geometry="M0,3 H1V2 H2V1 H3V0 H4V3 H10V4 H11V5 H12V6 H13V11 H12V12 H11V13 H10V14 H5V13 H10V12 H11V11 H12V6 H11V5 H10V4 H4V7 H3V6 H2V5 H1V4 H0z" />
                 </controls:DrawingIcon.Drawing>
                 <controls:DrawingIcon.HDPIDrawing>
-                    <GeometryDrawing Brush="#005198" Geometry="M47.59,22.08 L36.44,22.01 36.42,36.27 19.01,19.68 36.42,3.94 36.42,17.56 47.59,17.47 C62.97,17.47 75.49,28 75.49,41.9 75.49,55.81 62.97,67.05 47.59,67.05 L40.77,67.05 40.77,62.45 47.59,62.45 C59.4,62.45 71,52.4 71,41.9 71,31.41 59.4,22.08 47.59,22.08 z" />
+                    <GeometryDrawing Brush="#005198" Geometry="M4,0 L4,3 6.6,3 C10,3 13,5.34 13,8.42 13,11.5 10.12,14 6.6,14 L5,14 5,13 6.58,13 C9.3,13 12,10.75 12,8.42 12,6 9.3,4 6.58,4 L4,4 4,7.2 0,3.5 z" />
                 </controls:DrawingIcon.HDPIDrawing>
             </controls:DrawingIcon>
         </Button>
@@ -141,7 +141,7 @@
                     <GeometryDrawing Brush="#005198" Geometry="M0,3 H1V2 H2V1 H3V0 H4V3 H10V4 H11V5 H12V6 H13V11 H12V12 H11V13 H10V14 H5V13 H10V12 H11V11 H12V6 H11V5 H10V4 H4V7 H3V6 H2V5 H1V4 H0z" />
                 </controls:DrawingIcon.Drawing>
                 <controls:DrawingIcon.HDPIDrawing>
-                    <GeometryDrawing Brush="#005198" Geometry="M47.59,22.08 L36.44,22.01 36.42,36.27 19.01,19.68 36.42,3.94 36.42,17.56 47.59,17.47 C62.97,17.47 75.49,28 75.49,41.9 75.49,55.81 62.97,67.05 47.59,67.05 L40.77,67.05 40.77,62.45 47.59,62.45 C59.4,62.45 71,52.4 71,41.9 71,31.41 59.4,22.08 47.59,22.08 z" />
+                    <GeometryDrawing Brush="#005198" Geometry="M4,0 L4,3 6.6,3 C10,3 13,5.34 13,8.42 13,11.5 10.12,14 6.6,14 L5,14 5,13 6.58,13 C9.3,13 12,10.75 12,8.42 12,6 9.3,4 6.58,4 L4,4 4,7.2 0,3.5 z" />
                 </controls:DrawingIcon.HDPIDrawing>
             </controls:DrawingIcon>
         </Button>
