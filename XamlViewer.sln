@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{63DB72
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{81A1D1BD-2F81-4240-8DEA-3BC039E1870C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlViewer.Tests", "tests\XamlViewer.Tests\XamlViewer.Tests.csproj", "{144389B5-ACC6-439B-B428-607E9A44E73E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,9 +54,16 @@ Global
 		{6F539BE7-CE50-4049-B9C8-619079C245BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F539BE7-CE50-4049-B9C8-619079C245BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F539BE7-CE50-4049-B9C8-619079C245BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{144389B5-ACC6-439B-B428-607E9A44E73E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{144389B5-ACC6-439B-B428-607E9A44E73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{144389B5-ACC6-439B-B428-607E9A44E73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{144389B5-ACC6-439B-B428-607E9A44E73E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{144389B5-ACC6-439B-B428-607E9A44E73E} = {81A1D1BD-2F81-4240-8DEA-3BC039E1870C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CD078D74-C77F-46DE-AA51-B47CE7F89A8F}
