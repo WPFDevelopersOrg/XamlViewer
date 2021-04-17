@@ -278,8 +278,8 @@ namespace XamlTheme.Behaviors
 
         private void MoveChild(UIElement dragedChild)
         {
-            var screenPos = new Win32.POINT();
-            if (!Win32.GetCursorPos(ref screenPos))
+            var screenPos = new Utils.Win32.POINT();
+            if (!Utils.Win32.GetCursorPos(ref screenPos))
                 return;
 
             var posToPanel = AssociatedObject.PointFromScreen(new Point(screenPos.X, screenPos.Y));

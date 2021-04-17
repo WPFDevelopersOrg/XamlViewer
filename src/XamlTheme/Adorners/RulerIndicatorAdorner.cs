@@ -31,8 +31,8 @@ namespace XamlTheme.Adorners
             if (AdornedElement == null || _pen == null || DoubleUtil.IsZero(_length))
                 return;
 
-            var screenPos = new Win32.POINT();
-            if (Win32.GetCursorPos(ref screenPos))
+            var screenPos = new Utils.Win32.POINT();
+            if (Utils.Win32.GetCursorPos(ref screenPos))
             {
                 var pos = AdornedElement.PointFromScreen(new Point(screenPos.X, screenPos.Y));
 

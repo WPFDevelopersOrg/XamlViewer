@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,6 +34,7 @@ namespace XamlViewer
     public partial class App : PrismApplication
     {
         private string[] _xamlFiles = null;
+        private Mutex _singleMutex = null;
 
         public App()
             : base()
@@ -70,9 +74,50 @@ namespace XamlViewer
 
         #endregion
 
+        public static Process GetRunningInstance()
+        {
+            var current = Process.GetCurrentProcess();
+            var processes = Process.GetProcessesByName(current.ProcessName);
+
+            foreach (Process process in processes)
+            {
+                if (process.Id != current.Id)
+                {
+                    var processLocation = Assembly.GetExecutingAssembly().Location.Replace("/", "//");
+
+                    if (Path.GetDirectoryName(processLocation) + "\\" + Path.GetFileNameWithoutExtension(processLocation)
+                        == Path.GetDirectoryName(current.MainModule.FileName) + "\\" + Path.GetFileNameWithoutExtension(current.MainModule.FileName))
+                        return process;
+                }
+            }
+
+            return null;
+        }
+
         protected override void OnStartup(StartupEventArgs e)
-        { 
-            if(e.Args.Length > 0)
+        {
+            _singleMutex = new Mutex(true, "huangjia2107_XAML_VIEWER", out bool isNew);
+            var process = GetRunningInstance();
+
+            if (!isNew && process != null)
+            {
+                Win32.ShowWindowAsync(process.MainWindowHandle);
+                Win32.SetForegroundWindow(process.MainWindowHandle);
+
+                if (e.Args.Length > 0)
+                {
+                    var xamls = e.Args.Where(f => Path.GetExtension(f).ToLower() == ".xaml").ToArray();
+                    if (xamls != null && xamls.Length > 0)
+                    {
+                        //TODO:Send Message...
+                    }
+                }
+
+                Environment.Exit(0);
+                return;
+            }
+
+            if (e.Args.Length > 0)
             {
                 _xamlFiles = e.Args.Where(f => Path.GetExtension(f).ToLower() == ".xaml").ToArray();
                 if (_xamlFiles == null || _xamlFiles.Length == 0)
@@ -80,7 +125,7 @@ namespace XamlViewer
                     Environment.Exit(0);
                     return;
                 }
-            } 
+            }
 
             base.OnStartup(e);
         }
@@ -153,10 +198,10 @@ namespace XamlViewer
                 appData.Config.Files.RemoveAll(f => _xamlFiles.Any(xf => Path.GetFullPath(xf).ToLower() == Path.GetFullPath(f).ToLower()));
                 appData.Config.Files.InsertRange(0, _xamlFiles);
             }
-			
-			//Data Source
-			if(FileHelper.Exists(ResourcesMap.LocationDic[Location.DataSourceFile]))
-			    appData.Config.DataSourceJsonString = FileHelper.LoadFromFile(ResourcesMap.LocationDic[Location.DataSourceFile]);
+
+            //Data Source
+            if (FileHelper.Exists(ResourcesMap.LocationDic[Location.DataSourceFile]))
+                appData.Config.DataSourceJsonString = FileHelper.LoadFromFile(ResourcesMap.LocationDic[Location.DataSourceFile]);
 
             containerRegistry.RegisterInstance(appData);
         }
@@ -167,16 +212,16 @@ namespace XamlViewer
         }
 
         protected override void OnInitialized()
-        { 
+        {
             base.OnInitialized();
-           
+
             var eventAggregator = Container.Resolve<IEventAggregator>();
-			var appData = Container.Resolve<AppData>();
-			
+            var appData = Container.Resolve<AppData>();
+
             eventAggregator?.GetEvent<InitWorkAreaEvent>().Publish();
-			
-			if(appData.Config.IsSyncDataSource)
-			    eventAggregator?.GetEvent<SyncDataSourceEvent>().Publish(appData.Config.DataSourceJsonString?.Trim());
+
+            if (appData.Config.IsSyncDataSource)
+                eventAggregator?.GetEvent<SyncDataSourceEvent>().Publish(appData.Config.DataSourceJsonString?.Trim());
         }
     }
 }
