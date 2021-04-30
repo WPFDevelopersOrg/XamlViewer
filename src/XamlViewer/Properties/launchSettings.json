@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "XamlViewer": {
+      "commandName": "Project"
+    }
+  }
+}

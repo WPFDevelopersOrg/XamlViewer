@@ -15,6 +15,9 @@
                      Title="{Binding Title}" HideOriginalTitle="True" AllowDrop="True"
                      WindowStartupLocation="CenterScreen" Height="600" Width="900" MinWidth="500" MinHeight="500">
     <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Loaded">
+            <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </behaviors:EventTrigger>
         <behaviors:EventTrigger EventName="Activated">
             <behaviors:InvokeCommandAction Command="{Binding ActivatedCommand}"/>
         </behaviors:EventTrigger>

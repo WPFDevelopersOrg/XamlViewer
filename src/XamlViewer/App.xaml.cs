@@ -9,17 +9,19 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+
 using Prism.DryIoc;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Regions;
+
 using XamlUtil.IO;
+using XamlUtil.Common;
 using XamlService.Commands;
 using XamlService.Events;
 using XamlService.Utils;
-using XamlUtil.Common;
 using XamlViewer.Dialogs;
 using XamlViewer.Models;
 using XamlViewer.Regions;
@@ -101,15 +103,24 @@ namespace XamlViewer
 
             if (!isNew && process != null)
             {
-                Win32.ShowWindowAsync(process.MainWindowHandle);
-                Win32.SetForegroundWindow(process.MainWindowHandle);
+                var hwnd = process.MainWindowHandle;
+
+                Win32.ShowWindowAsync(hwnd);
+                Win32.SetForegroundWindow(hwnd);
 
                 if (e.Args.Length > 0)
                 {
                     var xamls = e.Args.Where(f => Path.GetExtension(f).ToLower() == ".xaml").ToArray();
                     if (xamls != null && xamls.Length > 0)
                     {
-                        //TODO:Send Message...
+                        var message = string.Join("|", xamls);
+                        var cds = new Win32.CopyData();
+                        
+                        cds.dwData = IntPtr.Zero;
+                        cds.lpData = message;
+                        cds.cbData = System.Text.Encoding.Default.GetBytes(message).Length + 1;
+
+                        Win32.SendMessage(hwnd, Win32.WM_COPYDATA, 0, ref cds);
                     }
                 }
 

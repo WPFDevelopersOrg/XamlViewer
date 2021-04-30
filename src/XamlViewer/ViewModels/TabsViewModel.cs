@@ -114,6 +114,7 @@ namespace XamlViewer.ViewModels
         {
             _eventAggregator.GetEvent<InitWorkAreaEvent>().Subscribe(OnInitWorkArea);
 			_eventAggregator.GetEvent<SyncDataSourceEvent>().Subscribe(OnSyncDataSource);
+            _eventAggregator.GetEvent<OpenFilesEvent>().Subscribe(OpenFiles);
         }
 
         private void InitCommand()
@@ -401,6 +402,11 @@ namespace XamlViewer.ViewModels
 		{
 			IsSyncDataSource = !string.IsNullOrWhiteSpace(jsonString);
 		}
+
+        private void OpenFiles(string[] xamlFiles)
+        {
+            Open(xamlFiles);
+        }
 
         #endregion
 

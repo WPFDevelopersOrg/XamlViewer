@@ -1,14 +1,19 @@
-﻿using Prism.Commands;
-using Prism.Ioc;
-using Prism.Mvvm;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Interop;
+
+using Prism.Commands;
+using Prism.Ioc;
+using Prism.Mvvm;
+using Prism.Events;
+
 using XamlUtil.IO;
+using XamlUtil.Common;
 using XamlViewer.Models;
 using XamlService.Commands;
-using System.Linq;
-using System.IO;
-using Prism.Events;
 using XamlService.Events;
 
 namespace XamlViewer.ViewModels
@@ -18,9 +23,13 @@ namespace XamlViewer.ViewModels
         private AppData _appData = null;
         private IEventAggregator _eventAggregator = null;
 
+        private HwndSource _hwndSource = null;
+        private HwndSourceHook _hwndSourceHook = null;
         private GridLength _lastDataSourceColumnWidth = new GridLength(1, GridUnitType.Star);
 
         public DelegateCommand ExpandOrCollapseCommand { get; private set; }
+
+        public DelegateCommand<Window> LoadedCommand { get; private set; }
         public DelegateCommand ActivatedCommand { get; private set; }
         public DelegateCommand<DragEventArgs> DropCommand { get; private set; }
         public DelegateCommand<CancelEventArgs> ClosingCommand { get; private set; }
@@ -47,6 +56,8 @@ namespace XamlViewer.ViewModels
         private void InitCommand()
         {
             ExpandOrCollapseCommand = new DelegateCommand(ExpandOrCollapse);
+
+            LoadedCommand = new DelegateCommand<Window>(Loaded);
             ActivatedCommand = new DelegateCommand(Activated);
             DropCommand = new DelegateCommand<DragEventArgs>(Drop);
             ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing);
@@ -54,7 +65,7 @@ namespace XamlViewer.ViewModels
 
         private void InitStatus()
         {
-            if(_appData.Config.IsOpenDataSource)
+            if (_appData.Config.IsOpenDataSource)
                 OnOpenDataSource(true);
         }
 
@@ -92,6 +103,17 @@ namespace XamlViewer.ViewModels
             ExpandOrCollapse(_isExpandSetting);
         }
 
+        private void Loaded(Window win)
+        {
+            if (_hwndSourceHook == null)
+                _hwndSourceHook = new HwndSourceHook(WndProc);
+
+            _hwndSource?.Dispose();
+
+            _hwndSource = PresentationSource.FromVisual(win) as HwndSource;
+            _hwndSource?.AddHook(_hwndSourceHook);
+        }
+
         private void Activated()
         {
             if (_appCommands == null)
@@ -117,16 +139,17 @@ namespace XamlViewer.ViewModels
             await _appData.DealExistedFileAction?.Invoke();
 
             var dataSourceFile = ResourcesMap.LocationDic[Location.DataSourceFile];
-			
-			if(!string.IsNullOrWhiteSpace(_appData.Config.DataSourceJsonString))
+
+            if (!string.IsNullOrWhiteSpace(_appData.Config.DataSourceJsonString))
                 FileHelper.SaveToFile(dataSourceFile, _appData.Config.DataSourceJsonString);
-			else
-			{
-				if(FileHelper.Exists(dataSourceFile))
-					File.Delete(dataSourceFile);
-			}
-			
+            else
+            {
+                if (FileHelper.Exists(dataSourceFile))
+                    File.Delete(dataSourceFile);
+            }
+
             FileHelper.SaveToJsonFile(ResourcesMap.LocationDic[Location.GlobalConfigFile], _appData.Config);
+            _hwndSource?.RemoveHook(_hwndSourceHook);
         }
 
         #endregion
@@ -185,6 +208,20 @@ namespace XamlViewer.ViewModels
         private void ExpandOrCollapse(bool isExpand)
         {
             SettingRowHeight = isExpand ? GridLength.Auto : new GridLength(0);
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == Win32.WM_COPYDATA)
+            {
+                var cds = (Win32.CopyData)System.Runtime.InteropServices.Marshal.PtrToStructure(lParam, typeof(Win32.CopyData));
+                var xamlFiles = cds.lpData.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(f => Path.GetFullPath(f)).ToArray();
+
+                _eventAggregator.GetEvent<OpenFilesEvent>().Publish(xamlFiles);
+
+            }
+
+            return hwnd;
         }
 
         #endregion
