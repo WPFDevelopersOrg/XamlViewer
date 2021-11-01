@@ -106,8 +106,8 @@
                 </Grid>
 
                 <Separator Style="{StaticResource {x:Static themes:ResourceKeys.VerSeparatorStyleKey}}" Margin="15,0"/>
-		
-		        <Grid MinWidth="200">
+        
+                <Grid MinWidth="200">
                     <Grid.RowDefinitions> 
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="10"/>
@@ -124,7 +124,7 @@
                                     Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
                                 <Grid Width="16" Height="16">
                                     <Path RenderOptions.EdgeMode="Aliased" Fill="#005198" Data="M0,0 H7V7 H0 M0,9 H7V16 H0 M9,9 H16V16 H9"/>
-                                    <Path RenderOptions.EdgeMode="Aliased" Fill="#FF5400" Data="M12,0 H13V7 H12 M9,3 H12V4 H9 M13,3 H16V4 H13"/>	
+                                    <Path RenderOptions.EdgeMode="Aliased" Fill="#FF5400" Data="M12,0 H13V7 H12 M9,3 H12V4 H9 M13,3 H16V4 H13"/>    
                                 </Grid>
                             </Button>
 
@@ -221,7 +221,7 @@
             </StackPanel>  
         </ScrollViewer>
         <RepeatButton Width="20" HorizontalAlignment="Left"
-		              Command="{Binding ScrollToLeftCommand}"
+                      Command="{Binding ScrollToLeftCommand}"
                       CommandParameter="{Binding ElementName=RootScrollViewer}"
                       Style="{StaticResource {x:Static themes:ResourceKeys.ScrollRepeatButtonStyleKey}}">
             <RepeatButton.Visibility>

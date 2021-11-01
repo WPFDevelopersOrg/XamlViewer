@@ -42,7 +42,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <views:ToolbarControl Grid.Row="0"/>
             <TextBlock Grid.Column="1" Margin="5,0" Text="{Binding Title}" Foreground="#717171" FontSize="13" FontWeight="Medium"  VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="False"/>
@@ -75,15 +75,15 @@
         </Grid>
     </controls:UserWindow.CaptionContent>
     <Grid>
-	    <Grid.RowDefinitions>
+        <Grid.RowDefinitions>
             <RowDefinition Height="{Binding SettingRowHeight}"/>
             <RowDefinition Height="*"/>
-			<RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-	    <!--Setting-->
-	    <views:SettingControl Height="120" Margin="6,0"/>
-		<Grid Grid.Row="1" Margin="0,6,0,0">
-		    <Grid.ColumnDefinitions>
+        <!--Setting-->
+        <views:SettingControl Height="120" Margin="6,0"/>
+        <Grid Grid.Row="1" Margin="0,6,0,0">
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" MinWidth="300"/>
                 <ColumnDefinition Width="{Binding GridSplitterColumnWidth}"/>
                 <ColumnDefinition Width="{Binding DataSourceColumnWidth, Mode=TwoWay}" 
@@ -100,12 +100,12 @@
                 <Grid Grid.Row="1" prism:RegionManager.RegionName="{x:Static ms:RegionNames.WorkName}"/>
             </Grid>
             <GridSplitter Grid.Column="1" Width="10" Background="Transparent"
-			              HorizontalAlignment="Center" VerticalAlignment="Stretch"
-						  utils:CursorUtil.Source="/XamlViewer;component/Assets/Cursors/Splitter_lr.cur"/>
+                          HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                          utils:CursorUtil.Source="/XamlViewer;component/Assets/Cursors/Splitter_lr.cur"/>
             <!--Data-->
             <views:DataControl Grid.Column="2" Margin="0,0,5,5"/>
-		</Grid>
-		<!--Status-->
-	    <views:StatusControl Grid.Row="2" Height="25" Background="#007ACC"/>
+        </Grid>
+        <!--Status-->
+        <views:StatusControl Grid.Row="2" Height="25" Background="#007ACC"/>
     </Grid>
 </controls:UserWindow>

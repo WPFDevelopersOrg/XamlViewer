@@ -40,7 +40,7 @@
 
                             <Path Grid.Row="0" Grid.Column="0" Height="20"  Data="M0,0 H5 V-5" Stroke="Black" Stretch="Fill" StrokeThickness="1" RenderOptions.EdgeMode="Aliased"/> 
                             <Path Grid.Row="0" Grid.Column="0" Height="20" Data="M3,0 V-6 M0,-3 H6" Stroke="Black" Stretch="Fill" StrokeThickness="1" RenderOptions.EdgeMode="Aliased" StrokeDashArray="1,1"/>
-		           
+                   
                             <!-- Horizontal Ruler -->
                             <controls:Ruler x:Name="PART_HorizontalRuler" 
                                             Grid.Row="0" Grid.Column="1"

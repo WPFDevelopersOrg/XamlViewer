@@ -100,8 +100,8 @@ namespace XamlTheme.Controls
             get { return (double)GetValue(CaptionFontSizeProperty); }
             set { SetValue(CaptionFontSizeProperty, value); }
         }
-		
-		public static readonly DependencyProperty CaptionHeightProperty = DependencyProperty.Register("CaptionHeight", typeof(double), _typeofSelf, new PropertyMetadata(30d));
+        
+        public static readonly DependencyProperty CaptionHeightProperty = DependencyProperty.Register("CaptionHeight", typeof(double), _typeofSelf, new PropertyMetadata(30d));
         public double CaptionHeight
         {
             get { return (double)GetValue(CaptionHeightProperty); }

@@ -907,18 +907,18 @@ namespace XamlTheme.Controls
         #region Func
 
         public void LoadSyntaxHighlighting(string fileName)
-		{
-			if(!FileHelper.Exists(fileName) || _partTextEditor == null)
-				return;
-			
-			using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+        {
+            if(!FileHelper.Exists(fileName) || _partTextEditor == null)
+                return;
+            
+            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = new XmlTextReader(fs))
                 {
                     _partTextEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
-		}
+        }
 
         public void Redo()
         {

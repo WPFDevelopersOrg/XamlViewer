@@ -62,7 +62,7 @@
                                     </Grid.RowDefinitions>
                                     <RepeatButton x:Name="PART_NumericUp"
                                                   Grid.Row="0"
-                                                  Margin="0,1,1,0" 										  
+                                                  Margin="0,1,1,0"                                           
                                                   Delay="{TemplateBinding Delay}"
                                                   Foreground="{TemplateBinding Foreground}"
                                                   IsTabStop="False"

@@ -1,10 +1,9 @@
-﻿
-namespace XamlViewer.Models
+﻿namespace XamlViewer.Models
 {
     public enum Location
     {
         GlobalConfigFile,
-		DataSourceFile,
+        DataSourceFile,
         ModulePath,
     }
 
@@ -17,17 +16,17 @@ namespace XamlViewer.Models
     }
 
     public enum MessageType
-    { 
-        None, 
-        Error, 
+    {
+        None,
+        Error,
         Warning,
-        Information, 
+        Information,
         Question
     }
 
     public enum MessageButton
     {
-        OK, 
+        OK,
         OKCancel,
         YesNoCancel,
         YesNo

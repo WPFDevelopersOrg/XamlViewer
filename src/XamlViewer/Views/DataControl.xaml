@@ -1,47 +1,47 @@
 ﻿<UserControl x:Class="XamlViewer.Views.DataControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
-			 xmlns:utils="clr-namespace:XamlViewer.Utils"
-			 xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
-			 xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-			 xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
-			 xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore"
+             xmlns:controls="clr-namespace:XamlTheme.Controls;assembly=XamlTheme"
+             xmlns:themes="clr-namespace:XamlTheme;assembly=XamlTheme"
+             xmlns:utils="clr-namespace:XamlViewer.Utils"
              prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" MinHeight="24"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="4*" MinHeight="100"/>
+            <RowDefinition Height="*" MinHeight="24" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="4*" MinHeight="100" />
         </Grid.RowDefinitions>
-        
-		<Grid Grid.Row="0" Background="#FDFDFD">
-			<TextBlock Text="Rest API" Foreground="DarkGray" IsHitTestVisible="false" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Center"
-					   Visibility="{Binding Text,ElementName=RestApiTextBox,Converter={StaticResource stringToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}"/>
-		    <TextBox x:Name="RestApiTextBox" TextWrapping="Wrap" BorderBrush="DarkGray" Padding="0,3" AcceptsReturn="true" BorderThickness="0"
-		             Style="{StaticResource {x:Static themes:ResourceKeys.NormalTextBoxStyleKey}}"
-                     Text="{Binding RestApi,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-		</Grid>
-		
-		<GridSplitter Grid.Row="1" Height="25" Background="Transparent"
-			          HorizontalAlignment="Stretch" VerticalAlignment="Center"
-				      utils:CursorUtil.Source="/XamlViewer;component/Assets/Cursors/Splitter_ud.cur"/>
+
+        <Grid Grid.Row="0" Background="#FDFDFD">
+            <TextBlock Text="Rest API" Foreground="DarkGray" IsHitTestVisible="false" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Visibility="{Binding Text,ElementName=RestApiTextBox,Converter={StaticResource stringToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}" />
+            <TextBox x:Name="RestApiTextBox" TextWrapping="Wrap" BorderBrush="DarkGray" Padding="0,3" AcceptsReturn="true" BorderThickness="0"
+                     Style="{StaticResource {x:Static themes:ResourceKeys.NormalTextBoxStyleKey}}"
+                     Text="{Binding RestApi,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+
+        <GridSplitter Grid.Row="1" Height="25" Background="Transparent"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                      utils:CursorUtil.Source="/XamlViewer;component/Assets/Cursors/Splitter_ud.cur" />
         <Grid Grid.Row="1" Margin="1,2">
-		     <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <ToggleButton Grid.Column="0" Width="30" ToolTip="Bind"
                           IsChecked="{Binding IsSyncDataSource,Mode=TwoWay}"
                           Style="{StaticResource {x:Static themes:ResourceKeys.NormalToggleButtonStyleKey}}">
-			    <!--
+                <!--
                 <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}"
-                      Data="M0,9 H2V8 H1V1 H7V8 H5V9 H8V0 H0z M9,2 H11V11 H3V2 H6V3 H4V10 H10V3 H9z"/>
-			    -->
-				<controls:DrawingIcon>
+                      Data="M0,9 H2V8 H1V1 H7V8 H5V9 H8V0 H0z M9,2 H11V11 H3V2 H6V3 H4V10 H10V3 H9z" />
+                -->
+                <controls:DrawingIcon>
                     <controls:DrawingIcon.Drawing>
                         <GeometryDrawing Brush="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton},FallbackValue={x:Static swm:Brushes.Transparent}}"
                                          Geometry="M0,3 H1V2 H8V0 H9V1 H10V2 H11V3 H10V4 H9V5 H8V3 H2V4 H1V5 H0z M0,8 H1V7 H2V6 H3V8 H9V7 H10V6 H11V8 H10V9 H3V11 H2V10 H1V9 H0z" />
@@ -67,7 +67,7 @@
                     </controls:DrawingIcon.HDPIDrawing>
                 </controls:DrawingIcon>
             </Button>
-			<Button Grid.Column="3" Width="30" ToolTip="Format"
+            <Button Grid.Column="3" Width="30" ToolTip="Format"
                     IsEnabled="{Binding CanClear}"
                     Command="{Binding FormatCommand}"
                     Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
@@ -82,39 +82,39 @@
                     </controls:DrawingIcon.HDPIDrawing>
                 </controls:DrawingIcon>
             </Button>
-			<Button Grid.Column="4" Width="30" ToolTip="Clear"
-			        IsEnabled="{Binding CanClear}"
+            <Button Grid.Column="4" Width="30" ToolTip="Clear"
+                    IsEnabled="{Binding CanClear}"
                     Command="{Binding ClearCommand}"
                     Style="{StaticResource {x:Static themes:ResourceKeys.ToolbarButtonStyleKey}}">
                 <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                      Data="M1,6 L1,10 3,10 3,7 4,7 4,10 10,10 10,6 z M0,3 L4,3 4,4 1,4 1,5 10,5 10,4 7,4 7,3 11,3 11,5 11,6 11,11 0,11 0,6 0,5 z M3,0 L4,0 7,0 8,0 8,3 7,3 7,1 4,1 4,3 3,3 z"/>
+                      Data="M1,6 L1,10 3,10 3,7 4,7 4,10 10,10 10,6 z M0,3 L4,3 4,4 1,4 1,5 10,5 10,4 7,4 7,3 11,3 11,5 11,6 11,11 0,11 0,6 0,5 z M3,0 L4,0 7,0 8,0 8,3 7,3 7,1 4,1 4,3 3,3 z" />
             </Button>
-		</Grid>
-						  
+        </Grid>
+
         <Grid Grid.Row="2" Background="#FDFDFD">
-			<TextBlock Text="Json Object" Foreground="DarkGray" IsHitTestVisible="false" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Center"
-					   Visibility="{Binding JsonTipVisibility}"/>
-			<controls:TextEditorEx x:Name="JsonTextEditorEx"
-								   Margin="6,0,0,0"
-								   SyntaxHighlighting="Json"
-								   AllowFolding="false"
-								   ShowLineNumbers="true"
-								   FontFamily="{Binding FontFamily}"
-								   FontSize="{Binding FontSize}"
-								   WordWrap="{Binding WordWrap}">
-            <controls:TextEditorEx.Resources>
-                <Style TargetType="ScrollViewer"
-                       BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}"/> 
-            </controls:TextEditorEx.Resources>
-            <behaviors:Interaction.Triggers>
-    			<behaviors:EventTrigger EventName="Loaded">
-					<behaviors:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=controls:TextEditorEx}}"/>
-				</behaviors:EventTrigger> 
-				<behaviors:EventTrigger EventName="DelayArrived">
-                    <behaviors:InvokeCommandAction Command="{Binding DelayArrivedCommand}"/>
-                </behaviors:EventTrigger>
-            </behaviors:Interaction.Triggers>
-        </controls:TextEditorEx>
-		</Grid>
+            <TextBlock Text="Json Object" Foreground="DarkGray" IsHitTestVisible="false" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Visibility="{Binding JsonTipVisibility}" />
+            <controls:TextEditorEx x:Name="JsonTextEditorEx"
+                                   Margin="6,0,0,0"
+                                   SyntaxHighlighting="Json"
+                                   AllowFolding="false"
+                                   ShowLineNumbers="true"
+                                   FontFamily="{Binding FontFamily}"
+                                   FontSize="{Binding FontSize}"
+                                   WordWrap="{Binding WordWrap}">
+                <controls:TextEditorEx.Resources>
+                    <Style TargetType="ScrollViewer"
+                       BasedOn="{StaticResource {x:Static themes:ResourceKeys.NormalScrollViewerStyleKey}}" />
+                </controls:TextEditorEx.Resources>
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Loaded">
+                        <behaviors:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=controls:TextEditorEx}}" />
+                    </behaviors:EventTrigger>
+                    <behaviors:EventTrigger EventName="DelayArrived">
+                        <behaviors:InvokeCommandAction Command="{Binding DelayArrivedCommand}" />
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </controls:TextEditorEx>
+        </Grid>
     </Grid>
 </UserControl>

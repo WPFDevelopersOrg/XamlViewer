@@ -25,7 +25,7 @@ namespace XamlDesigner.ViewModels
         private string _fileGuid = null;
         private bool _canSnapshot = false;
         private Window _window = null;
-		private object _dataSource = null;
+        private object _dataSource = null;
 
         private IEventAggregator _eventAggregator = null;
         private RefreshDesignerEvent _refreshDesignerEvent = null;
@@ -164,7 +164,7 @@ namespace XamlDesigner.ViewModels
 
                 var obj = XamlReader.Parse(tabInfo.FileContent);
                 _window = obj as Window;
-				
+                
                 if (_window != null)
                 {
                     ShowLocalText("Window", 15);
@@ -194,12 +194,12 @@ namespace XamlDesigner.ViewModels
 
         private void OnSyncDataSource(string jsonString)
         {
-			try
-			{
+            try
+            {
                 _dataSource = string.IsNullOrWhiteSpace(jsonString) ? null : JsonUtil.DeserializeObject(jsonString);
-			}
-			catch{}
-			
+            }
+            catch{}
+            
             if (Element == null && _window == null)
                 return;
 
@@ -235,11 +235,11 @@ namespace XamlDesigner.ViewModels
 
         public void Dispose()
         {
-			_refreshDesignerEvent.Unsubscribe(OnRefreshDesigner);
+            _refreshDesignerEvent.Unsubscribe(OnRefreshDesigner);
             _syncDataSourceEvent.Unsubscribe(OnSyncDataSource);
-			
-			_dataSource = null;
-			
+            
+            _dataSource = null;
+            
             Element = null;
             _window = null;
         }

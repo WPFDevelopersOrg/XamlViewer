@@ -22,6 +22,9 @@ csharp_indent_case_contents_when_block = false
 csharp_indent_labels = one_less_than_current
 csharp_indent_switch_labels = true
 
+# IDE0011: Add braces
+csharp_prefer_braces = false
+
 ## Formatting - new line options
 ### Require braces to be on a new line for (also known as "Allman" style)
 ###   accessors, methods, object_collection, control_blocks, types, properties, lambdas
