@@ -49,11 +49,11 @@ namespace XamlTheme.Utils
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-			var result = (Visibility)(parameter ?? Visibility.Visible);
-			
+            var result = (Visibility)(parameter ?? Visibility.Visible);
+
             if(value == null || value == DependencyProperty.UnsetValue)
-				return result;
-			 
+                return result;
+
             return result == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -62,7 +62,7 @@ namespace XamlTheme.Utils
             throw new NotImplementedException();
         }
     }
-	
+
     public class DoubleToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -97,5 +97,5 @@ namespace XamlTheme.Utils
         {
             throw new NotImplementedException();
         }
-    } 
+    }
 }

@@ -82,9 +82,9 @@ namespace XamlViewer.ViewModels
                 _eventAggregator.GetEvent<OpenDataSourceEvent>().Publish(value);
             }
         }
-		
-		private bool _isSyncDataSource;
-		public bool IsSyncDataSource
+        
+        private bool _isSyncDataSource;
+        public bool IsSyncDataSource
         {
             get { return _isSyncDataSource; }
             private set { SetProperty(ref _isSyncDataSource, value); }
@@ -113,7 +113,7 @@ namespace XamlViewer.ViewModels
         private void InitEvent()
         {
             _eventAggregator.GetEvent<InitWorkAreaEvent>().Subscribe(OnInitWorkArea);
-			_eventAggregator.GetEvent<SyncDataSourceEvent>().Subscribe(OnSyncDataSource);
+            _eventAggregator.GetEvent<SyncDataSourceEvent>().Subscribe(OnSyncDataSource);
             _eventAggregator.GetEvent<OpenFilesEvent>().Subscribe(OpenFiles);
         }
 
@@ -147,8 +147,8 @@ namespace XamlViewer.ViewModels
 
         private void InitData()
         {
-            _appData.DealExistedFileAction = DealExistedFile;
-			IsSyncDataSource = _appData.Config.IsSyncDataSource;
+            _appData.DealExistedFileAction = DealExistedFileAsync;
+            IsSyncDataSource = _appData.Config.IsSyncDataSource;
 
             XamlTabs = new ObservableCollection<TabViewModel>(_appData.Config.Files.Select(f => new TabViewModel(f, CloseXamlTab)));
             if (XamlTabs.Count == 0)
@@ -176,8 +176,8 @@ namespace XamlViewer.ViewModels
 
             XamlTabs.Insert(0, newTab);
             newTab.IsSelected = true;
-			
-			SyncDataSource();
+            
+            SyncDataSource();
         }
 
         private bool CanOpen()
@@ -399,9 +399,9 @@ namespace XamlViewer.ViewModels
         }
 
         private void OnSyncDataSource(string jsonString)
-		{
-			IsSyncDataSource = !string.IsNullOrWhiteSpace(jsonString);
-		}
+        {
+            IsSyncDataSource = !string.IsNullOrWhiteSpace(jsonString);
+        }
 
         private void OpenFiles(string[] xamlFiles)
         {
@@ -454,7 +454,7 @@ namespace XamlViewer.ViewModels
             XamlTabs.Move(idnex, 0);
         }
 
-        private async Task DealExistedFile()
+        private async Task DealExistedFileAsync()
         {
             var validTabs = XamlTabs.Where(tab => FileHelper.Exists(tab.FileName));
             var noSavedTabs = validTabs.Where(tab => (tab.Status & TabStatus.NoSave) == TabStatus.NoSave).ToList();
@@ -537,10 +537,10 @@ namespace XamlViewer.ViewModels
         }
 
         private void SyncDataSource()
-		{
+        {
             if(_appData.Config.IsSyncDataSource)
-			    _eventAggregator?.GetEvent<SyncDataSourceEvent>().Publish(_appData.Config.DataSourceJsonString?.Trim());
-		}
+                _eventAggregator?.GetEvent<SyncDataSourceEvent>().Publish(_appData.Config.DataSourceJsonString?.Trim());
+        }
 
         #endregion
     }

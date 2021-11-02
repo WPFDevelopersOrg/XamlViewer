@@ -128,8 +128,8 @@ namespace XamlUtil.IO
         }
 
         #endregion
-		
-		#region String
+
+        #region String
 
         public static bool SaveToFile(string filePath, string content)
         {

@@ -159,7 +159,7 @@ namespace XamlViewer.ViewModels
                         InitWorkArea();
 
                         if(_appData.Config.IsSyncDataSource)
-			                _eventAggregator?.GetEvent<SyncDataSourceEvent>().Publish(_appData.Config.DataSourceJsonString?.Trim());
+                            _eventAggregator?.GetEvent<SyncDataSourceEvent>().Publish(_appData.Config.DataSourceJsonString?.Trim());
                     }
                 }
             }

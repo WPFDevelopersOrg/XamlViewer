@@ -70,18 +70,18 @@
         <ToggleButton Grid.Column="2" Width="35"
                       IsChecked="{Binding IsOpenDataSource,Mode=TwoWay}"
                       Style="{StaticResource {x:Static themes:ResourceKeys.NormalToggleButtonStyleKey}}">
-			<ToggleButton.ToolTip>
+            <ToggleButton.ToolTip>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Data Source"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" Text=" [Binding]" HorizontalAlignment="Left"
-					           Visibility="{Binding IsSyncDataSource,Converter={StaticResource boolToVisibilityConverter}}"/>
+                               Visibility="{Binding IsSyncDataSource,Converter={StaticResource boolToVisibilityConverter}}"/>
                 </StackPanel>
             </ToggleButton.ToolTip>
-			<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}"
                       Data="M1,9 L1,10 5,10 5,9 z M0,8 L11,8 11,11 0,11 z M1,5 L1,6 5,6 5,5 z M0,4 L11,4 11,7 0,7 z M1,1 L1,2 5,2 5,1 z M0,0 L11,0 11,3 0,3 z"/>
                 <Ellipse Height="7" Width="7" StrokeThickness="1" Stroke="#EFEFF2" Fill="#FF02D002" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-2,-2,0"
-				         Visibility="{Binding IsSyncDataSource,Converter={StaticResource boolToVisibilityConverter}}"/>
+                         Visibility="{Binding IsSyncDataSource,Converter={StaticResource boolToVisibilityConverter}}"/>
             </Grid>
         </ToggleButton>
         <Path Grid.ColumnSpan="3" Stretch="Fill" Height="2" Stroke="#007ACC" StrokeThickness="2" Data="M0,0 1,0" VerticalAlignment="Bottom"/>

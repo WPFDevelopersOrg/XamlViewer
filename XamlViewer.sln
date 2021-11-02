@@ -22,7 +22,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{63DB72
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{81A1D1BD-2F81-4240-8DEA-3BC039E1870C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlViewer.Tests", "tests\XamlViewer.Tests\XamlViewer.Tests.csproj", "{144389B5-ACC6-439B-B428-607E9A44E73E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamlViewer.Tests", "tests\XamlViewer.Tests\XamlViewer.Tests.csproj", "{144389B5-ACC6-439B-B428-607E9A44E73E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4B3BEB59-5BE9-48F3-BCB4-015EF1619B51}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
